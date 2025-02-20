@@ -1,12 +1,64 @@
 body {
-   width: 1254px;
-   height: 668px;
-   background: linear-gradient(
-    45deg, #ff8c00 0%, #ffa500 50%, #ffd700 100%
-   );
-   margin-top: 0 auto;
-   display: flex;
-   justify-content: center;
-   align-items: center;
+    animation: theme 21s linear infinite;
+    
+    &:after,
+    &:before {
+        content: '';
+        display: block;
+        position: fixed;
+        z-index: -1;
+        top: 0;
+        width: 100vw;  
+        height: 100vh; 
+        width: 100vmax;
+        height: 100vmax;
+        background: rgba(0,0,0,0.05);
+        animation: background 90s linear infinite;
+    }
+
+    &:after {
+        left: 15vw;
+    }
+
+    &:before {
+        right: 15vw;
+        animation-delay: -30s;
+        animation-direction: reverse;
+    }
 }
 
+@keyframes theme {
+    0% {
+        background: #FFBF00; /* Amber */
+    }
+    
+    20% {
+        background: #FFAA00; /* Slightly darker amber */
+    }
+    
+    40% {
+        background: #FF9900; /* Darker amber */
+    }
+    
+    60% {
+        background: #FF8C00; /* Even darker amber */
+    }
+    
+    80% {
+        background: #FF7F00; /* Rich amber */
+    }
+
+    100% {
+        background: #FFBF00; /* Amber again */
+    }
+}
+
+@keyframes background {
+    0% {
+        transform: rotate(0deg);
+    }
+    
+    100% {
+        transform: rotate(360deg);
+    }
+}
