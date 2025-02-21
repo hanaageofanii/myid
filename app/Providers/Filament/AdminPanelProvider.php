@@ -37,7 +37,9 @@ class AdminPanelProvider extends PanelProvider
                 'info' => Color::Blue,
                 'success' => Color::Green,
                 'Warning' => COlor::Red,
-            ])->font('Poppins')->brandLogo(asset('image/logo-pkb.png'))->brandLogoHeight('15rem')
+            ])->font('Poppins')
+            ->brandLogo(request()->is('admin/login') ? asset('image/logo.png') : asset('image/logo-pkb.png'))
+            ->brandLogoHeight(request()->is('admin/login') ? '10rem' : '15rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -63,4 +65,5 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])->favicon(asset('image/logo.png'));
     }
+    
 }
