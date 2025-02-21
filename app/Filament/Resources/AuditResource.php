@@ -84,11 +84,10 @@ class AuditResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
+            TextColumn::make('siteplan')->label('Site Plan'),
             TextColumn::make('type')->label('Type')->searchable(),
             BooleanColumn::make('terbangun')->label('Terbangun'),
             TextColumn::make('status')->label('Status')->badge(),
-
-            // Tampilkan data Sertifikat dalam satu kolom
             TextColumn::make('kode1')->label('Kode 1'),
             TextColumn::make('luas1')->label('Luas 1 (m²)'),
             TextColumn::make('kode2')->label('Kode 2'),
