@@ -88,19 +88,17 @@ class AuditResource extends Resource
             BooleanColumn::make('terbangun')->label('Terbangun'),
             TextColumn::make('status')->label('Status')->badge(),
 
-            // Tampilkan Sertifikat dalam satu kolom
-            TextColumn::make('sertifikat')->label('Sertifikat'),
-
             // Tampilkan data Sertifikat dalam satu kolom
-            TextColumn::make('sertifikat_data')
-                ->label('Sertifikat Data')
-                ->formatStateUsing(fn ($record) => collect([
-                    $record->kode1 ? "{$record->kode1}: {$record->luas1}m²" : null,
-                    $record->kode2 ? "{$record->kode2}: {$record->luas2}m²" : null,
-                    $record->kode3 ? "{$record->kode3}: {$record->luas3}m²" : null,
-                    $record->kode4 ? "{$record->kode4}: {$record->luas4}m²" : null,
-                ])->filter()->join(', '))
-                ->limit(50),
+            TextColumn::make('kode1')->label('Kode 1'),
+            TextColumn::make('luas1')->label('Luas 1 (m²)'),
+            TextColumn::make('kode2')->label('Kode 2'),
+            TextColumn::make('luas2')->label('Luas 2 (m²)'),
+            TextColumn::make('kode3')->label('Kode 3'),
+            TextColumn::make('luas3')->label('Luas 3 (m²)'),
+            TextColumn::make('kode4')->label('Kode 4'),
+            TextColumn::make('luas4')->label('Luas 4 (m²)'),
+
+            TextColumn::make('sertifikat')->label('Tanda Terima Sertifikat'),
 
             // Tampilkan Tanda Terima
             TextColumn::make('nop_pbb_pecahan')->label('NOP / PBB Pecahan')->limit(20),
