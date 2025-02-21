@@ -96,10 +96,7 @@ class AuditResource extends Resource
             TextColumn::make('luas3')->label('Luas 3 (m²)'),
             TextColumn::make('kode4')->label('Kode 4'),
             TextColumn::make('luas4')->label('Luas 4 (m²)'),
-
             TextColumn::make('sertifikat')->label('Tanda Terima Sertifikat'),
-
-            // Tampilkan Tanda Terima
             TextColumn::make('nop_pbb_pecahan')->label('NOP / PBB Pecahan')->limit(20),
             TextColumn::make('tanda_terima_nop')->label('Tanda Terima NOP')->limit(20),
             TextColumn::make('imb_pbg')->label('IMB / PBG')->limit(20),
