@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('siteplan');
             $table->string('type');
             $table->boolean('terbangun')->default(false);
-            $table->enum('status', ['terjual', 'belum']);
+            $table->enum('status', ['akad'])->nullable();
 
             // Sertifikat (Maksimal 4)
             $table->string('kode1')->nullable();
