@@ -199,8 +199,10 @@ class AuditResource extends Resource
             ->actions([
                 ActionGroup::make([
                     ViewAction::make()
+                        ->color('success')
                         ->label('Lihat'),
                     EditAction::make()
+                        ->color('info')
                         ->label('Ubah')
                         ->successNotification(
                             Notification::make()
@@ -208,6 +210,7 @@ class AuditResource extends Resource
                                 ->title('Data Audit Diperbarui')
                                 ->body('Data Audit telah berhasil disimpan.')),                    
                         DeleteAction::make()
+                        ->color('danger')
                         ->label('Hapus')
                         ->successNotification(
                             Notification::make()
@@ -219,6 +222,7 @@ class AuditResource extends Resource
                     //     ->successNotificationTitle('Data berhasil dipulihkan')
                     //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
                     Tables\Actions\RestoreAction::make()
+                    ->color('info')
                     ->label('Kembalikan Data')
                     ->successNotification(
                         Notification::make()
@@ -227,6 +231,7 @@ class AuditResource extends Resource
                             ->body('Data Audit berhasil dikembalikan.')
                     ),
                     Tables\Actions\ForceDeleteAction::make()
+                    ->color('primary')
                     ->label('Hapus Permanen')
                     ->successNotification(
                         Notification::make()
@@ -237,41 +242,48 @@ class AuditResource extends Resource
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
             
-            ->groupedBulkActions([
-                BulkAction::make('delete')
-                ->label('Hapus')
-                ->button()
-                ->color('danger')
-                    ->successNotificationTitle('Data berhasil di hapus')
-                    ->requiresConfirmation()
-                    ->action(fn (Collection $records) => $records->each->delete()),
+                ->groupedBulkActions([
+                    BulkAction::make('delete')
+                        ->label('Hapus')
+                        ->icon('heroicon-o-trash') 
+                        ->color('danger')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Audit')
+                                ->body('Data Audit berhasil dihapus.'))                        
+                                ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->delete()),
                 
-                BulkAction::make('forceDelete')
-                ->label('Hapus Permanent')
-                ->button()
-                ->color('Warning')
-                    ->successNotificationTitle('Data Berhasil dihapus permanent')
-                    ->requiresConfirmation()
-                    ->action(fn (Collection $records) => $records->each->forceDelete()),
+                    BulkAction::make('forceDelete')
+                        ->label('Hapus Permanent')
+                        ->icon('heroicon-o-x-circle') 
+                        ->color('warning')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Audit')
+                                ->body('Data Audit berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->forceDelete()),
                 
-                // RestoreBulkAction::make()
-                // ->label('Pulihkan Data')
-                // ->button()
-                // ->color('success')
-                //     ->successNotificationTitle('Data berhasil dipulihkan')
-                //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
-
-                BulkAction::make('export')
-                    ->label('Download Data')
-                    ->color('info')
-                    ->button()
-                    ->action(fn (Collection $records) => static::exportData($records)),
-
-                Tables\Actions\RestoreBulkAction::make()
-                ->label('Kambalikan Data')
-                ->color('indigo')
-                ->button()
-            ]);
+                    BulkAction::make('export')
+                        ->label('Download Data')
+                        ->icon('heroicon-o-arrow-down-tray') 
+                        ->color('info')
+                        ->action(fn (Collection $records) => static::exportData($records)),
+                
+                    Tables\Actions\RestoreBulkAction::make()
+                        ->label('Kembalikan Data')
+                        ->icon('heroicon-o-arrow-path') 
+                        ->color('success')
+                        ->button()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Audit')
+                                ->body('Data Audit berhasil dikembalikan.')),
+                ]);
+                
     }
     
     public static function exportData(Collection $records)
@@ -282,7 +294,7 @@ class AuditResource extends Resource
             $csvData .= "{$record->id}, {$record->siteplan}, {$record->type}, {$record->terbangun}, {$record->status}, {$record->tanda_terima_sertifikat}, {$record->kode1}, {$record->luas1}, {$record->kode2}, {$record->luas2}, {$record->kode3}, {$record->luas3}, {$record->kode4}, {$record->luas4}, {$record->nop_pbb_pecahan}, {$record->tanda_terima_nop}, {$record->imb_pbg}, {$record->tanda_terima_imb_pbg}, {$record->tanda_terima_tambahan}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'export.csv');
+        return response()->streamDownload(fn () => print($csvData), 'file.csv');
     }
     
 
