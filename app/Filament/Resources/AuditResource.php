@@ -33,6 +33,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Support\Enums\MaxWidth;
+use Filament\Tables\Actions\Action;
 class AuditResource extends Resource
 {
     protected static ?string $model = Audit::class;
@@ -119,6 +120,12 @@ class AuditResource extends Resource
             TextColumn::make('tanda_terima_imb_pbg')->label('Tanda Terima IMB/PBG')->limit(20),
             TextColumn::make('tanda_terima_tambahan')->label('Tanda Terima Tambahan')->limit(50),
             ])
+            ->defaultSort('siteplan', 'asc')
+            ->headerActions([
+                Action::make('count')
+                    ->label(fn ($livewire): string => 'Total: ' . $livewire->getFilteredTableQuery()->count())
+                    ->disabled(),
+            ])
             ->filters([
                 Filter::make('status')
                     ->label('Status')
@@ -202,6 +209,7 @@ class AuditResource extends Resource
                     ->button()
                     ->action(fn (Collection $records) => static::exportData($records)),
             ]);
+
     }
 
     public static function exportData(Collection $records)
