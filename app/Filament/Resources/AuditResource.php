@@ -35,6 +35,11 @@ use Filament\Forms\Components\Grid;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Actions\Action;
 use Filament\Support\Enums\ActionSize;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Actions\RestoreBulkAction;
+use Filament\Notifications\Notification;
+use Filament\Tables\Filters\TrashedFilter;
+
 class AuditResource extends Resource
 {
     protected static ?string $model = Audit::class;
@@ -128,6 +133,8 @@ class AuditResource extends Resource
                     ->disabled(),
             ])
             ->filters([
+                Tables\Filters\TrashedFilter::make()
+                ->label('Data yang dihapus'),
                 Filter::make('status')
                     ->label('Status')
                     ->form([
@@ -192,48 +199,107 @@ class AuditResource extends Resource
             ->actions([
                 ActionGroup::make([
                     ViewAction::make()
-                    ->label('Lihat'),
+                        ->label('Lihat'),
                     EditAction::make()
-                    ->label('Ubah'),
-                    DeleteAction::make()
-                    ->label('Hapus'),
-                ])
-                ->button()
-                ->label('Action'),
-            ], position: ActionsPosition::BeforeCells)
+                        ->label('Ubah')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Audit Diperbarui')
+                                ->body('Data Audit telah berhasil disimpan.')),                    
+                        DeleteAction::make()
+                        ->label('Hapus')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Audit Dihapus')
+                                ->body('Data Audit telah berhasil dihapus.')),
+                    // RestoreAction::make()
+                    //     ->label('Pulihkan')
+                    //     ->successNotificationTitle('Data berhasil dipulihkan')
+                    //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
+                    Tables\Actions\RestoreAction::make()
+                    ->label('Kembalikan Data')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Audit')
+                            ->body('Data Audit berhasil dikembalikan.')
+                    ),
+                    Tables\Actions\ForceDeleteAction::make()
+                    ->label('Hapus Permanen')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Audit')
+                            ->body('Data Audit berhasil dihapus secara permanen.')
+                    ),
+                    ])->button()->label('Action'),
+                ], position: ActionsPosition::BeforeCells)
             
             ->groupedBulkActions([
                 BulkAction::make('delete')
+                ->label('Hapus')
+                ->button()
+                ->color('danger')
+                    ->successNotificationTitle('Data berhasil di hapus')
                     ->requiresConfirmation()
                     ->action(fn (Collection $records) => $records->each->delete()),
-
+                
                 BulkAction::make('forceDelete')
+                ->label('Hapus Permanent')
+                ->button()
+                ->color('Warning')
+                    ->successNotificationTitle('Data Berhasil dihapus permanent')
                     ->requiresConfirmation()
                     ->action(fn (Collection $records) => $records->each->forceDelete()),
+                
+                // RestoreBulkAction::make()
+                // ->label('Pulihkan Data')
+                // ->button()
+                // ->color('success')
+                //     ->successNotificationTitle('Data berhasil dipulihkan')
+                //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
 
                 BulkAction::make('export')
+                    ->label('Download Data')
+                    ->color('info')
                     ->button()
                     ->action(fn (Collection $records) => static::exportData($records)),
+
+                Tables\Actions\RestoreBulkAction::make()
+                ->label('Kambalikan Data')
+                ->color('indigo')
+                ->button()
             ]);
-
     }
-
+    
     public static function exportData(Collection $records)
-{
-    $csvData = "ID, Site Plan, Type, Terbangun, Status, Tanda Terima Sertifikat, 1, Luas, 2, Luas, 3, Luas, 4, Luas, NOP / PBB Pecahan, Tanda Terima NOP, IMB / PBG, Tanda Terima IMB/PBG, Tanda Terima Tambahan\n";
-
-    foreach ($records as $record) {
-        $csvData .= "{$record->id}, {$record->siteplan}, {$record->type}, {$record->terbangun}, {$record->status}, {$record->tanda_terima_sertifikat}, {$record->kode1}, {$record->luas1}, {$record->kode2}, {$record->luas2}, {$record->kode3}, {$record->luas3}, {$record->kode4}, {$record->luas4}, {$record->nop_pbb_pecahan}, {$record->tanda_terima_nop}, {$record->imb_pbg}, {$record->tanda_terima_imb_pbg}, {$record->tanda_terima_tambahan}\n";
+    {
+        $csvData = "ID, Site Plan, Type, Terbangun, Status, Tanda Terima Sertifikat, 1, Luas, 2, Luas, 3, Luas, 4, Luas, NOP / PBB Pecahan, Tanda Terima NOP, IMB / PBG, Tanda Terima IMB/PBG, Tanda Terima Tambahan\n";
+    
+        foreach ($records as $record) {
+            $csvData .= "{$record->id}, {$record->siteplan}, {$record->type}, {$record->terbangun}, {$record->status}, {$record->tanda_terima_sertifikat}, {$record->kode1}, {$record->luas1}, {$record->kode2}, {$record->luas2}, {$record->kode3}, {$record->luas3}, {$record->kode4}, {$record->luas4}, {$record->nop_pbb_pecahan}, {$record->tanda_terima_nop}, {$record->imb_pbg}, {$record->tanda_terima_imb_pbg}, {$record->tanda_terima_tambahan}\n";
+        }
+    
+        return response()->streamDownload(fn () => print($csvData), 'export.csv');
     }
-
-    return response()->streamDownload(fn () => print($csvData), 'export.csv');
-}
+    
 
     public static function getRelations(): array
     {
         return [
 
         ];
+    }
+
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function getPages(): array
