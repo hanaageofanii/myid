@@ -34,16 +34,17 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Actions\Action;
+use Filament\Support\Enums\ActionSize;
 class AuditResource extends Resource
 {
     protected static ?string $model = Audit::class;
 
     protected static ?string $title = "Audit";
-
     protected static ?string $navigationGroup = "Legal";
-
     protected static ?string $pluralLabel = "Audit";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Audit';
+    protected static ?string $pluralModelLabel = 'Daftar Audit';
 
     public static function form(Form $form): Form
     {
@@ -190,12 +191,17 @@ class AuditResource extends Resource
         
             ->actions([
                 ActionGroup::make([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
-                ]) ->button()
-                ->label('Actions')
+                    ViewAction::make()
+                    ->label('Lihat'),
+                    EditAction::make()
+                    ->label('Ubah'),
+                    DeleteAction::make()
+                    ->label('Hapus'),
+                ])
+                ->button()
+                ->label('Action'),
             ], position: ActionsPosition::BeforeCells)
+            
             ->groupedBulkActions([
                 BulkAction::make('delete')
                     ->requiresConfirmation()
