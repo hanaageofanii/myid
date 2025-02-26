@@ -5,6 +5,7 @@ namespace App\Filament\Resources\AuditResource\Pages;
 use App\Filament\Resources\AuditResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\AuditResource\Widgets\AuditStats;
 
 class ListAudits extends ListRecords
 {
@@ -15,6 +16,13 @@ class ListAudits extends ListRecords
         return [
             Actions\CreateAction::make()
             ->label('Buat Data Audit'),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            AuditStats::class,
         ];
     }
 }

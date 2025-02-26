@@ -39,6 +39,8 @@ use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
+use App\Filament\Resources\AuditResource\Widgets\AuditStats;
+
 
 class AuditResource extends Resource
 {
@@ -75,7 +77,6 @@ class AuditResource extends Resource
                 ])
                 ->required()->nullable()->native(false),
 
-            // Grup SERTIPIKAT
             Fieldset::make('Sertifikat')
                 ->schema([
                     TextInput::make('kode1')->label('Kode 1'),
@@ -90,7 +91,6 @@ class AuditResource extends Resource
                 ])
                 ->columns(4),
 
-            // Grup TANDA TERIMA
             Fieldset::make('Berkas Lainnya')
                 ->schema([
                     TextInput::make('nop_pbb_pecahan')->label('NOP / PBB Pecahan'),
@@ -194,7 +194,8 @@ class AuditResource extends Resource
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormMaxHeight('400px')
             ->filtersFormColumns(4)
-            ->filtersFormWidth(MaxWidth::FourExtraLarge)                        
+            ->filtersFormWidth(MaxWidth::FourExtraLarge)
+                                    
         
             ->actions([
                 ActionGroup::make([
@@ -314,6 +315,13 @@ class AuditResource extends Resource
             ]);
     }
 
+    public static function getWidgets(): array
+    {
+        return [
+            AuditStats::class,
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
@@ -322,4 +330,5 @@ class AuditResource extends Resource
             // 'edit' => Pages\EditAudit::route('/{record}/edit'),
         ];
     }
+
 }

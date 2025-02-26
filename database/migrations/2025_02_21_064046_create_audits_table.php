@@ -18,7 +18,6 @@ return new class extends Migration
             $table->boolean('terbangun')->default(false);
             $table->enum('status', ['akad'])->nullable();
 
-            // Sertifikat (Maksimal 4)
             $table->string('kode1')->nullable();
             $table->integer('luas1')->nullable();
             $table->string('kode2')->nullable();
@@ -28,7 +27,6 @@ return new class extends Migration
             $table->string('kode4')->nullable();
             $table->integer('luas4')->nullable();
 
-            // Tanda Terima
             $table->string('tanda_terima_sertifikat')->nullable();
             $table->string('nop_pbb_pecahan')->nullable();
             $table->string('tanda_terima_nop')->nullable();

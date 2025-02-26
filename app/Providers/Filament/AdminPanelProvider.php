@@ -28,6 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->darkMode(false)
             ->registration()
             ->brandName('PT. Purnama Karya Bersama')
             ->colors([
@@ -36,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
                 'gray' => Color::Gray,
                 'info' => Color::Blue,
                 'success' => Color::Green,
-                'Warning' => COlor::Red,
+                'warning' => COlor::Red,
             ])->font('Poppins')
             ->brandLogo(request()->is('admin/login') ? asset('image/logo.png') : asset('image/logo-pkb.png'))
             ->brandLogoHeight(request()->is('admin/login') ? '10rem' : '15rem')
@@ -47,8 +48,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\AccountWidget::class,
+                // Widgets\FilamentInfoWidget::class,
+                \App\Filament\Resources\AuditResource\Widgets\AuditStats::class,
             ])
             ->middleware([
                 EncryptCookies::class,
