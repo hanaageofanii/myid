@@ -18,6 +18,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Facades\Filament;
+use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -47,9 +49,13 @@ class AdminPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->plugin(
+                FilamentFullCalendarPlugin::make()
+            )
             ->widgets([
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
+                \App\Filament\Widgets\CalendarWidget::class,
                 \App\Filament\Resources\AuditResource\Widgets\AuditStats::class,
             ])
             ->middleware([

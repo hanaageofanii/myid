@@ -8,6 +8,8 @@ use Filament\Widgets\StatsOverviewWidget\Card;
 use Filament\Support\Colors\Color;
 class AuditStats extends BaseWidget
 {
+    protected static ?int $sort = 2;
+
     protected static ?string $maxHeight = '300px';
     protected static ?string $pollingInterval = '10s';
     protected static bool $isLazy = false;
