@@ -1,24 +1,17 @@
 <?php
 
 namespace App\Filament\Resources\AuditResource\Widgets;
-
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\Audit;
 use Filament\Widgets\StatsOverviewWidget\Card;
 use Filament\Support\Colors\Color;
-
 class AuditStats extends BaseWidget
 {
-
     protected static ?string $maxHeight = '300px';
     protected static ?string $pollingInterval = '10s';
-
     protected static bool $isLazy = false;
-
     protected ?string $heading = 'Dashboard Audit';
-
-
     protected function getStats(): array
     {
             return [
@@ -47,5 +40,6 @@ class AuditStats extends BaseWidget
                     'style' => 'background-color: #FFC85B; border-color: #234C63;'
                 ]),            
             ];
+        }
     }
-}
+
