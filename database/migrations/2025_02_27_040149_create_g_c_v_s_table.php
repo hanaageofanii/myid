@@ -24,6 +24,10 @@ return new class extends Migration
             $table->date('tanggal_booking')->nullable();
             $table->string('nama_konsumen')->nullable();
             $table->string('agent')->nullable();
+            $table->enum('kpr_status', ['sp3k','akad','batal'])->nullable();
+            $table->text('ket')->nullable();
+            $table->string('user')->nullable();
+            $table->date('tanggal_update')->nullable();
             $table->timestamps();
         });
     }
