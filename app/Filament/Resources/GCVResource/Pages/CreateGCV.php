@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Filament\Resources\EventResource\Pages;
+namespace App\Filament\Resources\GCVResource\Pages;
 
-use App\Filament\Resources\EventResource;
+use App\Filament\Resources\GCVResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateEvent extends CreateRecord
+class CreateGCV extends CreateRecord
 {
-    protected static string $resource = EventResource::class;
-    protected static ?string $title = "Tambah Event";
+    protected static string $resource = GCVResource::class;
+    protected static ?string $title = "Buat Data GCV";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
-        ->label('Tambah Event');
+        ->label('Tambah Data');
     }
 
     protected function getCreateAnotherFormAction(): Actions\Action
     {
         return parent::getCreateAnotherFormAction()
-        ->label('Tambah Event Lagi')
-        ->color('warning');
+        ->label('Tambah Data Lagi')
+        ->color('Warning');
     }
     
     protected function getCancelFormAction() : Actions\Action
