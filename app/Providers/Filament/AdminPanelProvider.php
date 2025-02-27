@@ -55,7 +55,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
-                \App\Filament\Widgets\CalendarWidget::class,
+                // \App\Filament\Widgets\CalendarWidget::class,
                 \App\Filament\Resources\AuditResource\Widgets\AuditStats::class,
             ])
             ->middleware([

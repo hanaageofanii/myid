@@ -18,6 +18,13 @@ class EventResource extends Resource
     protected static ?string $model = Event::class;
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            CalendarWidget::class, 
+        ];
+    }
+
     /**
      * Schema form untuk membuat atau mengedit event.
      */
@@ -88,6 +95,13 @@ class EventResource extends Resource
         return [];
     }
 
+    public static function getWidgets(): array
+    {
+        return [
+            CalendarWidget::class,
+        ];
+    }
+
     /**
      * Halaman yang tersedia dalam resource ini.
      */
@@ -97,13 +111,6 @@ class EventResource extends Resource
             'index' => Pages\ListEvents::route('/'),
             'create' => Pages\CreateEvent::route('/create'),
             'edit' => Pages\EditEvent::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getWidgets(): array
-    {
-        return [
-            CalendarWidget::class,
         ];
     }
 }

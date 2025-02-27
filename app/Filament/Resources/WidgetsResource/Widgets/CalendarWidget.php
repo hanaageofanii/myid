@@ -61,21 +61,21 @@ class CalendarWidget extends FullCalendarWidget
     public function getFormSchema(): array
     {
         return [
-            Forms\Components\TextInput::make('name')
-                ->label('Nama Event')
-                ->required(),
+        //     Forms\Components\TextInput::make('name')
+        //         ->label('Nama Event')
+        //         ->required(),
 
-            Forms\Components\Grid::make()
-                ->schema([
-                    Forms\Components\DateTimePicker::make('starts_at')
-                        ->label('Mulai')
-                        ->required(),
+        //     Forms\Components\Grid::make()
+        //         ->schema([
+        //             Forms\Components\DateTimePicker::make('starts_at')
+        //                 ->label('Mulai')
+        //                 ->required(),
 
-                    Forms\Components\DateTimePicker::make('ends_at')
-                        ->label('Selesai')
-                        ->required()
-                        ->after('starts_at'),
-                ]),
+        //             Forms\Components\DateTimePicker::make('ends_at')
+        //                 ->label('Selesai')
+        //                 ->required()
+        //                 ->after('starts_at'),
+        //         ]),
         ];
     }
 
@@ -85,48 +85,61 @@ class CalendarWidget extends FullCalendarWidget
     protected function headerActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->label('Tambah Event')
-                ->modalHeading('Buat Event Baru')
-                ->form($this->getFormSchema())
-                ->successNotificationTitle('Event berhasil ditambahkan')
-                ->mutateFormDataUsing(function (array $data): array {
-                    $data['starts_at'] = Carbon::parse($data['starts_at'])->toDateTimeString();
-                    $data['ends_at'] = Carbon::parse($data['ends_at'])->toDateTimeString();
-                    return $data;
-                })
-                ->after(function () {
-                    $this->dispatch('refreshCalendar'); // Refresh kalender setelah tambah event
-                }),
+            // Actions\CreateAction::make()
+            //     ->label('Tambah Event')
+            //     ->modalHeading('Buat Event Baru')
+            //     ->form($this->getFormSchema())
+            //     ->successNotificationTitle('Event berhasil ditambahkan')
+            //     ->mutateFormDataUsing(function (array $data): array {
+            //         $data['starts_at'] = Carbon::parse($data['starts_at'])->toDateTimeString();
+            //         $data['ends_at'] = Carbon::parse($data['ends_at'])->toDateTimeString();
+            //         return $data;
+            //     })
+            //     ->after(function () {
+            //         $this->dispatch('refreshCalendar'); // Refresh kalender setelah tambah event
+            //     }),
         ];
     }
 
     /**
      * Aksi dalam modal event (Edit & Hapus).
      */
+    // protected function modalActions(): array
+    // {
+    //     return [
+    //         Actions\EditAction::make()
+    //             ->label('Edit Event')
+    //             ->modalHeading('Edit Event')
+    //             ->mutateFormDataUsing(function (array $data): array {
+    //                 $data['starts_at'] = Carbon::parse($data['starts_at'])->toDateTimeString();
+    //                 $data['ends_at'] = Carbon::parse($data['ends_at'])->toDateTimeString();
+    //                 return $data;
+    //             })
+    //             ->successNotificationTitle('Event berhasil diperbarui')
+    //             ->after(function () {
+    //                 $this->dispatch('refreshCalendar'); 
+    //             }),
+
+    //         Actions\DeleteAction::make()
+    //             ->label('Hapus Event')
+    //             ->modalHeading('Hapus Event?')
+    //             ->successNotificationTitle('Event berhasil dihapus')
+    //             ->after(function () {
+    //                 $this->dispatch('refreshCalendar'); 
+    //             }),
+    //     ];
+    // }
+
     protected function modalActions(): array
     {
         return [
-            Actions\EditAction::make()
-                ->label('Edit Event')
-                ->modalHeading('Edit Event')
-                ->mutateFormDataUsing(function (array $data): array {
-                    $data['starts_at'] = Carbon::parse($data['starts_at'])->toDateTimeString();
-                    $data['ends_at'] = Carbon::parse($data['ends_at'])->toDateTimeString();
-                    return $data;
-                })
-                ->successNotificationTitle('Event berhasil diperbarui')
-                ->after(function () {
-                    $this->dispatch('refreshCalendar'); // Refresh kalender setelah edit
-                }),
-
-            Actions\DeleteAction::make()
-                ->label('Hapus Event')
-                ->modalHeading('Hapus Event?')
-                ->successNotificationTitle('Event berhasil dihapus')
-                ->after(function () {
-                    $this->dispatch('refreshCalendar'); // Refresh kalender setelah hapus
-                }),
+            Actions\EditAction::make(),
+            Actions\DeleteAction::make(),
         ];
+    }
+    
+    protected function viewAction(): Action
+    {
+        return Actions\ViewAction::make();
     }
 }
