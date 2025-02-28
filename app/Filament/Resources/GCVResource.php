@@ -32,46 +32,78 @@ class GCVResource extends Resource
                         'tkr' => 'TKR',
                         'pca1' => 'PCA1',
                     ])
-                    ->label('Proyek'),
-                    Forms\Components\Select::make('siteplan')
-                    ->label('Siteplan')
-                    ->options(Audit::pluck('siteplan', 'id')->toArray())
-                    ->searchable()
-                    ->required(),                
+                    ->label('Proyek')
+                    ->required(),     
+
                 Forms\Components\Select::make('nama_perusahaan')
                     ->options([
                         'grand_cikarang_village' => 'Grand Cikarang Village',
                         'taman_kertamukti_residence' => 'Taman Kertamukti Residence',
                         'pesona_cengkong_asri_1' => 'Pesona Cengkong Asri 1',
                     ])
-                    ->label('Nama Perusahaan'),
+                    ->label('Nama Perusahaan')
+                    ->required(), 
+
+                Forms\Components\Select::make('kavling')
+                    ->options([
+                        'standar' => 'Standar',
+                        'khusus' => 'Khusus',
+                        'hook' => 'Hook',
+                        'komersil' => 'Komersil',
+                        'tanah_lebih' => 'Tanah Lebih',
+                        'kios' => 'Kios'
+                    ])
+                    ->label('Kavling')
+                    ->required(),
+
+                Forms\Components\Select::make('siteplan')
+                    ->label('Siteplan')
+                    ->options(Audit::pluck('siteplan', 'id')->toArray())
+                    ->searchable()
+                    ->required(),  
+
                 Forms\Components\TextInput::make('type')
-                    ->label('Type'),
+                    ->label('Type')
+                    ->required(),
+
                 Forms\Components\TextInput::make('luas_tanah')
                     ->numeric()
-                    ->label('Luas Tanah'),
-                Forms\Components\DatePicker::make('tanggal_booking')
-                    ->label('Tanggal Booking'),
-                Forms\Components\TextInput::make('nama_konsumen')
-                    ->label('Nama Konsumen'),
-                Forms\Components\TextInput::make('agent')
-                    ->label('Agent'),
+                    ->label('Luas Tanah')
+                    ->required(),
+
                 Forms\Components\Select::make('status')
                     ->options([
                         'booking' => 'Booking',
                         'indent' => 'Indent',
                         'ready' => 'Ready',
                     ])
-                    ->label('Status'),
+                    ->label('Status')
+                    ->required(),
+
+                Forms\Components\DatePicker::make('tanggal_booking')
+                    ->label('Tanggal Booking')
+                    ->required(),
+
+                Forms\Components\TextInput::make('nama_konsumen')
+                    ->label('Nama Konsumen')
+                    ->required(),
+
+                Forms\Components\TextInput::make('agent')
+                    ->label('Agent')
+                    ->required(),
+
                 Forms\Components\Select::make('kpr_status')
                     ->options([
                         'sp3k' => 'SP3K',
                         'akad' => 'Akad',
                         'batal' => 'Batal',
                     ])
-                    ->label('KPR Status'),
+                    ->label('KPR Status')
+                    ->required(),
+
                 Forms\Components\Textarea::make('ket')
-                    ->label('Keterangan'),
+                    ->label('Keterangan')
+                    ->nullable(),
             ]);
     }
 
@@ -81,6 +113,7 @@ class GCVResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('proyek')->label('Proyek'),
                 Tables\Columns\TextColumn::make('nama_perusahaan')->label('Nama Perusahaan'),
+                Tables\Columns\TextColumn::make('kavling')->label('Kavling'),
                 Tables\Columns\TextColumn::make('audit.siteplan')->label('Siteplan'),                
                 Tables\Columns\TextColumn::make('type')->label('Type'),
                 Tables\Columns\TextColumn::make('luas_tanah')->label('Luas Tanah'),
