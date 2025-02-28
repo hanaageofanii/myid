@@ -14,14 +14,14 @@ class CreateAudit extends CreateRecord
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
-        ->label('Buat Data Audit');
+        ->label('Tambah Data Audit');
     }
 
     protected function getCreateAnotherFormAction(): Actions\Action
     {
         return parent::getCreateAnotherFormAction()
-        ->label('Buat dan buat Data Audit lagi')
-        ->color('Warning');
+        ->label('Tambah Data Lagi')
+        ->color('warning');
     }
     
     protected function getCancelFormAction() : Actions\Action

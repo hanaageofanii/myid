@@ -14,7 +14,7 @@ class ListGCVS extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->label('Tambah Event'),
+            ->label('Buat Data GCV'),
         ];
     }
     protected function getHeaderWidgets(): array

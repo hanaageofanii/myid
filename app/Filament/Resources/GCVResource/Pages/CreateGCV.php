@@ -20,7 +20,7 @@ class CreateGCV extends CreateRecord
     {
         return parent::getCreateAnotherFormAction()
         ->label('Tambah Data Lagi')
-        ->color('Warning');
+        ->color('warning');
     }
     
     protected function getCancelFormAction() : Actions\Action

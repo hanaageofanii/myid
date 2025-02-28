@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('siteplan');
             $table->string('type');
             $table->boolean('terbangun')->default(false);
-            $table->enum('status', ['akad'])->nullable();
+            $table->enum('status', ['akad','stock'])->nullable();
 
             $table->string('kode1')->nullable();
             $table->integer('luas1')->nullable();
@@ -42,4 +42,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('audits');
     }
+
+    
 };

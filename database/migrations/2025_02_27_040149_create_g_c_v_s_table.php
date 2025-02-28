@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('g_c_v_s', function (Blueprint $table) {
             $table->id();
-            $table->enum('proyek', ['gcv_cir','gcv','tkr','pca1']);
-            $table->enum('nama_perusahaan', ['grand_cikarang_village','taman_kertamukti_residence','pesona_cengkong_asri_1']);
-            $table->enum('kavling',['standar','khusus','hook','komersil','tanah_lebih','kios']);
-            $table->unsignedBigInteger('siteplan');
-            $table->foreign('siteplan')->references('id')->on('audits')->onDelete('cascade');
-            $table->string('type');
-            $table->integer('luas_tanah');
-            $table->enum('status',['booking','indent','ready'])->nullable();
+            $table->enum('proyek', ['gcv_cira','gcv','tkr','pca1'])->nullable();
+            $table->enum('nama_perusahaan', ['grand_cikarang_village','taman_kertamukti_residence','pesona_cengkong_asri_1'])->nullable();
+            $table->enum('kavling',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();
+            $table->unsignedBigInteger('siteplan')->nullable();
+            $table->foreign('siteplan')->references('id')->on('audits')->onDelete('cascade')->nullable();
+            $table->string('type')->nullable();
+            $table->integer('luas_tanah')->nullable();
+            $table->enum('status',['booking','indent','ready'])->nullable()->nullable();
             $table->date('tanggal_booking')->nullable();
             $table->string('nama_konsumen')->nullable();
             $table->string('agent')->nullable();
