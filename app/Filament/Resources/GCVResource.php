@@ -12,6 +12,38 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use App\Filament\Resources\AuditResource;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Support\Enums\ActionSize;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Actions\RestoreBulkAction;
+use Filament\Notifications\Notification;
+use App\Filament\Resources\AuditResource\Widgets\AuditStats;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Fieldset;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\BooleanColumn;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Enums\ActionsPosition;
+use Illuminate\Database\Eloquent\Collection;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\ActionGroup;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+
+
 
 
 class GCVResource extends Resource
@@ -146,7 +178,7 @@ class GCVResource extends Resource
                     default => $state, 
                 }),
 
-                Tables\Columns\TextColumn::make('audit.siteplan')->label('Siteplan'),
+                Tables\Columns\TextColumn::make('audit.siteplan')->label('Blok'),
                 Tables\Columns\TextColumn::make('type')->label('Type'),
                 Tables\Columns\TextColumn::make('luas_tanah')->label('Luas Tanah'),
                 Tables\Columns\TextColumn::make('status')->label('Status')
@@ -171,26 +203,179 @@ class GCVResource extends Resource
             ->defaultSort('siteplan', 'asc')
             ->headerActions([
                 Action::make('count')
-                ->label(fn ($livewire): string => 'Total: ' . $livewire->getFilteredTableQuery()->count()),
+                ->label(fn ($livewire): string => 'Total: ' . $livewire->getFilteredTableQuery()->count())
+                ->disabled(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
                     ->options([
                         'booking' => 'Booking',
+                    ]) ->native(false),
+            
+                Tables\Filters\TrashedFilter::make()
+                    ->label('Data yang dihapus')
+                    ->native(false),
+
+                    
+            
+                Tables\Filters\SelectFilter::make('kpr_status') 
+                    ->label('Status KPR')
+                    ->options([
+                        'sp3k' => 'SP3K',
+                        'akad' => 'Akad',
+                        'batal' => 'Batal',
                     ])
-                    ->label('Status'),
-            ])
+                    ->native(false),
+
+                Tables\Filters\SelectFilter::make('proyek') 
+                    ->label('Proyek')
+                    ->options([
+                        'gcv_cira' => 'GCV Cira',
+                        'gcv' => 'GCV',
+                    ])
+                    ->native(false),
+            
+                Filter::make('created_from')
+                    ->label('Dari Tanggal')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari'),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_from'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '>=', $data['created_from'])
+                        )
+                    ),
+            
+                Filter::make('created_until')
+                    ->label('Sampai Tanggal')
+                    ->form([
+                        DatePicker::make('created_until')
+                            ->label('Sampai'),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_until'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '<=', $data['created_until'])
+                        )
+                    ),
+            ], layout: FiltersLayout::AboveContent)
+            ->filtersFormMaxHeight('400px')
+            ->filtersFormColumns(4)
+            ->filtersFormWidth(MaxWidth::FourExtraLarge)
+            
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
+                ActionGroup::make([
+                    ViewAction::make()
+                        ->color('success')
+                        ->label('Lihat'),
+                    EditAction::make()
+                        ->color('info')
+                        ->label('Ubah')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data GCV Diperbarui')
+                                ->body('Data GCV telah berhasil disimpan.')),                    
+                        DeleteAction::make()
+                        ->color('danger')
+                        ->label('Hapus')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data GCV Dihapus')
+                                ->body('Data GCV telah berhasil dihapus.')),
+                    // RestoreAction::make()
+                    //     ->label('Pulihkan')
+                    //     ->successNotificationTitle('Data berhasil dipulihkan')
+                    //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
+                    Tables\Actions\RestoreAction::make()
+                    ->color('info')
+                    ->label('Kembalikan Data')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data GCV')
+                            ->body('Data GCV berhasil dikembalikan.')
+                    ),
+                    Tables\Actions\ForceDeleteAction::make()
+                    ->color('primary')
+                    ->label('Hapus Permanen')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data GCV')
+                            ->body('Data GCV berhasil dihapus secara permanen.')
+                    ),
+                    ])->button()->label('Action'),
+                ], position: ActionsPosition::BeforeCells)
+            
+                ->groupedBulkActions([
+                    BulkAction::make('delete')
+                        ->label('Hapus')
+                        ->icon('heroicon-o-trash') 
+                        ->color('danger')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data GCV')
+                                ->body('Data GCV berhasil dihapus.'))                        
+                                ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->delete()),
+                
+                    BulkAction::make('forceDelete')
+                        ->label('Hapus Permanent')
+                        ->icon('heroicon-o-x-circle') 
+                        ->color('warning')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data GCV')
+                                ->body('Data GCV berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->forceDelete()),
+                
+                    BulkAction::make('export')
+                        ->label('Download Data')
+                        ->icon('heroicon-o-arrow-down-tray') 
+                        ->color('info')
+                        ->action(fn (Collection $records) => static::exportData($records)),
+                
+                    Tables\Actions\RestoreBulkAction::make()
+                        ->label('Kembalikan Data')
+                        ->icon('heroicon-o-arrow-path') 
+                        ->color('success')
+                        ->button()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data GCV')
+                                ->body('Data GCV berhasil dikembalikan.')),
+                ]);
+                
     }
 
     public static function getRelations(): array
     {
         return [];
+    }
+
+    public static function exportData(Collection $records)
+    {
+        $csvData = "ID, Site Plan, Type, Terbangun, Status, Tanda Terima Sertifikat, 1, Luas, 2, Luas, 3, Luas, 4, Luas, NOP / PBB Pecahan, Tanda Terima NOP, IMB / PBG, Tanda Terima IMB/PBG, Tanda Terima Tambahan\n";
+    
+        foreach ($records as $record) {
+            $csvData .= "{$record->id}, {$record->siteplan}, {$record->type}, {$record->terbangun}, {$record->status}, {$record->tanda_terima_sertifikat}, {$record->kode1}, {$record->luas1}, {$record->kode2}, {$record->luas2}, {$record->kode3}, {$record->luas3}, {$record->kode4}, {$record->luas4}, {$record->nop_pbb_pecahan}, {$record->tanda_terima_nop}, {$record->imb_pbg}, {$record->tanda_terima_imb_pbg}, {$record->tanda_terima_tambahan}\n";
+        }
+    
+        return response()->streamDownload(fn () => print($csvData), 'file.csv');
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function getPages(): array

@@ -134,7 +134,9 @@ class AuditResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()
-                ->label('Data yang dihapus'),
+                ->label('Data yang dihapus') 
+                ->native(false),
+
                 Filter::make('status')
                     ->label('Status')
                     ->form([
