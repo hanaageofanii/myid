@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\GCVResource\Pages;
 
 use App\Filament\Resources\GCVResource;
+use App\Filament\Resources\GCVResource\Widgets\GCVStats;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -20,6 +21,7 @@ class ListGCVS extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
+            GCVStats::class,
         ];
     }
 }

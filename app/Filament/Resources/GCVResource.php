@@ -40,6 +40,8 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\GCVResource\Widgets\GCVStats;
+
 
 
 
@@ -375,6 +377,13 @@ class GCVResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            GCVStats::class,
+        ];
     }
 
     public static function getPages(): array

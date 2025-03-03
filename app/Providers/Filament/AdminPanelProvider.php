@@ -19,6 +19,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Facades\Filament;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
+use App\Filament\Resources\GCVResource\Widgets\GCVStats;
 
 
 class AdminPanelProvider extends PanelProvider
@@ -57,6 +58,7 @@ class AdminPanelProvider extends PanelProvider
                 // Widgets\FilamentInfoWidget::class,
                 // \App\Filament\Widgets\CalendarWidget::class,
                 \App\Filament\Resources\AuditResource\Widgets\AuditStats::class,
+                \App\Filament\Resources\GCVResource\Widgets\GCVStats::class, 
             ])
             ->middleware([
                 EncryptCookies::class,
