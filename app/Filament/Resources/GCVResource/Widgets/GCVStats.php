@@ -24,9 +24,11 @@ class GCVStats extends BaseWidget
                 'style' => 'background-color: #B1C29E; border-color: #234C63;'
             ]),               
             Card::make('Total GCV', GCV::where('proyek', 'gcv')->count())
-                ->extraAttributes([
-                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
-                ]),
+            ->color('white') // Mengubah warna teks jumlah
+            ->extraAttributes([
+                'style' => 'background-color: #B1C29E; border-color: #234C63; color: #234C63; font-weight: bold;'
+            ]),
+
             Card::make('Total GCV Cira', GCV::where('proyek', 'gcv_cira')->count())
                 ->extraAttributes([
                     'style' => 'background-color: #B1C29E; border-color: #234C63;'
