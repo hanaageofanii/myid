@@ -25,7 +25,6 @@ use Filament\Support\Enums\ActionSize;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
-use App\Filament\Resources\AuditResource\Widgets\AuditStats;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Select;
