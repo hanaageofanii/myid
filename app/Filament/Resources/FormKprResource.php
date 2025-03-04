@@ -237,16 +237,16 @@ class FormKprResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Audit Diperbarui')
-                                ->body('Data Audit telah berhasil disimpan.')),                    
+                                ->title('Data KPR Diubah')
+                                ->body('Data KPR telah berhasil disimpan.')),                    
                         DeleteAction::make()
                         ->color('danger')
                         ->label('Hapus')
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Audit Dihapus')
-                                ->body('Data Audit telah berhasil dihapus.')),
+                                ->title('Data KPR Dihapus')
+                                ->body('Data KPR telah berhasil dihapus.')),
                     // RestoreAction::make()
                     //     ->label('Pulihkan')
                     //     ->successNotificationTitle('Data berhasil dipulihkan')
@@ -257,8 +257,8 @@ class FormKprResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data Audit')
-                            ->body('Data Audit berhasil dikembalikan.')
+                            ->title('Data KPR')
+                            ->body('Data KPR berhasil dikembalikan.')
                     ),
                     Tables\Actions\ForceDeleteAction::make()
                     ->color('primary')
@@ -266,8 +266,8 @@ class FormKprResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data Audit')
-                            ->body('Data Audit berhasil dihapus secara permanen.')
+                            ->title('Data KPR')
+                            ->body('Data KPR berhasil dihapus secara permanen.')
                     ),
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
@@ -280,8 +280,8 @@ class FormKprResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Audit')
-                                ->body('Data Audit berhasil dihapus.'))                        
+                                ->title('Data KPR')
+                                ->body('Data KPR berhasil dihapus.'))                        
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
                 
@@ -292,8 +292,8 @@ class FormKprResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Audit')
-                                ->body('Data Audit berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                                ->title('Data KPR')
+                                ->body('Data KPR berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
                 
                     BulkAction::make('export')
@@ -310,8 +310,8 @@ class FormKprResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Audit')
-                                ->body('Data Audit berhasil dikembalikan.')),
+                                ->title('Data KPR')
+                                ->body('Data KPR berhasil dikembalikan.')),
                 ]);
                 
     }
