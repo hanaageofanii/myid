@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
 
 class FormKprResource extends Resource
 {
@@ -76,14 +77,17 @@ class FormKprResource extends Resource
                         'batal' => 'Batal',
                     ])->nullable(),
                 
-                Forms\Components\FileUpload::make('ktp')->nullable(),
-                Forms\Components\FileUpload::make('kk')->nullable(),
-                Forms\Components\FileUpload::make('npwp_upload')->nullable(),
-                Forms\Components\FileUpload::make('buku_nikah')->nullable(),
-                Forms\Components\FileUpload::make('akte_cerai')->nullable(),
-                Forms\Components\FileUpload::make('akte_kematian')->nullable(),
-                Forms\Components\FileUpload::make('kartu_bpjs')->nullable(),
-                Forms\Components\FileUpload::make('drk')->nullable(),
+                Forms\Components\Fieldset::make('Dokumen')
+                    ->schema([
+                        Forms\Components\FileUpload::make('ktp')->disk('public')->nullable(),
+                        Forms\Components\FileUpload::make('kk')->disk('public')->nullable(),
+                        Forms\Components\FileUpload::make('npwp_upload')->disk('public')->nullable(),
+                        Forms\Components\FileUpload::make('buku_nikah')->disk('public')->nullable(),
+                        Forms\Components\FileUpload::make('akte_cerai')->disk('public')->nullable(),
+                        Forms\Components\FileUpload::make('akte_kematian')->disk('public')->nullable(),
+                        Forms\Components\FileUpload::make('kartu_bpjs')->disk('public')->nullable(),
+                        Forms\Components\FileUpload::make('drk')->disk('public')->nullable(),
+                    ]),
             ]);
     }
 
@@ -99,14 +103,25 @@ class FormKprResource extends Resource
                 Tables\Columns\TextColumn::make('nama_konsumen')->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_booking')->date(),
                 Tables\Columns\TextColumn::make('status_akad')->sortable(),
-                Tables\Columns\TextColumn::make('ktp')->sortable(),
-                Tables\Columns\TextColumn::make('kk')->sortable(),
-                Tables\Columns\TextColumn::make('npwp_upload')->sortable(),
-                Tables\Columns\TextColumn::make('buku_nikah')->sortable(),
-                Tables\Columns\TextColumn::make('akte_cerai')->sortable(),
-                Tables\Columns\TextColumn::make('akte_kematian')->sortable(),
-                Tables\Columns\TextColumn::make('kartu_bpjs')->sortable(),
-                Tables\Columns\TextColumn::make('drk')->sortable(),
+                Tables\Columns\TextColumn::make('ktp')
+                ->label('KTP')
+                ->url(fn ($record) => $record->ktp ? Storage::url($record->ktp) : '#', true)
+                ->sortable(),
+                Tables\Columns\TextColumn::make('kk')->label('KK')
+                ->url(fn ($record) => $record->ktp ? Storage::url($record->kk) : '#', true)
+                ->sortable(),
+                Tables\Columns\TextColumn::make('npwp_upload')->label('NPWP')->url(fn ($record) => $record->npwp_upload ? Storage::url($record->ktp) : '#', true)
+                ->sortable(),
+                Tables\Columns\TextColumn::make('buku_nikah')->label('Buku Nikah')->url(fn ($record) => $record->buku_nikah ? Storage::url($record->ktp) : '#', true)
+                ->sortable(),
+                Tables\Columns\TextColumn::make('akte_cerai')->label('Akte Cerai')->url(fn ($record) => $record->akte_cerai ? Storage::url($record->ktp) : '#', true)
+                ->sortable(),
+                Tables\Columns\TextColumn::make('akte_kematian')->label('Akte Kematian')->url(fn ($record) => $record->akte_kematian ? Storage::url($record->ktp) : '#', true)
+                ->sortable(),
+                Tables\Columns\TextColumn::make('kartu_bpjs')->label('Kartu BPJS')->url(fn ($record) => $record->kartu_bpjs ? Storage::url($record->ktp) : '#', true)
+                ->sortable(),
+                Tables\Columns\TextColumn::make('drk')->label('DRK')->url(fn ($record) => $record->drk ? Storage::url($record->ktp) : '#', true)
+                ->sortable(),
             ])
             ->filters([
                 // Tambahkan filter jika diperlukan
