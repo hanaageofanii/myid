@@ -54,7 +54,7 @@ class FormKprResource extends Resource
 
     protected static ?string $pluralLabel = "Data Penjualan KPR";
 
-    protected static ?string $navigationLabel = "KPR";
+    protected static ?string $navigationLabel = "Form Penjualan";
 
     protected static ?string $pluralModelLabel = 'Daftar Data Penjualan KPR';
 
