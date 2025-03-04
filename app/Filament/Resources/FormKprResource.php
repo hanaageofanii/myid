@@ -318,10 +318,10 @@ class FormKprResource extends Resource
     
     public static function exportData(Collection $records)
     {
-        $csvData = "ID, Site Plan, Type, Terbangun, Status, Tanda Terima Sertifikat, 1, Luas, 2, Luas, 3, Luas, 4, Luas, NOP / PBB Pecahan, Tanda Terima NOP, IMB / PBG, Tanda Terima IMB/PBG, Tanda Terima Tambahan\n";
+        $csvData = "ID, Jenis Unit, Blok, Type, Luas, Agent, Tanggal Booking, Tanggal Akad, Harga, Maksimal KPR, Nama Konsumen, NIK, NPWP, Alamat, NO Handphone, Email, Pembayaran, Bank, No. Rekening, Status Akad\n";
     
         foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->siteplan}, {$record->type}, {$record->terbangun}, {$record->status}, {$record->tanda_terima_sertifikat}, {$record->kode1}, {$record->luas1}, {$record->kode2}, {$record->luas2}, {$record->kode3}, {$record->luas3}, {$record->kode4}, {$record->luas4}, {$record->nop_pbb_pecahan}, {$record->tanda_terima_nop}, {$record->imb_pbg}, {$record->tanda_terima_imb_pbg}, {$record->tanda_terima_tambahan}\n";
+            $csvData .= "{$record->id}, {$record->jenis_unit}, {$record->blok}, {$record->type}, {$record->luas}, {$record->agent}, {$record->tanggal_booking}, {$record->tanggal_akad}, {$record->harga}, {$record->maksimal_kpr}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_hp}, {$record->no_email}, {$record->pembayaran}, {$record->bank}, {$record->no_rekening}, {$record->status_akad}\n";
         }
     
         return response()->streamDownload(fn () => print($csvData), 'file.csv');
@@ -344,12 +344,12 @@ class FormKprResource extends Resource
             ]);
     }
 
-    public static function getWidgets(): array
-    {
-        return [
-            AuditStats::class,
-        ];
-    }
+    // public static function getWidgets(): array
+    // {
+    //     return [
+    //         AuditStats::class,
+    //     ];
+    // }
 
 
     public static function getPages(): array

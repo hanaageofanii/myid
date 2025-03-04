@@ -160,7 +160,7 @@ class GCVResource extends Resource
                         'pca1' => 'PCA1',
                         default => $state, 
                 }),
-                Tables\Columns\TextColumn::make('nama_perusahaan')->label('Nama Perusahaan')
+                Tables\Columns\TextColumn::make('nama_perusahaan')->label('Nama Perumahan')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
                     'grand_cikarang_village' => 'Grand Cikarang Village',
                     'taman_kertamukti_residence' => 'Taman Kertamukti Residence',
@@ -362,10 +362,10 @@ class GCVResource extends Resource
 
     public static function exportData(Collection $records)
     {
-        $csvData = "ID, Site Plan, Type, Terbangun, Status, Tanda Terima Sertifikat, 1, Luas, 2, Luas, 3, Luas, 4, Luas, NOP / PBB Pecahan, Tanda Terima NOP, IMB / PBG, Tanda Terima IMB/PBG, Tanda Terima Tambahan\n";
+        $csvData = "ID, Proyek, Nama Perumahan, Kavling, Siteplan/Blok, Type, Luas Tanah, Status, Tanggal Booking, Nama Konsumen, Agent, Status KPR, Keterangan, User, Tanggal Update\n";
     
         foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->siteplan}, {$record->type}, {$record->terbangun}, {$record->status}, {$record->tanda_terima_sertifikat}, {$record->kode1}, {$record->luas1}, {$record->kode2}, {$record->luas2}, {$record->kode3}, {$record->luas3}, {$record->kode4}, {$record->luas4}, {$record->nop_pbb_pecahan}, {$record->tanda_terima_nop}, {$record->imb_pbg}, {$record->tanda_terima_imb_pbg}, {$record->tanda_terima_tambahan}\n";
+            $csvData .= "{$record->id}, {$record->proyek}, {$record->nama_perusahaan}, {$record->kavling}, {$record->siteplan}, {$record->type}, {$record->luas_tanah}, {$record->status}, {$record->tanggal_booking}, {$record->nama_konsumen}, {$record->agent}, {$record->kpr_status}, {$record->ket}, {$record->user}, {$record->tanggal_update}\n";
         }
     
         return response()->streamDownload(fn () => print($csvData), 'file.csv');
