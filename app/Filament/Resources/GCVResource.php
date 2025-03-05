@@ -72,6 +72,7 @@ class GCVResource extends Resource
                     ->required(),
 
                 Forms\Components\Select::make('nama_perusahaan')
+                    ->label('Nama Perumahan')
                     ->options([
                         'grand_cikarang_village' => 'Grand Cikarang Village',
                         'taman_kertamukti_residence' => 'Taman Kertamukti Residence',
@@ -93,19 +94,20 @@ class GCVResource extends Resource
                     ->required(),
 
                     Forms\Components\Select::make('siteplan')
-                    ->label('Blok')
-                    ->options(Audit::pluck('siteplan', 'id')->toArray())
-                    ->searchable()
-                    ->required()
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        $audit = Audit::find($state);
-                        
-                        if ($audit) {
-                            $set('kpr_status', $audit->status === 'akad' ? 'akad' : null);
-                            $set('type', $audit->type);
-                        }
-                    }),
+    ->label('Blok')
+    ->options(Audit::pluck('siteplan', 'siteplan')->toArray()) // Ambil siteplan sebagai key & value
+    ->searchable()
+    ->required()
+    ->reactive()
+    ->afterStateUpdated(function ($state, callable $set) {
+        $audit = Audit::where('siteplan', $state)->first(); // Cari berdasarkan nama, bukan ID
+
+        if ($audit) {
+            $set('kpr_status', $audit->status === 'akad' ? 'akad' : null);
+            $set('type', $audit->type);
+        }
+    }),
+
                 
                 Forms\Components\TextInput::make('type')
                     ->label('Type')
@@ -121,8 +123,8 @@ class GCVResource extends Resource
                     ->options([
                         'booking' => 'Booking',
                     ])
-                    ->label('Status')
-                    ->required(),
+                    ->label('Status'),
+                    // ->required(),
 
                 Forms\Components\DatePicker::make('tanggal_booking')
                     ->label('Tanggal Booking')
@@ -183,7 +185,7 @@ class GCVResource extends Resource
                     default => $state, 
                 }),
 
-                Tables\Columns\TextColumn::make('audit.siteplan')->label('Blok'),
+                Tables\Columns\TextColumn::make('siteplan')->label('Blok'),
                 Tables\Columns\TextColumn::make('type')->label('Type'),
                 Tables\Columns\TextColumn::make('luas_tanah')->label('Luas Tanah'),
                 Tables\Columns\TextColumn::make('status')->label('Status')

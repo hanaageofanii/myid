@@ -42,9 +42,8 @@ use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
-use App\Filament\Resources\AuditResource\Widgets\AuditStats;
-
-
+use App\Filament\Resources\GCVResource;
+use App\Models\GCV;
 
 class FormKprResource extends Resource
 {
@@ -76,8 +75,25 @@ class FormKprResource extends Resource
                         'komersil' => 'Komersil',
                         'tanah_lebih' => 'Tanah Lebih',
                         'kios' => 'Kios',
-                    ])->required(),
-                Forms\Components\TextInput::make('blok')->nullable(),
+                    ])
+                    ->required()
+                    ->reactive() 
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if ($state) {
+                            $bookedBlok = GCV::where('status', 'booking')
+                                ->where('kavling', $state) 
+                                ->get(['siteplan', 'siteplan'])
+                                ->pluck('siteplan', 'siteplan')
+                                ->toArray();
+
+                            $set('siteplan', null);
+                            $set('siteplan', $bookedBlok); 
+                        }
+                    }),
+                
+                Forms\Components\Select::make('blok')->nullable()
+                ->options(fn ($get) => $get('siteplan') ?? []) ->reactive(),
+
                 Forms\Components\Select::make('type')
                     ->options([
                         '29/60' => '29/60',

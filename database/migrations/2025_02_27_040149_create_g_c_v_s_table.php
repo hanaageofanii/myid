@@ -16,11 +16,10 @@ return new class extends Migration
             $table->enum('proyek', ['gcv_cira','gcv','tkr','pca1'])->nullable();
             $table->enum('nama_perusahaan', ['grand_cikarang_village','taman_kertamukti_residence','pesona_cengkong_asri_1'])->nullable();
             $table->enum('kavling',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();
-            $table->unsignedBigInteger('siteplan')->nullable();
-            $table->foreign('siteplan')->references('id')->on('audits')->onDelete('cascade')->nullable();
+            $table->string('siteplan')->nullable();
             $table->string('type')->nullable();
             $table->integer('luas_tanah')->nullable();
-            $table->enum('status',['booking','indent','ready'])->nullable()->nullable();
+            $table->enum('status',['booking','indent','ready'])->nullable();
             $table->date('tanggal_booking')->nullable();
             $table->string('nama_konsumen')->nullable();
             $table->string('agent')->nullable();
