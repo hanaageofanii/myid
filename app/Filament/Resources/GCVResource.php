@@ -97,16 +97,20 @@ class GCVResource extends Resource
                     ->options(Audit::pluck('siteplan', 'id')->toArray())
                     ->searchable()
                     ->required()
-                    ->reactive() 
+                    ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
-                        $auditStatus = Audit::where('id', $state)->value('status');
-                        if ($auditStatus === 'akad') {
-                            $set('kpr_status', 'akad'); 
+                        $audit = Audit::find($state);
+                        
+                        if ($audit) {
+                            $set('kpr_status', $audit->status === 'akad' ? 'akad' : null);
+                            $set('type', $audit->type);
                         }
                     }),
+                
                 Forms\Components\TextInput::make('type')
                     ->label('Type')
                     ->required(),
+                
 
                 Forms\Components\TextInput::make('luas_tanah')
                     ->numeric()
