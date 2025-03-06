@@ -5,6 +5,7 @@ namespace App\Filament\Resources\GCVResource\Pages;
 use App\Filament\Resources\GCVResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Notifications\Notification;
 
 class CreateGCV extends CreateRecord
 {
@@ -28,6 +29,14 @@ class CreateGCV extends CreateRecord
         return parent::getCancelFormAction()
         ->label('Batal')
         ->color('danger');
+    }
+
+    protected function getCreatedNotification(): ?Notification
+    {
+        return Notification::make()
+            ->success()
+            ->title('Data GCV Disimpan')
+            ->body('Data GCV telah berhasil disimpan.');
     }
 }
 

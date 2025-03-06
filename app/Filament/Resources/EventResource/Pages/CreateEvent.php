@@ -5,7 +5,7 @@ namespace App\Filament\Resources\EventResource\Pages;
 use App\Filament\Resources\EventResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
-
+use Filament\Notifications\Notification;
 class CreateEvent extends CreateRecord
 {
     protected static string $resource = EventResource::class;
@@ -23,11 +23,12 @@ class CreateEvent extends CreateRecord
         ->color('warning');
     }
     
-    protected function getCancelFormAction() : Actions\Action
+    protected function getCreatedNotification(): ?Notification
     {
-        return parent::getCancelFormAction()
-        ->label('Batal')
-        ->color('danger');
+        return Notification::make()
+            ->success()
+            ->title('Event Disimpan')
+            ->body('Event telah berhasil disimpan.');
     }
 }
 

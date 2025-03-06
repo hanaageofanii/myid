@@ -86,9 +86,9 @@ class FormKprResource extends Resource
                                 ->pluck('siteplan')
                                 ->toArray();
 
-                            $formattedOptions = array_combine($bookedBlok, $bookedBlok); // Jadikan array asosiatif
+                            $formattedOptions = array_combine($bookedBlok, $bookedBlok);
                             $set('siteplan', null);
-                            $set('available_siteplans', $formattedOptions); // Simpan di state baru
+                            $set('available_siteplans', $formattedOptions); 
                         }
                     }),
 

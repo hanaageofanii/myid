@@ -5,7 +5,7 @@ namespace App\Filament\Resources\FormKprResource\Pages;
 use App\Filament\Resources\FormKprResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
-
+use Filament\Notifications\Notification;
 class CreateFormKpr extends CreateRecord
 {
     protected static string $resource = FormKprResource::class;
@@ -28,5 +28,13 @@ class CreateFormKpr extends CreateRecord
         return parent::getCancelFormAction()
         ->label('Batal')
         ->color('danger');
+    }
+    
+    protected function getCreatedNotification(): ?Notification
+    {
+        return Notification::make()
+            ->success()
+            ->title('Data Penjualan KPR Disimpan')
+            ->body('Data telah berhasil disimpan.');
     }
 }

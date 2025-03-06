@@ -6,7 +6,7 @@ use App\Filament\Resources\AuditResource;
 use Filament\Actions;
 use Filament\Actions\Modal\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
-
+use Filament\Notifications\Notification;
 class CreateAudit extends CreateRecord
 {
     protected static string $resource = AuditResource::class;
@@ -30,4 +30,13 @@ class CreateAudit extends CreateRecord
         ->label('Batal')
         ->color('danger');
     }
+
+    protected function getCreatedNotification(): ?Notification
+    {
+        return Notification::make()
+            ->success()
+            ->title('Data Audit Disimpan')
+            ->body('Data Audit telah berhasil disimpan.');
+    }
 }
+
