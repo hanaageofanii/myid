@@ -77,22 +77,31 @@ class FormKprResource extends Resource
                         'kios' => 'Kios',
                     ])
                     ->required()
-                    ->reactive() 
+                    ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
                         if ($state) {
                             $bookedBlok = GCV::where('status', 'booking')
-                                ->where('kavling', $state) 
-                                ->get(['siteplan', 'siteplan'])
-                                ->pluck('siteplan', 'siteplan')
+                                ->where('kavling', $state)
+                                ->get('siteplan')
+                                ->pluck('siteplan')
                                 ->toArray();
 
+                            $formattedOptions = array_combine($bookedBlok, $bookedBlok); // Jadikan array asosiatif
                             $set('siteplan', null);
-                            $set('siteplan', $bookedBlok); 
+                            $set('available_siteplans', $formattedOptions); // Simpan di state baru
                         }
                     }),
+
+                    Forms\Components\Select::make('siteplan')
+                    ->nullable()
+                    ->options(fn ($get, $set, $record) => [
+                        ...($get('available_siteplans') ?? []),
+                        $record?->siteplan => $record?->siteplan, 
+                    ])
+                    ->reactive(),
                 
-                Forms\Components\Select::make('blok')->nullable()
-                ->options(fn ($get) => $get('siteplan') ?? []) ->reactive(),
+
+
 
                 Forms\Components\Select::make('type')
                     ->options([
@@ -103,6 +112,7 @@ class FormKprResource extends Resource
                         '36/60' => '36/60',
                         '36/72' => '36/72',
                     ])->nullable(),
+                    
                 Forms\Components\TextInput::make('luas')->numeric()->nullable(),
                 Forms\Components\TextInput::make('agent')->nullable(),
                 Forms\Components\DatePicker::make('tanggal_booking')->nullable(),
@@ -158,7 +168,7 @@ class FormKprResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('jenis_unit')->sortable(),
-                Tables\Columns\TextColumn::make('blok')->sortable(),
+                Tables\Columns\TextColumn::make('siteplan')->sortable(),
                 Tables\Columns\TextColumn::make('type')->sortable(),
                 Tables\Columns\TextColumn::make('luas')->sortable(),
                 Tables\Columns\TextColumn::make('harga')->sortable(),
@@ -185,7 +195,7 @@ class FormKprResource extends Resource
                 Tables\Columns\TextColumn::make('drk')->label('DRK')->url(fn ($record) => $record->drk ? Storage::url($record->ktp) : '#', true)
                 ->sortable(),
             ])
-            ->defaultSort('blok', 'asc')
+            ->defaultSort('siteplan', 'asc')
             ->headerActions([
                 Action::make('count')
                     ->label(fn ($livewire): string => 'Total: ' . $livewire->getFilteredTableQuery()->count())
@@ -337,7 +347,7 @@ class FormKprResource extends Resource
         $csvData = "ID, Jenis Unit, Blok, Type, Luas, Agent, Tanggal Booking, Tanggal Akad, Harga, Maksimal KPR, Nama Konsumen, NIK, NPWP, Alamat, NO Handphone, Email, Pembayaran, Bank, No. Rekening, Status Akad\n";
     
         foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->jenis_unit}, {$record->blok}, {$record->type}, {$record->luas}, {$record->agent}, {$record->tanggal_booking}, {$record->tanggal_akad}, {$record->harga}, {$record->maksimal_kpr}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_hp}, {$record->no_email}, {$record->pembayaran}, {$record->bank}, {$record->no_rekening}, {$record->status_akad}\n";
+            $csvData .= "{$record->id}, {$record->jenis_unit}, {$record->siteplan}, {$record->type}, {$record->luas}, {$record->agent}, {$record->tanggal_booking}, {$record->tanggal_akad}, {$record->harga}, {$record->maksimal_kpr}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_hp}, {$record->no_email}, {$record->pembayaran}, {$record->bank}, {$record->no_rekening}, {$record->status_akad}\n";
         }
     
         return response()->streamDownload(fn () => print($csvData), 'file.csv');

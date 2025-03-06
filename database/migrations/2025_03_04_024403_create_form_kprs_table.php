@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('form_kprs', function (Blueprint $table) {
             $table->id();
             $table->enum('jenis_unit',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();
-            $table->string('blok')->nullable();
+            $table->string('siteplan');
             $table->enum('type',['29/60','30/60','45/104','32/52','36/60','36/72'])->nullable();
             $table->decimal('luas', 10, 2)->nullable();
             $table->string('agent')->nullable();

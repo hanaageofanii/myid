@@ -12,7 +12,7 @@ class form_kpr extends Model{
     protected $table = 'form_kprs';
     
     protected $fillable = [
-        'jenis_unit', 'blok', 'type', 'luas', 'agent', 'tanggal_booking', 'tanggal_akad',
+        'jenis_unit', 'siteplan', 'type', 'luas', 'agent', 'tanggal_booking', 'tanggal_akad',
         'harga', 'maksimal_kpr', 'nama_konsumen', 'nik', 'npwp', 'alamat', 'no_hp',
         'no_email', 'pembayaran', 'bank', 'no_rekening', 'status_akad',
         'ktp', 'kk', 'npwp_upload', 'buku_nikah', 'akte_cerai', 'akte_kematian',
