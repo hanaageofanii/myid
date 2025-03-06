@@ -17,4 +17,5 @@ class EditGCV extends EditRecord
             ->label('Hapus Data GCV'),
         ];
     }
+    
 }
