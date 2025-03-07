@@ -93,16 +93,15 @@ class FormKprResource extends Resource
                     }),
 
                     Forms\Components\Select::make('siteplan')
-                    ->nullable()
-                    ->options(fn ($get, $set, $record) => [
-                        ...($get('available_siteplans') ?? []),
-                        $record?->siteplan => $record?->siteplan, 
-                    ])
-                    ->reactive(),
+                            ->nullable()
+                            ->options(fn ($get, $set, $record) => 
+                                collect($get('available_siteplans') ?? [])
+                                    ->filter(fn ($label, $key) => !is_null($label)) 
+                                    ->toArray() 
+                                + ($record?->siteplan ? [$record->siteplan => $record->siteplan] : [])
+                            )
+                            ->reactive(),
                 
-
-
-
                 Forms\Components\Select::make('type')
                     ->options([
                         '29/60' => '29/60',

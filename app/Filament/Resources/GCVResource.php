@@ -127,16 +127,13 @@ class GCVResource extends Resource
                     // ->required(),
 
                 Forms\Components\DatePicker::make('tanggal_booking')
-                    ->label('Tanggal Booking')
-                    ->required(),
+                    ->label('Tanggal Booking'),
 
                 Forms\Components\TextInput::make('nama_konsumen')
-                    ->label('Nama Konsumen')
-                    ->required(),
+                    ->label('Nama Konsumen'),
 
                 Forms\Components\TextInput::make('agent')
-                    ->label('Agent')
-                    ->required(),
+                    ->label('Agent'),
 
                 Forms\Components\Select::make('kpr_status')
                     ->options([
@@ -144,8 +141,7 @@ class GCVResource extends Resource
                         'akad' => 'Akad',
                         'batal' => 'Batal',
                     ])
-                    ->label('KPR Status')
-                    ->required(),
+                    ->label('KPR Status'),
 
                 Forms\Components\Textarea::make('ket')
                     ->label('Keterangan')
