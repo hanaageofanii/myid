@@ -24,7 +24,7 @@ class GCVStats extends BaseWidget
                 'style' => 'background-color: #B1C29E; border-color: #234C63;'
             ]),               
             Card::make('Total GCV', GCV::where('proyek', 'gcv')->count())
-            ->color('white') // Mengubah warna teks jumlah
+            ->color('white') 
             ->extraAttributes([
                 'style' => 'background-color: #B1C29E; border-color: #234C63; color: #234C63; font-weight: bold;'
             ]),
@@ -49,6 +49,48 @@ class GCVStats extends BaseWidget
                 ->extraAttributes([
                     'style' => 'background-color:#B1C29E ; border-color: #234C63;'
                 ]), 
+                Card::make('Total Unit Standar (GCV)', GCV::where('kavling', 'standar')->where('proyek', 'gcv')->count()) 
+                ->extraAttributes([
+                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
+                ]),
+                Card::make('Total Unit Standar (GCV Cira)', GCV::where('kavling', 'standar')->where('proyek', 'gcv_cira')->count()) 
+                ->extraAttributes([
+                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
+                ]),
+                Card::make('Total Unit Standar', GCV::where('kavling','standar')->count())
+                ->extraAttributes([
+                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
+                ]),  
+                Card::make('Total Unit Standar', GCV::where('kavling','standar')->count())
+                ->extraAttributes([
+                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
+                ]),  
+                Card::make('Total Unit Khusus', GCV::where('kavling','khusus')->count())
+                ->extraAttributes([
+                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
+                ]),  
+                Card::make('Total Unit Hook', GCV::where('kavling','hook')->count())
+                ->extraAttributes([
+                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
+                ]),  
+                Card::make('Total Unit Tanah Lebih', GCV::where('kavling','tanah_lebih')->count())
+                ->extraAttributes([
+                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
+                ]),  
+                Card::make('Total Unit Kios', GCV::where('kavling','kios')->count())
+                ->extraAttributes([
+                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
+                ]),  
+                Card::make('Total Unit Komersil (GCV)', GCV::where('kavling', 'komersil')->where('proyek', 'gcv')->count()) 
+                ->extraAttributes([
+                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
+                ]),
+
+                Card::make('Total Unit Komersil (GCV Cira)', GCV::where('kavling', 'komersil')->where('proyek', 'gcv_cira')->count()) 
+                ->extraAttributes([
+                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
+                ]),
+
         ];
     }
 }
