@@ -57,14 +57,6 @@ class GCVStats extends BaseWidget
                 ->extraAttributes([
                     'style' => 'background-color: #B1C29E; border-color: #234C63;'
                 ]),
-                Card::make('Total Unit Standar', GCV::where('kavling','standar')->count())
-                ->extraAttributes([
-                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
-                ]),  
-                Card::make('Total Unit Standar', GCV::where('kavling','standar')->count())
-                ->extraAttributes([
-                    'style' => 'background-color: #B1C29E; border-color: #234C63;'
-                ]),  
                 Card::make('Total Unit Khusus', GCV::where('kavling','khusus')->count())
                 ->extraAttributes([
                     'style' => 'background-color: #B1C29E; border-color: #234C63;'
