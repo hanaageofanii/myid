@@ -59,6 +59,7 @@ class AdminPanelProvider extends PanelProvider
                 // \App\Filament\Widgets\CalendarWidget::class,
                 \App\Filament\Resources\AuditResource\Widgets\AuditStats::class,
                 \App\Filament\Resources\GCVResource\Widgets\GCVStats::class, 
+                \App\Filament\Resources\FormKprResource\Widgets\KPRStats::class,
             ])
             ->middleware([
                 EncryptCookies::class,
