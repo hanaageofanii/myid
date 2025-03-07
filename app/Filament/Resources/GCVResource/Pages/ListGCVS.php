@@ -24,4 +24,10 @@ class ListGCVS extends ListRecords
             GCVStats::class,
         ];
     }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
+    }
 }

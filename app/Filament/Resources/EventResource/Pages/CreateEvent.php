@@ -30,5 +30,11 @@ class CreateEvent extends CreateRecord
             ->title('Event Disimpan')
             ->body('Event telah berhasil disimpan.');
     }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
+    }
 }
 

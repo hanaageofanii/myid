@@ -25,4 +25,10 @@ class ListEvents extends ListRecords
             CalendarWidget::class, 
         ];
     }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
+    }
 }

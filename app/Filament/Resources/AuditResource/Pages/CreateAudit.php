@@ -38,5 +38,11 @@ class CreateAudit extends CreateRecord
             ->title('Data Audit Disimpan')
             ->body('Data Audit telah berhasil disimpan.');
     }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
+    }
 }
 

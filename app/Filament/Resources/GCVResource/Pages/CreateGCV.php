@@ -38,5 +38,11 @@ class CreateGCV extends CreateRecord
             ->title('Data GCV Disimpan')
             ->body('Data GCV telah berhasil disimpan.');
     }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
+    }
 }
 

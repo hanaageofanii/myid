@@ -25,4 +25,10 @@ class ListAudits extends ListRecords
             AuditStats::class,
         ];
     }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
+    }
 }

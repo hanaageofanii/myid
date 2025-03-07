@@ -37,4 +37,10 @@ class CreateFormKpr extends CreateRecord
             ->title('Data Penjualan KPR Disimpan')
             ->body('Data telah berhasil disimpan.');
     }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
+    }
 }

@@ -10,12 +10,20 @@ class EditGCV extends EditRecord
 {
     protected static string $resource = GCVResource::class;
 
+    protected static ?string $title = "Ubah Data GCV";
+
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make()
             ->label('Hapus Data GCV'),
         ];
+    }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
     }
     
 }

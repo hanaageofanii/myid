@@ -212,7 +212,7 @@ class AuditResource extends Resource
                                 ->success()
                                 ->title('Data Audit Diperbarui')
                                 ->body('Data Audit telah berhasil disimpan.')),                    
-                        DeleteAction::make()
+                    DeleteAction::make()
                         ->color('danger')
                         ->label('Hapus')
                         ->successNotification(
@@ -329,7 +329,7 @@ class AuditResource extends Resource
         return [
             'index' => Pages\ListAudits::route('/'),
             'create' => Pages\CreateAudit::route('/create'),
-            // 'edit' => Pages\EditAudit::route('/{record}/edit'),
+            'edit' => Pages\EditAudit::route('/{record}/edit'),
         ];
     }
 
