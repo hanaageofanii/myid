@@ -100,7 +100,19 @@ class FormKprResource extends Resource
                                     ->toArray() 
                                 + ($record?->siteplan ? [$record->siteplan => $record->siteplan] : [])
                             )
-                            ->reactive(),
+                            ->reactive()
+                            ->afterStateUpdated(function($state, callable $set){
+                                $gcv = GCV::where('siteplan', $state)->first();
+
+                                if ($gcv) {
+                                    $set('tanggal_booking', $gcv->tanggal_booking);
+                                    $set('nama_konsumen', $gcv->nama_konsumen);
+                                    $set('agent', $gcv->agent);
+                                    $set('luas', $gcv->luas_tanah);
+                                    $set('type', $gcv->type);
+                                    
+                            }
+                        }),
                 
                 Forms\Components\Select::make('type')
                     ->options([
@@ -170,9 +182,20 @@ class FormKprResource extends Resource
                 Tables\Columns\TextColumn::make('siteplan')->sortable(),
                 Tables\Columns\TextColumn::make('type')->sortable(),
                 Tables\Columns\TextColumn::make('luas')->sortable(),
+                Tables\Columns\TextColumn::make('agent')->sortable(),
+                Tables\Columns\TextColumn::make('tanggal_booking')->date(), 
+                Tables\Columns\TextColumn::make('tanggal_akad')->date(), 
                 Tables\Columns\TextColumn::make('harga')->sortable(),
+                Tables\Columns\TextColumn::make('maksimal_kpr')->sortable(),
                 Tables\Columns\TextColumn::make('nama_konsumen')->sortable(),
-                Tables\Columns\TextColumn::make('tanggal_booking')->date(),
+                Tables\Columns\TextColumn::make('nik')->sortable(),
+                Tables\Columns\TextColumn::make('npwp')->sortable(),
+                Tables\Columns\TextColumn::make('alamat')->sortable(),
+                Tables\Columns\TextColumn::make('no_hp')->sortable(),
+                Tables\Columns\TextColumn::make('no_email')->sortable(),
+                Tables\Columns\TextColumn::make('pembayaran')->sortable(),
+                Tables\Columns\TextColumn::make('bank')->sortable(),
+                Tables\Columns\TextColumn::make('no_rekening')->sortable(),
                 Tables\Columns\TextColumn::make('status_akad')->sortable(),
                 Tables\Columns\TextColumn::make('ktp')
                 ->label('KTP')
@@ -219,6 +242,27 @@ class FormKprResource extends Resource
                     ->query(fn ($query, $data) =>
                         $query->when(isset($data['status_akad']), fn ($q) =>
                             $q->where('status_akad', $data['status_akad'])
+                        )
+                    ),
+
+                    Filter::make('jenis_unit')
+                    ->label('Jenis Unit')
+                    ->form([
+                        Select::make('jenis_unit')
+                            ->options([
+                                'standar' => 'Standar',
+                                'khusus' => 'Khusus',
+                                'hook' => 'Hook',
+                                'komersil' => 'Komersil',
+                                'tanah_lebih' => 'Tanah Lebih',
+                                'kios' => 'Kios',
+                            ])
+                            ->nullable()
+                            ->native(false),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when(isset($data['jenis_unit']), fn ($q) =>
+                            $q->where('jenis_unit', $data['jenis_unit'])
                         )
                     ),
             
@@ -349,7 +393,7 @@ class FormKprResource extends Resource
             $csvData .= "{$record->id}, {$record->jenis_unit}, {$record->siteplan}, {$record->type}, {$record->luas}, {$record->agent}, {$record->tanggal_booking}, {$record->tanggal_akad}, {$record->harga}, {$record->maksimal_kpr}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_hp}, {$record->no_email}, {$record->pembayaran}, {$record->bank}, {$record->no_rekening}, {$record->status_akad}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'file.csv');
+        return response()->streamDownload(fn () => print($csvData), 'dataKPR.csv');
     }
     
 

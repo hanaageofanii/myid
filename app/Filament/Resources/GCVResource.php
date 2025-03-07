@@ -94,19 +94,19 @@ class GCVResource extends Resource
                     ->required(),
 
                     Forms\Components\Select::make('siteplan')
-    ->label('Blok')
-    ->options(Audit::pluck('siteplan', 'siteplan')->toArray()) // Ambil siteplan sebagai key & value
-    ->searchable()
-    ->required()
-    ->reactive()
-    ->afterStateUpdated(function ($state, callable $set) {
-        $audit = Audit::where('siteplan', $state)->first(); // Cari berdasarkan nama, bukan ID
+                        ->label('Blok')
+                        ->options(Audit::pluck('siteplan', 'siteplan')->toArray()) 
+                        ->searchable()
+                        ->required()
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, callable $set) {
+                            $audit = Audit::where('siteplan', $state)->first(); 
 
-        if ($audit) {
-            $set('kpr_status', $audit->status === 'akad' ? 'akad' : null);
-            $set('type', $audit->type);
-        }
-    }),
+                            if ($audit) {
+                                $set('kpr_status', $audit->status === 'akad' ? 'akad' : null);
+                                $set('type', $audit->type);
+                            }
+                        }),
 
                 
                 Forms\Components\TextInput::make('type')
@@ -127,7 +127,8 @@ class GCVResource extends Resource
                     // ->required(),
 
                 Forms\Components\DatePicker::make('tanggal_booking')
-                    ->label('Tanggal Booking'),
+                    ->label('Tanggal Booking')
+                    ,
 
                 Forms\Components\TextInput::make('nama_konsumen')
                     ->label('Nama Konsumen'),
@@ -370,7 +371,7 @@ class GCVResource extends Resource
             $csvData .= "{$record->id}, {$record->proyek}, {$record->nama_perusahaan}, {$record->kavling}, {$record->siteplan}, {$record->type}, {$record->luas_tanah}, {$record->status}, {$record->tanggal_booking}, {$record->nama_konsumen}, {$record->agent}, {$record->kpr_status}, {$record->ket}, {$record->user}, {$record->tanggal_update}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'file.csv');
+        return response()->streamDownload(fn () => print($csvData), 'gcv_booking.csv');
     }
 
     public static function getEloquentQuery(): Builder
