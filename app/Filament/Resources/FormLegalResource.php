@@ -145,16 +145,175 @@ class FormLegalResource extends Resource
                     ->disabled(),
             ])
             ->filters([
+                Tables\Filters\TrashedFilter::make()
+                ->label('Data yang dihapus') 
+                ->native(false),
 
-            ])
+                Filter::make('status_akad')
+                    ->label('Status Akad')
+                    ->form([
+                        Select::make('status_akad')
+                            ->options([
+                                'akad' => 'Akad',
+                                'batal' => 'Batal',
+                            ])
+                            ->nullable()
+                            ->native(false),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when(isset($data['status_akad']), fn ($q) =>
+                            $q->where('status_akad', $data['status_akad'])
+                        )
+                    ),
+
+                    Filter::make('jenis_unit')
+                    ->label('Jenis Unit')
+                    ->form([
+                        Select::make('jenis_unit')
+                            ->options([
+                                'standar' => 'Standar',
+                                'khusus' => 'Khusus',
+                                'hook' => 'Hook',
+                                'komersil' => 'Komersil',
+                                'tanah_lebih' => 'Tanah Lebih',
+                                'kios' => 'Kios',
+                            ])
+                            ->nullable()
+                            ->native(false),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when(isset($data['jenis_unit']), fn ($q) =>
+                            $q->where('jenis_unit', $data['jenis_unit'])
+                        )
+                    ),
+            
+                    Filter::make('created_from')
+                    ->label('Dari Tanggal')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari')
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_from'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '>=', $data['created_from'])
+                        )
+                    ),
+                
+                Filter::make('created_until')
+                    ->label('Sampai Tanggal')
+                    ->form([
+                        DatePicker::make('created_until')
+                            ->label('Sampai')
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_until'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '<=', $data['created_until'])
+                        )
+                    ),                
+            ], layout: FiltersLayout::AboveContent)
+            ->filtersFormMaxHeight('400px')
+            ->filtersFormColumns(4)
+            ->filtersFormWidth(MaxWidth::FourExtraLarge)
+
+        
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+                ActionGroup::make([
+                    ViewAction::make()
+                        ->color('success')
+                        ->label('Lihat'),
+                    EditAction::make()
+                        ->color('info')
+                        ->label('Ubah')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data KPR Diubah')
+                                ->body('Data KPR telah berhasil disimpan.')),                    
+                        DeleteAction::make()
+                        ->color('danger')
+                        ->label('Hapus')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data KPR Dihapus')
+                                ->body('Data KPR telah berhasil dihapus.')),
+                    // RestoreAction::make()
+                    //     ->label('Pulihkan')
+                    //     ->successNotificationTitle('Data berhasil dipulihkan')
+                    //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
+                    Tables\Actions\RestoreAction::make()
+                    ->color('info')
+                    ->label('Kembalikan Data')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data KPR')
+                            ->body('Data KPR berhasil dikembalikan.')
+                    ),
+                    Tables\Actions\ForceDeleteAction::make()
+                    ->color('primary')
+                    ->label('Hapus Permanen')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data KPR')
+                            ->body('Data KPR berhasil dihapus secara permanen.')
+                    ),
+                    ])->button()->label('Action'),
+                ], position: ActionsPosition::BeforeCells)
+            
+                ->groupedBulkActions([
+                    BulkAction::make('delete')
+                        ->label('Hapus')
+                        ->icon('heroicon-o-trash') 
+                        ->color('danger')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data KPR')
+                                ->body('Data KPR berhasil dihapus.'))                        
+                                ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->delete()),
+                
+                    BulkAction::make('forceDelete')
+                        ->label('Hapus Permanent')
+                        ->icon('heroicon-o-x-circle') 
+                        ->color('warning')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data KPR')
+                                ->body('Data KPR berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->forceDelete()),
+                
+                    BulkAction::make('export')
+                        ->label('Download Data')
+                        ->icon('heroicon-o-arrow-down-tray') 
+                        ->color('info')
+                        ->action(fn (Collection $records) => static::exportData($records)),
+                
+                    Tables\Actions\RestoreBulkAction::make()
+                        ->label('Kembalikan Data')
+                        ->icon('heroicon-o-arrow-path') 
+                        ->color('success')
+                        ->button()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data KPR')
+                                ->body('Data KPR berhasil dikembalikan.')),
+                ]);
+    }
+
+    public static function exportData(Collection $records)
+    {
+        $csvData = "ID, Jenis Unit, Blok, Type, Luas, Agent, Tanggal Booking, Tanggal Akad, Harga, Maksimal KPR, Nama Konsumen, NIK, NPWP, Alamat, NO Handphone, Email, Pembayaran, Bank, No. Rekening, Status Akad\n";
+    
+        foreach ($records as $record) {
+            $csvData .= "{$record->id}, {$record->jenis_unit}, {$record->siteplan}, {$record->type}, {$record->luas}, {$record->agent}, {$record->tanggal_booking}, {$record->tanggal_akad}, {$record->harga}, {$record->maksimal_kpr}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_hp}, {$record->no_email}, {$record->pembayaran}, {$record->bank}, {$record->no_rekening}, {$record->status_akad}\n";
+        }
+    
+        return response()->streamDownload(fn () => print($csvData), 'dataKPR.csv');
     }
 
     public static function getRelations(): array
@@ -162,6 +321,15 @@ class FormLegalResource extends Resource
         return [
             //
         ];
+    }
+
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function getPages(): array
