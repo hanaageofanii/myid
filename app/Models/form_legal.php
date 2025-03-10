@@ -18,6 +18,13 @@ class form_legal extends Model
         'up_sertifikat','up_img','up_pbb'
     ];
 
+    protected $attributes = [
+        'up_sertifikat' => null,
+        'up_pbb' => null,
+        'up_img' => null,
+    ];
+    
+
 
 
 }

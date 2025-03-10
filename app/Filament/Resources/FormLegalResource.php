@@ -75,9 +75,9 @@ class FormLegalResource extends Resource
 
                     Forms\Components\Fieldset::make('Dokumen')
                     ->schema([
-                        Forms\Components\FileUpload::make('up_sertifikat')->disk('public')->nullable()->label('Dokumen Sertifikat'),
-                        Forms\Components\FileUpload::make('up_pbb')->disk('public')->nullable()->label('Dokumen PBB'),
-                        Forms\Components\FileUpload::make('up_img')->disk('public')->nullable()->label('Dokumen IMG'),
+                        Forms\Components\FileUpload::make('up_sertifikat')->disk('public')->nullable()->label('Dokumen Sertifikat')->required(false),
+                        Forms\Components\FileUpload::make('up_pbb')->disk('public')->nullable()->label('Dokumen PBB')->required(false),
+                        Forms\Components\FileUpload::make('up_img')->disk('public')->nullable()->label('Dokumen IMG')->required(false),
                     ]),                        
             ]);
     }

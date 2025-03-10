@@ -24,9 +24,10 @@ return new class extends Migration
             $table->string('nop');
             $table->string('nop1');
 
-            $table->string('up_sertifikat');
-            $table->string('up_pbb');
-            $table->string('up_img');
+            $table->string('up_sertifikat')->nullable();
+            $table->string('up_pbb')->nullable();
+            $table->string('up_img')->nullable();
+
             $table->timestamps();
         });
     }
