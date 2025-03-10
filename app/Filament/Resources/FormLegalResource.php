@@ -13,6 +13,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\GCVResource;
+use App\Models\GCV;
+use App\Models\form_kpr;
 
 class FormLegalResource extends Resource
 {
@@ -31,6 +34,48 @@ class FormLegalResource extends Resource
         return $form
             ->schema([
 
+Forms\Components\Select::make('siteplan')
+    ->nullable()
+    ->options(fn ($get, $set, $record) => 
+        form_kpr::where('status_akad', 'akad') // Gunakan model Eloquent
+            ->pluck('siteplan', 'siteplan')
+            ->toArray()
+        + ($record?->siteplan ? [$record->siteplan => $record->siteplan] : [])
+    )
+    ->reactive()
+    ->afterStateUpdated(function ($state, callable $set) {
+        $gcv = form_kpr::where('siteplan', $state)->first(); // Gunakan model Eloquent
+
+        if ($gcv) {
+            $set('nama_konsumen', $gcv->nama_konsumen);
+        }
+    }),
+
+Forms\Components\TextInput::make('nama_konsumen')->nullable(),
+
+                        Forms\Components\TextInput::make('id_rumah')->nullable(),
+
+                        Forms\Components\Select::make('status_sertifikat')
+                        ->options([
+                            'induk' => 'Induk',
+                            'pecahan' => 'Pecahan',
+                        ])->nullable(),
+
+                        Forms\Components\TextInput::make('no_sertifikat')->nullable(),
+                        Forms\Components\TextInput::make('nib')->nullable(),
+
+                        Forms\Components\TextInput::make('luas_sertifikat')->nullable(),
+                        Forms\Components\TextInput::make('imb_pbg')->nullable(),
+
+                        Forms\Components\TextInput::make('nop')->nullable(),
+                        Forms\Components\TextInput::make('nop1')->nullable(),
+
+                    Forms\Components\Fieldset::make('Dokumen')
+                    ->schema([
+                        Forms\Components\FileUpload::make('up_sertifikat')->disk('public')->nullable(),
+                        Forms\Components\FileUpload::make('up_pbb')->disk('public')->nullable(),
+                        Forms\Components\FileUpload::make('up_img')->disk('public')->nullable(),
+                    ]),                        
             ]);
     }
 

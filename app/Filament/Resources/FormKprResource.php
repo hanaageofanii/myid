@@ -78,6 +78,7 @@ class FormKprResource extends Resource
                     ])
                     ->required()
                     ->reactive()
+                    ->label('Jenis Unit')
                     ->afterStateUpdated(function ($state, callable $set) {
                         if ($state) {
                             $bookedBlok = GCV::where('status', 'booking')
@@ -93,6 +94,7 @@ class FormKprResource extends Resource
                     }),
 
                     Forms\Components\Select::make('siteplan')
+                            ->label('Blok')
                             ->nullable()
                             ->options(fn ($get, $set, $record) => 
                                 collect($get('available_siteplans') ?? [])
@@ -122,21 +124,22 @@ class FormKprResource extends Resource
                         '32/52' => '32/52',
                         '36/60' => '36/60',
                         '36/72' => '36/72',
-                    ])->nullable(),
+                    ])->nullable()->label('Type'),
                     
-                Forms\Components\TextInput::make('luas')->numeric()->nullable(),
-                Forms\Components\TextInput::make('agent')->nullable(),
-                Forms\Components\DatePicker::make('tanggal_booking')->nullable(),
-                Forms\Components\DatePicker::make('tanggal_akad')->nullable(),
-                Forms\Components\TextInput::make('harga')->numeric()->nullable(),
-                Forms\Components\TextInput::make('maksimal_kpr')->numeric()->nullable(),
-                Forms\Components\TextInput::make('nama_konsumen')->nullable(),
-                Forms\Components\TextInput::make('nik')->nullable(),
-                Forms\Components\TextInput::make('npwp')->nullable(),
-                Forms\Components\Textarea::make('alamat')->nullable(),
-                Forms\Components\TextInput::make('no_hp')->nullable(),
-                Forms\Components\TextInput::make('no_email')->email()->nullable(),
+                Forms\Components\TextInput::make('luas')->numeric()->nullable()->label('Luas'),
+                Forms\Components\TextInput::make('agent')->nullable()->label('Agent'),
+                Forms\Components\DatePicker::make('tanggal_booking')->nullable()->label('Tanggal Booking'),
+                Forms\Components\DatePicker::make('tanggal_akad')->nullable()->label('Tanggal Akad'),
+                Forms\Components\TextInput::make('harga')->numeric()->nullable()->label('Harga'),
+                Forms\Components\TextInput::make('maksimal_kpr')->numeric()->nullable()->label('Maksimal KPR'),
+                Forms\Components\TextInput::make('nama_konsumen')->nullable()->label('Nama Konsumen'),
+                Forms\Components\TextInput::make('nik')->nullable()->label('NIK'),
+                Forms\Components\TextInput::make('npwp')->nullable()->label('NPWP'),
+                Forms\Components\Textarea::make('alamat')->nullable()->label('Alamat'),
+                Forms\Components\TextInput::make('no_hp')->nullable()->label('No. Handphone'),
+                Forms\Components\TextInput::make('no_email')->email()->nullable()->label('Email'),
                 Forms\Components\Select::make('pembayaran')
+                    ->label('Pembayaran')
                     ->options([
                         'kpr' => 'KPR',
                         'cash' => 'Cash',
@@ -152,24 +155,24 @@ class FormKprResource extends Resource
                         'bjb_jababeka' => 'BJB Jababeka',
                         'btn_syariah' => 'BTN Syariah',
                         'brii_bekasi' => 'BRI Bekasi',
-                    ])->nullable(),
-                Forms\Components\TextInput::make('no_rekening')->nullable(),
+                    ])->nullable()->label('Bank'),
+                Forms\Components\TextInput::make('no_rekening')->nullable()->label('No. Rekening'),
                 Forms\Components\Select::make('status_akad')
                     ->options([
                         'akad' => 'Akad',
                         'batal' => 'Batal',
-                    ])->nullable(),
+                    ])->nullable()->label('Status Akad'),
                 
                 Forms\Components\Fieldset::make('Dokumen')
                     ->schema([
-                        Forms\Components\FileUpload::make('ktp')->disk('public')->nullable(),
-                        Forms\Components\FileUpload::make('kk')->disk('public')->nullable(),
-                        Forms\Components\FileUpload::make('npwp_upload')->disk('public')->nullable(),
-                        Forms\Components\FileUpload::make('buku_nikah')->disk('public')->nullable(),
-                        Forms\Components\FileUpload::make('akte_cerai')->disk('public')->nullable(),
-                        Forms\Components\FileUpload::make('akte_kematian')->disk('public')->nullable(),
-                        Forms\Components\FileUpload::make('kartu_bpjs')->disk('public')->nullable(),
-                        Forms\Components\FileUpload::make('drk')->disk('public')->nullable(),
+                        Forms\Components\FileUpload::make('ktp')->disk('public')->nullable()->label('KTP'),
+                        Forms\Components\FileUpload::make('kk')->disk('public')->nullable()->label('Kartu Keluarga'),
+                        Forms\Components\FileUpload::make('npwp_upload')->disk('public')->nullable()->label('NPWP'),
+                        Forms\Components\FileUpload::make('buku_nikah')->disk('public')->nullable()->label('Buku Nikah'),
+                        Forms\Components\FileUpload::make('akte_cerai')->disk('public')->nullable()->label('Akta Cerai'),
+                        Forms\Components\FileUpload::make('akte_kematian')->disk('public')->nullable()->label('Akte Kematian'),
+                        Forms\Components\FileUpload::make('kartu_bpjs')->disk('public')->nullable()->label('Kartu BPJS'),
+                        Forms\Components\FileUpload::make('drk')->disk('public')->nullable()->label('DRK'),
                     ]),
             ]);
     }
@@ -178,25 +181,25 @@ class FormKprResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('jenis_unit')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('siteplan')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('type')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('luas')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('agent')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('tanggal_booking')->date()->searchable(), 
-                Tables\Columns\TextColumn::make('tanggal_akad')->date()->searchable(), 
-                Tables\Columns\TextColumn::make('harga')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('maksimal_kpr')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('nama_konsumen')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('nik')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('npwp')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('alamat')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('no_hp')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('no_email')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('pembayaran')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('bank')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('no_rekening')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('status_akad')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('jenis_unit')->sortable()->searchable()->label('Jenis Unit'),
+                Tables\Columns\TextColumn::make('siteplan')->sortable()->searchable()->label('Blok'),
+                Tables\Columns\TextColumn::make('type')->sortable()->searchable()->label('Type'),
+                Tables\Columns\TextColumn::make('luas')->sortable()->searchable()->label('Luas'),
+                Tables\Columns\TextColumn::make('agent')->sortable()->searchable()->label('Agent'),
+                Tables\Columns\TextColumn::make('tanggal_booking')->date()->searchable()->label('Tanggal Booking'), 
+                Tables\Columns\TextColumn::make('tanggal_akad')->date()->searchable()->label('Tanggal Akad'), 
+                Tables\Columns\TextColumn::make('harga')->sortable()->searchable()->label('Harga'),
+                Tables\Columns\TextColumn::make('maksimal_kpr')->sortable()->searchable()->label('Maksimal KPR'),
+                Tables\Columns\TextColumn::make('nama_konsumen')->sortable()->searchable()->label('Nama Konsumen'),
+                Tables\Columns\TextColumn::make('nik')->sortable()->searchable()->label('NIK'),
+                Tables\Columns\TextColumn::make('npwp')->sortable()->searchable()->label('NPWP'),
+                Tables\Columns\TextColumn::make('alamat')->sortable()->searchable()->label('Alamat'),
+                Tables\Columns\TextColumn::make('no_hp')->sortable()->searchable()->label('No Handphone'),
+                Tables\Columns\TextColumn::make('no_email')->sortable()->searchable()->label('Email'),
+                Tables\Columns\TextColumn::make('pembayaran')->sortable()->searchable()->label('Pembayaran'),
+                Tables\Columns\TextColumn::make('bank')->sortable()->searchable()->label('Bank'),
+                Tables\Columns\TextColumn::make('no_rekening')->sortable()->searchable()->label('No. Rekening'),
+                Tables\Columns\TextColumn::make('status_akad')->sortable()->searchable()->label('Status Akad'),
                 Tables\Columns\TextColumn::make('ktp')
                 ->label('KTP')
                 ->url(fn ($record) => $record->ktp ? Storage::url($record->ktp) : '#', true)
