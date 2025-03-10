@@ -178,44 +178,52 @@ class FormKprResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('jenis_unit')->sortable(),
-                Tables\Columns\TextColumn::make('siteplan')->sortable(),
-                Tables\Columns\TextColumn::make('type')->sortable(),
-                Tables\Columns\TextColumn::make('luas')->sortable(),
-                Tables\Columns\TextColumn::make('agent')->sortable(),
-                Tables\Columns\TextColumn::make('tanggal_booking')->date(), 
-                Tables\Columns\TextColumn::make('tanggal_akad')->date(), 
-                Tables\Columns\TextColumn::make('harga')->sortable(),
-                Tables\Columns\TextColumn::make('maksimal_kpr')->sortable(),
-                Tables\Columns\TextColumn::make('nama_konsumen')->sortable(),
-                Tables\Columns\TextColumn::make('nik')->sortable(),
-                Tables\Columns\TextColumn::make('npwp')->sortable(),
-                Tables\Columns\TextColumn::make('alamat')->sortable(),
-                Tables\Columns\TextColumn::make('no_hp')->sortable(),
-                Tables\Columns\TextColumn::make('no_email')->sortable(),
-                Tables\Columns\TextColumn::make('pembayaran')->sortable(),
-                Tables\Columns\TextColumn::make('bank')->sortable(),
-                Tables\Columns\TextColumn::make('no_rekening')->sortable(),
-                Tables\Columns\TextColumn::make('status_akad')->sortable(),
+                Tables\Columns\TextColumn::make('jenis_unit')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('siteplan')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('type')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('luas')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('agent')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('tanggal_booking')->date()->searchable(), 
+                Tables\Columns\TextColumn::make('tanggal_akad')->date()->searchable(), 
+                Tables\Columns\TextColumn::make('harga')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('maksimal_kpr')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('nama_konsumen')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('nik')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('npwp')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('alamat')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('no_hp')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('no_email')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('pembayaran')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('bank')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('no_rekening')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('status_akad')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('ktp')
                 ->label('KTP')
                 ->url(fn ($record) => $record->ktp ? Storage::url($record->ktp) : '#', true)
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
                 Tables\Columns\TextColumn::make('kk')->label('KK')
                 ->url(fn ($record) => $record->ktp ? Storage::url($record->kk) : '#', true)
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
                 Tables\Columns\TextColumn::make('npwp_upload')->label('NPWP')->url(fn ($record) => $record->npwp_upload ? Storage::url($record->ktp) : '#', true)
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
                 Tables\Columns\TextColumn::make('buku_nikah')->label('Buku Nikah')->url(fn ($record) => $record->buku_nikah ? Storage::url($record->ktp) : '#', true)
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
                 Tables\Columns\TextColumn::make('akte_cerai')->label('Akte Cerai')->url(fn ($record) => $record->akte_cerai ? Storage::url($record->ktp) : '#', true)
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
                 Tables\Columns\TextColumn::make('akte_kematian')->label('Akte Kematian')->url(fn ($record) => $record->akte_kematian ? Storage::url($record->ktp) : '#', true)
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
                 Tables\Columns\TextColumn::make('kartu_bpjs')->label('Kartu BPJS')->url(fn ($record) => $record->kartu_bpjs ? Storage::url($record->ktp) : '#', true)
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
                 Tables\Columns\TextColumn::make('drk')->label('DRK')->url(fn ($record) => $record->drk ? Storage::url($record->ktp) : '#', true)
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
             ])
             ->defaultSort('siteplan', 'asc')
             ->headerActions([
