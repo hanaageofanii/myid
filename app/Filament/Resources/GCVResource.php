@@ -162,14 +162,14 @@ class GCVResource extends Resource
                         'tkr' => 'TKR',
                         'pca1' => 'PCA1',
                         default => $state, 
-                }),
+                })->searchable(),
                 Tables\Columns\TextColumn::make('nama_perusahaan')->label('Nama Perumahan')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
                     'grand_cikarang_village' => 'Grand Cikarang Village',
                     'taman_kertamukti_residence' => 'Taman Kertamukti Residence',
                     'pesona_cengkong_asri_1' => 'Pesona Cengkong Asri 1',
                     default => $state, 
-                }),
+                })->searchable(),
 
                 Tables\Columns\TextColumn::make('kavling')->label('Kavling')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
@@ -180,20 +180,20 @@ class GCVResource extends Resource
                     'tanah_lebih' => 'Tanah Lebih',
                     'kios' => 'Kios',
                     default => $state, 
-                }),
+                })->searchable(),
 
-                Tables\Columns\TextColumn::make('siteplan')->label('Blok'),
-                Tables\Columns\TextColumn::make('type')->label('Type'),
-                Tables\Columns\TextColumn::make('luas_tanah')->label('Luas Tanah'),
+                Tables\Columns\TextColumn::make('siteplan')->label('Blok')->searchable(),
+                Tables\Columns\TextColumn::make('type')->label('Type')->searchable(),
+                Tables\Columns\TextColumn::make('luas_tanah')->label('Luas Tanah')->searchable(),
                 Tables\Columns\TextColumn::make('status')->label('Status')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
                     'booking' => 'Booking',
                     default => $state, 
-                }),
+                })->searchable(),
 
-                Tables\Columns\TextColumn::make('tanggal_booking')->date()->label('Tanggal Booking'),
-                Tables\Columns\TextColumn::make('nama_konsumen')->label('Nama Konsumen'),
-                Tables\Columns\TextColumn::make('agent')->label('Agent'),
+                Tables\Columns\TextColumn::make('tanggal_booking')->date()->label('Tanggal Booking')->searchable(),
+                Tables\Columns\TextColumn::make('nama_konsumen')->label('Nama Konsumen')->searchable(),
+                Tables\Columns\TextColumn::make('agent')->label('Agent')->searchable(),
                 Tables\Columns\TextColumn::make('kpr_status')
                     ->label('KPR Status')
                     ->default(fn ($record) => $record->audits?->status === 'akad' ? 'Akad' : $record->kpr_status)
@@ -202,7 +202,7 @@ class GCVResource extends Resource
                         'akad' => 'Akad',
                         'batal' => 'Batal',
                         default => $state, 
-                    }),
+                    })->searchable(),
             ])
             ->defaultSort('siteplan', 'asc')
             ->headerActions([
