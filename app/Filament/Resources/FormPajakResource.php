@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\FormPajakResource\Pages;
 use App\Filament\Resources\FormPajakResource\RelationManagers;
+use App\Models\form_pajak;
 use App\Models\FormPajak;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FormPajakResource extends Resource
 {
-    protected static ?string $model = FormPajak::class;
+    protected static ?string $model = form_pajak::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,7 +24,7 @@ class FormPajakResource extends Resource
     {
         return $form
             ->schema([
-                //
+                
             ]);
     }
 
