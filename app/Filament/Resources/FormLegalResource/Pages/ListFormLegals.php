@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\FormLegalResource\Pages;
 
 use App\Filament\Resources\FormLegalResource;
+use App\Filament\Resources\FormLegalResource\Widgets\SertifikatStats;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -20,7 +21,7 @@ class ListFormLegals extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            // GCVStats::class,
+            SertifikatStats::class,
         ];
     }
 

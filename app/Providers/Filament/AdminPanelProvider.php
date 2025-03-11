@@ -60,6 +60,7 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Resources\AuditResource\Widgets\AuditStats::class,
                 \App\Filament\Resources\GCVResource\Widgets\GCVStats::class, 
                 \App\Filament\Resources\FormKprResource\Widgets\KPRStats::class,
+                \App\Filament\Resources\FormLegalResource\Widgets\SertifikatStats::class,
             ])
             ->middleware([
                 EncryptCookies::class,
