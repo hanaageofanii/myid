@@ -206,16 +206,16 @@ class FormLegalResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR Diubah')
-                                ->body('Data KPR telah berhasil disimpan.')),                    
+                                ->title('Data Sertifikat Diubah')
+                                ->body('Data Sertifikat telah berhasil disimpan.')),                    
                         DeleteAction::make()
                         ->color('danger')
                         ->label('Hapus')
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR Dihapus')
-                                ->body('Data KPR telah berhasil dihapus.')),
+                                ->title('Data Sertifikat Dihapus')
+                                ->body('Data Sertifikat telah berhasil dihapus.')),
                     // RestoreAction::make()
                     //     ->label('Pulihkan')
                     //     ->successNotificationTitle('Data berhasil dipulihkan')
@@ -226,8 +226,8 @@ class FormLegalResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data KPR')
-                            ->body('Data KPR berhasil dikembalikan.')
+                            ->title('Data Sertifikat')
+                            ->body('Data Sertifikat berhasil dikembalikan.')
                     ),
                     Tables\Actions\ForceDeleteAction::make()
                     ->color('primary')
@@ -235,8 +235,8 @@ class FormLegalResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data KPR')
-                            ->body('Data KPR berhasil dihapus secara permanen.')
+                            ->title('Data Sertifikat')
+                            ->body('Data Sertifikat berhasil dihapus secara permanen.')
                     ),
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
@@ -249,8 +249,8 @@ class FormLegalResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR')
-                                ->body('Data KPR berhasil dihapus.'))                        
+                                ->title('Data Sertifikat')
+                                ->body('Data Sertifikat berhasil dihapus.'))                        
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
                 
@@ -261,8 +261,8 @@ class FormLegalResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR')
-                                ->body('Data KPR berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                                ->title('Data Sertifikat')
+                                ->body('Data Sertifikat berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
                 
                     BulkAction::make('export')
@@ -279,20 +279,20 @@ class FormLegalResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR')
-                                ->body('Data KPR berhasil dikembalikan.')),
+                                ->title('Data Sertifikat')
+                                ->body('Data Sertifikat berhasil dikembalikan.')),
                 ]);
     }
 
     public static function exportData(Collection $records)
     {
-        $csvData = "ID, Jenis Unit, Blok, Type, Luas, Agent, Tanggal Booking, Tanggal Akad, Harga, Maksimal KPR, Nama Konsumen, NIK, NPWP, Alamat, NO Handphone, Email, Pembayaran, Bank, No. Rekening, Status Akad\n";
+        $csvData = "ID, Blok, Nama Konsumen, ID Rumah, Status Sertifikat, No. Sertifikat, Luas Sertifikat, NOP, NOP Pecahan\n";
     
         foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->jenis_unit}, {$record->siteplan}, {$record->type}, {$record->luas}, {$record->agent}, {$record->tanggal_booking}, {$record->tanggal_akad}, {$record->harga}, {$record->maksimal_kpr}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_hp}, {$record->no_email}, {$record->pembayaran}, {$record->bank}, {$record->no_rekening}, {$record->status_akad}\n";
+            $csvData .= "{$record->id}, {$record->siteplan}, {$record->nama_konsumen}, {$record->id_rumah}, {$record->status_sertifikat}, {$record->no_sertifikat}, {$record->luas_sertifikat}, {$record->nop}, {$record->nop1}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'dataKPR.csv');
+        return response()->streamDownload(fn () => print($csvData), 'dataSertifikat.csv');
     }
 
     public static function getRelations(): array
