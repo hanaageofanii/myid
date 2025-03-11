@@ -18,13 +18,22 @@ class FormPajakResource extends Resource
 {
     protected static ?string $model = form_pajak::class;
 
+    protected static ?string $title = "Form Validasi PPH";
+
+    protected static ?string $navigationGroup = "Legal";
+
+    protected static ?string $pluralLabel = "Data Validasi PPH";
+
+    protected static ?string $navigationLabel = "Validasi PPH";
+
+    protected static ?string $pluralModelLabel = 'Daftar Validasi PPH';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                
+
             ]);
     }
 
