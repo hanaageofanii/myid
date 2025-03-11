@@ -149,41 +149,20 @@ class FormLegalResource extends Resource
                 ->label('Data yang dihapus') 
                 ->native(false),
 
-                Filter::make('status_akad')
-                    ->label('Status Akad')
+                Filter::make('status_sertifikat')
+                    ->label('Status Sertifikat')
                     ->form([
-                        Select::make('status_akad')
+                        Select::make('status_sertifikat')
                             ->options([
-                                'akad' => 'Akad',
-                                'batal' => 'Batal',
+                                'induk' => 'Induk',
+                                'pecahan' => 'Pecahan',
                             ])
                             ->nullable()
                             ->native(false),
                     ])
                     ->query(fn ($query, $data) =>
-                        $query->when(isset($data['status_akad']), fn ($q) =>
-                            $q->where('status_akad', $data['status_akad'])
-                        )
-                    ),
-
-                    Filter::make('jenis_unit')
-                    ->label('Jenis Unit')
-                    ->form([
-                        Select::make('jenis_unit')
-                            ->options([
-                                'standar' => 'Standar',
-                                'khusus' => 'Khusus',
-                                'hook' => 'Hook',
-                                'komersil' => 'Komersil',
-                                'tanah_lebih' => 'Tanah Lebih',
-                                'kios' => 'Kios',
-                            ])
-                            ->nullable()
-                            ->native(false),
-                    ])
-                    ->query(fn ($query, $data) =>
-                        $query->when(isset($data['jenis_unit']), fn ($q) =>
-                            $q->where('jenis_unit', $data['jenis_unit'])
+                        $query->when(isset($data['status_sertifikat']), fn ($q) =>
+                            $q->where('status_sertifikat', $data['status_sertifikat'])
                         )
                     ),
             
