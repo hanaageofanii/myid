@@ -13,31 +13,33 @@ return new class extends Migration
     {
         Schema::create('form_pajaks', function (Blueprint $table) {
             $table->id();
-            $table->string('siteplan');
-            $table->string('no_sertifikat');
-            $table->string('jenis_unit');
-            $table->string('nama_konsumen');
-            $table->string('nik');
-            $table->string('npwp');
-            $table->string('alamat');
-            $table->string('nop');
-            $table->string('luas_tanah');
-            $table->string('harga');
-            $table->string('npoptkp');
-            $table->string('jumlah_bphtb');
-            $table->enum('tarif_pph', ['1%','2,5%']);
-            $table->string('jumlah_pph');
-            $table->string('kode_billing_pph');
-            $table->date('tanggal_bayar_pph');
-            $table->string('ntpnpph');
-            $table->string('validasi_pph');
-            $table->date('tanggal_validasi');
+            $table->string('siteplan')->nullable();
+            $table->string('no_sertifikat')->nullable();
+            $table->enum('kavling',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();
+            $table->string('nama_konsumen')->nullable();
+            $table->string('nik')->nullable();
+            $table->string('npwp')->nullable();
+            $table->string('alamat')->nullable();
+            $table->string('nop')->nullable();
+            $table->string('luas_tanah')->nullable();
+            $table->string('harga')->nullable();
+            $table->string('npoptkp')->nullable();
+            $table->string('jumlah_bphtb')->nullable();
+            $table->enum('tarif_pph', ['1%','2,5%'])->nullable();
+            $table->string('jumlah_pph')->nullable();
+            $table->string('kode_billing_pph')->nullable();
+            $table->date('tanggal_bayar_pph')->nullable();
+            $table->string('ntpnpph')->nullable();
+            $table->string('validasi_pph')->nullable();
+            $table->date('tanggal_validasi')->nullable();
+            
+
+            $table->string('up_kode_billing')->nullable()->nullable();
+            $table->string('up_bukti_setor_pajak')->nullable()->nullable();
+            $table->string('up_suket_validasi')->nullable()->nullable();
+            
             $table->timestamps();
 
-
-            $table->string('up_kode_billing')->nullable();
-            $table->string('up_bukti_setor_pajak')->nullable();
-            $table->string('up_suket_validasi')->nullable();
         });
     }
 
