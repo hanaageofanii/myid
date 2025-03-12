@@ -60,7 +60,7 @@ class FormPajakResource extends Resource
     protected static ?string $navigationLabel = "Validasi PPH";
 
     protected static ?string $pluralModelLabel = 'Daftar Validasi PPH';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
 
     public static function form(Form $form): Form
     {

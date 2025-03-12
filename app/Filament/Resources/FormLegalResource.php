@@ -54,8 +54,8 @@ class FormLegalResource extends Resource
     protected static ?string $title = "Input Sertifikat";
     protected static ?string $navigationGroup = "Legal";
     protected static ?string $pluralLabel = "Form Input Sertifikat";
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Input Sertifikat';
+    protected static ?string $navigationIcon = 'heroicon-o-inbox-stack';
+    protected static ?string $navigationLabel = 'Sertifikat';
     protected static ?string $pluralModelLabel = 'Daftar Input Sertifikat';
 
 

@@ -53,7 +53,7 @@ class GCVResource extends Resource
     protected static ?string $title = "Grand Cikarang Village";
     protected static ?string $navigationGroup = "Legal";
     protected static ?string $pluralLabel = "GCV";
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
     protected static ?string $navigationLabel = 'GCV';
     protected static ?string $pluralModelLabel = 'Data GCV';
 

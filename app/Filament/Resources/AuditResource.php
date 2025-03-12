@@ -49,7 +49,7 @@ class AuditResource extends Resource
     protected static ?string $title = "Audit";
     protected static ?string $navigationGroup = "Legal";
     protected static ?string $pluralLabel = "Audit";
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-folder';
     protected static ?string $navigationLabel = 'Audit';
     protected static ?string $pluralModelLabel = 'Daftar Audit';
 
