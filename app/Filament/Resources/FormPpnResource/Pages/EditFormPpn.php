@@ -10,10 +10,20 @@ class EditFormPpn extends EditRecord
 {
     protected static string $resource = FormPpnResource::class;
 
+    protected static ?string $title = "Ubah Data Faktur";
+
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+            ->label('Hapus Data'),
         ];
+    }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
     }
 }
