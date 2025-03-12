@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\FormPpnResource\Pages;
 use App\Filament\Resources\FormPpnResource\RelationManagers;
+use App\Models\form_ppn;
 use App\Models\FormPpn;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -13,9 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class FormPpnResource extends Resource
+class FormPpnResource extends Resource  
 {
-    protected static ?string $model = FormPpn::class;
+    protected static ?string $model = form_ppn::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
