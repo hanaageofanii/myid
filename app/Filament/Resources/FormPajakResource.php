@@ -33,7 +33,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\ActionGroup;
-// use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -221,16 +221,157 @@ class FormPajakResource extends Resource
                 ->searchable(),
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\TrashedFilter::make()
+                ->label('Data yang dihapus') 
+                ->native(false),
+
+                Filter::make('kavling')
+                    ->form([
+                        Select::make('kavling')
+                            ->options([
+                                'standar' => 'Standar',
+                                'khusus' => 'Khusus',
+                                'hook' => 'Hook',
+                                'komersil' => 'Komersil',
+                                'tanah_lebih' => 'Tanah Lebih',
+                                'kios' => 'Kios',
+                            ])
+                            ->nullable()
+                            ->label('Jenis Unit')
+                            ->native(false),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when(isset($data['kavling']), fn ($q) =>
+                            $q->where('kavling', $data['kavling'])
+                                )
+                            ),
+
+                    Filter::make('created_from')
+                    ->label('Dari Tanggal')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari')
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_from'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '>=', $data['created_from'])
+                        )
+                    ),
+                
+                Filter::make('created_until')
+                    ->label('Sampai Tanggal')
+                    ->form([
+                        DatePicker::make('created_until')
+                            ->label('Sampai')
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_until'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '<=', $data['created_until'])
+                        )
+                    ),                
+            ], layout: FiltersLayout::AboveContent)
+            ->filtersFormMaxHeight('400px')
+            ->filtersFormColumns(4)
+            ->filtersFormWidth(MaxWidth::FourExtraLarge)
+
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+                ActionGroup::make([
+                    ViewAction::make()
+                        ->color('success')
+                        ->label('Lihat'),
+                    EditAction::make()
+                        ->color('info')
+                        ->label('Ubah')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Validasi Diubah')
+                                ->body('Data Validasi telah berhasil disimpan.')),                    
+                        DeleteAction::make()
+                        ->color('danger')
+                        ->label('Hapus')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Validasi Dihapus')
+                                ->body('Data Validasi telah berhasil dihapus.')),
+                    // RestoreAction::make()
+                    //     ->label('Pulihkan')
+                    //     ->successNotificationTitle('Data berhasil dipulihkan')
+                    //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
+                    Tables\Actions\RestoreAction::make()
+                    ->color('info')
+                    ->label('Kembalikan Data')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Validasi')
+                            ->body('Data Validasi berhasil dikembalikan.')
+                    ),
+                    Tables\Actions\ForceDeleteAction::make()
+                    ->color('primary')
+                    ->label('Hapus Permanen')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Validasi')
+                            ->body('Data Validasi berhasil dihapus secara permanen.')
+                    ),
+                    ])->button()->label('Action'),
+                ], position: ActionsPosition::BeforeCells)
+            
+                ->groupedBulkActions([
+                    BulkAction::make('delete')
+                        ->label('Hapus')
+                        ->icon('heroicon-o-trash') 
+                        ->color('danger')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Validasi')
+                                ->body('Data Validasi berhasil dihapus.'))                        
+                                ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->delete()),
+                
+                    BulkAction::make('forceDelete')
+                        ->label('Hapus Permanent')
+                        ->icon('heroicon-o-x-circle') 
+                        ->color('warning')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Validasi')
+                                ->body('Data Validasi berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->forceDelete()),
+                
+                    BulkAction::make('export')
+                        ->label('Download Data')
+                        ->icon('heroicon-o-arrow-down-tray') 
+                        ->color('info')
+                        ->action(fn (Collection $records) => static::exportData($records)),
+                
+                    Tables\Actions\RestoreBulkAction::make()
+                        ->label('Kembalikan Data')
+                        ->icon('heroicon-o-arrow-path') 
+                        ->color('success')
+                        ->button()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Validasi')
+                                ->body('Data Validasi berhasil dikembalikan.')),
+                ]);
+    }
+
+    public static function exportData(Collection $records)
+    {
+        $csvData = "ID, Blok, No. Sertifikat, Jenis Unit, Nama Konsumen, NIK, NPWP, Alamat, NOP, Luas Tanah, Harga, NPOPTKP, Jumlah BPHTB, Tarif PPH, Jumlah PPH, Kode Billing PPH, Tanggal Bayar PPH, NTPN PPH, Validasi PPH, Tanggal Validasi\n";
+    
+        foreach ($records as $record) {
+            $csvData .= "{$record->id}, {$record->siteplan}, {$record->no_sertifikat}, {$record->kavling}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->nop}, {$record->luas_tanah}, {$record->harga}, {$record->npoptkp}, {$record->jumlah_bphtb}, {$record->tarif_pph}, {$record->jumlah_pph}, {$record->kode_billing_pph}, {$record->tanggal_bayar_pph}, {$record->ntpnpph}, {$record->validasi_pph}, {$record->tanggal_validasi}\n";
+        }
+    
+        return response()->streamDownload(fn () => print($csvData), 'dataValidasi.csv');
     }
 
     public static function getRelations(): array
@@ -238,6 +379,14 @@ class FormPajakResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function getPages(): array
