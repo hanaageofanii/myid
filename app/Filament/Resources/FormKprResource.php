@@ -253,8 +253,9 @@ class FormKprResource extends Resource
         Tables\Columns\TextColumn::make('ktp')
             ->label('KTP')
             ->formatStateUsing(fn ($record) => $record->ktp 
-                ? '<a href="' . Storage::url($record->ktp) . '" target="_blank" download>Download</a>' 
-                : 'Tidak Ada Dokumen')
+            ? '<a href="' . Storage::url($record->ktp) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->ktp) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
             ->html()
             ->sortable()
             ->searchable(),
@@ -262,8 +263,9 @@ class FormKprResource extends Resource
         Tables\Columns\TextColumn::make('kk')
             ->label('Kartu Keluarga')
             ->formatStateUsing(fn ($record) => $record->kk 
-                ? '<a href="' . Storage::url($record->kk) . '" target="_blank" download>Download</a>' 
-                : 'Tidak Ada Dokumen')
+            ? '<a href="' . Storage::url($record->kk) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->kk) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
             ->html()
             ->sortable()
             ->searchable(),
@@ -271,8 +273,9 @@ class FormKprResource extends Resource
         Tables\Columns\TextColumn::make('npwp_upload')
             ->label('NPWP')
             ->formatStateUsing(fn ($record) => $record->npwp_upload 
-                ? '<a href="' . Storage::url($record->npwp_upload) . '" target="_blank" download>Download</a>' 
-                : 'Tidak Ada Dokumen')
+            ? '<a href="' . Storage::url($record->npwp_upload) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->npwp_upload) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
             ->html()
             ->sortable()
             ->searchable(),
@@ -280,8 +283,9 @@ class FormKprResource extends Resource
         Tables\Columns\TextColumn::make('buku_nikah')
             ->label('Buku Nikah')
             ->formatStateUsing(fn ($record) => $record->buku_nikah 
-                ? '<a href="' . Storage::url($record->buku_nikah) . '" target="_blank" download>Download</a>' 
-                : 'Tidak Ada Dokumen')
+            ? '<a href="' . Storage::url($record->buku_nikah) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->buku_nikah) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
             ->html()
             ->sortable()
             ->searchable(),
@@ -289,8 +293,9 @@ class FormKprResource extends Resource
         Tables\Columns\TextColumn::make('akte_cerai')
             ->label('Akte Cerai')
             ->formatStateUsing(fn ($record) => $record->akte_cerai 
-                ? '<a href="' . Storage::url($record->akte_cerai) . '" target="_blank" download>Download</a>' 
-                : 'Tidak Ada Dokumen')
+            ? '<a href="' . Storage::url($record->akte_cerai) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->akte_cerai) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
             ->html()
             ->sortable()
             ->searchable(),
@@ -298,8 +303,9 @@ class FormKprResource extends Resource
         Tables\Columns\TextColumn::make('akte_kematian')
             ->label('Akte Kematian')
             ->formatStateUsing(fn ($record) => $record->akte_kematian 
-                ? '<a href="' . Storage::url($record->akte_kematian) . '" target="_blank" download>Download</a>' 
-                : 'Tidak Ada Dokumen')
+            ? '<a href="' . Storage::url($record->akte_kematian) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->akte_kematian) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
             ->html()
             ->sortable()
             ->searchable(),
@@ -307,8 +313,9 @@ class FormKprResource extends Resource
         Tables\Columns\TextColumn::make('kartu_bpjs')
             ->label('Kartu BPJS')
             ->formatStateUsing(fn ($record) => $record->kartu_bpjs 
-                ? '<a href="' . Storage::url($record->kartu_bpjs) . '" target="_blank" download>Download</a>' 
-                : 'Tidak Ada Dokumen')
+            ? '<a href="' . Storage::url($record->kartu_bpjs) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->kartu_bpjs) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
             ->html()
             ->sortable()
             ->searchable(),
@@ -316,8 +323,9 @@ class FormKprResource extends Resource
         Tables\Columns\TextColumn::make('drk')
             ->label('DRK')
             ->formatStateUsing(fn ($record) => $record->drk 
-                ? '<a href="' . Storage::url($record->drk) . '" target="_blank" download>Download</a>' 
-                : 'Tidak Ada Dokumen')
+            ? '<a href="' . Storage::url($record->up_efaktur) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->up_efaktur) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
             ->html()
             ->sortable()
             ->searchable(),
