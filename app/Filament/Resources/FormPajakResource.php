@@ -241,7 +241,7 @@ class FormPajakResource extends Resource
                     ->label('Dokumen Suket Validasi')
                     ->formatStateUsing(fn ($record) => $record->up_suket_validasi
                     ? '<a href="' . Storage::url($record->up_suket_validasi) . '" target="_blank">Lihat </a> | 
-                    <a href="' . Storage::url($record->up_suket_validasi) . '" download>Download</a>' 
+                    <a href="' . Storage::url($record->up_suket_validasi ) . '" download>Download</a>' 
                     : 'Tidak Ada Dokumen')
                     ->html()
                     ->sortable()
