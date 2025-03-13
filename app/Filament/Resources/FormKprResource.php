@@ -44,6 +44,7 @@ use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
 use App\Filament\Resources\GCVResource;
 use App\Models\GCV;
+use App\Filament\Resources\KPRStats;
 
 class FormKprResource extends Resource
 {
@@ -427,7 +428,7 @@ class FormKprResource extends Resource
     // public static function getWidgets(): array
     // {
     //     return [
-    //         AuditStats::class,
+    //         KPRStats::class,
     //     ];
     // }
 

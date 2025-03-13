@@ -48,6 +48,7 @@ use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
+use Filament\Forms\Components\FileUpload;
 
 class FormPpnResource extends Resource  
 {
@@ -117,9 +118,20 @@ class FormPpnResource extends Resource
 
                 Forms\Components\Fieldset::make('Dokumen')
                 ->schema([
-                    Forms\Components\FileUpload::make('up_bukti_setor_ppn')->disk('public')->nullable()->label('Upload Bukti Setor PPN'),
-                    Forms\Components\FileUpload::make('up_efaktur')->disk('public')->nullable()->label('Upload E-Faktur'),
-                ]),           
+                    Forms\Components\FileUpload::make('up_bukti_setor_ppn')
+                        ->disk('public')
+                        ->nullable()
+                        ->label('Upload Bukti Setor PPN')
+                        ->downloadable()
+                        ->previewable(false),
+
+                    Forms\Components\FileUpload::make('up_efaktur')
+                        ->disk('public')
+                        ->nullable()
+                        ->label('Upload E-Faktur')
+                        ->downloadable()
+                        ->previewable(false),
+                ]),         
             ]);
         }
 
@@ -150,12 +162,12 @@ class FormPpnResource extends Resource
                     'bayar' => 'Bayar',
                     default => $state,
                 }),
-                            Tables\Columns\TextColumn::make('tanggal_bayar_ppn')->sortable()->searchable()->label('Tanggal Bayar PPN'),
+                Tables\Columns\TextColumn::make('tanggal_bayar_ppn')->sortable()->searchable()->label('Tanggal Bayar PPN'),
                 Tables\Columns\TextColumn::make('ntpn_ppn')->sortable()->searchable()->label('NTPN PPN'),
 
                 Tables\Columns\TextColumn::make('up_bukti_setor_ppn')
                 ->label('Dokumen Bukti Setor PPN')
-                ->url(fn ($record) => $record->up_bukti_setir_ppn ? Storage::url($record->up_bukti_setir_ppn) : '#', true)
+                ->url(fn ($record) => $record->up_bukti_setor_ppn ? Storage::url($record->up_bukti_setor_ppn) : '#', true)
                 ->sortable()
                 ->searchable(),
                 Tables\Columns\TextColumn::make('up_efaktur')
