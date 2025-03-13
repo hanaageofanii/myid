@@ -106,21 +106,21 @@ class FormLegalResource extends Resource
                             Forms\Components\FileUpload::make('up_sertifikat')
                                 ->disk('public')
                                 ->nullable()
-                                ->label('KTP')
+                                ->label('Sertifikat')
                                 ->downloadable()
                                 ->previewable(false),
                     
                             Forms\Components\FileUpload::make('up_pbb')
                                 ->disk('public')
                                 ->nullable()
-                                ->label('Kartu Keluarga')
+                                ->label('PBB')
                                 ->downloadable()
                                 ->previewable(false),
                     
                             Forms\Components\FileUpload::make('up_img')
                                 ->disk('public')
                                 ->nullable()
-                                ->label('NPWP')
+                                ->label('IMG')
                                 ->downloadable()
                                 ->previewable(false),
                     ]),                        
@@ -141,7 +141,7 @@ class FormLegalResource extends Resource
                 Tables\Columns\TextColumn::make('nop1')->sortable()->searchable()->label('NOP Tambahan'),
         
         Tables\Columns\TextColumn::make('up_sertifikat')
-            ->label('KTP')
+            ->label('Sertifikat')
             ->formatStateUsing(fn ($record) => $record->up_sertifikat 
             ? '<a href="' . Storage::url($record->up_sertifikat) . '" target="_blank">Lihat </a> | 
             <a href="' . Storage::url($record->up_sertifikat) . '" download>Download</a>' 
@@ -151,7 +151,7 @@ class FormLegalResource extends Resource
             ->searchable(),
 
         Tables\Columns\TextColumn::make('up_pbb')
-            ->label('Kartu Keluarga')
+            ->label('PBB')
             ->formatStateUsing(fn ($record) => $record->up_pbb
             ? '<a href="' . Storage::url($record->up_pbb) . '" target="_blank">Lihat </a> | 
             <a href="' . Storage::url($record->up_pbb) . '" download>Download</a>' 
@@ -161,7 +161,7 @@ class FormLegalResource extends Resource
             ->searchable(),
 
         Tables\Columns\TextColumn::make('up_img')
-            ->label('NPWP')
+            ->label('IMG')
             ->formatStateUsing(fn ($record) => $record->up_img
             ? '<a href="' . Storage::url($record->up_img) . '" target="_blank">Lihat </a> | 
             <a href="' . Storage::url($record->up_img) . '" download>Download</a>' 

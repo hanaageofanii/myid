@@ -169,14 +169,27 @@ class FormPajakResource extends Resource
 
                 Forms\Components\Fieldset::make('Dokumen')
                 ->schema([
-                    Forms\Components\FileUpload::make('up_kode_billing')->disk('public')->nullable()->label('Upload Kode Billing'),
-                    Forms\Components\FileUpload::make('up_bukti_setor_pajak')->disk('public')->nullable()->label('Upload Bukti Setor Pajak'),
-                    Forms\Components\FileUpload::make('up_suket_validasi')->disk('public')->nullable()->label('Upload Suket Validasi'),
-                ]),
-
-
-
-
+                    Forms\Components\FileUpload::make('up_kode_billing')
+                        ->disk('public')
+                        ->nullable()
+                        ->label('Kode Billing')
+                        ->downloadable()
+                        ->previewable(false),
+            
+                    Forms\Components\FileUpload::make('up_bukti_setor_pajak')
+                        ->disk('public')
+                        ->nullable()
+                        ->label('Bukti Setor Pajak')
+                        ->downloadable()
+                        ->previewable(false),
+            
+                    Forms\Components\FileUpload::make('up_suket_validasi')
+                        ->disk('public')
+                        ->nullable()
+                        ->label('Suket Validasi')
+                        ->downloadable()
+                        ->previewable(false),                
+                    ]),
         ]);
     }
 
@@ -205,20 +218,35 @@ class FormPajakResource extends Resource
                 Tables\Columns\TextColumn::make('tanggal_validasi')->sortable()->searchable()->label('Tanggal validasi'),
 
                 Tables\Columns\TextColumn::make('up_kode_billing')
-                ->label('Dokumen Kode Billing')
-                ->url(fn ($record) => $record->up_sertifikat ? Storage::url($record->up_sertifikat) : '#', true)
-                ->sortable()
-                ->searchable(),
+                    ->label('Dokumen Kode Billing')
+                    ->formatStateUsing(fn ($record) => $record->up_kode_billing
+                    ? '<a href="' . Storage::url($record->up_kode_billing) . '" target="_blank">Lihat </a> | 
+                    <a href="' . Storage::url($record->up_kode_billing) . '" download>Download</a>' 
+                    : 'Tidak Ada Dokumen')
+                    ->html()
+                    ->sortable()
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('up_bukti_setor_pajak')
-                ->label('Dokumen Bukti Setor Pajak')
-                ->url(fn ($record) => $record->up_pbb ? Storage::url($record->up_pbb) : '#', true)
-                ->sortable()
-                ->searchable(),
+                    ->label('Dokumen Bukti Setor Pajak')
+                    ->formatStateUsing(fn ($record) => $record->up_bukti_setor_pajak
+                    ? '<a href="' . Storage::url($record->up_bukti_setor_pajak) . '" target="_blank">Lihat </a> | 
+                    <a href="' . Storage::url($record->up_bukti_setor_pajak) . '" download>Download</a>' 
+                    : 'Tidak Ada Dokumen')
+                    ->html()
+                    ->sortable()
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('up_suket_validasi')
-                ->label('Dokumen Suket Validasi')
-                ->url(fn ($record) => $record->up_img ? Storage::url($record->up_img) : '#', true)
-                ->sortable()
-                ->searchable(),
+                    ->label('Dokumen Suket Validasi')
+                    ->formatStateUsing(fn ($record) => $record->up_suket_validasi
+                    ? '<a href="' . Storage::url($record->up_suket_validasi) . '" target="_blank">Lihat </a> | 
+                    <a href="' . Storage::url($record->up_suket_validasi) . '" download>Download</a>' 
+                    : 'Tidak Ada Dokumen')
+                    ->html()
+                    ->sortable()
+                    ->searchable(),
+
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()
