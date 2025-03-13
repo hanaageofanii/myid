@@ -101,11 +101,28 @@ class FormLegalResource extends Resource
                         Forms\Components\TextInput::make('nop')->nullable()->label('NOP'),
                         Forms\Components\TextInput::make('nop1')->nullable()->label('NOP Tambahan'),
 
-                    Forms\Components\Fieldset::make('Dokumen')
-                    ->schema([
-                        Forms\Components\FileUpload::make('up_sertifikat')->disk('public')->nullable()->label('Dokumen Sertifikat')->required(false),
-                        Forms\Components\FileUpload::make('up_pbb')->disk('public')->nullable()->label('Dokumen PBB')->required(false),
-                        Forms\Components\FileUpload::make('up_img')->disk('public')->nullable()->label('Dokumen IMG')->required(false),
+                        Forms\Components\Fieldset::make('Dokumen')
+                        ->schema([
+                            Forms\Components\FileUpload::make('up_sertifikat')
+                                ->disk('public')
+                                ->nullable()
+                                ->label('KTP')
+                                ->downloadable()
+                                ->previewable(false),
+                    
+                            Forms\Components\FileUpload::make('up_pbb')
+                                ->disk('public')
+                                ->nullable()
+                                ->label('Kartu Keluarga')
+                                ->downloadable()
+                                ->previewable(false),
+                    
+                            Forms\Components\FileUpload::make('up_img')
+                                ->disk('public')
+                                ->nullable()
+                                ->label('NPWP')
+                                ->downloadable()
+                                ->previewable(false),
                     ]),                        
             ]);
     }
@@ -122,21 +139,36 @@ class FormLegalResource extends Resource
                 Tables\Columns\TextColumn::make('luas_sertifikat')->sortable()->searchable()->label('Luas Sertifikat'),
                 Tables\Columns\TextColumn::make('nop')->sortable()->searchable()->label('NOP'),
                 Tables\Columns\TextColumn::make('nop1')->sortable()->searchable()->label('NOP Tambahan'),
-                Tables\Columns\TextColumn::make('up_sertifikat')
-                ->label('Dokumen Sertifikat')
-                ->url(fn ($record) => $record->up_sertifikat ? Storage::url($record->up_sertifikat) : '#', true)
-                ->sortable()
-                ->searchable(),
-                Tables\Columns\TextColumn::make('up_pbb')
-                ->label('Dokumen PBB')
-                ->url(fn ($record) => $record->up_pbb ? Storage::url($record->up_pbb) : '#', true)
-                ->sortable()
-                ->searchable(),
-                Tables\Columns\TextColumn::make('up_img')
-                ->label('Dokumen IMG')
-                ->url(fn ($record) => $record->up_img ? Storage::url($record->up_img) : '#', true)
-                ->sortable()
-                ->searchable(),
+        
+        Tables\Columns\TextColumn::make('up_sertifikat')
+            ->label('KTP')
+            ->formatStateUsing(fn ($record) => $record->up_sertifikat 
+            ? '<a href="' . Storage::url($record->up_sertifikat) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->up_sertifikat) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
+
+        Tables\Columns\TextColumn::make('up_pbb')
+            ->label('Kartu Keluarga')
+            ->formatStateUsing(fn ($record) => $record->up_pbb
+            ? '<a href="' . Storage::url($record->up_pbb) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->up_pbb) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
+
+        Tables\Columns\TextColumn::make('up_img')
+            ->label('NPWP')
+            ->formatStateUsing(fn ($record) => $record->up_img
+            ? '<a href="' . Storage::url($record->up_img) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->up_img) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable(),
+
             ])
             ->defaultSort('siteplan', 'asc')
             ->headerActions([
