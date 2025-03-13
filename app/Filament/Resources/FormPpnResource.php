@@ -117,22 +117,22 @@ class FormPpnResource extends Resource
                 Forms\Components\TextInput::make('ntpn_ppn')->nullable()->label('BTPN PPN'),
 
                 Forms\Components\Fieldset::make('Dokumen')
-                ->schema([
-                    Forms\Components\FileUpload::make('up_bukti_setor_ppn')
-                        ->disk('public')
-                        ->nullable()
-                        ->label('Upload Bukti Setor PPN')
-                        ->downloadable()
-                        ->previewable(false),
-
-                    Forms\Components\FileUpload::make('up_efaktur')
-                        ->disk('public')
-                        ->nullable()
-                        ->label('Upload E-Faktur')
-                        ->downloadable()
-                        ->previewable(false),
-                ]),         
-            ]);
+                    ->schema([
+                        Forms\Components\FileUpload::make('up_bukti_setor_ppn')
+                            ->disk('public')
+                            ->nullable()
+                            ->label('Upload Bukti Setor PPN')
+                            ->downloadable()
+                            ->previewable(false),
+                
+                        Forms\Components\FileUpload::make('up_efaktur')
+                            ->disk('public')
+                            ->nullable()
+                            ->label('Upload E-Faktur')
+                            ->downloadable()
+                            ->previewable(false),
+                        ]),
+                    ]);
         }
 
     public static function table(Table $table): Table
@@ -166,15 +166,26 @@ class FormPpnResource extends Resource
                 Tables\Columns\TextColumn::make('ntpn_ppn')->sortable()->searchable()->label('NTPN PPN'),
 
                 Tables\Columns\TextColumn::make('up_bukti_setor_ppn')
-                ->label('Dokumen Bukti Setor PPN')
-                ->url(fn ($record) => $record->up_bukti_setor_ppn ? Storage::url($record->up_bukti_setor_ppn) : '#', true)
-                ->sortable()
-                ->searchable(),
+                    ->label('Upload Bukti Setor PPN')
+                    ->formatStateUsing(fn ($record) => $record->up_bukti_setor_ppn 
+                        ? '<a href="' . Storage::url($record->up_bukti_setor_ppn) . '" target="_blank">Lihat</a> | 
+                        <a href="' . Storage::url($record->up_bukti_setor_ppn) . '" download>Download</a>' 
+                        : 'Tidak Ada Dokumen')
+                    ->html()
+                    ->sortable()
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('up_efaktur')
-                ->label('Dokumen E-Faktur')
-                ->url(fn ($record) => $record->up_efaktur ? Storage::url($record->up_efaktur) : '#', true)
-                ->sortable()
-                ->searchable(),
+                    ->label('Upload E-Faktur')
+                    ->formatStateUsing(fn ($record) => $record->up_efaktur
+                        ? '<a href="' . Storage::url($record->up_efaktur) . '" target="_blank">Lihat </a> | 
+                        <a href="' . Storage::url($record->up_efaktur) . '" download>Download</a>' 
+                        : 'Tidak Ada Dokumen')
+                    ->html()
+                    ->sortable()
+                    ->searchable(),
+
+
             ])
             ->defaultSort('siteplan', 'asc')
             ->headerActions([

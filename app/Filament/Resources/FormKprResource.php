@@ -164,17 +164,65 @@ class FormKprResource extends Resource
                         'batal' => 'Batal',
                     ])->nullable()->label('Status Akad'),
                 
-                Forms\Components\Fieldset::make('Dokumen')
+                    Forms\Components\Fieldset::make('Dokumen')
                     ->schema([
-                        Forms\Components\FileUpload::make('ktp')->disk('public')->nullable()->label('KTP'),
-                        Forms\Components\FileUpload::make('kk')->disk('public')->nullable()->label('Kartu Keluarga'),
-                        Forms\Components\FileUpload::make('npwp_upload')->disk('public')->nullable()->label('NPWP'),
-                        Forms\Components\FileUpload::make('buku_nikah')->disk('public')->nullable()->label('Buku Nikah'),
-                        Forms\Components\FileUpload::make('akte_cerai')->disk('public')->nullable()->label('Akta Cerai'),
-                        Forms\Components\FileUpload::make('akte_kematian')->disk('public')->nullable()->label('Akte Kematian'),
-                        Forms\Components\FileUpload::make('kartu_bpjs')->disk('public')->nullable()->label('Kartu BPJS'),
-                        Forms\Components\FileUpload::make('drk')->disk('public')->nullable()->label('DRK'),
+                        Forms\Components\FileUpload::make('ktp')
+                            ->disk('public')
+                            ->nullable()
+                            ->label('KTP')
+                            ->downloadable()
+                            ->previewable(false),
+                
+                        Forms\Components\FileUpload::make('kk')
+                            ->disk('public')
+                            ->nullable()
+                            ->label('Kartu Keluarga')
+                            ->downloadable()
+                            ->previewable(false),
+                
+                        Forms\Components\FileUpload::make('npwp_upload')
+                            ->disk('public')
+                            ->nullable()
+                            ->label('NPWP')
+                            ->downloadable()
+                            ->previewable(false),
+                
+                        Forms\Components\FileUpload::make('buku_nikah')
+                            ->disk('public')
+                            ->nullable()
+                            ->label('Buku Nikah')
+                            ->downloadable()
+                            ->previewable(false),
+                
+                        Forms\Components\FileUpload::make('akte_cerai')
+                            ->disk('public')
+                            ->nullable()
+                            ->label('Akta Cerai')
+                            ->downloadable()
+                            ->previewable(false),
+                
+                        Forms\Components\FileUpload::make('akte_kematian')
+                            ->disk('public')
+                            ->nullable()
+                            ->label('Akte Kematian')
+                            ->downloadable()
+                            ->previewable(false),
+                
+                        Forms\Components\FileUpload::make('kartu_bpjs')
+                            ->disk('public')
+                            ->nullable()
+                            ->label('Kartu BPJS')
+                            ->downloadable()
+                            ->previewable(false),
+                
+                        Forms\Components\FileUpload::make('drk')
+                            ->disk('public')
+                            ->nullable()
+                            ->label('DRK')
+                            ->downloadable()
+                            ->previewable(false),
                     ]),
+                
             ]);
     }
 
@@ -201,33 +249,78 @@ class FormKprResource extends Resource
                 Tables\Columns\TextColumn::make('bank')->sortable()->searchable()->label('Bank'),
                 Tables\Columns\TextColumn::make('no_rekening')->sortable()->searchable()->label('No. Rekening'),
                 Tables\Columns\TextColumn::make('status_akad')->sortable()->searchable()->label('Status Akad'),
-                Tables\Columns\TextColumn::make('ktp')
-                ->label('KTP')
-                ->url(fn ($record) => $record->ktp ? Storage::url($record->ktp) : '#', true)
-                ->sortable()
-                ->searchable(),
-                Tables\Columns\TextColumn::make('kk')->label('KK')
-                ->url(fn ($record) => $record->ktp ? Storage::url($record->kk) : '#', true)
-                ->sortable()
-                ->searchable(),
-                Tables\Columns\TextColumn::make('npwp_upload')->label('NPWP')->url(fn ($record) => $record->npwp_upload ? Storage::url($record->ktp) : '#', true)
-                ->sortable()
-                ->searchable(),
-                Tables\Columns\TextColumn::make('buku_nikah')->label('Buku Nikah')->url(fn ($record) => $record->buku_nikah ? Storage::url($record->ktp) : '#', true)
-                ->sortable()
-                ->searchable(),
-                Tables\Columns\TextColumn::make('akte_cerai')->label('Akte Cerai')->url(fn ($record) => $record->akte_cerai ? Storage::url($record->ktp) : '#', true)
-                ->sortable()
-                ->searchable(),
-                Tables\Columns\TextColumn::make('akte_kematian')->label('Akte Kematian')->url(fn ($record) => $record->akte_kematian ? Storage::url($record->ktp) : '#', true)
-                ->sortable()
-                ->searchable(),
-                Tables\Columns\TextColumn::make('kartu_bpjs')->label('Kartu BPJS')->url(fn ($record) => $record->kartu_bpjs ? Storage::url($record->ktp) : '#', true)
-                ->sortable()
-                ->searchable(),
-                Tables\Columns\TextColumn::make('drk')->label('DRK')->url(fn ($record) => $record->drk ? Storage::url($record->ktp) : '#', true)
-                ->sortable()
-                ->searchable(),
+                
+        Tables\Columns\TextColumn::make('ktp')
+            ->label('KTP')
+            ->formatStateUsing(fn ($record) => $record->ktp 
+                ? '<a href="' . Storage::url($record->ktp) . '" target="_blank" download>Download</a>' 
+                : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
+
+        Tables\Columns\TextColumn::make('kk')
+            ->label('Kartu Keluarga')
+            ->formatStateUsing(fn ($record) => $record->kk 
+                ? '<a href="' . Storage::url($record->kk) . '" target="_blank" download>Download</a>' 
+                : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
+
+        Tables\Columns\TextColumn::make('npwp_upload')
+            ->label('NPWP')
+            ->formatStateUsing(fn ($record) => $record->npwp_upload 
+                ? '<a href="' . Storage::url($record->npwp_upload) . '" target="_blank" download>Download</a>' 
+                : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
+
+        Tables\Columns\TextColumn::make('buku_nikah')
+            ->label('Buku Nikah')
+            ->formatStateUsing(fn ($record) => $record->buku_nikah 
+                ? '<a href="' . Storage::url($record->buku_nikah) . '" target="_blank" download>Download</a>' 
+                : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
+
+        Tables\Columns\TextColumn::make('akte_cerai')
+            ->label('Akte Cerai')
+            ->formatStateUsing(fn ($record) => $record->akte_cerai 
+                ? '<a href="' . Storage::url($record->akte_cerai) . '" target="_blank" download>Download</a>' 
+                : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
+
+        Tables\Columns\TextColumn::make('akte_kematian')
+            ->label('Akte Kematian')
+            ->formatStateUsing(fn ($record) => $record->akte_kematian 
+                ? '<a href="' . Storage::url($record->akte_kematian) . '" target="_blank" download>Download</a>' 
+                : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
+
+        Tables\Columns\TextColumn::make('kartu_bpjs')
+            ->label('Kartu BPJS')
+            ->formatStateUsing(fn ($record) => $record->kartu_bpjs 
+                ? '<a href="' . Storage::url($record->kartu_bpjs) . '" target="_blank" download>Download</a>' 
+                : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
+
+        Tables\Columns\TextColumn::make('drk')
+            ->label('DRK')
+            ->formatStateUsing(fn ($record) => $record->drk 
+                ? '<a href="' . Storage::url($record->drk) . '" target="_blank" download>Download</a>' 
+                : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
             ])
             ->defaultSort('siteplan', 'asc')
             ->headerActions([
