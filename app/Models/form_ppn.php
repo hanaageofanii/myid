@@ -23,7 +23,7 @@ class form_ppn extends Model
         "dpp_ppn",
         "tarif_ppn",
         "jumlah_ppn",
-        "status",
+        "status_ppn",
         "tanggal_bayar_ppn",
         "ntpn_ppn",
         "up_bukti_setor_ppn",

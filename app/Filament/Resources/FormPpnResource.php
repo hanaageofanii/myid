@@ -13,23 +13,51 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Models\form_kpr;
+use App\Models\form_legal;
+use App\Models\form_pajak;
+use App\Models\FormPajak;
+use App\Models\FormLegal;
+use App\Filament\Resources\GCVResource;
+use App\Models\GCV;
+use Illuminate\Support\Facades\Storage;
+use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Fieldset;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\BooleanColumn;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Enums\ActionsPosition;
+use Illuminate\Database\Eloquent\Collection;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Support\Enums\ActionSize;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Actions\RestoreBulkAction;
+use Filament\Notifications\Notification;
+use Filament\Tables\Filters\TrashedFilter;
 
 class FormPpnResource extends Resource  
 {
     protected static ?string $model = form_ppn::class;
-
     protected static ?string $title = "Form Data Faktur PPN";
-
     protected static ?string $navigationGroup = "Legal";
-
     protected static ?string $pluralLabel = "Data Faktur PPN";
-
     protected static ?string $navigationLabel = "Faktur PPN";
-
     protected static ?string $pluralModelLabel = 'Daftar Faktur PPN';
-
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
-
     public static function form(Form $form): Form
     {
         return $form
@@ -72,16 +100,17 @@ class FormPpnResource extends Resource
                 Forms\Components\TextInput::make('jumlah_ppn')->nullable()->label('Jumlah PPN'), 
 
                 Forms\Components\Select::make('status_ppn')
-                ->options([
-                    'dtp' => 'DTP',
-                    'dtp_sebagian' => 'DTP Sebagian',
-                    'dibebaskan' => 'Dibebaskan',
-                    'bayar' => 'Bayar',
-                ])
-                ->required()
-                ->reactive()
-                ->nullable()
-                ->label('Status PPN'),
+                    ->options([
+                        'dtp' => 'DTP',
+                        'dtp_sebagian' => 'DTP Sebagian',
+                        'dibebaskan' => 'Dibebaskan',
+                        'bayar' => 'Bayar',
+                    ])
+                    ->required()
+                    ->label('Status PPN')
+                    ->searchable()
+                    ->native(false),
+
 
                 Forms\Components\DatePicker::make('tanggal_bayar_ppn')->nullable()->label('Tanggal Faktur'),
                 Forms\Components\TextInput::make('ntpn_ppn')->nullable()->label('BTPN PPN'),
@@ -98,7 +127,56 @@ class FormPpnResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('siteplan')->sortable()->searchable()->label('Blok'),
+                Tables\Columns\TextColumn::make('kavling')->sortable()->searchable()->label('Jenis Unit'),
+                Tables\Columns\TextColumn::make('nama_konsumen')->sortable()->searchable()->label('Nama Konsumen'),
+                Tables\Columns\TextColumn::make('nik')->sortable()->searchable()->label('NIK'),
+                Tables\Columns\TextColumn::make('npwp')->sortable()->searchable()->label('NPWP'),
+                Tables\Columns\TextColumn::make('alamat')->sortable()->searchable()->label('Alamat'),
+                Tables\Columns\TextColumn::make('no_seri_faktur')->sortable()->searchable()->label('No. Seri Faktur'),
+                Tables\Columns\TextColumn::make('tanggal_faktur')->sortable()->searchable()->label('Tanggal Faktur'),
+                Tables\Columns\TextColumn::make('harga_jual')->sortable()->searchable()->label('Harga'),
+                Tables\Columns\TextColumn::make('dpp_ppn')->sortable()->searchable()->label('DPP PPN'),
+                Tables\Columns\TextColumn::make('tarif_ppn')->sortable()->searchable()->label('Tarif PPN'),
+                Tables\Columns\TextColumn::make('jumlah_ppn')->sortable()->searchable()->label('Jumlah PPN'),
+                Tables\Columns\TextColumn::make('status_ppn')
+                ->sortable()
+                ->searchable()
+                ->label('Status PPN')
+                ->formatStateUsing(fn ($state) => match ($state) {
+                    'dtp' => 'DTP',
+                    'dtp_sebagian' => 'DTP Sebagian',
+                    'dibebaskan' => 'Dibebaskan',
+                    'bayar' => 'Bayar',
+                    default => $state,
+                }),
+                            Tables\Columns\TextColumn::make('tanggal_bayar_ppn')->sortable()->searchable()->label('Tanggal Bayar PPN'),
+                Tables\Columns\TextColumn::make('ntpn_ppn')->sortable()->searchable()->label('NTPN PPN'),
+
+                Tables\Columns\TextColumn::make('up_bukti_setor_ppn')
+                ->label('Dokumen Bukti Setor PPN')
+                ->url(fn ($record) => $record->up_bukti_setir_ppn ? Storage::url($record->up_bukti_setir_ppn) : '#', true)
+                ->sortable()
+                ->searchable(),
+                Tables\Columns\TextColumn::make('up_efaktur')
+                ->label('Dokumen E-Faktur')
+                ->url(fn ($record) => $record->up_efaktur ? Storage::url($record->up_efaktur) : '#', true)
+                ->sortable()
+                ->searchable(),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             ])
             ->filters([
                 //
