@@ -23,7 +23,7 @@ return new class extends Migration
             $table->date('tanggal_faktur')->nullable();
             $table->string('harga_jual')->nullable();
             $table->string('dpp_ppn')->nullable();
-            $table->string('tarif_ppn')->nullable();
+            $table->enum('tarif_ppn', ['11%','12%'])->nullable();
             $table->string('jumlah_ppn')->nullable();
             $table->enum('status_ppn', ['dtp','dtp_sebagian','dibebaskan','bayar'])->nullable(); 
             $table->date('tanggal_bayar_ppn')->nullable();
