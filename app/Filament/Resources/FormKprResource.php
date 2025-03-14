@@ -45,6 +45,7 @@ use Filament\Tables\Filters\TrashedFilter;
 use App\Filament\Resources\GCVResource;
 use App\Models\GCV;
 use App\Filament\Resources\KPRStats;
+use Carbon\Carbon;
 
 class FormKprResource extends Resource
 {
@@ -131,7 +132,7 @@ class FormKprResource extends Resource
                 Forms\Components\TextInput::make('agent')->nullable()->label('Agent'),
                 Forms\Components\DatePicker::make('tanggal_booking')->nullable()->label('Tanggal Booking'),
                 Forms\Components\DatePicker::make('tanggal_akad')->nullable()->label('Tanggal Akad'),
-                Forms\Components\TextInput::make('harga')->numeric()->nullable()->label('Harga'),
+                Forms\Components\TextInput::make('harga')->numeric()->nullable()->label('Harga')->prefix('Rp'),
                 Forms\Components\TextInput::make('maksimal_kpr')->numeric()->nullable()->label('Maksimal KPR'),
                 Forms\Components\TextInput::make('nama_konsumen')->nullable()->label('Nama Konsumen'),
                 Forms\Components\TextInput::make('nik')->nullable()->label('NIK'),
@@ -230,25 +231,78 @@ class FormKprResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('jenis_unit')->sortable()->searchable()->label('Jenis Unit'),
+                Tables\Columns\TextColumn::make('jenis_unit')->label('Jenis Unit')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                    'standar' => 'Standar',
+                    'khusus' => 'Khusus',
+                    'hook' => 'Hook',
+                    'komersil' => 'Komersil',
+                    'tanah_lebih' => 'Tanah Lebih',
+                    'kios' => 'Kios',
+                    default => $state, 
+                })->searchable(),
+                
                 Tables\Columns\TextColumn::make('siteplan')->sortable()->searchable()->label('Blok'),
                 Tables\Columns\TextColumn::make('type')->sortable()->searchable()->label('Type'),
-                Tables\Columns\TextColumn::make('luas')->sortable()->searchable()->label('Luas'),
+                Tables\Columns\TextColumn::make('luas')->sortable()->searchable()->label('Luas')->formatStateUsing(fn ($state) => number_format($state, 0, ',', '.')),
                 Tables\Columns\TextColumn::make('agent')->sortable()->searchable()->label('Agent'),
-                Tables\Columns\TextColumn::make('tanggal_booking')->date()->searchable()->label('Tanggal Booking'), 
-                Tables\Columns\TextColumn::make('tanggal_akad')->date()->searchable()->label('Tanggal Akad'), 
-                Tables\Columns\TextColumn::make('harga')->sortable()->searchable()->label('Harga'),
-                Tables\Columns\TextColumn::make('maksimal_kpr')->sortable()->searchable()->label('Maksimal KPR'),
+                Tables\Columns\TextColumn::make('tanggal_booking')
+                ->searchable()
+                ->label('Tanggal Booking')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+            
+            Tables\Columns\TextColumn::make('tanggal_akad')
+                ->searchable()
+                ->label('Tanggal Akad')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                                
+            Tables\Columns\TextColumn::make('harga')
+                ->sortable()
+                ->searchable()
+                ->label('Harga')
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.')),
+                Tables\Columns\TextColumn::make('maksimal_kpr')->sortable()->searchable()->label('Maksimal KPR')->formatStateUsing(fn ($state) => number_format($state, 0, ',', '.')),
                 Tables\Columns\TextColumn::make('nama_konsumen')->sortable()->searchable()->label('Nama Konsumen'),
                 Tables\Columns\TextColumn::make('nik')->sortable()->searchable()->label('NIK'),
                 Tables\Columns\TextColumn::make('npwp')->sortable()->searchable()->label('NPWP'),
                 Tables\Columns\TextColumn::make('alamat')->sortable()->searchable()->label('Alamat'),
                 Tables\Columns\TextColumn::make('no_hp')->sortable()->searchable()->label('No Handphone'),
                 Tables\Columns\TextColumn::make('no_email')->sortable()->searchable()->label('Email'),
-                Tables\Columns\TextColumn::make('pembayaran')->sortable()->searchable()->label('Pembayaran'),
-                Tables\Columns\TextColumn::make('bank')->sortable()->searchable()->label('Bank'),
+                Tables\Columns\TextColumn::make('pembayaran')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'kpr' => 'KPR',
+                        'cash' => 'Cash',
+                        'cash_bertahap' => 'Cash Bertahap',
+                        'promo' => 'Promo',
+                    default => ucfirst($state), 
+                })
+                ->sortable()
+                ->searchable()
+                ->label('Pembayaran'),
+                Tables\Columns\TextColumn::make('bank')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                    'btn_cikarang' => 'BTN Cikarang',
+                    'btn_bekasi' => 'BTN Bekasi',
+                    'btn_karawang' => 'BTN Karawang',
+                    'bjb_syariah' => 'BJB Syariah',
+                    'bjb_jababeka' => 'BJB Jababeka',
+                    'btn_syariah' => 'BTN Syariah',
+                    'brii_bekasi' => 'BRI Bekasi',
+                default => ucfirst($state), 
+                })
+                ->sortable()
+                ->searchable()
+                ->label('Bank'),
                 Tables\Columns\TextColumn::make('no_rekening')->sortable()->searchable()->label('No. Rekening'),
-                Tables\Columns\TextColumn::make('status_akad')->sortable()->searchable()->label('Status Akad'),
+                Tables\Columns\TextColumn::make('status_akad')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'akad' => 'Akad',
+                        'batal' => 'Batal',
+                        default => ucfirst($state), 
+                    })
+                    ->sortable()
+                    ->searchable()
+                    ->label('Status Akad'),
                 
         Tables\Columns\TextColumn::make('ktp')
             ->label('KTP')

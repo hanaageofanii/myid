@@ -41,6 +41,8 @@ use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\GCVResource\Widgets\GCVStats;
+use Carbon\Carbon;
+
 
 
 
@@ -191,7 +193,7 @@ class GCVResource extends Resource
                     default => $state, 
                 })->searchable(),
 
-                Tables\Columns\TextColumn::make('tanggal_booking')->date()->label('Tanggal Booking')->searchable(),
+                Tables\Columns\TextColumn::make('tanggal_booking')->date()->label('Tanggal Booking')->searchable()                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
                 Tables\Columns\TextColumn::make('nama_konsumen')->label('Nama Konsumen')->searchable(),
                 Tables\Columns\TextColumn::make('agent')->label('Agent')->searchable(),
                 Tables\Columns\TextColumn::make('kpr_status')

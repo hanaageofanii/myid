@@ -110,7 +110,15 @@ class AuditResource extends Resource
             TextColumn::make('siteplan')->label('Site Plan')->searchable(),
             TextColumn::make('type')->label('Type')->searchable(),
             BooleanColumn::make('terbangun')->label('Terbangun')->searchable(),
-            TextColumn::make('status')->label('Status')->badge()->searchable(),
+            TextColumn::make('status')
+            ->label('Status')
+            ->badge()
+            ->searchable()
+            ->formatStateUsing(fn ($state) => match ($state) {
+                    'akad' => 'Akad',
+                    default => $state,
+                }),
+
             TextColumn::make('tanda_terima_sertifikat')->label('Tanda Terima Sertifikat')->searchable(),
             TextColumn::make('kode1')->label('1')->searchable(),
             TextColumn::make('luas1')->label('Luas (m²)')->searchable(),

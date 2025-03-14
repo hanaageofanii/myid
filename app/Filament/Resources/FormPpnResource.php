@@ -49,6 +49,7 @@ use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Forms\Components\FileUpload;
+use Carbon\Carbon;
 
 class FormPpnResource extends Resource  
 {
@@ -63,7 +64,36 @@ class FormPpnResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('siteplan')->nullable()->label('Siteplan'),
+                Forms\Components\Select::make('siteplan')
+                    ->label('Blok')
+                    ->nullable()
+                    ->options(fn() => form_kpr::pluck('siteplan', 'siteplan')->toArray())
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                        $kprData = form_kpr::where('siteplan', $state)->first();
+
+                        if ($kprData) {
+                            $set('kavling', $kprData->jenis_unit);
+                            $set('nama_konsumen', $kprData->nama_konsumen);
+                            $set('nik', $kprData->nik);
+                            $set('npwp', $kprData->npwp);
+                            $set('alamat', $kprData->alamat);
+                            $set('harga_jual', $kprData->harga);
+
+                            $harga = $kprData->harga ?? 0;
+
+                            // Perhitungan DPP PPN
+                            $dpp_ppn = $harga * (11 / 12);
+                            $set('dpp_ppn', $dpp_ppn);
+
+                            $tarif_ppn_raw = $get('tarif_ppn') ?? '0%';
+                            $tarif_ppn = (float) str_replace('%', '', $tarif_ppn_raw) / 100;
+
+                            // Hitung JUMLAH PPN
+                            $jumlah_ppn = $harga * $tarif_ppn;
+                            $set('jumlah_ppn', $jumlah_ppn);
+                        }
+                    }),
 
                 Forms\Components\Select::make('kavling')
                 ->options([
@@ -85,8 +115,17 @@ class FormPpnResource extends Resource
                 Forms\Components\TextArea::make('alamat')->nullable()->label('Alamat'),
                 Forms\Components\TextInput::make('no_seri_faktur')->nullable()->label('No. Seri Faktur'),
                 Forms\Components\DatePicker::make('tanggal_faktur')->nullable()->label('Tanggal Faktur'),
-                Forms\Components\TextInput::make('harga_jual')->nullable()->label('Harga Jual'),
-                Forms\Components\TextInput::make('dpp_ppn')->nullable()->label('DPP PPN'),  
+                Forms\Components\TextInput::make('harga_jual')
+                    ->nullable()
+                    ->label('Harga Jual')
+                    ->mask(fn ($state) => number_format((float) str_replace(['.', ','], ['', '.'], $state), 2, ',', '.'))
+                    ->prefix('Rp'),
+
+                Forms\Components\TextInput::make('dpp_ppn')
+                    ->nullable()
+                    ->label('DPP PPN')
+                    ->mask(fn ($state) => number_format((float) str_replace(['.', ','], ['', '.'], $state), 2, ',', '.'))
+                    ->prefix('Rp'),
 
                 Forms\Components\Select::make('tarif_ppn')
                     ->options([
@@ -96,9 +135,27 @@ class FormPpnResource extends Resource
                     ->required()
                     ->reactive()
                     ->nullable()
-                    ->label('Tarif PPN'),
+                    ->label('Tarif PPN')
+                    ->afterStateUpdated(function (callable $set, callable $get) {
+                        $harga = (float) str_replace(['.', ','], ['', ''], $get('harga_jual') ?? '0');
 
-                Forms\Components\TextInput::make('jumlah_ppn')->nullable()->label('Jumlah PPN'), 
+                        $tarif_ppn_raw = $get('tarif_ppn') ?? '0%';
+                        $tarif_ppn = (float) str_replace('%', '', $tarif_ppn_raw) / 100;
+                        if (is_numeric($harga) && is_numeric($tarif_ppn)) {
+                            $jumlah_ppn = $harga * $tarif_ppn;
+                        } else {
+                            $jumlah_ppn = 0;
+                        }
+
+                        $set('jumlah_ppn', $jumlah_ppn);
+                    }),
+
+                Forms\Components\TextInput::make('jumlah_ppn')
+                    ->nullable()
+                    ->label('Jumlah PPN')
+                    ->mask(fn ($state) => number_format((float) str_replace(['.', ','], ['', '.'], $state), 2, ',', '.'))
+                    ->prefix('Rp'),
+
 
                 Forms\Components\Select::make('status_ppn')
                     ->options([
@@ -140,17 +197,36 @@ class FormPpnResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('siteplan')->sortable()->searchable()->label('Blok'),
-                Tables\Columns\TextColumn::make('kavling')->sortable()->searchable()->label('Jenis Unit'),
+                Tables\Columns\TextColumn::make('kavling')->sortable()->searchable()->label('Jenis Unit')->formatStateUsing(fn (string $state): string => match ($state) {
+                    'standar' => 'Standar',
+                    'khusus' => 'Khusus',
+                    'hook' => 'Hook',
+                    'komersil' => 'Komersil',
+                    'tanah_lebih' => 'Tanah Lebih',
+                    'kios' => 'Kios',
+                    default => $state, 
+                }),
                 Tables\Columns\TextColumn::make('nama_konsumen')->sortable()->searchable()->label('Nama Konsumen'),
                 Tables\Columns\TextColumn::make('nik')->sortable()->searchable()->label('NIK'),
                 Tables\Columns\TextColumn::make('npwp')->sortable()->searchable()->label('NPWP'),
                 Tables\Columns\TextColumn::make('alamat')->sortable()->searchable()->label('Alamat'),
                 Tables\Columns\TextColumn::make('no_seri_faktur')->sortable()->searchable()->label('No. Seri Faktur'),
-                Tables\Columns\TextColumn::make('tanggal_faktur')->sortable()->searchable()->label('Tanggal Faktur'),
-                Tables\Columns\TextColumn::make('harga_jual')->sortable()->searchable()->label('Harga'),
-                Tables\Columns\TextColumn::make('dpp_ppn')->sortable()->searchable()->label('DPP PPN'),
-                Tables\Columns\TextColumn::make('tarif_ppn')->sortable()->searchable()->label('Tarif PPN'),
-                Tables\Columns\TextColumn::make('jumlah_ppn')->sortable()->searchable()->label('Jumlah PPN'),
+                Tables\Columns\TextColumn::make('tanggal_faktur')->sortable()->searchable()->label('Tanggal Faktur')                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                Tables\Columns\TextColumn::make('harga_jual')->sortable()->searchable()->label('Harga')
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) str_replace(['Rp', '.', ','], '', $state), 0, ',', '.')),
+                Tables\Columns\TextColumn::make('dpp_ppn')->sortable()->searchable()->label('DPP PPN')
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) str_replace(['Rp', '.', ','], '', $state), 0, ',', '.')),
+                Tables\Columns\TextColumn::make('tarif_ppn')
+                ->sortable()
+                ->searchable()
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                    '11%' => '11 %',
+                    '12%' => '12 %',
+                    default => $state, 
+                })
+                ->label('Tarif PPN'),
+                Tables\Columns\TextColumn::make('jumlah_ppn')->sortable()->searchable()->label('Jumlah PPN')->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) str_replace(['Rp', '.', ','], '', $state), 0, ',', '.')),
+
                 Tables\Columns\TextColumn::make('status_ppn')
                 ->sortable()
                 ->searchable()
@@ -162,7 +238,8 @@ class FormPpnResource extends Resource
                     'bayar' => 'Bayar',
                     default => $state,
                 }),
-                Tables\Columns\TextColumn::make('tanggal_bayar_ppn')->sortable()->searchable()->label('Tanggal Bayar PPN'),
+                Tables\Columns\TextColumn::make('tanggal_bayar_ppn')->sortable()->searchable()->label('Tanggal Bayar PPN')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
                 Tables\Columns\TextColumn::make('ntpn_ppn')->sortable()->searchable()->label('NTPN PPN'),
 
                 Tables\Columns\TextColumn::make('up_bukti_setor_ppn')
@@ -287,10 +364,6 @@ class FormPpnResource extends Resource
                                 ->success()
                                 ->title('Data Faktur Dihapus')
                                 ->body('Data Faktur telah berhasil dihapus.')),
-                    // RestoreAction::make()
-                    //     ->label('Pulihkan')
-                    //     ->successNotificationTitle('Data berhasil dipulihkan')
-                    //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
                     Tables\Actions\RestoreAction::make()
                     ->color('info')
                     ->label('Kembalikan Data')

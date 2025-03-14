@@ -134,7 +134,16 @@ class FormLegalResource extends Resource
                 Tables\Columns\TextColumn::make('siteplan')->sortable()->searchable()->label('Blok'),
                 Tables\Columns\TextColumn::make('nama_konsumen')->sortable()->searchable()->label('Nama Konsumen'),
                 Tables\Columns\TextColumn::make('id_rumah')->sortable()->searchable()->label('No. ID Rumah'),
-                Tables\Columns\TextColumn::make('status_sertifikat')->sortable()->searchable()->label('Status Sertifikat'),
+                Tables\Columns\TextColumn::make('status_sertifikat')
+                ->sortable()
+                ->searchable()
+                ->label('Status Sertifikat')
+                ->formatStateUsing(fn ($state) => match ($state) {
+                        'induk' => 'Induk',
+                        'pecahan' => 'Pecahan',                    
+                default => $state,
+                }),
+
                 Tables\Columns\TextColumn::make('no_sertifikat')->sortable()->searchable()->label('No. Sertifikat'),
                 Tables\Columns\TextColumn::make('luas_sertifikat')->sortable()->searchable()->label('Luas Sertifikat'),
                 Tables\Columns\TextColumn::make('nop')->sortable()->searchable()->label('NOP'),
