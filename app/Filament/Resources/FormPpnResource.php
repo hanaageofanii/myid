@@ -277,16 +277,16 @@ class FormPpnResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR Diubah')
-                                ->body('Data KPR telah berhasil disimpan.')),                    
+                                ->title('Data Faktur Diubah')
+                                ->body('Data Faktur telah berhasil disimpan.')),                    
                         DeleteAction::make()
                         ->color('danger')
                         ->label('Hapus')
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR Dihapus')
-                                ->body('Data KPR telah berhasil dihapus.')),
+                                ->title('Data Faktur Dihapus')
+                                ->body('Data Faktur telah berhasil dihapus.')),
                     // RestoreAction::make()
                     //     ->label('Pulihkan')
                     //     ->successNotificationTitle('Data berhasil dipulihkan')
@@ -297,8 +297,8 @@ class FormPpnResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data KPR')
-                            ->body('Data KPR berhasil dikembalikan.')
+                            ->title('Data Faktur')
+                            ->body('Data Faktur berhasil dikembalikan.')
                     ),
                     Tables\Actions\ForceDeleteAction::make()
                     ->color('primary')
@@ -306,8 +306,8 @@ class FormPpnResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data KPR')
-                            ->body('Data KPR berhasil dihapus secara permanen.')
+                            ->title('Data Faktur')
+                            ->body('Data Faktur berhasil dihapus secara permanen.')
                     ),
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
@@ -320,8 +320,8 @@ class FormPpnResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR')
-                                ->body('Data KPR berhasil dihapus.'))                        
+                                ->title('Data Faktur')
+                                ->body('Data Faktur berhasil dihapus.'))                        
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
                 
@@ -332,8 +332,8 @@ class FormPpnResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR')
-                                ->body('Data KPR berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                                ->title('Data Faktur')
+                                ->body('Data Faktur berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
                 
                     BulkAction::make('export')
@@ -350,18 +350,18 @@ class FormPpnResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR')
-                                ->body('Data KPR berhasil dikembalikan.')),
+                                ->title('Data Faktur')
+                                ->body('Data Faktur berhasil dikembalikan.')),
                 ]);
                 
     }
 
     public static function exportData(Collection $records)
     {
-        $csvData = "ID,  Blok, Jenis Unit, Nama Konsumen, NIK, NPWP, Alamat, No. Seri Faktur, Tanggal Faktur, Harga Jual, DPP PPn, Tarif PPN, Jumlah PPN, Status PPN, Tanggal Bayar PPN, NTPN PPN\n";
+        $csvData = "ID,  Blok, Nama Konsumen, NIK, NPWP, Alamat, No. Seri Faktur, Tanggal Faktur, Harga Jual, DPP PPN, Tarif PPN, Jumlah PPN, Status PPN, Tanggal Bayar PPN, NTPN PPN\n";
     
         foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->siteplan}, {$record->jenis_unit}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_seri_faktur}, {$record->tanggal_faktur}, {$record->harga_jual}, {$record->dpp_ppn}, {$record->tarif_ppn}, {$record->jumlah_ppn}, {$record->status_ppn}, {$record->tanggal_bayar_ppn}, {$record->ntpn_ppn}\n";
+            $csvData .= "{$record->id}, {$record->siteplan}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_seri_faktur}, {$record->harga_jual}, {$record->dpp_ppn}, {$record->tarif_ppn}, {$record->jumlah_ppn}, {$record->status_ppn}, {$record->tanggal_bayar_ppn}, {$record->ntpn_ppn}\n";
         }
     
         return response()->streamDownload(fn () => print($csvData), 'PPN.csv');
