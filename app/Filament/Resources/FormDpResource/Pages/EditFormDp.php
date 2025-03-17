@@ -10,10 +10,19 @@ class EditFormDp extends EditRecord
 {
     protected static string $resource = FormDpResource::class;
 
+    protected static ?string $title = "Ubah Data";
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+            ->label('Hapus Data'),
         ];
+    }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
     }
 }
