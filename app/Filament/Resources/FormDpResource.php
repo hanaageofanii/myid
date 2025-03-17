@@ -59,17 +59,11 @@ class FormDpResource extends Resource
     protected static ?string $model = form_dp::class;
 
     protected static ?string $title = "Form Input Data Uang Muka";
-
     protected static ?string $navigationGroup = "Legal";
-
     protected static ?string $pluralLabel = "Data Uang Muka";
-
     protected static ?string $navigationLabel = "Uang Muka";
-
     protected static ?string $pluralModelLabel = 'Daftar Uang Muka';
-
     protected static ?string $navigationIcon = 'heroicon-o-folder-arrow-down';
-
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -77,7 +71,7 @@ class FormDpResource extends Resource
             ->schema([
                 Select::make('siteplan')
                     ->label('Site Plan')
-                    ->options(fn () => form_kpr::pluck('siteplan', 'id')) 
+                    ->options(fn () => form_kpr::pluck('siteplan', 'siteplan')) 
                     ->searchable()
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
