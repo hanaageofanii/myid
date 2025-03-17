@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\FormDpResource\Pages;
 use App\Filament\Resources\FormDpResource\RelationManagers;
+use App\Models\form_dp;
 use App\Models\FormDp;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FormDpResource extends Resource
 {
-    protected static ?string $model = FormDp::class;
+    protected static ?string $model = form_dp::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
