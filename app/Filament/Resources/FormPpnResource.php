@@ -118,13 +118,11 @@ class FormPpnResource extends Resource
                 Forms\Components\TextInput::make('harga_jual')
                     ->nullable()
                     ->label('Harga Jual')
-                    ->mask(fn ($state) => number_format((float) str_replace(['.', ','], ['', '.'], $state), 2, ',', '.'))
                     ->prefix('Rp'),
 
                 Forms\Components\TextInput::make('dpp_ppn')
                     ->nullable()
                     ->label('DPP PPN')
-                    ->mask(fn ($state) => number_format((float) str_replace(['.', ','], ['', '.'], $state), 2, ',', '.'))
                     ->prefix('Rp'),
 
                 Forms\Components\Select::make('tarif_ppn')
@@ -153,7 +151,6 @@ class FormPpnResource extends Resource
                 Forms\Components\TextInput::make('jumlah_ppn')
                     ->nullable()
                     ->label('Jumlah PPN')
-                    ->mask(fn ($state) => number_format((float) str_replace(['.', ','], ['', '.'], $state), 2, ',', '.'))
                     ->prefix('Rp'),
 
 

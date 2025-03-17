@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('agent')->nullable();
             $table->date('tanggal_booking')->nullable();
             $table->date('tanggal_akad')->nullable();
-            $table->decimal('harga', 15, 2)->nullable();
+            $table->string('harga')->nullable();
             $table->decimal('maksimal_kpr', 15, 2)->nullable();
             $table->string('nama_konsumen')->nullable();
             $table->string('nik', 16)->nullable();

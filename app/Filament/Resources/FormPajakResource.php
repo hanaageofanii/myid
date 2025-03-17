@@ -135,6 +135,7 @@ class FormPajakResource extends Resource
                 ->nullable()
                 ->label('Harga')
                 ->reactive()
+                ->prefix('Rp')
                 ->afterStateUpdated(function ($state, callable $set, callable $get) {
                     $npoptkp = $state >= 80000000 ? 80000000 : 0;
                     $set('npoptkp', $npoptkp);
@@ -146,22 +147,47 @@ class FormPajakResource extends Resource
                     ->nullable()
                     ->label('NPOPTKP')
                     ->reactive()
+                    ->prefix('Rp')
                     ->afterStateUpdated(function ($state, callable $set, callable $get) {
                         $harga = $get('harga');
                         $set('jumlah_bphtb', max(0.05 * ($harga - $state), 0));
                     }),
 
-                Forms\Components\TextInput::make('jumlah_bphtb')->numeric()->nullable()->label('Jumlah BPHTB'),
+                Forms\Components\TextInput::make('jumlah_bphtb')
+                ->numeric()
+                ->nullable()
+                ->label('Jumlah BPHTB')
+                ->prefix('Rp'),
 
                 Forms\Components\Select::make('tarif_pph')
                 ->label('Tarif PPH')
-                ->options(['1%' => '1 %', '2.5%' => '2.5 %'])
+                ->options([
+                    '1' => '1 %',
+                    '2.5' => '2.5 %',
+                ])
+                ->required()
                 ->reactive()
-                ->afterStateUpdated(fn ($state, callable $set, callable $get) => 
-                    $set('jumlah_pph', max($get('harga') * ((float) rtrim($state, '%')) / 100, 0))
-                ),
+                ->afterStateUpdated(function (callable $set, callable $get) {
+                    $harga = (float) str_replace(['.', ','], ['', ''], $get('harga') ?? '0');
+            
+                    $tarif_pph_raw = $get('tarif_pph') ?? '0';
+                    $tarif_pph = (float) $tarif_pph_raw / 100;
+                    
+                    if (is_numeric($harga) && is_numeric($tarif_pph)) {
+                        $jumlah_pph = $harga * $tarif_pph;
+                    } else {
+                        $jumlah_pph = 0;
+                    }
+            
+                    $set('jumlah_pph', $jumlah_pph);
+                }),
 
-                Forms\Components\TextInput::make('jumlah_pph')->numeric()->nullable()->label('Jumlah PPH'),
+                Forms\Components\TextInput::make('jumlah_pph')
+                ->numeric()
+                ->nullable()
+                ->label('Jumlah PPH')                
+                ->prefix('Rp'),
+                
                 Forms\Components\TextInput::make('kode_billiing_pph')->numeric()->nullable()->label('Kode Billing PPH'),
                 Forms\Components\DatePicker::make('tanggal_bayar_pph')->nullable()->label('Tanggal Pembayaran PPH'),
                 Forms\Components\TextInput::make('ntpnpph')->numeric()->nullable()->label('NTPN PPH'),
