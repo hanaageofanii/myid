@@ -91,11 +91,13 @@ class FormDpResource extends Resource
         
                 TextInput::make('harga')
                     ->label('Harga')
+                    ->prefix('Rp')
                     ->dehydrated()
                     ->numeric(),
         
                 TextInput::make('max_kpr')
                     ->label('Maksimal KPR')
+                    // ->prefix('Rp')
                     ->dehydrated()
                     ->numeric(),
             ]),        
@@ -106,6 +108,7 @@ class FormDpResource extends Resource
                     ->required()
                     ->label('SBUM')
                     ->numeric()
+                    ->prefix('Rp')
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set, callable $get) {
                         $harga = $get('harga') ?? 0;
@@ -121,12 +124,14 @@ class FormDpResource extends Resource
 
                 TextInput::make('sisa_pembayaran')
                     ->required()
+                    ->prefix('Rp')
                     ->numeric()
                     ->label('Sisa Pembayaran'),
 
                 TextInput::make('dp')
                     ->required()
                     ->numeric()
+                    ->prefix('Rp')
                     ->label('Uang Muka (DP)')
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set, callable $get) {
@@ -137,6 +142,7 @@ class FormDpResource extends Resource
 
                 TextInput::make('laba_rugi')
                     ->required()
+                    ->prefix('Rp')
                     ->numeric()
                     ->label('Laba Rugi'),
 
