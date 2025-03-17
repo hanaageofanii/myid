@@ -92,14 +92,12 @@ class FormDpResource extends Resource
                 TextInput::make('harga')
                     ->label('Harga')
                     ->prefix('Rp')
-                    ->dehydrated()
-                    ->numeric(),
+                    ->dehydrated(),
         
                 TextInput::make('max_kpr')
                     ->label('Maksimal KPR')
                     // ->prefix('Rp')
-                    ->dehydrated()
-                    ->numeric(),
+                    ->dehydrated(),
             ]),        
 
             Fieldset::make('Pembayaran')
@@ -107,7 +105,6 @@ class FormDpResource extends Resource
                 TextInput::make('sbum')
                     ->required()
                     ->label('SBUM')
-                    ->numeric()
                     ->prefix('Rp')
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set, callable $get) {
@@ -125,12 +122,10 @@ class FormDpResource extends Resource
                 TextInput::make('sisa_pembayaran')
                     ->required()
                     ->prefix('Rp')
-                    ->numeric()
                     ->label('Sisa Pembayaran'),
 
                 TextInput::make('dp')
                     ->required()
-                    ->numeric()
                     ->prefix('Rp')
                     ->label('Uang Muka (DP)')
                     ->reactive()
@@ -143,7 +138,6 @@ class FormDpResource extends Resource
                 TextInput::make('laba_rugi')
                     ->required()
                     ->prefix('Rp')
-                    ->numeric()
                     ->label('Laba Rugi'),
 
                 DatePicker::make('tanggal_terima_dp')
