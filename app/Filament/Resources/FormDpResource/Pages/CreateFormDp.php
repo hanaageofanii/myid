@@ -7,11 +7,11 @@ use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Notifications\Notification;
 
+
 class CreateFormDp extends CreateRecord
 {
     protected static string $resource = FormDpResource::class;
-
-    protected static ?string $title = "Tambah Data Uang Muka";
+    protected static ?string $title = "Buat Data DP";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
@@ -25,12 +25,19 @@ class CreateFormDp extends CreateRecord
         ->color('warning');
     }
     
+    protected function getCancelFormAction() : Actions\Action
+    {
+        return parent::getCancelFormAction()
+        ->label('Batal')
+        ->color('danger');
+    }
+
     protected function getCreatedNotification(): ?Notification
     {
         return Notification::make()
             ->success()
-            ->title('Data Disimpan')
-            ->body('Data telah berhasil disimpan.');
+            ->title('Data Uang Muka Disimpan')
+            ->body('Data Uang Muka telah berhasil disimpan.');
     }
 
     protected function getSaveFormAction(): Actions\Action
@@ -39,3 +46,4 @@ class CreateFormDp extends CreateRecord
         ->label('Simpan');
     }
 }
+
