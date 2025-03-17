@@ -154,20 +154,23 @@ class FormPpnResource extends Resource
                     ->prefix('Rp'),
 
 
-                Forms\Components\Select::make('status_ppn')
+                    Forms\Components\Select::make('status_ppn')
                     ->options([
                         'dtp' => 'DTP',
                         'dtp_sebagian' => 'DTP Sebagian',
                         'dibebaskan' => 'Dibebaskan',
                         'bayar' => 'Bayar',
                     ])
-                    ->required()
                     ->label('Status PPN')
                     ->searchable()
-                    ->native(false),
-
-
-                Forms\Components\DatePicker::make('tanggal_bayar_ppn')->nullable()->label('Tanggal Faktur'),
+                    ->native(false)
+                    ->reactive(),
+                
+                Forms\Components\DatePicker::make('tanggal_bayar_ppn')
+                    ->nullable()
+                    ->label('Tanggal Faktur')
+                    ->required(fn (callable $get) => $get('status_ppn') === 'bayar'),
+                                
                 Forms\Components\TextInput::make('ntpn_ppn')->nullable()->label('BTPN PPN'),
 
                 Forms\Components\Fieldset::make('Dokumen')
