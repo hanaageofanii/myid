@@ -20,7 +20,7 @@ class PajakStats extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Card::make('Total Data Sertifikat', form_pajak::count())
+            Card::make('Total Data Validasi', form_pajak::count())
             ->extraAttributes([
                 'style' => 'background-color: #FFC107; border-color: #234C63;'
             ]), 
@@ -49,6 +49,14 @@ class PajakStats extends BaseWidget
                 'style' => 'background-color:#FFC107; form_pajak; border-color: #234C63;'
             ]),
             Card::make('Jumlah Validasi Unit Kios', form_pajak::where('kavling', 'kios')->count())
+            ->extraAttributes([
+                'style' => 'background-color:#FFC107; form_pajak; border-color: #234C63;'
+            ]),
+            Card::make('Jumlah Validasi Tarif 1%', form_pajak::where('tarif_pph', '1%')->count())
+            ->extraAttributes([
+                'style' => 'background-color:#FFC107; form_pajak; border-color: #234C63;'
+            ]),
+            Card::make('Jumlah Validasi Tarif 2.5%', form_pajak::where('tarif_pph', '2.5%')->count())
             ->extraAttributes([
                 'style' => 'background-color:#FFC107; form_pajak; border-color: #234C63;'
             ]),
