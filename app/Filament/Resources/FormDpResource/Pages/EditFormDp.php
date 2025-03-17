@@ -10,7 +10,7 @@ class EditFormDp extends EditRecord
 {
     protected static string $resource = FormDpResource::class;
 
-    protected static ?string $title = "Ubah Data";
+    protected static ?string $title = "Ubah Data Form DP";
 
     protected function getHeaderActions(): array
     {
