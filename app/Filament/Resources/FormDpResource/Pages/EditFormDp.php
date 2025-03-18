@@ -19,9 +19,6 @@ class EditFormDp extends EditRecord
             ->label('Hapus Data Uang Muka')
             ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
             ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?"),
-
-
-
         ];
     }
 
