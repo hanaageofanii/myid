@@ -16,7 +16,10 @@ class EditGCV extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Data GCV'),
+            ->label('Hapus Data GCV')
+            ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
+            ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus siteplan {$record->siteplan}?"),
+
         ];
     }
 

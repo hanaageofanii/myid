@@ -16,7 +16,11 @@ class EditAudit extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Data Audit'),
+            ->label('Hapus Data Audit')
+            ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
+            ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?"),
+
+
         ];
     }
 

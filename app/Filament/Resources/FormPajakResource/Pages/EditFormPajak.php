@@ -16,7 +16,11 @@ class EditFormPajak extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Data Validasi PPH'),
+            ->label('Hapus Data Validasi')
+            ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
+            ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?"),
+
+
         ];
     }
 

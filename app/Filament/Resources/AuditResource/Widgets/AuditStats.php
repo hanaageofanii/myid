@@ -37,10 +37,17 @@ class AuditStats extends BaseWidget
                 ->extraAttributes([
                     'style' => 'background-color: #FFC85B; border-color: #234C63;'
                 ]),            
-                Card::make('Status Belum Akad', Audit::whereNull('status')->count())
+                Card::make('Status Belum Akad', Audit::whereNotIn('status', ['Stock', 'Akad'])
+                ->orWhereNull('status') // Menyertakan nilai NULL
+                ->orWhere('status', '')  // Menyertakan string kosong
+                ->count())
                 ->extraAttributes([
                     'style' => 'background-color: #FFC85B; border-color: #234C63;'
-                ]),            
+                ]),
+                Card::make('Status Stock', Audit::where('status', 'stock')->count())
+                ->extraAttributes([
+                    'style' => 'background-color: #FFC85B; border-color: #234C63;'
+                ]),               
             ];
         }
     }

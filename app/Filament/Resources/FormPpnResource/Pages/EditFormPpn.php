@@ -17,7 +17,10 @@ class EditFormPpn extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Data'),
+            ->label('Hapus Data Faktur')
+            ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
+            ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?"),
+
         ];
     }
 

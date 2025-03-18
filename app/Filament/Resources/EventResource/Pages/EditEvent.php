@@ -16,7 +16,11 @@ class EditEvent extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Event'),
+            ->label('Hapus Event')
+            ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->name}")
+            ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->name}?"),
+
+
         ];
     }
 
