@@ -133,7 +133,7 @@ class FormKprResource extends Resource
                 Forms\Components\DatePicker::make('tanggal_booking')->nullable()->label('Tanggal Booking'),
                 Forms\Components\DatePicker::make('tanggal_akad')->nullable()->label('Tanggal Akad'),
                 Forms\Components\TextInput::make('harga')->numeric()->nullable()->label('Harga')->prefix('Rp'),
-                Forms\Components\TextInput::make('maksimal_kpr')->numeric()->nullable()->label('Maksimal KPR'),
+                Forms\Components\TextInput::make('maksimal_kpr')->nullable()->label('Maksimal KPR'),
                 Forms\Components\TextInput::make('nama_konsumen')->nullable()->label('Nama Konsumen'),
                 Forms\Components\TextInput::make('nik')->nullable()->label('NIK'),
                 Forms\Components\TextInput::make('npwp')->nullable()->label('NPWP'),

@@ -76,7 +76,7 @@ class FormDpResource extends Resource
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
                         if ($state) {
-                            $data = form_kpr::find($state); 
+                            $data = form_kpr::where('siteplan', $state)->first(); 
                             if ($data) {
                                 $set('nama_konsumen', $data->nama_konsumen);
                                 $set('harga', $data->harga);
@@ -121,6 +121,7 @@ class FormDpResource extends Resource
 
                 TextInput::make('sisa_pembayaran')
                     ->required()
+                    ->reactive()
                     ->prefix('Rp')
                     ->label('Sisa Pembayaran'),
 
@@ -137,6 +138,7 @@ class FormDpResource extends Resource
 
                 TextInput::make('laba_rugi')
                     ->required()
+                    ->reactive()
                     ->prefix('Rp')
                     ->label('Laba Rugi'),
 
@@ -171,12 +173,36 @@ class FormDpResource extends Resource
             ->columns([
                 TextColumn::make('siteplan')->searchable()->label('Blok'),
                 TextColumn::make('nama_konsumen')->searchable()->label('Nama Konsumen'),
-                TextColumn::make('harga')->searchable()->label('Harga'),
-                TextColumn::make('max_kpr')->searchable()->label('Max KPR'),
-                TextColumn::make('sbum')->searchable()->label('SBUM'),
-                TextColumn::make('sisa_pembayaran')->searchable()->label('Sisa Pembayaran'),
-                TextColumn::make('dp')->searchable()->label('Uang Muka'),
-                TextColumn::make('laba_rugi')->searchable()->label('Laba Rugi Uang Muka'),
+                TextColumn::make('harga')
+                ->searchable()
+                ->label('Harga')
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),                
+                
+                TextColumn::make('max_kpr')
+                ->searchable()
+                ->label('Max KPR')
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+
+                TextColumn::make('sbum')
+                    ->searchable()
+                    ->label('SBUM')
+                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+
+                TextColumn::make('sisa_pembayaran')
+                    ->searchable()
+                    ->label('Sisa Pembayaran')
+                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                
+                TextColumn::make('dp')
+                    ->searchable()
+                    ->label('Uang Muka')
+                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                
+                TextColumn::make('laba_rugi')
+                    ->searchable()
+                    ->label('Laba Rugi Uang Muka')
+                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+
                 TextColumn::make('tanggal_terima_dp')
                     ->searchable()
                     ->label('Tanggal Terima DP')
@@ -277,12 +303,14 @@ class FormDpResource extends Resource
                                 ->body('Data KPR telah berhasil disimpan.')),                    
                         DeleteAction::make()
                         ->color('danger')
-                        ->label('Hapus')
+                        ->label(fn ($record) => "Hapus {$record->siteplan}")
+                        ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
+                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus siteplan {$record->siteplan}?")
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR Dihapus')
-                                ->body('Data KPR telah berhasil dihapus.')),
+                                ->title('Data Uang Muka Dihapus')
+                                ->body('Data Uang Muka telah berhasil dihapus.')),                            
                     // RestoreAction::make()
                     //     ->label('Pulihkan')
                     //     ->successNotificationTitle('Data berhasil dipulihkan')

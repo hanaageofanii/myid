@@ -16,7 +16,10 @@ class EditFormDp extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Data'),
+            ->label(fn ($record) => "Hapus {$record->siteplan}") 
+            ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
+            ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus siteplan {$record->siteplan}?"),
+
         ];
     }
 
