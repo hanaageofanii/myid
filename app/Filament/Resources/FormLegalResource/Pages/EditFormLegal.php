@@ -19,8 +19,6 @@ class EditFormLegal extends EditRecord
             ->label('Hapus Data Sertifikat')
             ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
             ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?"),
-
-,
         ];
     }
 
