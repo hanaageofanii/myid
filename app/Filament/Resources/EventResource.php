@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Actions;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Notifications\Notification;
 
 class EventResource extends Resource
 {
@@ -80,7 +82,16 @@ class EventResource extends Resource
             ->filters([])
             ->actions([
                 Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                DeleteAction::make()
+                        ->color('danger')
+                        ->label(fn ($record) => "Hapus Event {$record->name}")
+                        ->modalHeading(fn ($record) => "Konfirmasi Hapus Event {$record->name}")
+                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus Event {$record->siteplan}?")
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data KPR Dihapus')
+                                ->body('Data KPR telah berhasil dihapus.')),
             ])
             ->bulkActions([
                 Actions\DeleteBulkAction::make(),

@@ -475,15 +475,17 @@ class FormKprResource extends Resource
                                 ->success()
                                 ->title('Data KPR Diubah')
                                 ->body('Data KPR telah berhasil disimpan.')),                    
-                        DeleteAction::make()
+                    DeleteAction::make()
                         ->color('danger')
-                        ->label('Hapus')
+                        ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
+                        ->modalHeading(fn ($record) => "Konfirmasi Blok {$record->siteplan}")
+                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?")
                         ->successNotification(
                             Notification::make()
                                 ->success()
                                 ->title('Data KPR Dihapus')
-                                ->body('Data KPR telah berhasil dihapus.')),
-                    // RestoreAction::make()
+                                ->body('Data KPR telah berhasil dihapus.')),                            
+                            // RestoreAction::make()
                     //     ->label('Pulihkan')
                     //     ->successNotificationTitle('Data berhasil dipulihkan')
                     //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),

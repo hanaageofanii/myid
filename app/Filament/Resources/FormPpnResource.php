@@ -356,14 +356,16 @@ class FormPpnResource extends Resource
                                 ->success()
                                 ->title('Data Faktur Diubah')
                                 ->body('Data Faktur telah berhasil disimpan.')),                    
-                        DeleteAction::make()
-                        ->color('danger')
-                        ->label('Hapus')
-                        ->successNotification(
-                            Notification::make()
-                                ->success()
-                                ->title('Data Faktur Dihapus')
-                                ->body('Data Faktur telah berhasil dihapus.')),
+                                DeleteAction::make()
+                                ->color('danger')
+                                ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
+                                ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok {$record->siteplan}")
+                                ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?")
+                                ->successNotification(
+                                    Notification::make()
+                                        ->success()
+                                        ->title('Data Faktur Dihapus')
+                                        ->body('Data Faktur telah berhasil dihapus.')),
                     Tables\Actions\RestoreAction::make()
                     ->color('info')
                     ->label('Kembalikan Data')
@@ -406,7 +408,8 @@ class FormPpnResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Data Faktur')
-                                ->body('Data Faktur berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                                ->body('Data Faktur berhasil dihapus secara permanen.'))                        
+                                ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
                 
                     BulkAction::make('export')

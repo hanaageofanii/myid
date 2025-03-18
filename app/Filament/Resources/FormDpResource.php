@@ -299,13 +299,13 @@ class FormDpResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR Diubah')
-                                ->body('Data KPR telah berhasil disimpan.')),                    
+                                ->title('Data Uang Muka Diubah')
+                                ->body('Data Uang Muka telah berhasil disimpan.')),                    
                         DeleteAction::make()
                         ->color('danger')
-                        ->label(fn ($record) => "Hapus {$record->siteplan}")
-                        ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
-                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus siteplan {$record->siteplan}?")
+                        ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
+                        ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok{$record->siteplan}")
+                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?")
                         ->successNotification(
                             Notification::make()
                                 ->success()
@@ -321,8 +321,8 @@ class FormDpResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data KPR')
-                            ->body('Data KPR berhasil dikembalikan.')
+                            ->title('Data Uang')
+                            ->body('Data Uang berhasil dikembalikan.')
                     ),
                     ForceDeleteAction::make()
                     ->color('primary')
@@ -330,8 +330,8 @@ class FormDpResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data KPR')
-                            ->body('Data KPR berhasil dihapus secara permanen.')
+                            ->title('Data Uang')
+                            ->body('Data Uang berhasil dihapus secara permanen.')
                     ),
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
@@ -344,8 +344,8 @@ class FormDpResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR')
-                                ->body('Data KPR berhasil dihapus.'))                        
+                                ->title('Data Uang')
+                                ->body('Data Uang berhasil dihapus.'))                        
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
                 
@@ -356,8 +356,8 @@ class FormDpResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR')
-                                ->body('Data KPR berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                                ->title('Data Uang')
+                                ->body('Data Uang berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
                 
                     BulkAction::make('export')
@@ -374,8 +374,8 @@ class FormDpResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data KPR')
-                                ->body('Data KPR berhasil dikembalikan.')),
+                                ->title('Data Uang Muka')
+                                ->body('Data Uang Muka berhasil dikembalikan.')),
                 ]);
                 
     }

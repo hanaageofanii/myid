@@ -221,13 +221,15 @@ class AuditResource extends Resource
                                 ->title('Data Audit Diperbarui')
                                 ->body('Data Audit telah berhasil disimpan.')),                    
                     DeleteAction::make()
-                        ->color('danger')
-                        ->label('Hapus')
-                        ->successNotification(
-                            Notification::make()
-                                ->success()
-                                ->title('Data Audit Dihapus')
-                                ->body('Data Audit telah berhasil dihapus.')),
+                                ->color('danger')
+                                ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
+                                ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok {$record->siteplan}")
+                                ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?")
+                                ->successNotification(
+                                    Notification::make()
+                                        ->success()
+                                        ->title('Data Audit Dihapus')
+                                        ->body('Data Audit telah berhasil dihapus.')),
                     // RestoreAction::make()
                     //     ->label('Pulihkan')
                     //     ->successNotificationTitle('Data berhasil dipulihkan')

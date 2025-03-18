@@ -283,14 +283,16 @@ class GCVResource extends Resource
                                 ->success()
                                 ->title('Data GCV Diperbarui')
                                 ->body('Data GCV telah berhasil disimpan.')),                    
-                        DeleteAction::make()
-                        ->color('danger')
-                        ->label('Hapus')
-                        ->successNotification(
-                            Notification::make()
-                                ->success()
-                                ->title('Data GCV Dihapus')
-                                ->body('Data GCV telah berhasil dihapus.')),
+                                DeleteAction::make()
+                                ->color('danger')
+                                ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
+                                ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok {$record->siteplan}")
+                                ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?")
+                                ->successNotification(
+                                    Notification::make()
+                                        ->success()
+                                        ->title('Data GCV Dihapus')
+                                        ->body('Data GCV telah berhasil dihapus.')),
                     // RestoreAction::make()
                     //     ->label('Pulihkan')
                     //     ->successNotificationTitle('Data berhasil dipulihkan')
