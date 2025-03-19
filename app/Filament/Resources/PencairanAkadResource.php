@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PencairanAkadResource\Pages;
 use App\Filament\Resources\PencairanAkadResource\RelationManagers;
+use App\Filament\Resources\PencairanAkadResource\Widgets\pencairan_akad;
 use App\Models\PencairanAkad;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PencairanAkadResource extends Resource
 {
-    protected static ?string $model = PencairanAkad::class;
+    protected static ?string $model = pencairan_akad::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
