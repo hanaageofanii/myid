@@ -145,8 +145,42 @@ class PencairanAkadResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('siteplan')->searchable()->label('Blok'),
+                TextColumn::make('bank')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'btn_cikarang' => 'BTN Cikarang',
+                        'btn_bekasi' => 'BTN Bekasi',
+                        'btn_karawang' => 'BTN Karawang',
+                        'bjb_syariah' => 'BJB Syariah',
+                        'bjb_jababeka' => 'BJB Jababeka',
+                        'btn_syariah' => 'BTN Syariah',
+                        'brii_bekasi' => 'BRI Bekasi',
+                default => ucfirst($state), 
+            })
+            ->sortable()
+            ->searchable()
+            ->label('Bank'),
+            TextColumn::make('nama_konsumen')->searchable()->label('Nama Konsumen'),
+            TextColumn::make('max_kpr')
+            ->searchable()
+            ->label('Max KPR')
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('tanggal_pencairan')
+            ->searchable()
+            ->label('Tanggal Pencairan')
+            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+            TextColumn::make('nilai_pencairan')
+            ->searchable()
+            ->label('Nilai Pencairan')
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('dana_jaminan')
+            ->searchable()
+            ->label('Nilai Pencairan')            
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+
+
             ])
+
             ->filters([
                 //
             ])
