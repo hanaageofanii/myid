@@ -11,7 +11,7 @@ use Filament\Notifications\Notification;
 class CreatePencairanAkad extends CreateRecord
 {
     protected static string $resource = PencairanAkadResource::class;
-    protected static ?string $title = "Buat Data Pencairan";
+    protected static ?string $title = "Buat Data Pencairan Akad";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
@@ -36,8 +36,8 @@ class CreatePencairanAkad extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Data Pencairan Disimpan')
-            ->body('Data Pencairan telah berhasil disimpan.');
+            ->title('Data Pencairan Akad Disimpan')
+            ->body('Data Pencairan Akad telah berhasil disimpan.');
     }
 
     protected function getSaveFormAction(): Actions\Action
@@ -46,5 +46,4 @@ class CreatePencairanAkad extends CreateRecord
         ->label('Simpan');
     }
 }
-
 

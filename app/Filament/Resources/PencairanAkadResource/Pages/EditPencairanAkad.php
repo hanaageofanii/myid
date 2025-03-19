@@ -10,13 +10,13 @@ class EditPencairanAkad extends EditRecord
 {
     protected static string $resource = PencairanAkadResource::class;
 
-    protected static ?string $title = "Ubah Data Pencairan";
+    protected static ?string $title = "Ubah Data Pencairan Akad";
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Data Pencairan')
+            ->label('Hapus Data Pencairan Akad')
             ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
             ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?"),
 

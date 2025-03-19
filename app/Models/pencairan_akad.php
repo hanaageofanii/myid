@@ -20,5 +20,4 @@ class pencairan_akad extends Model
         "dana_jaminan",
         "up_rekening_koran",
     ];
-
-    }
+}

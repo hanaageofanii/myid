@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\PencairanAkadResource\Pages;
 
 use App\Filament\Resources\PencairanAkadResource;
-use App\Models\pencairan_akad;
+use App\Filament\Resources\PencairanAkadResource\Widgets\pencairan_akad;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -15,7 +15,7 @@ class ListPencairanAkads extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->label('Buat Data Pencairan'),
+            ->label('Buat Data Pencairan Akad'),
         ];
     }
     protected function getHeaderWidgets(): array

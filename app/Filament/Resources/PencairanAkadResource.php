@@ -4,8 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PencairanAkadResource\Pages;
 use App\Filament\Resources\PencairanAkadResource\RelationManagers;
-use App\Filament\Resources\PencairanAkadResource\Widgets\pencairan_akad;
-use App\Models\form_kpr;
+use App\Models\pencairan_akad;
 use App\Models\PencairanAkad;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -47,43 +46,93 @@ use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Actions\ForceDeleteAction;
+use App\Models\form_kpr;
 use App\Models\FormKpr;
 use App\Models\Audit;
 use App\Filament\Resources\GCVResource;
 use App\Models\GCV;
 use App\Filament\Resources\KPRStats;
-use App\Models\pencairan_akad as ModelsPencairan_akad;
 
 class PencairanAkadResource extends Resource
 {
-    protected static ?string $model = ModelsPencairan_akad::class;
+    protected static ?string $model = pencairan_akad::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $title = "Form Input Data Pencairan Akad";
+    protected static ?string $navigationGroup = "Legal";
+    protected static ?string $pluralLabel = "Data Pencairan Akad";
+    protected static ?string $navigationLabel = "Pencairan Akad";
+    protected static ?string $pluralModelLabel = 'Daftar Pencairan';
+    protected static ?string $navigationIcon = 'heroicon-o-folder-arrow-down';
     public static function form(Form $form): Form
     {
-        return $form
+        return $form->schema([
+            Fieldset::make('Data Konsumen')
             ->schema([
-                Fieldset::make('Data Konsumen')
-                ->schema([
-                    Select::make('siteplan')
-                        ->label('Site Plan')
-                        ->options(fn () => form_kpr::pluck('siteplan', 'siteplan')) 
-                        ->searchable()
-                        ->reactive()
-                        ->afterStateUpdated(function ($state, callable $set) {
-                            if ($state) {
-                                $data = form_kpr::where('siteplan', $state)->first(); 
-                                if ($data) {
-                                    $set('nama_konsumen', $data->nama_konsumen);
-                                    $set('harga', $data->harga);
-                                    $set('max_kpr', $data->maksimal_kpr);
-                                }
+                Select::make('siteplan')
+                    ->label('Site Plan')
+                    ->options(fn () => form_kpr::pluck('siteplan', 'siteplan')) 
+                    ->searchable()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if ($state) {
+                            $data = form_kpr::where('siteplan', $state)->first(); 
+                            if ($data) {
+                                $set('nama_konsumen', $data->nama_konsumen);
+                                $set('harga', $data->harga);
+                                $set('max_kpr', $data->maksimal_kpr);
                             }
-                        }),
-                    ]),
-                ]);
+                        }
+                    }),
+        
+                Select::make('bank')
+                    ->options([
+                        'btn_cikarang' => 'BTN Cikarang',
+                        'btn_bekasi' => 'BTN Bekasi',
+                        'btn_karawang' => 'BTN Karawang',
+                        'bjb_syariah' => 'BJB Syariah',
+                        'bjb_jababeka' => 'BJB Jababeka',
+                        'btn_syariah' => 'BTN Syariah',
+                        'bri_bekasi' => 'BRI Bekasi',
+                    ])
+                    ->required()
+                    ->label('Bank'),
+                
+                    TextInput::make('nama_konsumen')
+                    ->label('Nama Konsumen')
+                    ->dehydrated(),
+                
+                TextInput::make('max_kpr')
+                    ->label('Maksimal KPR')
+                    ->prefix('Rp')
+                    ->dehydrated(),
+            ]),  
+            
+            Fieldset::make('Pembayaran')
+            ->schema([
+                DatePicker::make('tanggal_pencairan')
+                ->required()
+                ->label('Tanggal Pencarian Akad'),
 
+            TextInput::make('nilai_pencairan')
+                ->label('Nilai Pencairan')
+                ->prefix('Rp')
+                ->dehydrated(),
+            
+            TextInput::make('dana_jaminan')
+                ->label('Dana Jaminan')
+                ->prefix('Rp')
+                ->dehydrated(),
+
+            ]),
+
+
+
+            Fieldset::make('Dokumen')
+                ->schema([
+                    FileUpload::make('up_rekening_koran')->disk('public')->nullable()->label('Rekening Koran')
+                        ->downloadable()->previewable(false),
+                ]),
+        ]);
     }
 
     public static function table(Table $table): Table
