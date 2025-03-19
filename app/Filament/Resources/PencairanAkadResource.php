@@ -78,7 +78,7 @@ class PencairanAkadResource extends Resource
                             $data = form_kpr::where('siteplan', $state)->first(); 
                             if ($data) {
                                 $set('nama_konsumen', $data->nama_konsumen);
-                                $set('harga', $data->harga);
+                                $set('bank', $data->bank);
                                 $set('max_kpr', $data->maksimal_kpr);
                             }
                         }
@@ -92,7 +92,7 @@ class PencairanAkadResource extends Resource
                         'bjb_syariah' => 'BJB Syariah',
                         'bjb_jababeka' => 'BJB Jababeka',
                         'btn_syariah' => 'BTN Syariah',
-                        'bri_bekasi' => 'BRI Bekasi',
+                        'brii_bekasi' => 'BRI Bekasi',
                     ])
                     ->required()
                     ->label('Bank'),
@@ -104,6 +104,9 @@ class PencairanAkadResource extends Resource
                 TextInput::make('max_kpr')
                     ->label('Maksimal KPR')
                     ->prefix('Rp')
+                    ->reactive()
+                    ->afterStateUpdated(fn ($state, callable $set, $get) => 
+                    $set('dana_jaminan', max(0, (int) $state - (int) $get('nilai_pencairan'))))
                     ->dehydrated(),
             ]),  
             
@@ -116,13 +119,16 @@ class PencairanAkadResource extends Resource
             TextInput::make('nilai_pencairan')
                 ->label('Nilai Pencairan')
                 ->prefix('Rp')
-                ->dehydrated(),
+                ->dehydrated()
+                ->afterStateUpdated(fn ($state, callable $set, $get) => 
+        $set('dana_jaminan', max(0, (int) $get('max_kpr') - (int) $state)))
+                ->reactive(),
             
-            TextInput::make('dana_jaminan')
+                TextInput::make('dana_jaminan')
                 ->label('Dana Jaminan')
                 ->prefix('Rp')
+                ->reactive() 
                 ->dehydrated(),
-
             ]),
 
 
