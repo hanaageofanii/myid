@@ -1,16 +1,24 @@
 <?php
 
-namespace App\Filament\Resources\PencairanAkadResource\Widgets;
+namespace App\Models;
 
-use Filament\Widgets\StatsOverviewWidget as BaseWidget;
-use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class pencairan_akad extends BaseWidget
+class pencairan_akad extends Model
 {
-    protected function getStats(): array
-    {
-        return [
-            //
-        ];
+    use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        "siteplan",
+        "bank",
+        "nama_konsumen",
+        "max_kpr",
+        "tanggal_pencairan",
+        "nilai_pencairan",
+        "dana_jaminan",
+        "up_rekening_koran",
+    ];
+
     }
-}

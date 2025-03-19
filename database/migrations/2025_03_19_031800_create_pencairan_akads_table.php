@@ -11,17 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('pencairan_akad', function (Blueprint $table) {
+        Schema::create('pencairan_akads', function (Blueprint $table) {
             $table->id();
             $table->string('siteplan')->nullable();
-            $table->enum('bank', ['btn_cikarang','btn_bekasi','btn_karawang','bjb_syariah','bjb_jababeka','btn_syariah','bri_bekasi'])->nullable();
+            $table->enum('bank', ['btn_cikarang','btn_bekas','btn_karawang','bjb_syariah','bjb_jababeka','btn_syariah','bri_bekasi'])->nullable();
             $table->string('nama_konsumen')->nullable();
             $table->string('max_kpr')->nullable();
             $table->date('tanggal_pencairan')->nullable();
             $table->string('nilai_pencairan')->nullable();
             $table->string('dana_jaminan')->nullable();
-
-            $table->string('up_kode_billing')->nullable()->nullable();            
+            $table->string('up_rekening_koran')->nullable();
             $table->timestamps();
         });
     }
@@ -31,8 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('pencairan_akad', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('pencairan_akads');
     }
 };

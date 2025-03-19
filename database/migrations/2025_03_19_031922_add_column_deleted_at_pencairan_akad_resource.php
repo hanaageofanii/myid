@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('dajam', function (Blueprint $table) {
-            //
-        });
+        Schema::table('pencairan_akads', function (Blueprint $table) {
+        $table ->softDeletes();
+});
     }
 
     /**
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('dajam', function (Blueprint $table) {
+        Schema::table('pencairan_akads', function (Blueprint $table) {
             //
         });
     }
