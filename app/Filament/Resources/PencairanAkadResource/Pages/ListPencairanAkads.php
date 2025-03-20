@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\PencairanAkadResource\Pages;
 
 use App\Filament\Resources\PencairanAkadResource;
-use App\Filament\Resources\PencairanAkadResource\Widgets\pencairan_akad;
+use App\Filament\Resources\PencairanAkadResource\Widgets\AkadStats;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -21,7 +21,7 @@ class ListPencairanAkads extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            pencairan_akad::class,
+            AkadStats::class,
         ];
     }
 

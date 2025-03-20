@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PencairanAkadResource\Pages;
 use App\Filament\Resources\PencairanAkadResource\RelationManagers;
-use App\Models\pencairan_akad;
 use App\Models\PencairanAkad;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -55,14 +54,14 @@ use App\Filament\Resources\KPRStats;
 
 class PencairanAkadResource extends Resource
 {
-    protected static ?string $model = pencairan_akad::class;
+    protected static ?string $model = PencairanAkad::class;
 
     protected static ?string $title = "Form Input Data Pencairan Akad";
     protected static ?string $navigationGroup = "Legal";
     protected static ?string $pluralLabel = "Data Pencairan Akad";
     protected static ?string $navigationLabel = "Pencairan Akad";
     protected static ?string $pluralModelLabel = 'Daftar Pencairan';
-    protected static ?string $navigationIcon = 'heroicon-o-folder-arrow-down';
+    protected static ?string $navigationIcon = 'heroicon-o-cloud-arrow-up';
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -175,25 +174,182 @@ class PencairanAkadResource extends Resource
             ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dana_jaminan')
             ->searchable()
-            ->label('Nilai Pencairan')            
+            ->label('Dana Jaminan')            
             ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
 
 
             ])
 
+            ->defaultSort('siteplan', 'asc')
+            ->headerActions([
+                Action::make('count')
+                    ->label(fn ($livewire): string => 'Total: ' . $livewire->getFilteredTableQuery()->count())
+                    ->disabled(),
+            ])
             ->filters([
-                //
-            ])
+                TrashedFilter::make()
+                ->label('Data yang dihapus') 
+                ->native(false),
+
+                Filter::make('bank')
+                    ->label('Bank')
+                    ->form([
+                        Select::make('bank')
+                            ->options([
+                                'btn_cikarang' => 'BTN Cikarang',
+                                'btn_bekasi' => 'BTN Bekasi',
+                                'btn_karawang' => 'BTN Karawang',
+                                'bjb_syariah' => 'BJB Syariah',
+                                'bjb_jababeka' => 'BJB Jababeka',
+                                'btn_syariah' => 'BTN Syariah',
+                                'brii_bekasi' => 'BRI Bekasi',
+                            ])
+                            ->nullable()
+                            ->native(false),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when(isset($data['bank']), fn ($q) =>
+                            $q->where('bank', $data['bank'])
+                        )
+                    ),
+                    Filter::make('created_from')
+                    ->label('Dari Tanggal')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari')
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_from'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '>=', $data['created_from'])
+                        )
+                    ),
+                
+                Filter::make('created_until')
+                    ->label('Sampai Tanggal')
+                    ->form([
+                        DatePicker::make('created_until')
+                            ->label('Sampai')
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_until'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '<=', $data['created_until'])
+                        )
+                    ),                
+            ], layout: FiltersLayout::AboveContent)
+            ->filtersFormMaxHeight('400px')
+            ->filtersFormColumns(4)
+            ->filtersFormWidth(MaxWidth::FourExtraLarge)
+                                    
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+                ActionGroup::make([
+                    ViewAction::make()
+                        ->color('success')
+                        ->label('Lihat'),
+                    EditAction::make()
+                        ->color('info')
+                        ->label('Ubah')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Pencairan Akad Diubah')
+                                ->body('Data Pencarian Akad telah berhasil disimpan.')),                    
+                        DeleteAction::make()
+                        ->color('danger')
+                        ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
+                        ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok{$record->siteplan}")
+                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?")
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Pencarian Akad Dihapus')
+                                ->body('Data Pencarian Akad telah berhasil dihapus.')),                            
+                    // RestoreAction::make()
+                    //     ->label('Pulihkan')
+                    //     ->successNotificationTitle('Data berhasil dipulihkan')
+                    //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
+                    RestoreAction::make()
+                    ->color('info')
+                    ->label('Kembalikan Data')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Pencarian Akad')
+                            ->body('Data Pencarian Akad berhasil dikembalikan.')
+                    ),
+                    ForceDeleteAction::make()
+                    ->color('primary')
+                    ->label('Hapus Permanen')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Pencarian Akad')
+                            ->body('Data Pencarian Akad berhasil dihapus secara permanen.')
+                    ),
+                    ])->button()->label('Action'),
+                ], position: ActionsPosition::BeforeCells)
+            
+                ->groupedBulkActions([
+                    BulkAction::make('delete')
+                        ->label('Hapus')
+                        ->icon('heroicon-o-trash') 
+                        ->color('danger')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Pencarian Akadg')
+                                ->body('Data Pencarian Akad berhasil dihapus.'))                        
+                                ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->delete()),
+                
+                    BulkAction::make('forceDelete')
+                        ->label('Hapus Permanent')
+                        ->icon('heroicon-o-x-circle') 
+                        ->color('warning')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Pencarian Akad')
+                                ->body('Data Pencarian Akad berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->forceDelete()),
+                
+                    BulkAction::make('export')
+                        ->label('Download Data')
+                        ->icon('heroicon-o-arrow-down-tray') 
+                        ->color('info')
+                        ->action(fn (Collection $records) => static::exportData($records)),
+                
+                    RestoreBulkAction::make()
+                        ->label('Kembalikan Data')
+                        ->icon('heroicon-o-arrow-path') 
+                        ->color('success')
+                        ->button()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Pencarian Akad')
+                                ->body('Data Pencarian Akad berhasil dikembalikan.')),
+                ]);
     }
 
+    public static function exportData(Collection $records)
+    {
+        $csvData = "ID, Jenis Unit, Blok, Type, Luas, Agent, Tanggal Booking, Tanggal Akad, Harga, Maksimal KPR, Nama Konsumen, NIK, NPWP, Alamat, NO Handphone, Email, Pembayaran, Bank, No. Rekening, Status Akad\n";
+    
+        foreach ($records as $record) {
+            $csvData .= "{$record->id}, {$record->jenis_unit}, {$record->siteplan}, {$record->type}, {$record->luas}, {$record->agent}, {$record->tanggal_booking}, {$record->tanggal_akad}, {$record->harga}, {$record->maksimal_kpr}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_hp}, {$record->no_email}, {$record->pembayaran}, {$record->bank}, {$record->no_rekening}, {$record->status_akad}\n";
+        }
+    
+        return response()->streamDownload(fn () => print($csvData), 'dataKPR.csv');
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+    
     public static function getRelations(): array
     {
         return [
