@@ -333,13 +333,13 @@ class PencairanAkadResource extends Resource
 
     public static function exportData(Collection $records)
     {
-        $csvData = "ID, Jenis Unit, Blok, Type, Luas, Agent, Tanggal Booking, Tanggal Akad, Harga, Maksimal KPR, Nama Konsumen, NIK, NPWP, Alamat, NO Handphone, Email, Pembayaran, Bank, No. Rekening, Status Akad\n";
+        $csvData = "ID, Blok, Bank, Nama Konsumen, Maksimal KPR, Tanggal Pencairan, Nilai Pencairan, Dana Jaminan\n";
     
         foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->jenis_unit}, {$record->siteplan}, {$record->type}, {$record->luas}, {$record->agent}, {$record->tanggal_booking}, {$record->tanggal_akad}, {$record->harga}, {$record->maksimal_kpr}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_hp}, {$record->no_email}, {$record->pembayaran}, {$record->bank}, {$record->no_rekening}, {$record->status_akad}\n";
+            $csvData .= "{$record->id}, {$record->siteplan}, {$record->bank}, {$record->nama_konsumen}, {$record->max_kpr}, {$record->tanggal_pencairan}, {$record->nilai_pencairan}, {$record->dana_jaminan}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'dataKPR.csv');
+        return response()->streamDownload(fn () => print($csvData), 'PencairanAkad.csv');
     }
 
     public static function getEloquentQuery(): Builder
