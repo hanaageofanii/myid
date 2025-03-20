@@ -85,8 +85,6 @@ class AjbResource extends Resource
                         $set('nik', $kprData->nik);
                         $set('npwp', $kprData->npwp);
                         $set('alamat', $kprData->alamat);
-                        $set('harga', $kprData->harga);
-                        $set('pembayaran', $kprData->pembayaran);
                 }
             
 
