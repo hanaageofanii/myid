@@ -266,8 +266,8 @@ class AjbResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Uang Muka Diubah')
-                                ->body('Data Uang Muka telah berhasil disimpan.')),                    
+                                ->title('Data AJB Diubah')
+                                ->body('Data AJB telah berhasil disimpan.')),                    
                         DeleteAction::make()
                         ->color('danger')
                         ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
@@ -276,8 +276,8 @@ class AjbResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Uang Muka Dihapus')
-                                ->body('Data Uang Muka telah berhasil dihapus.')),                            
+                                ->title('Data AJB Dihapus')
+                                ->body('Data AJB telah berhasil dihapus.')),                            
                     // RestoreAction::make()
                     //     ->label('Pulihkan')
                     //     ->successNotificationTitle('Data berhasil dipulihkan')
@@ -288,8 +288,8 @@ class AjbResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data Uang')
-                            ->body('Data Uang berhasil dikembalikan.')
+                            ->title('Data AJB')
+                            ->body('Data AJB berhasil dikembalikan.')
                     ),
                     ForceDeleteAction::make()
                     ->color('primary')
@@ -297,8 +297,8 @@ class AjbResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data Uang')
-                            ->body('Data Uang berhasil dihapus secara permanen.')
+                            ->title('Data AJB')
+                            ->body('Data AJB berhasil dihapus secara permanen.')
                     ),
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
@@ -311,8 +311,8 @@ class AjbResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Uang')
-                                ->body('Data Uang berhasil dihapus.'))                        
+                                ->title('Data AJB')
+                                ->body('Data AJB berhasil dihapus.'))                        
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
                 
@@ -323,8 +323,8 @@ class AjbResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Uang')
-                                ->body('Data Uang berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                                ->title('Data AJB')
+                                ->body('Data AJB berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
                 
                     BulkAction::make('export')
@@ -341,8 +341,8 @@ class AjbResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Uang Muka')
-                                ->body('Data Uang Muka berhasil dikembalikan.')),
+                                ->title('Data AJB')
+                                ->body('Data AJB berhasil dikembalikan.')),
                 ]);
                 
     }
