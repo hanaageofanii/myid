@@ -335,7 +335,7 @@ class FormLegalResource extends Resource
             $csvData .= "{$record->id}, {$record->siteplan}, {$record->nama_konsumen}, {$record->id_rumah}, {$record->status_sertifikat}, {$record->no_sertifikat}, {$record->luas_sertifikat}, {$record->nop}, {$record->nop1}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'dataSertifikat.csv');
+        return response()->streamDownload(fn () => print($csvData), 'Sertifikat.csv');
     }
 
     public static function getRelations(): array

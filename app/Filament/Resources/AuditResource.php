@@ -307,7 +307,7 @@ class AuditResource extends Resource
             $csvData .= "{$record->id}, {$record->siteplan}, {$record->type}, {$record->terbangun}, {$record->status}, {$record->tanda_terima_sertifikat}, {$record->kode1}, {$record->luas1}, {$record->kode2}, {$record->luas2}, {$record->kode3}, {$record->luas3}, {$record->kode4}, {$record->luas4}, {$record->nop_pbb_pecahan}, {$record->tanda_terima_nop}, {$record->imb_pbg}, {$record->tanda_terima_imb_pbg}, {$record->tanda_terima_tambahan}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'file.csv');
+        return response()->streamDownload(fn () => print($csvData), 'Audit.csv');
     }
     
 

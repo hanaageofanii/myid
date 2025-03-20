@@ -381,13 +381,13 @@ class FormDpResource extends Resource
     }
     public static function exportData(Collection $records)
     {
-        $csvData = "ID, Jenis Unit, Blok, Type, Luas, Agent, Tanggal Booking, Tanggal Akad, Harga, Maksimal KPR, Nama Konsumen, NIK, NPWP, Alamat, NO Handphone, Email, Pembayaran, Bank, No. Rekening, Status Akad\n";
+        $csvData = "ID, Blok, Nama Konsumen, harga, Maksimal KPR, SBUM, Sisa Pembayaran, DP, Laba Rugi, Tanggal Terima DP, Pembayaran\n";
     
         foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->jenis_unit}, {$record->siteplan}, {$record->type}, {$record->luas}, {$record->agent}, {$record->tanggal_booking}, {$record->tanggal_akad}, {$record->harga}, {$record->maksimal_kpr}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_hp}, {$record->no_email}, {$record->pembayaran}, {$record->bank}, {$record->no_rekening}, {$record->status_akad}\n";
+            $csvData .= "{$record->id}, {$record->siteplan}, {$record->nama_konsumen}, {$record->harga}, {$record->max_kpr}, {$record->sbum}, {$record->sisa_pembayaran}, {$record->dp}, {$record->laba_rugi}, {$record->tanggal_terima_dp}, {$record->pembayaran}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'dataKPR.csv');
+        return response()->streamDownload(fn () => print($csvData), 'DP.csv');
     }
 
     public static function getEloquentQuery(): Builder

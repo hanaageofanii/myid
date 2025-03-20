@@ -467,7 +467,7 @@ class FormPajakResource extends Resource
             $csvData .= "{$record->id}, {$record->siteplan}, {$record->no_sertifikat}, {$record->kavling}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->nop}, {$record->luas_tanah}, {$record->harga}, {$record->npoptkp}, {$record->jumlah_bphtb}, {$record->tarif_pph}, {$record->jumlah_pph}, {$record->kode_billing_pph}, {$record->tanggal_bayar_pph}, {$record->ntpnpph}, {$record->validasi_pph}, {$record->tanggal_validasi}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'dataValidasi.csv');
+        return response()->streamDownload(fn () => print($csvData), 'Validasi.csv');
     }
 
     public static function getRelations(): array

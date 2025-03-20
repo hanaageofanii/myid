@@ -375,7 +375,7 @@ class GCVResource extends Resource
             $csvData .= "{$record->id}, {$record->proyek}, {$record->nama_perusahaan}, {$record->kavling}, {$record->siteplan}, {$record->type}, {$record->luas_tanah}, {$record->status}, {$record->tanggal_booking}, {$record->nama_konsumen}, {$record->agent}, {$record->kpr_status}, {$record->ket}, {$record->user}, {$record->tanggal_update}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'gcv_booking.csv');
+        return response()->streamDownload(fn () => print($csvData), 'GCV.csv');
     }
 
     public static function getEloquentQuery(): Builder

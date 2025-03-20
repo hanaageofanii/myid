@@ -64,6 +64,7 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Resources\FormPajakResource\Widgets\PajakStats::class,
                 \App\Filament\Resources\FormPpnResource\Widgets\PPNStats::class,
                 \App\Filament\Resources\PencairanAkadResource\Widgets\AkadStats::class,
+                \App\Filament\Resources\AjbResource\Widgets\AjbStats::class,
             ])
             ->middleware([
                 EncryptCookies::class,

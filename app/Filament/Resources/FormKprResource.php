@@ -562,7 +562,7 @@ class FormKprResource extends Resource
             $csvData .= "{$record->id}, {$record->jenis_unit}, {$record->siteplan}, {$record->type}, {$record->luas}, {$record->agent}, {$record->tanggal_booking}, {$record->tanggal_akad}, {$record->harga}, {$record->maksimal_kpr}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_hp}, {$record->no_email}, {$record->pembayaran}, {$record->bank}, {$record->no_rekening}, {$record->status_akad}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'dataKPR.csv');
+        return response()->streamDownload(fn () => print($csvData), 'KPR.csv');
     }
     
 
