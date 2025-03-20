@@ -126,7 +126,7 @@ class AjbResource extends Resource
 
                 Fieldset::make('Data AJB')
                 ->schema([
-                    TextInput::make('no_suket_validasi')
+                    TextInput::make('suket_validasi')
                     ->nullable()
                     ->label('No. Suket Validasi'),
 
@@ -178,19 +178,191 @@ class AjbResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('siteplan')->searchable()->label('Blok'),
+                TextColumn::make('nop')->searchable()->label('NOP'),
+                TextColumn::make('nama_konsumen')->searchable()->label('Nama Konsumen'),
+                TextColumn::make('nik')->searchable()->label('NIK'),
+                TextColumn::make('npwp')->searchable()->label('NPWP'),
+                TextColumn::make('alamat')->searchable()->label('Alamat'),
+                TextColumn::make('suket_validasi')->searchable()->label('Suket Validasi'),
+                TextColumn::make('no_sspd_bphtb')->searchable()->label('No. SSPD BPHTB'),
+                TextColumn::make('tanggal_sspd_bphtb')
+                ->searchable()
+                ->label('Tanggal SSPD BPHTB')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                TextColumn::make('no_validasi_sspd_bphtb')->searchable()->label('NO. Validasi SSPD BPHTB'),
+                TextColumn::make('notaris')->searchable()->label('Notaris'),
+                TextColumn::make('no_ajb')->searchable()->label('NO. AJB'),
+                TextColumn::make('tanggal_ajb')
+                ->searchable()
+                ->label('Tanggal AJB')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                TextColumn::make('no_bast')->searchable()->label('NO. Bast'),
+                TextColumn::make('tanggal_bast')
+                ->searchable()
+                ->label('Tanggal Bast')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                TextColumn::make('up_bast')
+                    ->label('Upload Bast')
+                    ->formatStateUsing(fn ($record) => $record->up_pricelist 
+                        ? '<a href="' . Storage::url($record->up_pricelist) . '" target="_blank">Lihat</a> | 
+                        <a href="' . Storage::url($record->up_pricelist) . '" download>Download</a>' 
+                        : 'Tidak Ada Dokumen')
+                    ->html(),
+                TextColumn::make('up_validasi_bphtb')
+                    ->label('Upload Validasi BPHTB')
+                    ->formatStateUsing(fn ($record) => $record->up_pricelist 
+                        ? '<a href="' . Storage::url($record->up_pricelist) . '" target="_blank">Lihat</a> | 
+                        <a href="' . Storage::url($record->up_pricelist) . '" download>Download</a>' 
+                        : 'Tidak Ada Dokumen')
+                    ->html(),
+            ])
+            ->defaultSort('siteplan', 'asc')
+            ->headerActions([
+                Action::make('count')
+                    ->label(fn ($livewire): string => 'Total: ' . $livewire->getFilteredTableQuery()->count())
+                    ->disabled(),
             ])
             ->filters([
-                //
-            ])
+                TrashedFilter::make()
+                ->label('Data yang dihapus') 
+                ->native(false),
+
+                Filter::make('pembayaran')
+                    ->label('Pembayaran')
+                    ->form([
+                        Select::make('pembayaran')
+                            ->options([
+                                'cash' => 'Cash',
+                                'potong_komisi' => 'Potong Komisi',
+                                'promo' => 'Promo',
+                            ])
+                            ->nullable()
+                            ->native(false),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when(isset($data['pembayaran']), fn ($q) =>
+                            $q->where('pembayaran', $data['pembayaran'])
+                        )
+                    ),
+                    Filter::make('created_from')
+                    ->label('Dari Tanggal')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari')
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_from'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '>=', $data['created_from'])
+                        )
+                    ),
+                
+                Filter::make('created_until')
+                    ->label('Sampai Tanggal')
+                    ->form([
+                        DatePicker::make('created_until')
+                            ->label('Sampai')
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_until'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '<=', $data['created_until'])
+                        )
+                    ),                
+            ], layout: FiltersLayout::AboveContent)
+            ->filtersFormMaxHeight('400px')
+            ->filtersFormColumns(4)
+            ->filtersFormWidth(MaxWidth::FourExtraLarge)
+                                    
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+                ActionGroup::make([
+                    ViewAction::make()
+                        ->color('success')
+                        ->label('Lihat'),
+                    EditAction::make()
+                        ->color('info')
+                        ->label('Ubah')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Uang Muka Diubah')
+                                ->body('Data Uang Muka telah berhasil disimpan.')),                    
+                        DeleteAction::make()
+                        ->color('danger')
+                        ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
+                        ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok{$record->siteplan}")
+                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?")
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Uang Muka Dihapus')
+                                ->body('Data Uang Muka telah berhasil dihapus.')),                            
+                    // RestoreAction::make()
+                    //     ->label('Pulihkan')
+                    //     ->successNotificationTitle('Data berhasil dipulihkan')
+                    //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
+                    RestoreAction::make()
+                    ->color('info')
+                    ->label('Kembalikan Data')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Uang')
+                            ->body('Data Uang berhasil dikembalikan.')
+                    ),
+                    ForceDeleteAction::make()
+                    ->color('primary')
+                    ->label('Hapus Permanen')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Uang')
+                            ->body('Data Uang berhasil dihapus secara permanen.')
+                    ),
+                    ])->button()->label('Action'),
+                ], position: ActionsPosition::BeforeCells)
+            
+                ->groupedBulkActions([
+                    BulkAction::make('delete')
+                        ->label('Hapus')
+                        ->icon('heroicon-o-trash') 
+                        ->color('danger')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Uang')
+                                ->body('Data Uang berhasil dihapus.'))                        
+                                ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->delete()),
+                
+                    BulkAction::make('forceDelete')
+                        ->label('Hapus Permanent')
+                        ->icon('heroicon-o-x-circle') 
+                        ->color('warning')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Uang')
+                                ->body('Data Uang berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->forceDelete()),
+                
+                    BulkAction::make('export')
+                        ->label('Download Data')
+                        ->icon('heroicon-o-arrow-down-tray') 
+                        ->color('info')
+                        ->action(fn (Collection $records) => static::exportData($records)),
+                
+                    RestoreBulkAction::make()
+                        ->label('Kembalikan Data')
+                        ->icon('heroicon-o-arrow-path') 
+                        ->color('success')
+                        ->button()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Uang Muka')
+                                ->body('Data Uang Muka berhasil dikembalikan.')),
+                ]);
+                
     }
 
     public static function getRelations(): array
@@ -198,6 +370,25 @@ class AjbResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function exportData(Collection $records)
+    {
+        $csvData = "ID, Jenis Unit, Blok, Type, Luas, Agent, Tanggal Booking, Tanggal Akad, Harga, Maksimal KPR, Nama Konsumen, NIK, NPWP, Alamat, NO Handphone, Email, Pembayaran, Bank, No. Rekening, Status Akad\n";
+    
+        foreach ($records as $record) {
+            $csvData .= "{$record->id}, {$record->jenis_unit}, {$record->siteplan}, {$record->type}, {$record->luas}, {$record->agent}, {$record->tanggal_booking}, {$record->tanggal_akad}, {$record->harga}, {$record->maksimal_kpr}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_hp}, {$record->no_email}, {$record->pembayaran}, {$record->bank}, {$record->no_rekening}, {$record->status_akad}\n";
+        }
+    
+        return response()->streamDownload(fn () => print($csvData), 'dataKPR.csv');
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function getPages(): array
