@@ -362,7 +362,7 @@ class AjbResource extends Resource
             $csvData .= "{$record->id}, {$record->siteplan}, {$record->nop}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->suket_validasi}, {$record->no_sspd_bphtb}, {$record->tanggal_sspd_bphtb}, {$record->no_validasi_sspd_bphtb}, {$record->notaris}, {$record->no_ajb}, {$record->tanggal_ajb}, {$record->no_bast}, {$record->tanggal_bast}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'dataKPR.csv');
+        return response()->streamDownload(fn () => print($csvData), 'AJB.csv');
     }
 
     public static function getEloquentQuery(): Builder
