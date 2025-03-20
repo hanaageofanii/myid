@@ -227,24 +227,6 @@ class AjbResource extends Resource
                 TrashedFilter::make()
                 ->label('Data yang dihapus') 
                 ->native(false),
-
-                Filter::make('pembayaran')
-                    ->label('Pembayaran')
-                    ->form([
-                        Select::make('pembayaran')
-                            ->options([
-                                'cash' => 'Cash',
-                                'potong_komisi' => 'Potong Komisi',
-                                'promo' => 'Promo',
-                            ])
-                            ->nullable()
-                            ->native(false),
-                    ])
-                    ->query(fn ($query, $data) =>
-                        $query->when(isset($data['pembayaran']), fn ($q) =>
-                            $q->where('pembayaran', $data['pembayaran'])
-                        )
-                    ),
                     Filter::make('created_from')
                     ->label('Dari Tanggal')
                     ->form([
@@ -374,10 +356,10 @@ class AjbResource extends Resource
 
     public static function exportData(Collection $records)
     {
-        $csvData = "ID, Jenis Unit, Blok, Type, Luas, Agent, Tanggal Booking, Tanggal Akad, Harga, Maksimal KPR, Nama Konsumen, NIK, NPWP, Alamat, NO Handphone, Email, Pembayaran, Bank, No. Rekening, Status Akad\n";
+        $csvData = "ID, Blok, NOP, Nama Konsumen, NIK, NPWP, Alamat, Suket Validasi, NO. SSPD BPHTB, Tanggal SSPD BPHTB, No. Validasi, Notaris, No. AJB, Tanggal AJB, NO. Bast, Tanggal Bast\n";
     
         foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->jenis_unit}, {$record->siteplan}, {$record->type}, {$record->luas}, {$record->agent}, {$record->tanggal_booking}, {$record->tanggal_akad}, {$record->harga}, {$record->maksimal_kpr}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->no_hp}, {$record->no_email}, {$record->pembayaran}, {$record->bank}, {$record->no_rekening}, {$record->status_akad}\n";
+            $csvData .= "{$record->id}, {$record->siteplan}, {$record->nop}, {$record->nama_konsumen}, {$record->nik}, {$record->npwp}, {$record->alamat}, {$record->suket_validasi}, {$record->no_sspd_bphtb}, {$record->tanggal_sspd_bphtb}, {$record->no_validasi_sspd_bphtb}, {$record->notaris}, {$record->no_ajb}, {$record->tanggal_ajb}, {$record->no_bast}, {$record->tanggal_bast}\n";
         }
     
         return response()->streamDownload(fn () => print($csvData), 'dataKPR.csv');
