@@ -16,7 +16,7 @@ class AjbStats extends BaseWidget
     protected static ?string $pollingInterval = '10s';
     protected static bool $isLazy = false;
     protected ?string $heading = 'Dashboard AJB';
-    
+
     protected function getStats(): array
     {
         return [
@@ -27,6 +27,7 @@ class AjbStats extends BaseWidget
             Card::make('Total Site Plan', ajb::distinct('siteplan')->count('siteplan'))
             ->extraAttributes([
                 'style' => 'background-color: #85c1e9; border-color: #234C63;'
-            ]),            ];
+            ]),            
+        ];
     }
 }
