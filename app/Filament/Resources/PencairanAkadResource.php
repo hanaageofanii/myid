@@ -68,7 +68,7 @@ class PencairanAkadResource extends Resource
             Fieldset::make('Data Konsumen')
             ->schema([
                 Select::make('siteplan')
-                    ->label('Site Plan')
+                    ->label('Blok')
                     ->options(fn () => form_kpr::pluck('siteplan', 'siteplan')) 
                     ->searchable()
                     ->reactive()
