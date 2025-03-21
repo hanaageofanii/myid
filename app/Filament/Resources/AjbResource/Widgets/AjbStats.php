@@ -20,7 +20,7 @@ class AjbStats extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Card::make('Total Data Audit', ajb::count())
+            Card::make('Total Data AJB', ajb::count())
             ->extraAttributes([
                 'style' => 'background-color: #85c1e9; border-color: #234C63;'
             ]),    
