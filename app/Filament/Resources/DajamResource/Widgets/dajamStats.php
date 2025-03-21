@@ -5,7 +5,7 @@ namespace App\Filament\Resources\DajamResource\Widgets;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
-class dajam extends BaseWidget
+class dajamStats extends BaseWidget
 {
     protected function getStats(): array
     {
