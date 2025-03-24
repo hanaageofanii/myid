@@ -120,7 +120,7 @@ class PencairanAkadResource extends Resource
                 ->prefix('Rp')
                 ->dehydrated()
                 ->afterStateUpdated(fn ($state, callable $set, $get) => 
-        $set('dana_jaminan', max(0, (int) $get('max_kpr') - (int) $state)))
+                $set('dana_jaminan', max(0, (int) $get('max_kpr') - (int) $state)))
                 ->reactive(),
             
                 TextInput::make('dana_jaminan')

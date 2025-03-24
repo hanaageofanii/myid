@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('dajams', function (Blueprint $table) {
             $table->id();
             $table->string('siteplan')->nullable();
-            $table->string('bank')->nullable();
+            $table->enum('bank',['btn_cikarang','btn_bekasi','btn_karawang','bjb_syariah','bjb_jababeka','btn_syariah','brii_bekasi'])->nullable();
             $table->string('no_debitur')->nullable();
             $table->string('nama_konsumen')->nullable();
             $table->string('max_kpr')->nullable();
             $table->string('nilai_pencairan')->nullable();
-            $table->string('jumlah_dajam')->nullable();
+            $table->string('total_dajam')->nullable();
             $table->string('dajam_sertifikat')->nullable();
             $table->string('dajam_imb')->nullable();
             $table->string('dajam_listrik')->nullable();
