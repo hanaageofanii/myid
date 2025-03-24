@@ -451,8 +451,8 @@ class DajamResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Pencairan Akad Diubah')
-                                ->body('Data Pencarian Akad telah berhasil disimpan.')),                    
+                                ->title('Data Dajam Diubah')
+                                ->body('Data Dajam telah berhasil disimpan.')),                    
                         DeleteAction::make()
                         ->color('danger')
                         ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
@@ -461,8 +461,8 @@ class DajamResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Pencarian Akad Dihapus')
-                                ->body('Data Pencarian Akad telah berhasil dihapus.')),                            
+                                ->title('Data Dajam Dihapus')
+                                ->body('Data Dajam telah berhasil dihapus.')),                            
                     // RestoreAction::make()
                     //     ->label('Pulihkan')
                     //     ->successNotificationTitle('Data berhasil dipulihkan')
@@ -473,8 +473,8 @@ class DajamResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data Pencarian Akad')
-                            ->body('Data Pencarian Akad berhasil dikembalikan.')
+                            ->title('Data Dajam')
+                            ->body('Data Dajam berhasil dikembalikan.')
                     ),
                     ForceDeleteAction::make()
                     ->color('primary')
@@ -482,8 +482,8 @@ class DajamResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data Pencarian Akad')
-                            ->body('Data Pencarian Akad berhasil dihapus secara permanen.')
+                            ->title('Data Dajam')
+                            ->body('Data Dajam berhasil dihapus secara permanen.')
                     ),
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
@@ -496,8 +496,8 @@ class DajamResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Pencarian Akadg')
-                                ->body('Data Pencarian Akad berhasil dihapus.'))                        
+                                ->title('Data Dajamg')
+                                ->body('Data Dajam berhasil dihapus.'))                        
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
                 
@@ -508,8 +508,8 @@ class DajamResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Pencarian Akad')
-                                ->body('Data Pencarian Akad berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                                ->title('Data Dajam')
+                                ->body('Data Dajam berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
                 
                     BulkAction::make('export')
@@ -526,20 +526,20 @@ class DajamResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Pencarian Akad')
-                                ->body('Data Pencarian Akad berhasil dikembalikan.')),
+                                ->title('Data Dajam')
+                                ->body('Data Dajam berhasil dikembalikan.')),
                 ]);
     }
 
     public static function exportData(Collection $records)
     {
-        $csvData = "ID, Blok, Bank, Nama Konsumen, Maksimal KPR, Tanggal Pencairan, Nilai Pencairan, Dana Jaminan\n";
+        $csvData = "ID, Blok, Bank, Nama Konsumen, Maksimal KPR, Nilai Pencairan, Jumlah Dajam, Dajam Sertifikat, Dajam IMB, Dajam Listrik, Dajam JKK, Dajam Bestek, Jumlah Realisasi Dajam, Dajam PPH, Dajam BPHTB, Pembukuan\n";
     
         foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->siteplan}, {$record->bank}, {$record->nama_konsumen}, {$record->max_kpr}, {$record->tanggal_pencairan}, {$record->nilai_pencairan}, {$record->dana_jaminan}\n";
+            $csvData .= "{$record->id}, {$record->siteplan}, {$record->bank}, {$record->nama_konsumen}, {$record->max_kpr}, {$record->nilai_pencairan}, {$record->jumlah_dajam}, {$record->dajam_sertifikat}, {$record->dajam_imb}, {$record->dajam_listrik}, {$record->dajam_jkk}, {$record->dajam_bestek}, {$record->jumlah_realisasi_dajam}, {$record->dajam_pph}, {$record->dajam_bphtb}, {$record->pembukuan}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'PencairanAkad.csv');
+        return response()->streamDownload(fn () => print($csvData), 'Dajam.csv');
     }
 
     public static function getEloquentQuery(): Builder
