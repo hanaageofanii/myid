@@ -16,6 +16,43 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use App\Filament\Resources\PencairanAkadResource\RelationManagers;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Models\form_dp;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\BooleanColumn;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Enums\ActionsPosition;
+use Illuminate\Database\Eloquent\Collection;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Grid;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Support\Enums\ActionSize;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Actions\RestoreBulkAction;
+use Filament\Notifications\Notification;
+use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Actions\ForceDeleteAction;
+use App\Models\FormKpr;
+use App\Models\Audit;
+use App\Filament\Resources\GCVResource;
+use App\Models\GCV;
+use App\Filament\Resources\KPRStats;
 
 class DajamResource extends Resource
 {
@@ -249,10 +286,6 @@ class DajamResource extends Resource
                                     (int) $get('dajam_pph') - (int) $get('dajam_bphtb')
                                 ))
                             ),
-                        
-
-
-                            
 
             Fieldset::make('Dokumen')
                 ->schema([
@@ -273,6 +306,255 @@ class DajamResource extends Resource
                 
                     ]),
                 ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('siteplan')->searchable()->label('Blok'),
+                TextColumn::make('bank')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'btn_cikarang' => 'BTN Cikarang',
+                        'btn_bekasi' => 'BTN Bekasi',
+                        'btn_karawang' => 'BTN Karawang',
+                        'bjb_syariah' => 'BJB Syariah',
+                        'bjb_jababeka' => 'BJB Jababeka',
+                        'btn_syariah' => 'BTN Syariah',
+                        'brii_bekasi' => 'BRI Bekasi',
+                default => ucfirst($state), 
+            })
+            ->sortable()
+            ->searchable()
+            ->label('Bank'),
+            TextColumn::make('nama_konsumen')->searchable()->label('Nama Konsumen'),
+            TextColumn::make('max_kpr')
+            ->searchable()
+            ->label('Max KPR')
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('nilai_pencairan')
+            ->searchable()
+            ->label('Nilai Pencairan')
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('total_dajam')
+            ->searchable()
+            ->label('Jumlah Dajam')            
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('dajam_sertifikat')
+            ->searchable()
+            ->label('Dajam Sertifikat')            
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('dajam_imb')
+            ->searchable()
+            ->label('Dajam IMB')            
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('dajam_listrik')
+            ->searchable()
+            ->label('Dajam Listrik')            
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('dajam_jkk')
+            ->searchable()
+            ->label('Dajam JKK')            
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('dajam_bestek')
+            ->searchable()
+            ->label('Dajam Bestek')            
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('jumlah_realisasi_dajam')
+            ->searchable()
+            ->label('Jumlah Realisasi Dajam')            
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('dajam_pph')
+            ->searchable()
+            ->label('Dajam PPH')            
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('dajam_bphtb')
+            ->searchable()
+            ->label('Dajam BPHTB')            
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('pembukuan')
+            ->searchable()
+            ->label('Pembukuan')            
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+
+
+            ])
+
+            ->defaultSort('siteplan', 'asc')
+            ->headerActions([
+                Action::make('count')
+                    ->label(fn ($livewire): string => 'Total: ' . $livewire->getFilteredTableQuery()->count())
+                    ->disabled(),
+            ])
+            ->filters([
+                TrashedFilter::make()
+                ->label('Data yang dihapus') 
+                ->native(false),
+
+                Filter::make('bank')
+                    ->label('Bank')
+                    ->form([
+                        Select::make('bank')
+                            ->options([
+                                'btn_cikarang' => 'BTN Cikarang',
+                                'btn_bekasi' => 'BTN Bekasi',
+                                'btn_karawang' => 'BTN Karawang',
+                                'bjb_syariah' => 'BJB Syariah',
+                                'bjb_jababeka' => 'BJB Jababeka',
+                                'btn_syariah' => 'BTN Syariah',
+                                'brii_bekasi' => 'BRI Bekasi',
+                            ])
+                            ->nullable()
+                            ->native(false),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when(isset($data['bank']), fn ($q) =>
+                            $q->where('bank', $data['bank'])
+                        )
+                    ),
+                    Filter::make('created_from')
+                    ->label('Dari Tanggal')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari')
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_from'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '>=', $data['created_from'])
+                        )
+                    ),
+                
+                Filter::make('created_until')
+                    ->label('Sampai Tanggal')
+                    ->form([
+                        DatePicker::make('created_until')
+                            ->label('Sampai')
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_until'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '<=', $data['created_until'])
+                        )
+                    ),                
+            ], layout: FiltersLayout::AboveContent)
+            ->filtersFormMaxHeight('400px')
+            ->filtersFormColumns(4)
+            ->filtersFormWidth(MaxWidth::FourExtraLarge)
+                                    
+            ->actions([
+                ActionGroup::make([
+                    ViewAction::make()
+                        ->color('success')
+                        ->label('Lihat'),
+                    EditAction::make()
+                        ->color('info')
+                        ->label('Ubah')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Pencairan Akad Diubah')
+                                ->body('Data Pencarian Akad telah berhasil disimpan.')),                    
+                        DeleteAction::make()
+                        ->color('danger')
+                        ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
+                        ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok{$record->siteplan}")
+                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?")
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Pencarian Akad Dihapus')
+                                ->body('Data Pencarian Akad telah berhasil dihapus.')),                            
+                    // RestoreAction::make()
+                    //     ->label('Pulihkan')
+                    //     ->successNotificationTitle('Data berhasil dipulihkan')
+                    //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
+                    RestoreAction::make()
+                    ->color('info')
+                    ->label('Kembalikan Data')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Pencarian Akad')
+                            ->body('Data Pencarian Akad berhasil dikembalikan.')
+                    ),
+                    ForceDeleteAction::make()
+                    ->color('primary')
+                    ->label('Hapus Permanen')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Pencarian Akad')
+                            ->body('Data Pencarian Akad berhasil dihapus secara permanen.')
+                    ),
+                    ])->button()->label('Action'),
+                ], position: ActionsPosition::BeforeCells)
+            
+                ->groupedBulkActions([
+                    BulkAction::make('delete')
+                        ->label('Hapus')
+                        ->icon('heroicon-o-trash') 
+                        ->color('danger')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Pencarian Akadg')
+                                ->body('Data Pencarian Akad berhasil dihapus.'))                        
+                                ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->delete()),
+                
+                    BulkAction::make('forceDelete')
+                        ->label('Hapus Permanent')
+                        ->icon('heroicon-o-x-circle') 
+                        ->color('warning')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Pencarian Akad')
+                                ->body('Data Pencarian Akad berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->forceDelete()),
+                
+                    BulkAction::make('export')
+                        ->label('Download Data')
+                        ->icon('heroicon-o-arrow-down-tray') 
+                        ->color('info')
+                        ->action(fn (Collection $records) => static::exportData($records)),
+                
+                    RestoreBulkAction::make()
+                        ->label('Kembalikan Data')
+                        ->icon('heroicon-o-arrow-path') 
+                        ->color('success')
+                        ->button()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Pencarian Akad')
+                                ->body('Data Pencarian Akad berhasil dikembalikan.')),
+                ]);
+    }
+
+    public static function exportData(Collection $records)
+    {
+        $csvData = "ID, Blok, Bank, Nama Konsumen, Maksimal KPR, Tanggal Pencairan, Nilai Pencairan, Dana Jaminan\n";
+    
+        foreach ($records as $record) {
+            $csvData .= "{$record->id}, {$record->siteplan}, {$record->bank}, {$record->nama_konsumen}, {$record->max_kpr}, {$record->tanggal_pencairan}, {$record->nilai_pencairan}, {$record->dana_jaminan}\n";
+        }
+    
+        return response()->streamDownload(fn () => print($csvData), 'PencairanAkad.csv');
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+    
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
