@@ -58,11 +58,11 @@ class DajamResource extends Resource
 {
     protected static ?string $model = Dajam::class;
 
-    protected static ?string $title = "Form Input Dajam";
+    protected static ?string $title = "Form Input Data Dajam";
     protected static ?string $navigationGroup = "Legal";
     protected static ?string $pluralLabel = "Data Dajam";
-    protected static ?string $navigationLabel = "Dajam";
-    protected static ?string $pluralModelLabel = 'Daftar Dajam';
+    protected static ?string $navigationLabel = "Data Dajam";
+    protected static ?string $pluralModelLabel = 'Daftar Data Dajam';
     protected static ?string $navigationIcon = 'heroicon-o-arrow-down-on-square-stack';
 
     public static function form(Forms\Form $form): Forms\Form
