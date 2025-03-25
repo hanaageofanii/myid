@@ -16,6 +16,7 @@ class dajam extends Model
         'nama_konsumen',
         'max_kpr',
         'nilai_pencairan',
+        'no_debitur',
         'total_dajam',
         'dajam_pph',
         'dajam_bphtb',

@@ -112,6 +112,11 @@ class DajamResource extends Resource
                     TextInput::make('nama_konsumen')
                         ->label('Nama Konsumen')
                         ->reactive(),
+                        
+                    TextInput::make('no_debitur')
+                        ->label('No. Debitur')
+                        ->reactive(),
+
 
                     TextInput::make('max_kpr')
                         ->label('Maksimal KPR')
@@ -328,6 +333,7 @@ class DajamResource extends Resource
             ->searchable()
             ->label('Bank'),
             TextColumn::make('nama_konsumen')->searchable()->label('Nama Konsumen'),
+            TextColumn::make('no_debitur')->searchable()->label('No. Debitur'),
             TextColumn::make('max_kpr')
             ->searchable()
             ->label('Max KPR')

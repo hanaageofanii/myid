@@ -102,6 +102,7 @@ class VerifikasiDajamResource extends Resource
                             $set('dajam_bestek', $dajamData->dajam_bestek ?? null);
                             $set('jumlah_realisasi_dajam', $dajamData->jumlah_realisasi_dajam ?? null);
                             $set('pembukuan', $dajamData->pembukuan ?? null);
+                            $set('no_debitur', $dajamData->no_debitur ?? null);
                         }),
 
                     Select::make('bank')
@@ -119,6 +120,10 @@ class VerifikasiDajamResource extends Resource
 
                     TextInput::make('nama_konsumen')
                         ->label('Nama Konsumen')
+                        ->reactive(),
+                    
+                    TextInput::make('no_debitur')
+                        ->label('No. Debitur')
                         ->reactive(),
 
                     TextInput::make('max_kpr')
@@ -372,6 +377,7 @@ class VerifikasiDajamResource extends Resource
             ->searchable()
             ->label('Bank'),
             TextColumn::make('nama_konsumen')->searchable()->label('Nama Konsumen'),
+            TextColumn::make('no_debitur')->searchable()->label('No. Debitur'),
             TextColumn::make('max_kpr')
             ->searchable()
             ->label('Max KPR')
