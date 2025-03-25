@@ -618,7 +618,8 @@ class VerifikasiDajamResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Verifikasi Dajam')
-                                ->body('Verifikasi Dajam berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                                ->body('Verifikasi Dajam berhasil dihapus secara permanen.'))
+                                ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
                 
                     BulkAction::make('export')
