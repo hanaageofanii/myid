@@ -69,6 +69,8 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Resources\DajamResource\Widgets\dajamStats::class,
                 \App\Filament\Resources\VerifikasiDajamResource\Widgets\verifikasiDajamStats::class,
                 \App\Filament\Resources\PengajuanDajamResource\Widgets\PenDajamStats::class,
+                \App\Filament\Resources\PencairanDajamResource\Widgets\pencairanDajamStats::class,
+
 
             ])
             ->middleware([

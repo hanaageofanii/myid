@@ -82,6 +82,10 @@ class PenDajamStats extends BaseWidget
                 ->extraAttributes([
                     'style' => 'background-color: #be9a60; border-color: #234C63;'
                 ]),
+                Card::make('Dajam Bestek', pengajuan_dajam::where('nama_dajam', 'bestek')->count())
+                ->extraAttributes([
+                    'style' => 'background-color: #be9a60; border-color: #234C63;'
+                ]),
             Card::make('Dajam JKK', pengajuan_dajam::where('nama_dajam', 'jkk')->count())
                 ->extraAttributes([
                     'style' => 'background-color: #be9a60; border-color: #234C63;'
