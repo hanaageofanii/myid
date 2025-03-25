@@ -420,8 +420,55 @@ class VerifikasiDajamResource extends Resource
             ->searchable()
             ->label('Pembukuan')            
             ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-
-
+            TextColumn::make('no_surat_pengajuan')
+            ->searchable()
+            ->label('No. Surat Pengajuan'),
+            TextColumn::make('tanggal_pencairan_dajam_sertifikat')
+            ->searchable()
+            ->label('Tanggal Pencairan Dajam Sertifikat')
+            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+            TextColumn::make('tanggal_pencairan_dajam_imb')
+            ->searchable()
+            ->searchable()
+            ->label('Tanggal Pencairan Dajam IMB')
+            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+            TextColumn::make('tanggal_pencairan_dajam_listrik')
+            ->searchable()
+            ->label('Tanggal Pencairan Dajam Listrik')
+            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+            TextColumn::make('tanggal_pencairan_dajam_jkk')
+            ->searchable()
+            ->label('Tanggal Pencairan Dajam JKK')
+            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+            TextColumn::make('tanggal_pencairan_dajam_bester')
+            ->searchable()
+            ->label('Tanggal Pencairan Dajam Bester')
+            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+            TextColumn::make('tanggal_pencairan_dajam_pph')
+            ->searchable()
+            ->label('Tanggal Pencairan Dajam PPH')
+            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+            TextColumn::make('tanggal_pencairan_dajam_bphtb')
+            ->searchable()
+            ->label('Tanggal Pencairan Dajam BPHTB')
+            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+            TextColumn::make('total_pencairan_dajam')
+            ->searchable()
+            ->label('Total Pencairan Dajam')
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('sisa_dajam')
+            ->searchable()
+            ->label('Sisa Dajam')
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            TextColumn::make('status_dajam')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'sudah_diajukan' => 'Sudah Diajukan',
+                        'belum_diajukan' => 'Belum Diajukan',
+                default => ucfirst($state), 
+            })
+            ->sortable()
+            ->searchable()
+            ->label('Status Dajam'),
             ])
 
             ->defaultSort('siteplan', 'asc')
@@ -432,9 +479,9 @@ class VerifikasiDajamResource extends Resource
             ])
             ->filters([
                 TrashedFilter::make()
-                ->label('Data yang dihapus') 
-                ->native(false),
-
+                    ->label('Data yang dihapus') 
+                    ->native(false),
+            
                 Filter::make('bank')
                     ->label('Bank')
                     ->form([
@@ -456,7 +503,25 @@ class VerifikasiDajamResource extends Resource
                             $q->where('bank', $data['bank'])
                         )
                     ),
-                    Filter::make('created_from')
+            
+                Filter::make('status_dajam')
+                    ->form([
+                        Select::make('status_dajam')
+                            ->options([
+                                'sudah_diajukan' => 'Sudah Diajukan',
+                                'belum_diajukan' => 'Belum Diajukan',
+                            ])
+                            ->nullable()
+                            ->label('Status Dajam')
+                            ->native(false),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when(isset($data['status_dajam']), fn ($q) =>
+                            $q->where('status_dajam', $data['status_dajam'])
+                        )
+                    ),
+            
+                Filter::make('created_from')
                     ->label('Dari Tanggal')
                     ->form([
                         DatePicker::make('created_from')
@@ -467,7 +532,7 @@ class VerifikasiDajamResource extends Resource
                             $q->whereDate('created_at', '>=', $data['created_from'])
                         )
                     ),
-                
+            
                 Filter::make('created_until')
                     ->label('Sampai Tanggal')
                     ->form([
@@ -478,12 +543,12 @@ class VerifikasiDajamResource extends Resource
                         $query->when($data['created_until'] ?? null, fn ($q) =>
                             $q->whereDate('created_at', '<=', $data['created_until'])
                         )
-                    ),                
+                    ),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormMaxHeight('400px')
             ->filtersFormColumns(4)
             ->filtersFormWidth(MaxWidth::FourExtraLarge)
-                                    
+            
             ->actions([
                 ActionGroup::make([
                     ViewAction::make()
