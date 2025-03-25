@@ -143,7 +143,7 @@ class PengajuanDajamResource extends Resource
                         ->label('No. Surat'),
                         
                     
-                    DatePicker::make('tgl_pengajuan')
+                    DatePicker::make('tanggal_pengajuan')
                         ->label('Tanggal Pengajuan'),
 
                     TextInput::make('nilai_pencairan')
@@ -181,101 +181,41 @@ class PengajuanDajamResource extends Resource
                         'bjb_jababeka' => 'BJB Jababeka',
                         'btn_syariah' => 'BTN Syariah',
                         'brii_bekasi' => 'BRI Bekasi',
-                default => ucfirst($state), 
+                default => ucfirst($state),
             })
             ->sortable()
             ->searchable()
             ->label('Bank'),
             TextColumn::make('nama_konsumen')->searchable()->label('Nama Konsumen'),
             TextColumn::make('no_debitur')->searchable()->label('No. Debitur'),
-            TextColumn::make('max_kpr')
+            TextColumn::make('nama_dajam')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                       'sertifikat' => 'Sertifikat',
+                            'imb' => 'IMB',
+                            'jkk' => 'JKK',
+                            'bestek' => 'Bestek',
+                            'pph' => 'PPH',
+                            'bphtb' => 'BPHTB',
+                default => ucfirst($state),
+            })
+            ->sortable()
             ->searchable()
-            ->label('Max KPR')
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('nilai_pencairan')
+            ->label('Nama Dajam'), 
+
+            TextColumn::make('no_surat')
             ->searchable()
-            ->label('Nilai Pencairan')
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('total_dajam')
+            ->label('No. Surat'),
+
+            TextColumn::make('tanggal_pengajuan')
             ->searchable()
-            ->label('Jumlah Dajam')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('dajam_sertifikat')
-            ->searchable()
-            ->label('Dajam Sertifikat')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('dajam_imb')
-            ->searchable()
-            ->label('Dajam IMB')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('dajam_listrik')
-            ->searchable()
-            ->label('Dajam Listrik')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('dajam_jkk')
-            ->searchable()
-            ->label('Dajam JKK')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('dajam_bestek')
-            ->searchable()
-            ->label('Dajam Bestek')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('jumlah_realisasi_dajam')
-            ->searchable()
-            ->label('Jumlah Realisasi Dajam')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('dajam_pph')
-            ->searchable()
-            ->label('Dajam PPH')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('dajam_bphtb')
-            ->searchable()
-            ->label('Dajam BPHTB')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('pembukuan')
-            ->searchable()
-            ->label('Pembukuan')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('no_surat_pengajuan')
-            ->searchable()
-            ->label('No. Surat Pengajuan'),
-            TextColumn::make('tgl_pencairan_dajam_sertifikat')
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam Sertifikat')
+            ->label('Tanggal Pengajuan')
             ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('tgl_pencairan_dajam_imb')
+
+            
+            TextColumn::make('nilai_penaciran')
             ->searchable()
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam IMB')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('tgl_pencairan_dajam_listrik')
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam Listrik')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('tgl_pencairan_dajam_jkk')
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam JKK')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('tgl_pencairan_dajam_bester')
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam Bester')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('tgl_pencairan_dajam_pph')
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam PPH')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('tgl_pencairan_dajam_bphtb')
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam BPHTB')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('total_pencairan_dajam')
-            ->searchable()
-            ->label('Total Pencairan Dajam')
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
-            TextColumn::make('sisa_dajam')
-            ->searchable()
-            ->label('Sisa Dajam')
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            ->label('Nilai Pencairan'),
+
             TextColumn::make('status_dajam')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
                         'sudah_diajukan' => 'Sudah Diajukan',
@@ -285,6 +225,25 @@ class PengajuanDajamResource extends Resource
             ->sortable()
             ->searchable()
             ->label('Status Dajam'),
+
+            Tables\Columns\TextColumn::make('up_surat_pengajuan')
+            ->label('Upload Surat Pengajuan')
+            ->formatStateUsing(fn ($record) => $record->up_pbb
+            ? '<a href="' . Storage::url($record->up_pbb) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->up_pbb) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
+
+        Tables\Columns\TextColumn::make('up_nominatif_pengajuan')
+            ->label('Upload Nominatif Pengajuan')
+            ->formatStateUsing(fn ($record) => $record->up_img
+            ? '<a href="' . Storage::url($record->up_img) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->up_img) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable(),
             ])
 
             ->defaultSort('siteplan', 'asc')
@@ -336,6 +295,27 @@ class PengajuanDajamResource extends Resource
                             $q->where('status_dajam', $data['status_dajam'])
                         )
                     ),
+
+                    Filter::make('nama_dajam')
+                    ->form([
+                        Select::make('nama_dajam')
+                            ->options([
+                                'sertifikat' => 'Sertifikat',
+                            'imb' => 'IMB',
+                            'jkk' => 'JKK',
+                            'bestek' => 'Bestek',
+                            'pph' => 'PPH',
+                            'bphtb' => 'BPHTB',
+                            ])
+                            ->nullable()
+                            ->label('Nama Dajam')
+                            ->native(false),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when(isset($data['status_dajam']), fn ($q) =>
+                            $q->where('status_dajam', $data['status_dajam'])
+                        )
+                    ),
             
                 Filter::make('created_from')
                     ->label('Dari Tanggal')
@@ -348,6 +328,8 @@ class PengajuanDajamResource extends Resource
                             $q->whereDate('created_at', '>=', $data['created_from'])
                         )
                     ),
+
+                    
             
                 Filter::make('created_until')
                     ->label('Sampai Tanggal')
@@ -459,13 +441,13 @@ class PengajuanDajamResource extends Resource
 
     public static function exportData(Collection $records)
     {
-        $csvData = "ID, Blok, Bank, Nama Konsumen, Maksimal KPR, Nilai Pencairan, Jumlah Dajam, Dajam Sertifikat, Dajam IMB, Dajam Listrik, Dajam JKK, Dajam Bestek, Jumlah Realisasi Dajam, Dajam PPH, Dajam BPHTB, Pembukuan, No. Surat Pengajuan, Tanggal Pencairan Dajam Sertifikat, Tanggal Pencairan Dajam IMB, Tanggal Pencairan Dajam Listrik, Tanggal Pencairan Dajam JKK, Tanggal Pencairan Dajam Bestek, Tanggal Pencairan Dajam PPH, Tanggal Pencairan Dajam BPHTB, Total Pencairan Dajam, Sisa Dajam, Status Dajam\n";
+        $csvData = "ID, Blok, Bank, No. Debitur, Nama Konsumen, Nama Dajam, No. Surat, Tanggal Pengajuan, Nilai Pencairan, Status Dajam\n";
     
         foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->siteplan}, {$record->bank}, {$record->nama_konsumen}, {$record->max_kpr}, {$record->nilai_pencairan}, {$record->jumlah_dajam}, {$record->dajam_sertifikat}, {$record->dajam_imb}, {$record->dajam_listrik}, {$record->dajam_jkk}, {$record->dajam_bestek}, {$record->jumlah_realisasi_dajam}, {$record->dajam_pph}, {$record->dajam_bphtb}, {$record->pembukuan}, {$record->no_surat_pengajuan}, {$record->tgl_pencairan_dajam_sertifikat}, {$record->tgl_pencairan_dajam_imb}, {$record->tgl_pencairan_dajam_listrik}, {$record->tgl_pencairan_dajam_jkk}, {$record->tgl_pencairan_dajam_bester}, {$record->tgl_pencairan_dajam_pph}, {$record->tgl_pencairan_dajam_bphtb}, {$record->total_pencairan_dajam}, {$record->sisa_dajam}, {$record->status_dajam}\n";
+            $csvData .= "{$record->id}, {$record->siteplan}, {$record->bank}, {$record->no_debitur}, {$record->nama_konsumen}, {$record->nama_dajam}, {$record->no_surat}, {$record->tanggal_pengajuan}, {$record->nilai_pencairan}, {$record->status_dajam}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'VerifikasiDajam.csv');
+        return response()->streamDownload(fn () => print($csvData), 'PengajuanDajam.csv');
     }
 
     public static function getEloquentQuery(): Builder

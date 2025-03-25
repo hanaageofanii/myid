@@ -382,7 +382,24 @@ class DajamResource extends Resource
             ->searchable()
             ->label('Pembukuan')            
             ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+            Tables\Columns\TextColumn::make('up_spd5')
+            ->label('Upload SPD 5')
+            ->formatStateUsing(fn ($record) => $record->up_pbb
+            ? '<a href="' . Storage::url($record->up_pbb) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->up_pbb) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
 
+        Tables\Columns\TextColumn::make('up_lainnya')
+            ->label('Upload Dokumen Lainnya')
+            ->formatStateUsing(fn ($record) => $record->up_img
+            ? '<a href="' . Storage::url($record->up_img) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->up_img) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable(),
 
             ])
 
