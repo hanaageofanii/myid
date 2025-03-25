@@ -212,9 +212,11 @@ class PengajuanDajamResource extends Resource
             ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
 
             
-            TextColumn::make('nilai_penaciran')
+            TextColumn::make('nilai_pencairan')
             ->searchable()
-            ->label('Nilai Pencairan'),
+            ->label('Nilai Pencairan')
+            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+
 
             TextColumn::make('status_dajam')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
