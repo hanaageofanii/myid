@@ -423,32 +423,32 @@ class VerifikasiDajamResource extends Resource
             TextColumn::make('no_surat_pengajuan')
             ->searchable()
             ->label('No. Surat Pengajuan'),
-            TextColumn::make('tanggal_pencairan_dajam_sertifikat')
+            TextColumn::make('tgl_pencairan_dajam_sertifikat')
             ->searchable()
             ->label('Tanggal Pencairan Dajam Sertifikat')
             ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('tanggal_pencairan_dajam_imb')
+            TextColumn::make('tgl_pencairan_dajam_imb')
             ->searchable()
             ->searchable()
             ->label('Tanggal Pencairan Dajam IMB')
             ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('tanggal_pencairan_dajam_listrik')
+            TextColumn::make('tgl_pencairan_dajam_listrik')
             ->searchable()
             ->label('Tanggal Pencairan Dajam Listrik')
             ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('tanggal_pencairan_dajam_jkk')
+            TextColumn::make('tgl_pencairan_dajam_jkk')
             ->searchable()
             ->label('Tanggal Pencairan Dajam JKK')
             ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('tanggal_pencairan_dajam_bester')
+            TextColumn::make('tgl_pencairan_dajam_bester')
             ->searchable()
             ->label('Tanggal Pencairan Dajam Bester')
             ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('tanggal_pencairan_dajam_pph')
+            TextColumn::make('tgl_pencairan_dajam_pph')
             ->searchable()
             ->label('Tanggal Pencairan Dajam PPH')
             ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
-            TextColumn::make('tanggal_pencairan_dajam_bphtb')
+            TextColumn::make('tgl_pencairan_dajam_bphtb')
             ->searchable()
             ->label('Tanggal Pencairan Dajam BPHTB')
             ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
@@ -560,8 +560,8 @@ class VerifikasiDajamResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Dajam Diubah')
-                                ->body('Data Dajam telah berhasil disimpan.')),                    
+                                ->title('Verifikasi Dajam Diubah')
+                                ->body('Verifikasi Dajam telah berhasil disimpan.')),                    
                         DeleteAction::make()
                         ->color('danger')
                         ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
@@ -570,8 +570,8 @@ class VerifikasiDajamResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Dajam Dihapus')
-                                ->body('Data Dajam telah berhasil dihapus.')),                            
+                                ->title('Verifikasi Dajam Dihapus')
+                                ->body('Verifikasi Dajam telah berhasil dihapus.')),                         
                     // RestoreAction::make()
                     //     ->label('Pulihkan')
                     //     ->successNotificationTitle('Data berhasil dipulihkan')
@@ -582,8 +582,8 @@ class VerifikasiDajamResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data Dajam')
-                            ->body('Data Dajam berhasil dikembalikan.')
+                            ->title('Verifikasi Dajam')
+                            ->body('Verifikasi Dajam berhasil dikembalikan.')
                     ),
                     ForceDeleteAction::make()
                     ->color('primary')
@@ -591,8 +591,8 @@ class VerifikasiDajamResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data Dajam')
-                            ->body('Data Dajam berhasil dihapus secara permanen.')
+                            ->title('Verifikasi Dajam')
+                            ->body('Verifikasi Dajam berhasil dihapus secara permanen.')
                     ),
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
@@ -605,8 +605,8 @@ class VerifikasiDajamResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Dajamg')
-                                ->body('Data Dajam berhasil dihapus.'))                        
+                                ->title('Verifikasi Dajamg')
+                                ->body('Verifikasi Dajam berhasil dihapus.'))                        
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
                 
@@ -617,8 +617,8 @@ class VerifikasiDajamResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Dajam')
-                                ->body('Data Dajam berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                                ->title('Verifikasi Dajam')
+                                ->body('Verifikasi Dajam berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
                 
                     BulkAction::make('export')
@@ -635,20 +635,20 @@ class VerifikasiDajamResource extends Resource
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Dajam')
-                                ->body('Data Dajam berhasil dikembalikan.')),
+                                ->title('Verifikasi Dajam')
+                                ->body('Verifikasi Dajam berhasil dikembalikan.')),
                 ]);
     }
 
     public static function exportData(Collection $records)
     {
-        $csvData = "ID, Blok, Bank, Nama Konsumen, Maksimal KPR, Nilai Pencairan, Jumlah Dajam, Dajam Sertifikat, Dajam IMB, Dajam Listrik, Dajam JKK, Dajam Bestek, Jumlah Realisasi Dajam, Dajam PPH, Dajam BPHTB, Pembukuan\n";
+        $csvData = "ID, Blok, Bank, Nama Konsumen, Maksimal KPR, Nilai Pencairan, Jumlah Dajam, Dajam Sertifikat, Dajam IMB, Dajam Listrik, Dajam JKK, Dajam Bestek, Jumlah Realisasi Dajam, Dajam PPH, Dajam BPHTB, Pembukuan, No. Surat Pengajuan, Tanggal Pencairan Dajam Sertifikat, Tanggal Pencairan Dajam IMB, Tanggal Pencairan Dajam Listrik, Tanggal Pencairan Dajam JKK, Tanggal Pencairan Dajam Bester, Tanggal Pencairan Dajam PPH, Tanggal Pencairan Dajam BPHTB, Total Pencairan Dajam, Sisa Dajam, Status Dajam\n";
     
         foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->siteplan}, {$record->bank}, {$record->nama_konsumen}, {$record->max_kpr}, {$record->nilai_pencairan}, {$record->jumlah_dajam}, {$record->dajam_sertifikat}, {$record->dajam_imb}, {$record->dajam_listrik}, {$record->dajam_jkk}, {$record->dajam_bestek}, {$record->jumlah_realisasi_dajam}, {$record->dajam_pph}, {$record->dajam_bphtb}, {$record->pembukuan}\n";
+            $csvData .= "{$record->id}, {$record->siteplan}, {$record->bank}, {$record->nama_konsumen}, {$record->max_kpr}, {$record->nilai_pencairan}, {$record->jumlah_dajam}, {$record->dajam_sertifikat}, {$record->dajam_imb}, {$record->dajam_listrik}, {$record->dajam_jkk}, {$record->dajam_bestek}, {$record->jumlah_realisasi_dajam}, {$record->dajam_pph}, {$record->dajam_bphtb}, {$record->pembukuan}, {$record->no_surat_pengajuan}, {$record->tgl_pencairan_dajam_sertifikat}, {$record->tgl_pencairan_dajam_imb}, {$record->tgl_pencairan_dajam_listrik}, {$record->tgl_pencairan_dajam_jkk}, {$record->tgl_pencairan_dajam_bester}, {$record->tgl_pencairan_dajam_pph}, {$record->tgl_pencairan_dajam_bphtb}, {$record->total_pencairan_dajam}, {$record->sisa_dajam}, {$record->status_dajam}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'Dajam.csv');
+        return response()->streamDownload(fn () => print($csvData), 'VerifikasiDajam.csv');
     }
 
     public static function getEloquentQuery(): Builder
