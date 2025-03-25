@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DataPengjamResource\Pages;
-use App\Filament\Resources\DataPengjamResource\RelationManagers;
-use App\Models\DataPengjam;
+use App\Filament\Resources\VerifikasiDajamResource\Pages;
+use App\Filament\Resources\VerifikasiDajamResource\RelationManagers;
+use App\Models\VerifikasiDajam;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class DataPengjamResource extends Resource
+class VerifikasiDajamResource extends Resource
 {
-    protected static ?string $model = DataPengjam::class;
+    protected static ?string $model = VerifikasiDajam::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -56,9 +56,9 @@ class DataPengjamResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDataPengjams::route('/'),
-            'create' => Pages\CreateDataPengjam::route('/create'),
-            'edit' => Pages\EditDataPengjam::route('/{record}/edit'),
+            'index' => Pages\ListVerifikasiDajams::route('/'),
+            'create' => Pages\CreateVerifikasiDajam::route('/create'),
+            'edit' => Pages\EditVerifikasiDajam::route('/{record}/edit'),
         ];
     }
 }
