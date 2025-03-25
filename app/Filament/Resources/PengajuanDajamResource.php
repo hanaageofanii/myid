@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PengajuanDajamResource\Pages;
 use App\Filament\Resources\PengajuanDajamResource\RelationManagers;
-use App\Models\PengajuanDajam;
+use App\Models\pengajuan_dajam;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PengajuanDajamResource extends Resource
 {
-    protected static ?string $model = PengajuanDajam::class;
+    protected static ?string $model = pengajuan_dajam::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
