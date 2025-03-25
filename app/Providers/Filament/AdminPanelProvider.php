@@ -22,6 +22,7 @@ use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 use App\Filament\Resources\GCVResource\Widgets\GCVStats;
 
 
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -67,6 +68,8 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Resources\AjbResource\Widgets\AjbStats::class,
                 \App\Filament\Resources\DajamResource\Widgets\dajamStats::class,
                 \App\Filament\Resources\VerifikasiDajamResource\Widgets\verifikasiDajamStats::class,
+                \App\Filament\Resources\PengajuanDajamResource\Widgets\PenDajamStats::class,
+
             ])
             ->middleware([
                 EncryptCookies::class,
