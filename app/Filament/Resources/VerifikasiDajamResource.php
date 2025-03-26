@@ -411,71 +411,71 @@ class VerifikasiDajamResource extends Resource
                 ->label('Dajam Bestek')            
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('jumlah_realisasi_dajam')
-            ->searchable()
-            ->label('Jumlah Realisasi Dajam')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Jumlah Realisasi Dajam')            
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_pph')
-            ->searchable()
-            ->label('Dajam PPH')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Dajam PPH')            
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_bphtb')
-            ->searchable()
-            ->label('Dajam BPHTB')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Dajam BPHTB')            
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('pembukuan')
-            ->searchable()
-            ->label('Pembukuan')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Pembukuan')            
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('no_surat_pengajuan')
-            ->searchable()
-            ->label('No. Surat Pengajuan'),
+                ->searchable()
+                ->label('No. Surat Pengajuan'),
             TextColumn::make('tgl_pencairan_dajam_sertifikat')
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam Sertifikat')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                ->searchable()
+                ->label('Tanggal Pencairan Dajam Sertifikat')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
             TextColumn::make('tgl_pencairan_dajam_imb')
-            ->searchable()
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam IMB')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                ->searchable()
+                ->searchable()
+                ->label('Tanggal Pencairan Dajam IMB')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
             TextColumn::make('tgl_pencairan_dajam_listrik')
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam Listrik')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                ->searchable()
+                ->label('Tanggal Pencairan Dajam Listrik')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
             TextColumn::make('tgl_pencairan_dajam_jkk')
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam JKK')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                ->searchable()
+                ->label('Tanggal Pencairan Dajam JKK')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
             TextColumn::make('tgl_pencairan_dajam_bester')
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam Bester')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                ->searchable()
+                ->label('Tanggal Pencairan Dajam Bester')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
             TextColumn::make('tgl_pencairan_dajam_pph')
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam PPH')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                ->searchable()
+                ->label('Tanggal Pencairan Dajam PPH')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
             TextColumn::make('tgl_pencairan_dajam_bphtb')
-            ->searchable()
-            ->label('Tanggal Pencairan Dajam BPHTB')
-            ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                ->searchable()
+                ->label('Tanggal Pencairan Dajam BPHTB')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
             TextColumn::make('total_pencairan_dajam')
-            ->searchable()
-            ->label('Total Pencairan Dajam')
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Total Pencairan Dajam')
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('sisa_dajam')
-            ->searchable()
-            ->label('Sisa Dajam')
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Sisa Dajam')
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('status_dajam')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
                         'sudah_diajukan' => 'Sudah Diajukan',
                         'belum_diajukan' => 'Belum Diajukan',
                 default => ucfirst($state), 
             })
-            ->sortable()
-            ->searchable()
-            ->label('Status Dajam'),
-            ])
+                ->sortable()
+                ->searchable()
+                ->label('Status Dajam'),
+                ])
 
             ->defaultSort('siteplan', 'asc')
             ->headerActions([
