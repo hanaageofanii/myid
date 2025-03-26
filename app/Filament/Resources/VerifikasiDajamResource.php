@@ -373,43 +373,43 @@ class VerifikasiDajamResource extends Resource
                         'brii_bekasi' => 'BRI Bekasi',
                 default => ucfirst($state), 
             })
-            ->sortable()
-            ->searchable()
-            ->label('Bank'),
+                ->sortable()
+                ->searchable()
+                ->label('Bank'),
             TextColumn::make('nama_konsumen')->searchable()->label('Nama Konsumen'),
             TextColumn::make('no_debitur')->searchable()->label('No. Debitur'),
             TextColumn::make('max_kpr')
-            ->searchable()
-            ->label('Max KPR')
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Max KPR')
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('nilai_pencairan')
-            ->searchable()
-            ->label('Nilai Pencairan')
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Nilai Pencairan')
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('total_dajam')
-            ->searchable()
-            ->label('Jumlah Dajam')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Jumlah Dajam')            
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_sertifikat')
-            ->searchable()
-            ->label('Dajam Sertifikat')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Dajam Sertifikat')            
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_imb')
-            ->searchable()
-            ->label('Dajam IMB')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Dajam IMB')            
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_listrik')
-            ->searchable()
-            ->label('Dajam Listrik')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Dajam Listrik')            
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_jkk')
-            ->searchable()
-            ->label('Dajam JKK')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Dajam JKK')            
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_bestek')
-            ->searchable()
-            ->label('Dajam Bestek')            
-            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
+                ->searchable()
+                ->label('Dajam Bestek')            
+                ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('jumlah_realisasi_dajam')
             ->searchable()
             ->label('Jumlah Realisasi Dajam')            
