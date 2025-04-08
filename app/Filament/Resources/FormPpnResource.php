@@ -55,7 +55,7 @@ class FormPpnResource extends Resource
 {
     protected static ?string $model = form_ppn::class;
     protected static ?string $title = "Form Data Faktur PPN";
-    protected static ?string $navigationGroup = "Legal";
+    protected static ?string $navigationGroup = "Legal - Pajak";
     protected static ?string $pluralLabel = "Data Faktur PPN";
     protected static ?string $navigationLabel = "Faktur PPN";
     protected static ?string $pluralModelLabel = 'Daftar Faktur PPN';

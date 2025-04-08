@@ -62,7 +62,7 @@ class PengajuanDajamResource extends Resource
 {
     protected static ?string $model = pengajuan_dajam::class;
     protected static ?string $title = "Form Pengajuan Dajam";
-    protected static ?string $navigationGroup = "Legal";
+    protected static ?string $navigationGroup = "Legal - Pajak";
     protected static ?string $pluralLabel = "Data Pengajuan Dajam";
     protected static ?string $navigationLabel = "Pengajuan Dajam";
     protected static ?string $pluralModelLabel = 'Daftar Pengajuan Dajam';

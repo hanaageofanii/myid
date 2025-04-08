@@ -57,7 +57,7 @@ class PencairanAkadResource extends Resource
     protected static ?string $model = PencairanAkad::class;
 
     protected static ?string $title = "Form Input Data Pencairan Akad";
-    protected static ?string $navigationGroup = "Legal";
+    protected static ?string $navigationGroup = "Keuangan";
     protected static ?string $pluralLabel = "Data Pencairan Akad";
     protected static ?string $navigationLabel = "Pencairan Akad";
     protected static ?string $pluralModelLabel = 'Daftar Pencairan';

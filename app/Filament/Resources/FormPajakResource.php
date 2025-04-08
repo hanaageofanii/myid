@@ -54,7 +54,7 @@ class FormPajakResource extends Resource
 
     protected static ?string $title = "Form Validasi PPH";
 
-    protected static ?string $navigationGroup = "Legal";
+    protected static ?string $navigationGroup = "Legal - Pajak";
 
     protected static ?string $pluralLabel = "Data Validasi PPH";
 

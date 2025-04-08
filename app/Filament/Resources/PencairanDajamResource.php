@@ -64,7 +64,7 @@ class PencairanDajamResource extends Resource
     protected static ?string $model = pencairan_dajam::class;
 
     protected static ?string $title = "Form Pencairan Dajam";
-    protected static ?string $navigationGroup = "Legal";
+    protected static ?string $navigationGroup = "Keuangan";
     protected static ?string $pluralLabel = "Data Pencairan Dajam";
     protected static ?string $navigationLabel = "Pencairan Dajam";
     protected static ?string $pluralModelLabel = 'Daftar Pencairan Dajam';

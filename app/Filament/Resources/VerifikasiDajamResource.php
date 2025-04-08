@@ -60,7 +60,7 @@ class VerifikasiDajamResource extends Resource
 {
     protected static ?string $model = verifikasi_dajam::class;
     protected static ?string $title = "Form Verifikasi Dajam";
-    protected static ?string $navigationGroup = "Legal";
+    protected static ?string $navigationGroup = "Legal - Pajak";
     protected static ?string $pluralLabel = "Data Verifikasi Dajam";
     protected static ?string $navigationLabel = "Verifikasi Dajam";
     protected static ?string $pluralModelLabel = 'Daftar Verifikasi Dajam';
