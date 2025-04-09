@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('no_cek');
             $table->string('pemberi');
             $table->string('catatan');
+            $table->string('bukti_bukti');
             $table->timestamps();
         });
     }
