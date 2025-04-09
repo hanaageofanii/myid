@@ -58,38 +58,38 @@ class AkadStats extends BaseWidget
                 ]),
 
 
-            Card::make('Total Max KPR', 'Rp ' . number_format(PencairanAkad::sum('max_kpr'), 0, ',', '.'))
-                ->extraAttributes([
-                    'style' => 'background-color: #C14600; border-color: #234C63;'
-                ]),
+            // Card::make('Total Max KPR', 'Rp ' . number_format(PencairanAkad::sum('max_kpr'), 0, ',', '.'))
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #C14600; border-color: #234C63;'
+            //     ]),
 
-            Card::make('Total Nilai Pencairan', 'Rp ' . number_format(PencairanAkad::sum('nilai_pencairan'), 0, ',', '.'))
-                ->extraAttributes([
-                    'style' => 'background-color: #C14600; border-color: #234C63;'
-                ]),
+            // Card::make('Total Nilai Pencairan', 'Rp ' . number_format(PencairanAkad::sum('nilai_pencairan'), 0, ',', '.'))
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #C14600; border-color: #234C63;'
+            //     ]),
 
-            Card::make('Total Dana Jaminan', 'Rp ' . number_format(PencairanAkad::sum('dana_jaminan'), 0, ',', '.'))
-                ->extraAttributes([
-                    'style' => 'background-color: #C14600; border-color: #234C63;'
-                ]),
+            // Card::make('Total Dana Jaminan', 'Rp ' . number_format(PencairanAkad::sum('dana_jaminan'), 0, ',', '.'))
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #C14600; border-color: #234C63;'
+            //     ]),
 
-            // Rata-rata Max KPR
-            Card::make('Rata-rata Max KPR', 'Rp ' . number_format(PencairanAkad::avg('max_kpr'), 0, ',', '.'))
-                ->extraAttributes([
-                    'style' => 'background-color: #C14600; border-color: #234C63;'
-                ]),
+            // // Rata-rata Max KPR
+            // Card::make('Rata-rata Max KPR', 'Rp ' . number_format(PencairanAkad::avg('max_kpr'), 0, ',', '.'))
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #C14600; border-color: #234C63;'
+            //     ]),
 
-            // Rata-rata Dana Jaminan
-            Card::make('Rata-rata Dana Jaminan', 'Rp ' . number_format(PencairanAkad::avg('dana_jaminan'), 0, ',', '.'))
-                ->extraAttributes([
-                    'style' => 'background-color: #C14600; border-color: #234C63;'
-                ]),
+            // // Rata-rata Dana Jaminan
+            // Card::make('Rata-rata Dana Jaminan', 'Rp ' . number_format(PencairanAkad::avg('dana_jaminan'), 0, ',', '.'))
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #C14600; border-color: #234C63;'
+            //     ]),
 
-            // Total Pencairan
-            Card::make('Rata - Rata Nilai Pencairan', 'Rp ' . number_format(PencairanAkad::avg('nilai_pencairan'), 0, ',', '.'))
-                ->extraAttributes([
-                    'style' => 'background-color: #C14600; border-color: #234C63;'
-                ]),        
+            // // Total Pencairan
+            // Card::make('Rata - Rata Nilai Pencairan', 'Rp ' . number_format(PencairanAkad::avg('nilai_pencairan'), 0, ',', '.'))
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #C14600; border-color: #234C63;'
+            //     ]),        
         ];
     }
 }
