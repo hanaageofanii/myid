@@ -65,7 +65,7 @@ class PembayaranResource extends Resource
                             ->downloadable()->previewable(false),
                         ])
                     ])
-                ])            
+                ])
             ]);
     }
 
