@@ -10,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\Permission\Models\Role;
@@ -28,7 +30,10 @@ class RoleResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                ->minLength(2)
+                ->maxLength(255)
+                ->label('Nama')
             ]);
     }
 
@@ -36,7 +41,8 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name')
+                ->label('Nama'),
             ])
             ->filters([
                 //
