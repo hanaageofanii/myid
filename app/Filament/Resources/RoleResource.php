@@ -45,7 +45,7 @@ class RoleResource extends Resource
                 ->label('Nama'),
             ])
             ->filters([
-                //
+                
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -60,7 +60,7 @@ class RoleResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            
         ];
     }
 
