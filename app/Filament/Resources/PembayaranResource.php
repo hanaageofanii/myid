@@ -43,6 +43,8 @@ class PembayaranResource extends Resource
                     Textinput::make('no_bukti')
                     ->label('No. Bukti')
                     ->required(),
+                    FileUpload::make('bukti_bukti')->disk('public')->nullable()->label('Upload Bukti')
+                    ->downloadable()->previewable(false),
 
                     Fieldset::make('Info Lainnya')
                     ->schema([
@@ -50,6 +52,9 @@ class PembayaranResource extends Resource
                         Textinput::make('no_cek')
                         ->label('No. Cek')
                         ->required(),
+
+                        FileUpload::make('bukti_bukti')->disk('public')->nullable()->label('Upload Bukti Cek')
+                        ->downloadable()->previewable(false),
 
                         Textinput::make('pemberi')
                         ->label('Pemberi')

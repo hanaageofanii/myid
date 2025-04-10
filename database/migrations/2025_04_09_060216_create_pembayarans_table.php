@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('kasbank');
             $table->date('tanggal');
             $table->string('no_bukti');
+            $table->string('up_bukti');
             $table->string('no_cek');
+            $table->string('bukti_cek');
             $table->string('pemberi');
             $table->string('catatan');
             $table->string('bukti_bukti');
