@@ -22,11 +22,11 @@ class AjbStats extends BaseWidget
         return [
             Card::make('Total Data AJB', ajb::count())
             ->extraAttributes([
-                'style' => 'background-color: #85c1e9; border-color: #234C63;'
+                'style' => 'background-color: #FFC85B; border-color: #234C63;'
             ]),    
             Card::make('Total Site Plan', ajb::distinct('siteplan')->count('siteplan'))
             ->extraAttributes([
-                'style' => 'background-color: #85c1e9; border-color: #234C63;'
+                'style' => 'background-color: #FFC85B; border-color: #234C63;'
             ]),            
         ];
     }

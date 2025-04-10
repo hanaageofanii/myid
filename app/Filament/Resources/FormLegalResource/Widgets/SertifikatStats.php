@@ -22,19 +22,19 @@ class SertifikatStats extends BaseWidget
         return [
             Card::make('Total Data Sertifikat', form_legal::count())
             ->extraAttributes([
-                'style' => 'background-color: #134b42; border-color: #234C63;'
+                'style' => 'background-color: #FFC85B; border-color: #234C63;'
             ]), 
             Card::make('Total Site Plan', form_legal::distinct('siteplan')->count('siteplan'))
             ->extraAttributes([
-                'style' => 'background-color: #134b42; border-color: #234C63;'
+                'style' => 'background-color: #FFC85B; border-color: #234C63;'
             ]),  
             Card::make('Status Sertifikat Induk', form_legal::where('status_sertifikat', 'induk')->count())
             ->extraAttributes([
-                'style' => 'background-color: #134b42; border-color: #234C63;'
+                'style' => 'background-color: #FFC85B; border-color: #234C63;'
             ]),            
             Card::make('Status Sertfikat Pecahan', form_legal::where('status_sertifikat','pecahan')->count())
             ->extraAttributes([
-                'style' => 'background-color: #134b42; border-color: #234C63;'
+                'style' => 'background-color: #FFC85B; border-color: #234C63;'
             ]), 
         ];
     }
