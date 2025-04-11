@@ -15,6 +15,9 @@ use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\Permission\Models\Role;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Select;
+
 
 class RoleResource extends Resource
 {
@@ -30,10 +33,17 @@ class RoleResource extends Resource
     {
         return $form
             ->schema([
+                Card::make()->schema([
                 TextInput::make('name')
                 ->minLength(2)
                 ->maxLength(255)
-                ->label('Nama')
+                ->unique(ignoreRecord: true)
+                ->label('Nama'),
+                Select::make('permissions')
+                ->multiple()
+                ->relationship('permissions', 'name')
+                ->preload(),
+                ])->columns(2)
             ]);
     }
 
@@ -41,14 +51,20 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                ->label('Nama'),
+                Tables\Columns\TextColumn::make('id')->sortable()->label('Id'),
+                Tables\Columns\TextColumn::make('name')->label('Nama'),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime('d-M-Y')->sortable()
+                    ->label('Created at'),
+
             ])
             ->filters([
                 
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
