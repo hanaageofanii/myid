@@ -26,8 +26,11 @@ class RoleResource extends Resource
     protected static ?string $title = "Role";
     protected static ?string $navigationGroup = "Settings";
     protected static ?string $pluralLabel = "Role";
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-finger-print';
     protected static ?string $navigationLabel = 'Role';
+    
+    protected static ?int $navigationSort = 3;
+
     protected static ?string $pluralModelLabel = 'Role';
     public static function form(Form $form): Form
     {
