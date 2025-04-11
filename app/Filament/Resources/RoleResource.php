@@ -54,14 +54,14 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable()->label('Id')->searchable()->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('name')->label('Nama')->searchable()->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('id')->sortable()->label('Id')->searchable(),
+                Tables\Columns\TextColumn::make('name')->label('Nama')->searchable(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d-M-Y')->sortable()
                     ->searchable()
                     ->label('Created at'),
-                    // ->toggleable(isToggledHiddenByDefault: true),
+                    // ,
 
             ])
             ->filters([

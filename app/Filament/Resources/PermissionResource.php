@@ -46,13 +46,13 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-               TextColumn::make('id')->sortable()->searchable()->label('Id')->toggleable(isToggledHiddenByDefault: true),
-               TextColumn::make('name')->label('Nama')->searchable()->toggleable(isToggledHiddenByDefault: true),
+               TextColumn::make('id')->sortable()->searchable()->label('Id'),
+               TextColumn::make('name')->label('Nama')->searchable(),
                TextColumn::make('created_at')
                     ->dateTime('d-M-Y')->sortable()
                     ->searchable()
                     ->label('Created at'),
-                    // ->toggleable(isToggledHiddenByDefault: true),
+                    // ,
 
 
             ])
