@@ -38,7 +38,7 @@ class PermissionResource extends Resource
                 ->label('Nama')
                 ->required()
                 ->unique()
-            ])
+            ])->columns(2)
         ]);
     }
 
