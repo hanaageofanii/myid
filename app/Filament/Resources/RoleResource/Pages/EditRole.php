@@ -29,5 +29,9 @@ class EditRole extends EditRecord
         ->label('Simpan');
     }
     
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
 
