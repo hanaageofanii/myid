@@ -31,14 +31,12 @@ class PermissionResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()->schema([
                 TextInput::make ('name')
                 ->minLength(2)
                 ->maxLength(255)
                 ->label('Nama')
                 ->required()
-                ->unique()
-            ])->columns(2)
+
         ]);
     }
 
@@ -46,8 +44,14 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                ->label('Nama'),
+                Tables\Columns\TextColumn::make('id')->sortable()->label('Id'),
+
+                Tables\Columns\TextColumn::make('name')->label('Nama'),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime('d-M-Y')->sortable()
+                    ->label('Created at'),
+
             ])
             ->filters([
                 //
