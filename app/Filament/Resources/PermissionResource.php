@@ -46,13 +46,14 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable()->label('Id'),
-
-                Tables\Columns\TextColumn::make('name')->label('Nama'),
-
-                Tables\Columns\TextColumn::make('created_at')
+               TextColumn::make('id')->sortable()->searchable()->label('Id')->toggleable(isToggledHiddenByDefault: true),
+               TextColumn::make('name')->label('Nama')->searchable()->toggleable(isToggledHiddenByDefault: true),
+               TextColumn::make('created_at')
                     ->dateTime('d-M-Y')->sortable()
-                    ->label('Created at'),
+                    ->searchable()
+                    ->label('Created at')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
 
             ])
             ->filters([
@@ -60,6 +61,7 @@ class PermissionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
