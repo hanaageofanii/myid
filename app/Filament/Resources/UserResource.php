@@ -13,6 +13,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Card;
+
 
 class UserResource extends Resource
 {
@@ -28,6 +30,7 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                Card::make()->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -40,6 +43,7 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(255),
+                ])->columns(2)
             ]);
     }
 
