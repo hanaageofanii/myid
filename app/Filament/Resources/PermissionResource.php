@@ -51,8 +51,8 @@ class PermissionResource extends Resource
                TextColumn::make('created_at')
                     ->dateTime('d-M-Y')->sortable()
                     ->searchable()
-                    ->label('Created at')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Created at'),
+                    // ->toggleable(isToggledHiddenByDefault: true),
 
 
             ])

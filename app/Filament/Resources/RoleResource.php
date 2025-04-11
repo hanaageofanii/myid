@@ -60,8 +60,8 @@ class RoleResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d-M-Y')->sortable()
                     ->searchable()
-                    ->label('Created at')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Created at'),
+                    // ->toggleable(isToggledHiddenByDefault: true),
 
             ])
             ->filters([
