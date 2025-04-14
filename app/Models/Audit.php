@@ -28,6 +28,16 @@ class Audit extends Model
         "tanda_terima_nop",
         "imb_pbg",
         "tanda_terima_imb_pbg",
-        "tanda_terima_tambahan"
+        "tanda_terima_tambahan",
+        "up_sertifikat", "up_nop", "up_imb_pbg", "up_tambahan_lainnya"
+        
+
+    ];
+
+    protected $casts = [
+        "up_sertifikat" => 'array',
+        "up_nop" => 'array',
+        "up_imb_pbg" => 'array',
+        "up_tambahan_lainnya" => 'array',
     ];
 }

@@ -40,6 +40,10 @@ use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
 use App\Filament\Resources\AuditResource\Widgets\AuditStats;
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Support\Facades\Storage;
+
+
 
 
 class AuditResource extends Resource
@@ -100,6 +104,43 @@ class AuditResource extends Resource
                     Textarea::make('tanda_terima_tambahan')->label('Tanda Terima Tambahan')->rows(3)->columnSpanFull(),
                 ])
                 ->columns(2),
+            
+                Fieldset::make('Upload Berkas')
+                ->schema([
+                    FileUpload::make('up_sertifikat')
+                        ->disk('public')
+                        ->multiple()
+                        ->nullable()
+                        ->label('Upload Sertifikat')
+                        ->downloadable()
+                        ->previewable(false),
+                    
+                    FileUpload::make('up_nop')
+                        ->disk('public')
+                        ->nullable()
+                        ->multiple()
+                        ->label('Upload NOP')
+                        ->downloadable()
+                        ->previewable(false),
+
+                    FileUpload::make('up_imb_pbg')
+                        ->disk('public')
+                        ->nullable()
+                        ->multiple()
+                        ->label('Upload IMB/PBG')
+                        ->downloadable()
+                        ->previewable(false),
+                    
+                    FileUpload::make('up_tambahan_lainnya')
+                        ->disk('public')
+                        ->nullable()
+                        ->multiple()
+                        ->label('Upload Tambahan Lainnya')
+                        ->downloadable()
+                        ->previewable(false),
+                    
+                ])
+                ->columns(2),
         ]);
     }
 
@@ -133,7 +174,104 @@ class AuditResource extends Resource
             TextColumn::make('imb_pbg')->label('IMB / PBG')->limit(20)->searchable(),
             TextColumn::make('tanda_terima_imb_pbg')->label('Tanda Terima IMB/PBG')->limit(20)->searchable(),
             TextColumn::make('tanda_terima_tambahan')->label('Tanda Terima Tambahan')->limit(50)->searchable(),
-            ])
+
+            
+            TextColumn::make('up_sertifikat')
+                ->label('Upload Sertifikat')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_sertifikat) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_sertifikat) ? $record->up_sertifikat : json_decode($record->up_sertifikat, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+            TextColumn::make('up_nop')
+                ->label('Upload NOP')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_nop) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_nop) ? $record->up_nop : json_decode($record->up_nop, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+            TextColumn::make('up_imb_pbg')
+                ->label('Upload IMB/PBG')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_imb_pbg) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_imb_pbg) ? $record->up_imb_pbg : json_decode($record->up_imb_pbg, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+            TextColumn::make('up_tambahan_lainnya')
+                ->label('Upload Tambahan Lainnya')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_tambahan_lainnya) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_tambahan_lainnya) ? $record->up_tambahan_lainnya : json_decode($record->up_tambahan_lainnya, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+        ])
             ->defaultSort('siteplan', 'asc')
             ->headerActions([
                 Action::make('count')
@@ -142,7 +280,7 @@ class AuditResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()
-                ->label('Data yang dihapus') 
+                ->label('Data yang dihapus')
                 ->native(false),
 
                 Filter::make('status')
