@@ -23,6 +23,7 @@ class GCV extends Model
         "nama_konsumen",
         "agent",
         "kpr_status",
+        "tanggal_akad",
         "ket",
         "user",
         "tanggal_update",

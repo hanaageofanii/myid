@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('nama_konsumen')->nullable();
             $table->string('agent')->nullable();
             $table->enum('kpr_status', ['sp3k','akad','batal'])->nullable();
+            $table->date('tanggal_akad')->nullable();
             $table->text('ket')->nullable();
             $table->string('user')->nullable();
             $table->date('tanggal_update')->nullable();

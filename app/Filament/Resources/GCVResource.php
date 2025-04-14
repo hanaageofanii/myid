@@ -41,14 +41,8 @@ use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\GCVResource\Widgets\GCVStats;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
-
-
-
-
-
-
 class GCVResource extends Resource
 {
     protected static ?string $model = GCV::class;
@@ -71,7 +65,12 @@ class GCVResource extends Resource
                         'pca1' => 'PCA1',
                     ])
                     ->label('Proyek')
-                    ->required(),
+                    ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole('admin');
+                    })()),
 
                 Forms\Components\Select::make('nama_perusahaan')
                     ->label('Nama Perumahan')
@@ -81,7 +80,12 @@ class GCVResource extends Resource
                         'pesona_cengkong_asri_1' => 'Pesona Cengkong Asri 1',
                     ])
                     ->label('Nama Perusahaan')
-                    ->required(),
+                    ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole('admin');
+                    })()),
 
                 Forms\Components\Select::make('kavling')
                     ->options([
@@ -93,7 +97,12 @@ class GCVResource extends Resource
                         'kios' => 'Kios'
                     ])
                     ->label('Kavling')
-                    ->required(),
+                    ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole('admin');
+                    })()),
 
                     Forms\Components\Select::make('siteplan')
                         ->label('Blok')
@@ -108,35 +117,83 @@ class GCVResource extends Resource
                                 $set('kpr_status', $audit->status === 'akad' ? 'akad' : null);
                                 $set('type', $audit->type);
                             }
-                        }),
+                        })->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole('admin');
+                        })()),
 
                 
                 Forms\Components\TextInput::make('type')
                     ->label('Type')
-                    ->required(),
+                    ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole('admin');
+                    })()),
                 
 
                 Forms\Components\TextInput::make('luas_tanah')
                     ->numeric()
                     ->label('Luas Tanah')
-                    ->required(),
+                    ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole('admin');
+                    })()),
 
                 Forms\Components\Select::make('status')
                     ->options([
                         'booking' => 'Booking',
                     ])
-                    ->label('Status'),
+                    ->label('Status')
+                    ->afterStateUpdated(function ($state, $set, $record) {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        if (is_null($state) && $user && $user->hasRole(['Direksi', 'Super admin','admin','Staff Legal', 'Staff KPR'])) {
+                            $set('tanggal_booking', null);
+                            $set('nama_konsumen', null);
+                            $set('agent', null);
+                
+                            $record->update([
+                                'tanggal_booking' => null,
+                                'nama_konsumen' => null,
+                                'agent' => null
+                            ]);
+                        }
+                    })
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin', 'Staff Legal', 'Staff KPR','Direksi', 'Super admin']);
+                    })()),
                     // ->required(),
 
                 Forms\Components\DatePicker::make('tanggal_booking')
                     ->label('Tanggal Booking')
-                    ,
+                    ->disabled(fn ($get) => ! (function () use ($get) {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin', 'Staff Legal', 'Staff KPR']) && $get('status') === 'booking';
+                    })()),
 
                 Forms\Components\TextInput::make('nama_konsumen')
-                    ->label('Nama Konsumen'),
+                    ->label('Nama Konsumen')
+                    ->disabled(fn ($get) => ! (function () use ($get) {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin', 'Staff Legal', 'Staff KPR']) && $get('status') === 'booking';
+                    })()),
 
                 Forms\Components\TextInput::make('agent')
-                    ->label('Agent'),
+                    ->label('Agent')
+                    ->disabled(fn ($get) => ! (function () use ($get) {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin', 'Staff Legal', 'Staff KPR']) && $get('status') === 'booking';
+                    })()), 
 
                 Forms\Components\Select::make('kpr_status')
                     ->options([
@@ -144,11 +201,29 @@ class GCVResource extends Resource
                         'akad' => 'Akad',
                         'batal' => 'Batal',
                     ])
-                    ->label('KPR Status'),
+                    ->label('KPR Status')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Staff']);
+                    })()),
+
+                    Forms\Components\DatePicker::make('tanggal_akad')
+                    ->label('Tanggal Akad')
+                    ->disabled(fn ($get) => ! (function () use ($get) {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin', 'Staff']) && $get('status') === 'booking';
+                    })()),
 
                 Forms\Components\Textarea::make('ket')
                     ->label('Keterangan')
-                    ->nullable(),
+                    ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Staff']);
+                    })()),
             ]);
     }
 
@@ -163,14 +238,19 @@ class GCVResource extends Resource
                         'gcv' => 'GCV',
                         'tkr' => 'TKR',
                         'pca1' => 'PCA1',
-                        default => $state, 
-                })->searchable(),
+                        default => $state,
+                })->searchable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole('admin');
+                })()),
                 Tables\Columns\TextColumn::make('nama_perusahaan')->label('Nama Perumahan')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
                     'grand_cikarang_village' => 'Grand Cikarang Village',
                     'taman_kertamukti_residence' => 'Taman Kertamukti Residence',
                     'pesona_cengkong_asri_1' => 'Pesona Cengkong Asri 1',
-                    default => $state, 
+                    default => $state,
                 })->searchable(),
 
                 Tables\Columns\TextColumn::make('kavling')->label('Kavling')
@@ -181,7 +261,7 @@ class GCVResource extends Resource
                     'komersil' => 'Komersil',
                     'tanah_lebih' => 'Tanah Lebih',
                     'kios' => 'Kios',
-                    default => $state, 
+                    default => $state,
                 })->searchable(),
 
                 Tables\Columns\TextColumn::make('siteplan')->label('Blok')->searchable(),
@@ -190,7 +270,7 @@ class GCVResource extends Resource
                 Tables\Columns\TextColumn::make('status')->label('Status')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
                     'booking' => 'Booking',
-                    default => $state, 
+                    default => $state,
                 })->searchable(),
 
                 Tables\Columns\TextColumn::make('tanggal_booking')->date()->label('Tanggal Booking')->searchable()                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
@@ -205,6 +285,8 @@ class GCVResource extends Resource
                         'batal' => 'Batal',
                         default => $state, 
                     })->searchable(),
+                Tables\Columns\TextColumn::make('tanggal_akad')->date()->label('Tanggal Akad')->searchable()                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+
             ])
             ->defaultSort('siteplan', 'asc')
             ->headerActions([
@@ -233,6 +315,7 @@ class GCVResource extends Resource
                         'batal' => 'Batal',
                     ])
                     ->native(false),
+
 
                 Tables\Filters\SelectFilter::make('proyek') 
                     ->label('Proyek')
