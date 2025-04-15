@@ -65,7 +65,21 @@ class RekeningKoranResource extends Resource
             ->schema([
                 Fieldset::make()
                 ->schema([
-
+                    Select::make('no_transaksi')
+                    ->label('No. Transaksi')
+                    ->options(fn () => rekonsil::pluck('no_transaksi', 'no_transaksi')) 
+                    ->searchable()
+                    ->reactive(),
+                    // ->afterStateUpdated(function ($state, callable $set) {
+                    //     if ($state) {
+                    //         $data = rekonsil::where('no_transaksi', $state)->first(); 
+                    //         if ($data) {
+                    //             $set('nama_konsumen', $data->nama_konsumen);
+                    //             $set('bank', $data->bank);
+                    //             $set('max_kpr', $data->maksimal_kpr);
+                    //         }
+                    //     }
+                    // }),
                 ])
             ]);
     }
