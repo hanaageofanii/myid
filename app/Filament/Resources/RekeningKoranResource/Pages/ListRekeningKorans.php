@@ -13,7 +13,20 @@ class ListRekeningKorans extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Buat Data Rekening Koran'),
         ];
+    }
+    // protected function getHeaderWidgets(): array
+    // {
+    //     return [
+    //         pencairanDajamStats::class,
+    //     ];
+    // }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
     }
 }
