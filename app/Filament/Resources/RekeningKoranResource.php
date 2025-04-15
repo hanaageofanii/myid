@@ -54,6 +54,8 @@ class RekeningKoranResource extends Resource
     protected static ?string $model = rekening_koran::class;
 
     protected static ?string $title = "Input Rekening Koran";
+
+    protected static ?int $navigationSort = 2;
     protected static ?string $navigationGroup = "Kasir";
     protected static ?string $pluralLabel = "Rekening Koran";
     protected static ?string $navigationLabel = "Rekening Koran";
@@ -80,6 +82,10 @@ class RekeningKoranResource extends Resource
                     //         }
                     //     }
                     // }),
+
+                    DatePicker::make('tanggal_mutasi')
+                    ->label('Tanggal Mutasi')
+                    ->required(),
                 ])
             ]);
     }

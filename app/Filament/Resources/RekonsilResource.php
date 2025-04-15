@@ -53,6 +53,8 @@ class RekonsilResource extends Resource
     protected static ?string $model = Rekonsil::class;
 
     protected static ?string $title = "Input Transaksi Internal";
+
+    protected static ?int $navigationSort = 1;
     protected static ?string $navigationGroup = "Kasir";
     protected static ?string $pluralLabel = "Transaksi Internal";
     protected static ?string $navigationLabel = "Transaksi Internal";
