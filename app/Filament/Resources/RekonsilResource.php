@@ -121,7 +121,62 @@ class RekonsilResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('no_transaksi')
+                ->label('No. Transaksi')
+                ->searchable(),
+
+                TextColumn::make('tanggal_transaksi')
+                ->searchable()
+                ->label('Tanggal Transaksi')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),    
+
+                TextColumn::make('nama_yang_menacairkan')
+                ->label('Nama yang Mencairkan')
+                ->searchable(),
+
+                TextColumn::make('tanggal_diterima')
+                ->searchable()
+                ->label('Tanggal Terima')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                
+                TextColumn::make('nama_penerima')
+                ->label('Nama Penerima')
+                ->searchable(),
+
+                TextColumn::make('bank')
+                ->label('Bank')
+                ->searchable(),
+
+                TextColumn::make('deskripsi')
+                ->limit(50) 
+                ->label('Untuk Keperluan')
+                ->searchable()
+                ->tooltip(fn ($record) => $record->deskripsi),
+
+                TextColumn::make('jumlah_uang')
+                ->label('Jumlah Uang')
+                ->searchable(),
+
+                TextColumn::make('tipe')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                       'debit' => 'Debit',
+                            'kredit' => 'Kredit',                            
+                default => ucfirst($state),
+            })
+            ->sortable()
+            ->searchable()
+            ->label('Tipe'),
+
+            TextColumn::make('status_rekonsil')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                       'belum' => 'Belum',
+                            'sudah' => 'Sudah',                            
+                default => ucfirst($state),
+            })
+            ->sortable()
+            ->searchable()
+            ->label('Status Rekonsil'), 
+                        
             ])
             ->filters([
                 //
