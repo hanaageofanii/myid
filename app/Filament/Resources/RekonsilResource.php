@@ -150,7 +150,7 @@ class RekonsilResource extends Resource
 
                 TextColumn::make('deskripsi')
                 ->limit(50) 
-                ->label('Untuk Keperluan')
+                ->label('Deskripsi Keperluan')
                 ->searchable()
                 ->tooltip(fn ($record) => $record->deskripsi),
 
@@ -348,7 +348,7 @@ class RekonsilResource extends Resource
 
     public static function exportData(Collection $records)
     {
-        $csvData = "ID, No. Transaksi, Tanggal Transaksi, Nama yang Mnecairkan, Nama Penerima, Tanggal di Terima, Bank, Untuk Keperlua, Jumlah Uang, Tipe, Status Rekonsil, Catatan\n";
+        $csvData = "ID, No. Transaksi, Tanggal Transaksi, Nama yang Mencairkan, Nama Penerima, Tanggal di Terima, Bank, Deskripsi Keperluan, Jumlah Uang, Tipe, Status Rekonsil, Catatan\n";
     
         foreach ($records as $record) {
             $csvData .= "{$record->id}, {$record->no_transaksi}, {$record->nama_yang_mencairkan}, {$record->nama_penerima}, {$record->tanggal_diterima}, {$record->bank}, {$record->deskripsi}, {$record->jumlah_uang}, {$record->tipe}, {$record->status_rekonsil}, {$record->catatan}\n";
