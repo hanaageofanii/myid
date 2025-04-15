@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('rekening_korans', function (Blueprint $table) {
             $table->id();
-            $table->string('no_transaksi');
-            $table->string('tanggal_mutasi');
-            $table->string('keterangan_dari_bank');
-            $table->string('nominal');
-            $table->enum('tipe', ['debit', 'kredit']);
-            $table->string('saldo');
-            $table->string('no_referensi_bank');
-            $table->string('bank');
-            $table->string('catatan');
+            $table->string('no_transaksi')->nullable();
+            $table->string('tanggal_mutasi')->nullable();
+            $table->string('keterangan_dari_bank')->nullable();
+            $table->string('nominal')->nullable();
+            $table->enum('tipe', ['debit', 'kredit'])->nullable();
+            $table->string('saldo')->nullable();
+            $table->string('no_referensi_bank')->nullable();
+            $table->string('bank')->nullable();
+            $table->string('catatan')->nullable();
+            $table->json('up_rekening_koran')->nullable();
             $table->timestamps();
         });
     }

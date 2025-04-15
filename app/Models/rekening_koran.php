@@ -19,6 +19,7 @@ class rekening_koran extends Model
         'saldo',
         'no_refrensi_bank',
         'bank',
-        'noted',
+        'catatan',
+        'up_rekening_koran',
     ];
 }
