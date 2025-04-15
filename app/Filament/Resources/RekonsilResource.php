@@ -66,7 +66,8 @@ class RekonsilResource extends Resource
                 ->schema([
                     TextInput::make('no_transaksi')
                     ->label('No. Transaksi')
-                    ->required(),
+                    ->required()
+                    ->unique(),
 
                     DatePicker::make('tanggal_transaksi')
                     ->label('Tanggal Transaksi')

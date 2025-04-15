@@ -16,7 +16,7 @@ class EditRekonsil extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Transaksi Internal Dajam')
+            ->label('Hapus Transaksi Internal')
             ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->no_transakasi}")
             ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->no_transaksi}?"),
 
