@@ -22,7 +22,7 @@ class RekonsilResource extends Resource
     protected static ?string $pluralLabel = "Transaksi Internal";
     protected static ?string $navigationLabel = "Transaksi Internal";
     protected static ?string $pluralModelLabel = 'Daftar Transaksi Internal';
-    protected static ?string $navigationIcon = 'heroicon-o-inbox-arrow-down';
+    protected static ?string $navigationIcon = 'heroicon-o-squares-plus';
     public static function form(Form $form): Form
     {
         return $form
