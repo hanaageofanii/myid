@@ -131,7 +131,7 @@ class RekonsilResource extends Resource
                 ->label('Tanggal Transaksi')
                 ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),    
 
-                TextColumn::make('nama_yang_menacairkan')
+                TextColumn::make('nama_yang_mencairkan')
                 ->label('Nama yang Mencairkan')
                 ->searchable(),
 
