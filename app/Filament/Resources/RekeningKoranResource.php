@@ -18,8 +18,12 @@ class RekeningKoranResource extends Resource
 {
     protected static ?string $model = rekening_koran::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $title = "Input Rekening Koran";
+    protected static ?string $navigationGroup = "Kasir";
+    protected static ?string $pluralLabel = "Rekening Koran";
+    protected static ?string $navigationLabel = "Rekening Koran";
+    protected static ?string $pluralModelLabel = 'Daftar Rekening Koran';
+    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
     public static function form(Form $form): Form
     {
         return $form
