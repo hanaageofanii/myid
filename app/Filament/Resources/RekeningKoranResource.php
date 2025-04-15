@@ -86,6 +86,45 @@ class RekeningKoranResource extends Resource
                     DatePicker::make('tanggal_mutasi')
                     ->label('Tanggal Mutasi')
                     ->required(),
+
+                    TextInput::make('ket_dari_bank')
+                    ->label('Keterangan dari Bank')
+                    ->required(),
+
+                    TextInput::make('nominal')
+                    ->label('Nominal')
+                    ->required(),
+
+                    Select::make('tipe')
+                    ->options([
+                        'debit' => 'Debit',
+                        'kredit' => 'kredit',
+                    ]) ->label('Tipe')
+                    ->required(),
+
+                    TextInput::make('saldo')
+                    ->label('Saldo')
+                    ->required(),
+
+                    TextInput::make('no_refrensi_bank')
+                    ->label('No. Refrensi Bank')
+                    ->required(),
+
+                    TextInput::make('bank')
+                    ->label('Bank')
+                    ->required(),
+
+                    TextInput::make('catatan')
+                    ->label('Catatan'),
+
+                    FileUpload::make('up_rekening_koran')
+                    ->disk('public')
+                    ->multiple()
+                    ->required()
+                    ->nullable()
+                    ->label('Upload Rekening Koran')
+                    ->downloadable()
+                    ->previewable(false),
                 ])
             ]);
     }
