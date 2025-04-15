@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('rekening_korans', function (Blueprint $table) {
             $table->id();
+            $table->string('no_transaksi');
             $table->string('tanggal_mutasi');
             $table->string('keterangan_dari_bank');
             $table->string('nominal');

@@ -11,6 +11,7 @@ class rekening_koran extends Model
     use HasFactory, SoftDeletes;
 
     protected $filiable = [
+        'no_transaksi',
         'tanggal_mutasi',
         'ket_dari_bank',
         'nominal',
