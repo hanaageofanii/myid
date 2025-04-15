@@ -93,7 +93,7 @@ class RekonsilResource extends Resource
                     ->required(),
 
                     TextInput::make('jumlah_uang')
-                    ->label('Jumlah Uanh')
+                    ->label('Jumlah Uang')
                     ->required(),
 
                     Select::make('tipe')
