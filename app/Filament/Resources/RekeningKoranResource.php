@@ -67,9 +67,9 @@ class RekeningKoranResource extends Resource
             ->schema([
                 Fieldset::make()
                 ->schema([
-                    Select::make('no_referensi_bank')
+                    Select::make('no_transaksi')
                     ->label('No. Transaksi')
-                    ->options(fn () => rekonsil::pluck('no_referensi_bank', 'no_referensi_bank'))
+                    ->options(fn () => rekonsil::pluck('no_transaksi', 'no_transaksi'))
                     ->searchable()
                     ->reactive(),
                     // ->afterStateUpdated(function ($state, callable $set) {
