@@ -10,10 +10,23 @@ class EditCekPerjalanan extends EditRecord
 {
     protected static string $resource = CekPerjalananResource::class;
 
+    protected static ?string $title = "Ubah Data Cek Rekening & Transaksi Internal";
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+            ->label('Hapus Cek Rekening & Transaksi Internal')
+            ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->no_transakasi}")
+            ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->no_transaksi}?"),
+
         ];
     }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
+    }
+    
 }
