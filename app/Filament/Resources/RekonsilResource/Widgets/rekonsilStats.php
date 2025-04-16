@@ -9,6 +9,13 @@ use Illuminate\Support\Carbon;
 
 class rekonsilStats extends BaseWidget
 {
+
+    protected static ?int $sort = 14;
+
+    protected static ?string $maxHeight = '300px';
+    protected static ?string $pollingInterval = '10s';
+    protected static bool $isLazy = false;
+    protected ?string $heading = 'Dashboard Rekonsil';
     protected function getStats(): array
     {
         $totalDebit = rekonsil::where('tipe', 'debit')->sum('jumlah_uang');
