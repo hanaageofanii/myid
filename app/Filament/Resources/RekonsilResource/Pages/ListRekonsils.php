@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\RekonsilResource\Pages;
 
 use App\Filament\Resources\RekonsilResource;
+use App\Filament\Resources\RekonsilResource\Widgets\rekonsil;
+use App\Filament\Resources\RekonsilResource\Widgets\rekonsilStats;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -17,12 +19,12 @@ class ListRekonsils extends ListRecords
             ->label('Buat Data Transaksi Internal'),
         ];
     }
-    // protected function getHeaderWidgets(): array
-    // {
-    //     return [
-    //         pencairanDajamStats::class,
-    //     ];
-    // }
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            rekonsilStats::class,
+        ];
+    }
 
     protected function getSaveFormAction(): Actions\Action
     {
