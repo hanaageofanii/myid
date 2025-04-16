@@ -65,7 +65,7 @@ class rekeningkoranStats extends BaseWidget
                 $all->where('tipe', 'kredit')->sum('nominal'), 0, ',', '.'
             ))
                 ->chart($chartDataKredit)
-                ->color('warning') // Warna kuning
+                ->color('warning') 
                 ->description('Total Kredit per bulan'),
 
             Card::make('Saldo Terakhir', 'Rp ' . number_format($lastSaldo, 0, ',', '.'))
