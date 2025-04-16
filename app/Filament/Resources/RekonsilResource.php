@@ -69,7 +69,7 @@ class RekonsilResource extends Resource
                     TextInput::make('no_transaksi')
                     ->label('No. Transaksi')
                     ->required()
-                    ->unique(),
+                    ->unique(ignoreRecord: true),
 
                     DatePicker::make('tanggal_transaksi')
                     ->label('Tanggal Transaksi')
