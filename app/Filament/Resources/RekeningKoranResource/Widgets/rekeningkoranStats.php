@@ -18,25 +18,19 @@ class rekeningkoranStats extends BaseWidget
     protected ?string $heading = 'Dashboard Rekening Koran';
     protected function getCards(): array
     {
-        // Ambil semua data transaksi
         $all = rekening_koran::all();
 
-        // Menghitung total transaksi per bulan
         $now = Carbon::now();
         $lastMonth = $now->copy()->subMonth();
 
-        // Hitung jumlah transaksi per bulan
         $thisMonthTrans = rekening_koran::whereMonth('tanggal_mutasi', $now->month)->count();
         $lastMonthTrans = rekening_koran::whereMonth('tanggal_mutasi', $lastMonth->month)->count();
 
-        // Data grafik: Jumlah transaksi bulan lalu dan bulan ini
         $chartDataTrans = [$lastMonthTrans, $thisMonthTrans];
 
-        // Hitung total debit dan kredit per bulan
         $totalDebit = $all->where('tipe', 'debit')->sum('nominal');
         $totalKredit = $all->where('tipe', 'kredit')->sum('nominal');
 
-        // Data grafik untuk total debit dan kredit
         $chartDataDebit = [
             rekening_koran::whereMonth('tanggal_mutasi', $lastMonth->month)->where('tipe', 'debit')->sum('nominal'),
             rekening_koran::whereMonth('tanggal_mutasi', $now->month)->where('tipe', 'debit')->sum('nominal')
@@ -47,10 +41,8 @@ class rekeningkoranStats extends BaseWidget
             rekening_koran::whereMonth('tanggal_mutasi', $now->month)->where('tipe', 'kredit')->sum('nominal')
         ];
 
-        // Ambil saldo terakhir
         $lastSaldo = rekening_koran::orderBy('tanggal_mutasi', 'desc')->first()?->saldo ?? 0;
 
-        // Data grafik untuk saldo terakhir per bulan (menggunakan data saldo per bulan)
         $chartDataSaldo = [
             rekening_koran::whereMonth('tanggal_mutasi', $lastMonth->month)->orderBy('tanggal_mutasi', 'desc')->first()?->saldo ?? 0,
             rekening_koran::whereMonth('tanggal_mutasi', $now->month)->orderBy('tanggal_mutasi', 'desc')->first()?->saldo ?? 0
