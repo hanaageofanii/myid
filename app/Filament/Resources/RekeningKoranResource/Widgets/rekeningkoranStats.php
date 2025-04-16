@@ -68,10 +68,10 @@ class rekeningkoranStats extends BaseWidget
                 ->color('warning') 
                 ->description('Total Kredit per bulan'),
 
-            Card::make('Saldo Terakhir', 'Rp ' . number_format($lastSaldo, 0, ',', '.'))
-                ->chart($chartDataSaldo)
-                ->color('danger') 
-                ->description('Saldo Terakhir per bulan'),
+            // Card::make('Saldo Terakhir', 'Rp ' . number_format($lastSaldo, 0, ',', '.'))
+            //     ->chart($chartDataSaldo)
+            //     ->color('danger') 
+            //     ->description('Saldo Terakhir per bulan'),
         ];
     }
 }

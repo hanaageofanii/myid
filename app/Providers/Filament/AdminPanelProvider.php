@@ -73,6 +73,8 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Resources\PencairanDajamResource\Widgets\pencairanDajamStats::class,
                 \App\Filament\Resources\RekonsilResource\Widgets\rekonsilStats::class,
                 \App\Filament\Resources\FormDpResource\Widgets\DPStats::class,
+                \App\Filament\Resources\RekeningKoranResource\Widgets\rekeningkoranStats::class,
+
 
 
             ])
