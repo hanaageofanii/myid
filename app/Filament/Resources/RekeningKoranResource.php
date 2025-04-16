@@ -152,7 +152,7 @@ class RekeningKoranResource extends Resource
                 TextColumn::make('tipe')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
                     'debit' => 'Debit',
-                    'kredit' => 'Kredit',                            
+                    'kredit' => 'Kredit',  
                 default => ucfirst($state),
             })
             ->sortable()
