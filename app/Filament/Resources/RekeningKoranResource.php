@@ -272,9 +272,9 @@ class RekeningKoranResource extends Resource
                                 ->body('Data Rekening Koran telah berhasil disimpan.')),                    
                         DeleteAction::make()
                         ->color('danger')
-                        ->label(fn ($record) => "Hapus Blok {$record->no_referensi_bank}")
-                        ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok{$record->no_referensi_bank}")
-                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->no_referensi_bank}?")
+                        ->label(fn ($record) => "Hapus Nomor {$record->no_referensi_bank}")
+                        ->modalHeading(fn ($record) => "Konfirmasi Hapus Nomor{$record->no_referensi_bank}")
+                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus nomor {$record->no_referensi_bank}?")
                         ->successNotification(
                             Notification::make()
                                 ->success()

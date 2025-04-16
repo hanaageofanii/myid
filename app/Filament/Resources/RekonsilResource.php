@@ -271,9 +271,9 @@ class RekonsilResource extends Resource
                                 ->body('Data Transaksi Internal telah berhasil disimpan.')),                    
                         DeleteAction::make()
                         ->color('danger')
-                        ->label(fn ($record) => "Hapus Blok {$record->no_transaksi}")
-                        ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok{$record->no_transaksi}")
-                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->no_transaksi}?")
+                        ->label(fn ($record) => "Hapus Nomor {$record->no_transaksi}")
+                        ->modalHeading(fn ($record) => "Konfirmasi Hapus Nomor{$record->no_transaksi}")
+                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus nomor {$record->no_transaksi}?")
                         ->successNotification(
                             Notification::make()
                                 ->success()

@@ -47,6 +47,8 @@ use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
 use App\Models\rekening_koran;
+use Filament\Tables\Actions\ForceDeleteAction;
+
 
 
 class CekPerjalananResource extends Resource
@@ -121,21 +123,165 @@ class CekPerjalananResource extends Resource
     {
         return $table
             ->columns([
-                //
+                
+            ])
+
+
+
+
+
+            ->defaultSort('no_referensi_bank', 'asc')
+            ->headerActions([
+                Action::make('count')
+                    ->label(fn ($livewire): string => 'Total: ' . $livewire->getFilteredTableQuery()->count())
+                    ->disabled(),
             ])
             ->filters([
-                //
-            ])
+                TrashedFilter::make()
+                    ->label('Data yang dihapus') 
+                    ->native(false),
+            
+                Filter::make('created_from')
+                    ->label('Dari Tanggal')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari')
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_from'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '>=', $data['created_from'])
+                        )
+                    ),
+
+                    
+            
+                Filter::make('created_until')
+                    ->label('Sampai Tanggal')
+                    ->form([
+                        DatePicker::make('created_until')
+                            ->label('Sampai')
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_until'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '<=', $data['created_until'])
+                        )
+                    ),
+            ], layout: FiltersLayout::AboveContent)
+            ->filtersFormMaxHeight('400px')
+            ->filtersFormColumns(4)
+            ->filtersFormWidth(MaxWidth::FourExtraLarge)
+            
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+                ActionGroup::make([
+                    ViewAction::make()
+                        ->color('success')
+                        ->label('Lihat'),
+                    EditAction::make()
+                        ->color('info')
+                        ->label('Ubah')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Cek Rekening & Transkasi Internal Diubah')
+                                ->body('Data Cek Rekening & Transkasi Internal telah berhasil disimpan.')),                    
+                        DeleteAction::make()
+                        ->color('danger')
+                        ->label(fn ($record) => "Hapus Nomor {$record->no_referensi_bank}")
+                        ->modalHeading(fn ($record) => "Konfirmasi Hapus Nomor{$record->no_referensi_bank}")
+                        ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus nomor {$record->no_referensi_bank}?")
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Cek Rekening & Transkasi Internal Dihapus')
+                                ->body('Data Cek Rekening & Transkasi Internal telah berhasil dihapus.')),                         
+                    // RestoreAction::make()
+                    //     ->label('Pulihkan')
+                    //     ->successNotificationTitle('Data berhasil dipulihkan')
+                    //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
+                    RestoreAction::make()
+                    ->color('info')
+                    ->label('Kembalikan Data')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Cek Rekening & Transkasi Internal')
+                            ->body('Data Cek Rekening & Transkasi Internal berhasil dikembalikan.')
+                    ),
+                    ForceDeleteAction::make()
+                    ->color('primary')
+                    ->label('Hapus Permanen')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Cek Rekening & Transkasi Internal')
+                            ->body('Data Cek Rekening & Transkasi Internal berhasil dihapus secara permanen.')
+                    ),
+                    ])->button()->label('Action'),
+                ], position: ActionsPosition::BeforeCells)
+            
+                ->groupedBulkActions([
+                    BulkAction::make('delete')
+                        ->label('Hapus')
+                        ->icon('heroicon-o-trash') 
+                        ->color('danger')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Cek Rekening & Transkasi Internal')
+                                ->body('Data Cek Rekening & Transkasi Internal berhasil dihapus.'))                        
+                                ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->delete()),
+                
+                    BulkAction::make('forceDelete')
+                        ->label('Hapus Permanent')
+                        ->icon('heroicon-o-x-circle') 
+                        ->color('warning')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Cek Rekening & Transkasi Internal')
+                                ->body('Data Cek Rekening & Transkasi Internal berhasil dihapus secara permanen.'))
+                                ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->forceDelete()),
+                
+                    BulkAction::make('export')
+                        ->label('Download Data')
+                        ->icon('heroicon-o-arrow-down-tray') 
+                        ->color('info')
+                        ->action(fn (Collection $records) => static::exportData($records)),
+                
+                    RestoreBulkAction::make()
+                        ->label('Kembalikan Data')
+                        ->icon('heroicon-o-arrow-path') 
+                        ->color('success')
+                        ->button()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Cek Rekening & Transkasi Internal')
+                                ->body('Data Cek Rekening & Transkasi Internal berhasil dikembalikan.')),
+                ]);
     }
 
+    public static function exportData(Collection $records)
+    {
+        $csvData = "ID, No. Transaksi, Tanggal Mutasi, Nominal, Tipe, Saldo, No. Referensi Bank, Nama Bank, Catatan\n";
+    
+        foreach ($records as $record) {
+            $csvData .= "{$record->id}, {$record->no_transaksi}, {$record->tanggal_mutasi}, {$record->nominal}, {$record->tipe}, {$record->saldo}, {$record->no_referensi_bank}, {$record->bank}, {$record->catatan}\n";
+        }
+    
+        return response()->streamDownload(fn () => print($csvData), 'CekRekeningKoran.csv');
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+    
     public static function getRelations(): array
     {
         return [
