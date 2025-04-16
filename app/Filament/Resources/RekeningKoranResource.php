@@ -133,7 +133,71 @@ class RekeningKoranResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('no_transaksi')
+                ->searchable()
+                ->label('No. Transaksi'),
+
+                TextColumn::make('tanggal_mutasi')
+                ->searchable()
+                ->label('Tanggal Mutasi'),
+
+                TextColumn::make('ket_dari_bank')
+                ->searchable()
+                ->label('Keterangan dari Bank'),
+
+                TextColumn::make('nominal')
+                ->searchable()
+                ->label('Nominal'),
+
+                TextColumn::make('tipe')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                    'debit' => 'Debit',
+                    'kredit' => 'Kredit',                            
+                default => ucfirst($state),
+            })
+            ->sortable()
+            ->searchable()
+            ->label('Tipe'),
+
+            TextColumn::make('saldo')
+            ->searchable()
+            ->label('Saldo'),
+
+            TextColumn::make('no_refrensi_bank')
+            ->searchable()
+            ->label('No. Refrensi Bank'),
+
+            TextColumn::make('bank')
+            ->searchable()
+            ->label('Bank'),
+
+            TextColumn::make('catatan')
+            ->searchable()
+            ->label('Catatan'),
+
+            TextColumn::make('up_rekening_koran')
+                ->label('Upload Rekening Koran')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_rekening_koran) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_rekening_koran) ? $record->up_rekening_koran : json_decode($record->up_rekening_koran, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
             ])
             ->filters([
                 //
