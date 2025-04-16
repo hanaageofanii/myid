@@ -20,6 +20,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Facades\Filament;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 use App\Filament\Resources\GCVResource\Widgets\GCVStats;
+use App\Filament\Resources\RekonsilResource\Widgets\rekonsilStats;
 
 
 
@@ -70,6 +71,8 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Resources\VerifikasiDajamResource\Widgets\verifikasiDajamStats::class,
                 \App\Filament\Resources\PengajuanDajamResource\Widgets\PenDajamStats::class,
                 \App\Filament\Resources\PencairanDajamResource\Widgets\pencairanDajamStats::class,
+                \App\Filament\Resources\RekonsilResource\Widgets\rekonsilStats::class,
+                \App\Filament\Resources\FormDpResource\Widgets\DPStats::class,
 
 
             ])
