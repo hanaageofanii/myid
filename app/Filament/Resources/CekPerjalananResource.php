@@ -18,8 +18,12 @@ class CekPerjalananResource extends Resource
 {
     protected static ?string $model = cek_perjalanan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?int $navigationSort = 3;
+    protected static ?string $navigationGroup = "Kasir";
+    protected static ?string $pluralLabel = "Cek Rekening & Transkasi Internal";
+    protected static ?string $navigationLabel = "Cek Rekening & Transkasi Internal";
+    protected static ?string $pluralModelLabel = 'Daftar Cek Rekening & Transkasi Internal';
+    protected static ?string $navigationIcon = 'heroicon-o-shield-check';
     public static function form(Form $form): Form
     {
         return $form
