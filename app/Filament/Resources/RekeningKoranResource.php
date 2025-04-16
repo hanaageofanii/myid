@@ -87,7 +87,7 @@ class RekeningKoranResource extends Resource
                     ->label('Tanggal Mutasi')
                     ->required(),
 
-                    TextInput::make('ket_dari_bank')
+                    TextInput::make('keterangan_dari_bank')
                     ->label('Keterangan dari Bank')
                     ->required(),
 
@@ -106,7 +106,7 @@ class RekeningKoranResource extends Resource
                     ->label('Saldo')
                     ->required(),
 
-                    TextInput::make('no_refrensi_bank')
+                    TextInput::make('no_referensi_bank')
                     ->label('No. Refrensi Bank')
                     ->required(),
 
@@ -141,7 +141,7 @@ class RekeningKoranResource extends Resource
                 ->searchable()
                 ->label('Tanggal Mutasi'),
 
-                TextColumn::make('ket_dari_bank')
+                TextColumn::make('keterangan_dari_bank')
                 ->searchable()
                 ->label('Keterangan dari Bank'),
 
@@ -163,7 +163,7 @@ class RekeningKoranResource extends Resource
             ->searchable()
             ->label('Saldo'),
 
-            TextColumn::make('no_refrensi_bank')
+            TextColumn::make('no_referensi_bank')
             ->searchable()
             ->label('No. Refrensi Bank'),
 

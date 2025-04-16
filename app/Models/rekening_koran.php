@@ -10,16 +10,20 @@ class rekening_koran extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $filiable = [
+    protected $fillable = [
         'no_transaksi',
         'tanggal_mutasi',
-        'ket_dari_bank',
+        'keterangan_dari_bank',
         'nominal',
         'tipe',
         'saldo',
-        'no_refrensi_bank',
+        'no_referensi_bank',
         'bank',
         'catatan',
         'up_rekening_koran',
+    ];
+
+    protected $casts = [
+        "up_rekening_koran" => 'array',
     ];
 }
