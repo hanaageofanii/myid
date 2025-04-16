@@ -46,6 +46,8 @@ use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
+use App\Models\rekening_koran;
+
 
 class CekPerjalananResource extends Resource
 {
@@ -65,7 +67,7 @@ class CekPerjalananResource extends Resource
                 ->schema([
                     Select::make('no_referensi_bank')
                     ->label('No. Referensi Bank')
-                    ->options(fn () => rekonsil::pluck('no_referensi_bank', 'no_referensi_bank'))
+                    ->options(fn () => rekening_koran::pluck('no_referensi_bank', 'no_referensi_bank'))
                     ->searchable()
                     ->reactive(),                
                     
