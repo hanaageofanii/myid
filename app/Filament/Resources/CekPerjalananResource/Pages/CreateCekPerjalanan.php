@@ -11,7 +11,7 @@ use Filament\Notifications\Notification;
 class CreateCekPerjalanan extends CreateRecord
 {
     protected static string $resource = CekPerjalananResource::class;
-    protected static ?string $title = "Buat Cek Rekening & Transaksi Internal";
+    protected static ?string $title = "Buat Cek Rekening & Transaksi";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
@@ -36,8 +36,8 @@ class CreateCekPerjalanan extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Data Cek Rekening & Transaksi Internal Disimpan')
-            ->body('Data Cek Rekening & Transaksi Internal telah berhasil disimpan.');
+            ->title('Data Cek Rekening & Transaksi Disimpan')
+            ->body('Data Cek Rekening & Transaksi telah berhasil disimpan.');
     }
 
     protected function getSaveFormAction(): Actions\Action

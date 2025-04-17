@@ -15,7 +15,7 @@ class ListCekPerjalanans extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->label('Buat Data Cek Rekening & Transaksi Internal'),
+            ->label('Buat Data Cek Rekening & Transaksi'),
         ];
     }
 
