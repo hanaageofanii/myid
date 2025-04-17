@@ -13,7 +13,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\rekening_koran;
-use App\Models\RekeningKoran;
 use App\Models\Rekonsil;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
@@ -74,7 +73,7 @@ class FormPencocokanResource extends Resource
 
                     Select::make('no_ref_bank')
                     ->label('No. Ref Bank')
-                    ->options(fn () => rekening_koran::pluck('no_ref_bank', 'no_ref_bank'))
+                    ->options(fn () => rekening_koran::pluck('no_referensi_bank', 'no_referensi_bank'))
                     ->searchable()
                     ->reactive(), 
 
@@ -168,6 +167,30 @@ class FormPencocokanResource extends Resource
                 TextColumn::make('catatan')
                 ->label('Catatan')
                 ->searchable(),
+
+                TextColumn::make('bukti_bukti')
+                ->label('Bukti Bukti Lainnya')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->bukti_bukti) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->bukti_bukti) ? $record->bukti_bukti : json_decode($record->bukti_bukti, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
 
             ])
             ->defaultSort('no_transaksi', 'asc')

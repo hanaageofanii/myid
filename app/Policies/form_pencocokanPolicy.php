@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\Filament\Resources\FormPencocokanResource\Widgets\form_pencocokan;
+// use App\Filament\Resources\FormPencocokanResource\Widgets\form_pencocokan;
 use App\Models\User;
+use App\Models\form_pencocokan;
 
 class form_pencocokanPolicy
 {

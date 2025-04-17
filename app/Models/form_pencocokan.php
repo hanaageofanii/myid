@@ -19,6 +19,7 @@ class form_pencocokan extends Model
         'status',
         'selisih',
         'catatan',
+        'bukti_bukti'
     ];
 
     protected $casts = [
