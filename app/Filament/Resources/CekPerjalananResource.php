@@ -57,9 +57,9 @@ class CekPerjalananResource extends Resource
 
     protected static ?int $navigationSort = 3;
     protected static ?string $navigationGroup = "Kasir";
-    protected static ?string $pluralLabel = "Cek Rekening & Transkasi Internal";
-    protected static ?string $navigationLabel = "Cek Rekening & Transkasi Internal";
-    protected static ?string $pluralModelLabel = 'Daftar Cek Rekening & Transkasi Internal';
+    protected static ?string $pluralLabel = "Cek Rekening & Transkasi";
+    protected static ?string $navigationLabel = "Cek Rekening & Transkasi";
+    protected static ?string $pluralModelLabel = 'Daftar Cek Rekening & Transkasi';
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
     public static function form(Form $form): Form
     {
