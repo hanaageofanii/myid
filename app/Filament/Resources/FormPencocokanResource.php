@@ -94,14 +94,34 @@ class FormPencocokanResource extends Resource
 
                     Select::make('status')
                     ->options([
-                        'belum' => 'Belum',
-                        'sudah' => 'Sudah'
+                        'approve' => 'Approve',
+                        'revisi' => 'Revisi'
                     ]) ->label('Status')
                     ->required(),
 
-                    TextArea::make('selisih')
+                    TextInput::make('nominal_selisih')
                     ->required()
-                    ->label('Catatan Selisih'),
+                    ->label('Nominal Selisih'),
+
+                    TextArea::make('analisis_selisih')
+                    ->required()
+                    ->label('Analisis Selisih'),
+
+                    Select::make('tindakan')
+                    ->options([
+                        'koreksi' => 'Koreksi',
+                        'pending' => 'Pending',
+                        'abaikan' => 'Abaikan'
+                    ]) ->label('Status')
+                    ->required(),
+
+                    DatePicker::make('tanggal_validasi')
+                    ->required()
+                    ->label('Tanggal Validasi'),
+
+                    TextInput::make('disetujui_oleh')
+                    ->required()
+                    ->label('Disetujui Oleh'),
 
                     TextArea::make('catatan')
                     ->required()
@@ -152,17 +172,41 @@ class FormPencocokanResource extends Resource
 
             TextColumn::make('status')
             ->formatStateUsing(fn (string $state): string => match ($state) {
-                'sudah' => 'Sudah',
-                'belum' => 'Belum',                            
+                'approve' => 'Approve',
+                'revisi' => 'Revisi',                           
             default => ucfirst($state),
                 })
                 ->sortable()
                 ->searchable()
                 ->label('Status'),
 
-                TextColumn::make('selisih')
-                ->label('Selisih')
+                TextColumn::make('nominal_selisih')
+                ->label('Nominal Selisih')
                 ->searchable(),
+
+                TextColumn::make('analisis_selisih')
+                ->label('Analisis Selisih')
+                ->searchable(),
+
+                TextColumn::make('tindakan')
+            ->formatStateUsing(fn (string $state): string => match ($state) {
+                'koreksi' => 'Koreksi',
+                'pending' => 'Pending',
+                'abaikan' => 'Abaikan',
+            default => ucfirst($state),
+                })
+                ->sortable()
+                ->searchable()
+                ->label('Tindakan'),
+
+                TextColumn::make('tanggal_validasi')
+                ->searchable()
+                ->label('Tanggal Validasi')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+
+                TextColumn::make('disetujui_oleh')
+                ->searchable()
+                ->label('Disetujui Oleh'),
 
                 TextColumn::make('catatan')
                 ->label('Catatan')
@@ -363,7 +407,7 @@ class FormPencocokanResource extends Resource
         $csvData = "ID, No. Transaksi, No. Referensi Bank, Tanggal Transaksi, Jumlah, Tipe, Status, Selisih, Catatan\n";
     
         foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->no_transaksi}, {$record->no_ref_bank}, {$record->tanggal_transaksi}, {$record->jumlah}, {$record->tipe}, {$record->status}, {$record->selisih}, {$record->catatan}\n";
+            $csvData .= "{$record->id}, {$record->no_transaksi}, {$record->no_ref_bank}, {$record->tanggal_transaksi}, {$record->jumlah}, {$record->tipe}, {$record->status}, {$record->nominal_selisih}, {$record->catatan}\n";
         }
     
         return response()->streamDownload(fn () => print($csvData), 'RekeningKoran.csv');

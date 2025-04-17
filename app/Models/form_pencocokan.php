@@ -17,7 +17,11 @@ class form_pencocokan extends Model
         'jumlah',
         'tipe',
         'status',
-        'selisih',
+        'nominal_selisih',
+        'analisis_selisih',
+        'tindakan',
+        'tanggal_validasi',
+        'disetujui_oleh',
         'catatan',
         'bukti_bukti'
     ];
