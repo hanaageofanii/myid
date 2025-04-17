@@ -4,6 +4,7 @@ namespace App\Filament\Resources\FormPencocokanResource\Pages;
 
 use App\Filament\Resources\FormPencocokanResource;
 use App\Filament\Resources\FormPencocokanResource\Widgets\form_pencocokan;
+use App\Filament\Resources\FormPencocokanResource\Widgets\FormPencocokanStats;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -21,7 +22,7 @@ class ListFormPencocokans extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            form_pencocokan::class,
+            FormPencocokanStats::class,
         ];
     }
 
