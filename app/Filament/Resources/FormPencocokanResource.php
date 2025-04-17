@@ -124,9 +124,53 @@ class FormPencocokanResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('no_transaksi')
+                ->searchable()
+                ->label('No. Transaksi'),
+
+                TextColumn::make('no_ref_bank')
+                ->searchable()
+                ->label('No. Referensi Bank'),
+
+                TextColumn::make('tanggal_transaksi')
+                ->searchable()
+                ->label('Tanggal Transaksi')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+
+                TextColumn::make('jumlah')
+                ->searchable()
+                ->label('Jumlah'),
+
+                TextColumn::make('tipe')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                    'debit' => 'Debit',
+                    'kredit' => 'Kredit',                            
+                default => ucfirst($state),
+            })
+            ->sortable()
+            ->searchable()
+            ->label('Tipe'),
+
+            TextColumn::make('status')
+            ->formatStateUsing(fn (string $state): string => match ($state) {
+                'sudah' => 'Sudah',
+                'belum' => 'Belum',                            
+            default => ucfirst($state),
+                })
+                ->sortable()
+                ->searchable()
+                ->label('Status'),
+
+                TextColumn::make('selisih')
+                ->label('Selisih')
+                ->searchable(),
+
+                TextColumn::make('catatan')
+                ->label('Catatan')
+                ->searchable(),
+
             ])
-            ->defaultSort('no_ref_bank', 'asc')
+            ->defaultSort('no_transaksi', 'asc')
             ->headerActions([
                 Action::make('count')
                     ->label(fn ($livewire): string => 'Total: ' . $livewire->getFilteredTableQuery()->count())
