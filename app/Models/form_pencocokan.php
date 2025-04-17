@@ -4,8 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class form_pencocokan extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
+    protected $fillable =[
+        'no_transaksi',
+        'no_ref_bank',
+        'tanggal_transaksi',
+        'jumlah',
+        'tipe',
+        'status',
+        'selisih',
+        'catatan',
+    ];
+
+    protected $casts = [
+        "bukti_bukti" => 'array',
+    ];
 }
