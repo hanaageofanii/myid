@@ -67,7 +67,7 @@ class CekPerjalananResource extends Resource
             ->schema([
                 Fieldset::make()
                 ->schema([
-                    Select::make('no_referensi_bank')
+                    Select::make('no_ref_bank')
                     ->label('No. Referensi Bank')
                     ->options(fn () => rekening_koran::pluck('no_referensi_bank', 'no_referensi_bank'))
                     ->searchable()
@@ -194,7 +194,7 @@ class CekPerjalananResource extends Resource
 
 
 
-            ->defaultSort('no_referensi_bank', 'asc')
+            ->defaultSort('no_ref_bank', 'asc')
             ->headerActions([
                 Action::make('count')
                     ->label(fn ($livewire): string => 'Total: ' . $livewire->getFilteredTableQuery()->count())

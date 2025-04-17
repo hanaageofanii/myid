@@ -6,6 +6,8 @@ use App\Filament\Resources\CekPerjalananResource;
 use App\Filament\Resources\CekPerjalananResource\Widgets\cek_perjalananStats;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Models\cek_perjalanan;
+
 
 class ListCekPerjalanans extends ListRecords
 {

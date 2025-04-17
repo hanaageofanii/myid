@@ -11,7 +11,6 @@ class cek_perjalanan extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        
             'no_ref_bank',            
             'no_transaksi',            
             'nama_pencair',            
