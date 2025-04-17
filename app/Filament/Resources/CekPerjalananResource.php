@@ -123,7 +123,71 @@ class CekPerjalananResource extends Resource
     {
         return $table
             ->columns([
-                
+                TextColumn::make('no_ref_bank')
+                ->searchable()
+                ->label('No. Referensi Bank'),
+
+                TextColumn::make('no_transaksi')
+                ->searchable()
+                ->label('No. Transaksi'),
+
+                TextColumn::make('nama_pencair')
+                ->searchable()
+                ->label('Nama Pencair'),
+
+                TextColumn::make('tanggal_dicairkan')
+                ->searchable()
+                ->label('Tanggal di Cairkan')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+
+                TextColumn::make('nama_penerima')
+                ->searchable()
+                ->label('Nama Pencair'),
+
+                TextColumn::make('tanggal_diterima')
+                ->searchable()
+                ->label('Tanggal Terima')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+
+                TextColumn::make('tujuan_dana')
+                ->searchable()
+                ->label('Tujuan Dana'),
+
+                TextColumn::make('status_disalurkan')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                    'sudah' => 'Sudah',
+                    'belum' => 'Belum',                            
+                        default => ucfirst($state),
+                    })
+                    ->sortable()
+                    ->searchable()
+                    ->label('Status di Salurkan'),
+
+                    TextColumn::make('bukti_pendukung')
+                    ->label('Bukti Pendukung')
+                    ->formatStateUsing(function ($record) {
+                        if (!$record->bukti_pendukung) {
+                            return 'Tidak Ada Dokumen';
+                        }
+    
+                        $files = is_array($record->bukti_pendukung) ? $record->bukti_pendukung : json_decode($record->bukti_pendukung, true);
+    
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            $files = [];
+                        }
+    
+                        $output = '';
+                        foreach ($files as $file) {
+                            $url = Storage::url($file);
+                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                        }
+    
+                        return $output ?: 'Tidak Ada Dokumen';
+                    })
+                    ->html()
+                    ->sortable(),
+
+
             ])
 
 
@@ -271,7 +335,7 @@ class CekPerjalananResource extends Resource
             $csvData .= "{$record->id}, {$record->no_transaksi}, {$record->tanggal_mutasi}, {$record->nominal}, {$record->tipe}, {$record->saldo}, {$record->no_referensi_bank}, {$record->bank}, {$record->catatan}\n";
         }
     
-        return response()->streamDownload(fn () => print($csvData), 'CekRekeningKoran.csv');
+        return response()->streamDownload(fn () => print($csvData), 'CekRekening&InternalTransaksi.csv');
     }
 
     public static function getEloquentQuery(): Builder

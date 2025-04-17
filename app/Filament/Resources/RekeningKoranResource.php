@@ -139,7 +139,9 @@ class RekeningKoranResource extends Resource
 
                 TextColumn::make('tanggal_mutasi')
                 ->searchable()
-                ->label('Tanggal Mutasi'),
+                ->label('Tanggal Mutasi')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+
 
                 TextColumn::make('keterangan_dari_bank')
                 ->searchable()
