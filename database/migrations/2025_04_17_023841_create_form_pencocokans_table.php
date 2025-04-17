@@ -18,8 +18,12 @@ return new class extends Migration
             $table->date('tanggal_transaksi');
             $table->string('jumlah');
             $table->enum('tipe',['debit', 'kredit']);
-            $table->enum('status', ['sudah','belum']);
-            $table->string('selisih');
+            $table->enum('status', ['approve','revisi']);
+            $table->string('nominal_selisih');
+            $table->string('analisis_selisih');
+            $table->enum('tindakan',['koreksi', 'pending', 'abaikan']);
+            $table->date('tanggal_validasi');
+            $table->string('disetujui_oleh');
             $table->string('catatan');
             $table->json('bukti_bukti');
             $table->timestamps();
