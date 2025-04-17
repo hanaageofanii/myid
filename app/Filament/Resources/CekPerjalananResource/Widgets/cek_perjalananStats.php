@@ -9,7 +9,7 @@ use App\Models\cek_perjalanan;
 
 class cek_perjalananStats extends BaseWidget
 {
-    protected static ?int $sort = 14;
+    protected static ?int $sort = 17;
 
     protected static ?string $maxHeight = '300px';
     protected static ?string $pollingInterval = '10s';
