@@ -26,6 +26,15 @@ return new class extends Migration
             $table->string('disetujui_oleh');
             $table->string('catatan');
             $table->json('bukti_bukti');
+
+            $table->string('nama_pencair')->nullable();
+            $table->date('tanggal_dicairkan')->nullable();
+            $table->string('nama_penerima')->nullable();
+            $table->date('tanggal_diterima')->nullable();
+            $table->string('tujuan_dana')->nullable();
+            $table->enum('status_disalurkan',['sudah', 'belum'])->nullable();
+            $table->json('bukti_pendukung')->nullable();
+
             $table->timestamps();
         });
     }
