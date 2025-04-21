@@ -181,7 +181,7 @@ Fieldset::make('Validasi dan Catatan')
                 'approve' => 'Approve',
                 'revisi' => 'Revisi',
             ])
-            ->label('Status')
+            ->label('Status Validasi')
             ->required(),
 
         TextArea::make('catatan')
@@ -287,7 +287,7 @@ Fieldset::make('Validasi dan Catatan')
                 })
                 ->sortable()
                 ->searchable()
-                ->label('Status'),
+                ->label('Status Validasi'),
 
                 TextColumn::make('nominal_selisih')
                 ->label('Nominal Selisih')
@@ -356,6 +356,23 @@ Fieldset::make('Validasi dan Catatan')
                 TrashedFilter::make()
                     ->label('Data yang dihapus') 
                     ->native(false),
+
+                Filter::make('status_disalurkan')
+                    ->label('Status di Salurkan')
+                    ->form([
+                        Select::make('status_disalurkan')
+                            ->options([
+                                'sudah' => 'Sudah',
+                                'belum' => 'Belum',
+                            ])
+                            ->nullable()
+                            ->native(false),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when(isset($data['status_disalurkan']), fn ($q) =>
+                            $q->where('status_disalurkan', $data['status_disalurkan'])
+                        )
+                    ),
             
                 Filter::make('tipe')
                     ->label('Tipe')
@@ -374,15 +391,33 @@ Fieldset::make('Validasi dan Catatan')
                         )
                     ),
 
+                    Filter::make('tindakan')
+                    ->form([
+                        Select::make('tindakan')
+                            ->options([
+                                'koreksi' => 'Koreksi',
+                                'pending' => 'Pending',
+                                'abaikan' => 'Abaikan',
+                            ])
+                            ->nullable()
+                            ->label('Tindakan')
+                            ->native(false),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when(isset($data['tindakan']), fn ($q) =>
+                            $q->where('tindakan', $data['tindakan'])
+                        )
+                    ),
+
                     Filter::make('status')
                     ->form([
                         Select::make('status')
                             ->options([
-                                'belum' => 'Belum',
-                            'sudah' => 'Sudah',
+                            'approve' => 'Approve',
+                            'revisi' => 'Revisi',
                             ])
                             ->nullable()
-                            ->label('Status Pengecekan')
+                            ->label('Status Validasi')
                             ->native(false),
                     ])
                     ->query(fn ($query, $data) =>
@@ -512,15 +547,36 @@ Fieldset::make('Validasi dan Catatan')
     }
 
     public static function exportData(Collection $records)
-    {
-        $csvData = "ID, No. Transaksi, No. Referensi Bank, Tanggal Transaksi, Jumlah, Tipe, Status, Selisih, Catatan\n";
-    
-        foreach ($records as $record) {
-            $csvData .= "{$record->id}, {$record->no_transaksi}, {$record->no_ref_bank}, {$record->tanggal_transaksi}, {$record->jumlah}, {$record->tipe}, {$record->status}, {$record->nominal_selisih}, {$record->catatan}\n";
-        }
-    
-        return response()->streamDownload(fn () => print($csvData), 'RekeningKoran.csv');
+{
+    $csvData = "ID, No. Transaksi, No. Referensi Bank, Tanggal Transaksi, Nama Pencair, Tanggal di Cairkan, Nama Penerima, Tanggal di Terima, Jumlah, Tujuan Dana, Status di Salurkan, Tipe, Status Validasi, Nominal Selisih, Analisis Selisih, Tindakan, Tanggal Validasi, Disetujui Oleh, Catatan\n";
+
+    foreach ($records as $record) {
+        $csvData .= implode(", ", [
+            $record->id,
+            $record->no_transaksi,
+            $record->no_ref_bank,
+            $record->tanggal_transaksi,
+            $record->nama_pencair,
+            $record->tanggal_dicairkan,
+            $record->nama_penerima,
+            $record->tanggal_diterima,
+            $record->jumlah,
+            $record->tujuan_dana,
+            $record->status_disalurkan,
+            $record->tipe,
+            $record->status,
+            $record->nominal_selisih,
+            $record->analisis_selisih,
+            $record->tindakan,
+            $record->tanggal_validasi,
+            $record->disetujui_oleh,
+            $record->catatan
+        ]) . "\n";
     }
+
+    return response()->streamDownload(fn () => print($csvData), 'FormPencocokan.csv');
+}
+
 
     public static function getEloquentQuery(): Builder
     {
