@@ -24,7 +24,6 @@ use App\Models\form_dp;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\BooleanColumn;
@@ -46,8 +45,10 @@ use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
-
+use App\Filament\Resources\Exception;
 use Filament\Tables\Actions\ForceDeleteAction;
+use Illuminate\Support\Facades\Storage;
+
 
 class RekeningKoranResource extends Resource
 {
@@ -178,28 +179,29 @@ class RekeningKoranResource extends Resource
             ->label('Catatan'),
 
             TextColumn::make('up_rekening_koran')
-                ->label('Upload Rekening Koran')
-                ->formatStateUsing(function ($record) {
-                    if (!$record->up_rekening_koran) {
-                        return 'Tidak Ada Dokumen';
-                    }
+            ->label('Upload Rekening Koran')
+            ->formatStateUsing(function ($record) {
+                if (!$record->up_rekening_koran) {
+                    return 'Tidak Ada Dokumen';
+                }
+            
+                $files = is_array($record->up_rekening_koran) ? $record->up_rekening_koran : json_decode($record->up_rekening_koran, true);
+            
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    $files = [];
+                }
 
-                    $files = is_array($record->up_rekening_koran) ? $record->up_rekening_koran : json_decode($record->up_rekening_koran, true);
+                $output = '';
+                foreach ($files as $file) {
+                    $url = Storage::url($file);
+                    $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                }
 
-                    if (json_last_error() !== JSON_ERROR_NONE) {
-                        $files = [];
-                    }
+                return $output ?: 'Tidak Ada Dokumen';
+            })
 
-                    $output = '';
-                    foreach ($files as $file) {
-                        $url = Storage::url($file);
-                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
-                    }
-
-                    return $output ?: 'Tidak Ada Dokumen';
-                })
-                ->html()
-                ->sortable(),
+            ->html()
+            ->sortable(),
             ])
             ->defaultSort('no_referensi_bank', 'asc')
             ->headerActions([
@@ -320,25 +322,26 @@ class RekeningKoranResource extends Resource
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
                 
-                    BulkAction::make('forceDelete')
-                        ->label('Hapus Permanent')
+                        BulkAction::make('forceDelete')
+                        ->label('Hapus Permanen')
                         ->icon('heroicon-o-x-circle') 
                         ->color('warning')
                         ->successNotification(
                             Notification::make()
                                 ->success()
                                 ->title('Data Rekening Koran')
-                                ->body('Data Rekening Koran berhasil dihapus secara permanen.'))
-                                ->requiresConfirmation()
+                                ->body('Data Rekening Koran berhasil dihapus secara permanen.')
+                        )
+                        ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
-                
+
                     BulkAction::make('export')
                         ->label('Download Data')
                         ->icon('heroicon-o-arrow-down-tray') 
                         ->color('info')
                         ->action(fn (Collection $records) => static::exportData($records)),
                 
-                    RestoreBulkAction::make()
+                        RestoreBulkAction::make()
                         ->label('Kembalikan Data')
                         ->icon('heroicon-o-arrow-path') 
                         ->color('success')

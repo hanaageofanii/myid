@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AjbResource\Pages;
 use App\Filament\Resources\AjbResource\RelationManagers;
-use App\Models\Ajb;
+use App\Models\ajb;
 use App\Models\form_kpr;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
