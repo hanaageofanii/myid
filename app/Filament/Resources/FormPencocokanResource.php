@@ -63,81 +63,134 @@ class FormPencocokanResource extends Resource
     {
         return $form
             ->schema([
-                Fieldset::make()
-                ->schema([
-                    Select::make('no_transaksi')
-                    ->label('No. Transaksi')
-                    ->options(fn () => rekonsil::pluck('no_transaksi', 'no_transaksi'))
-                    ->searchable()
-                    ->reactive(),
+                Fieldset::make('Informasi Transaksi')
+    ->schema([
+        Select::make('no_transaksi')
+            ->label('No. Transaksi')
+            ->options(fn () => rekonsil::pluck('no_transaksi', 'no_transaksi'))
+            ->searchable()
+            ->reactive(),
 
-                    Select::make('no_ref_bank')
-                    ->label('No. Ref Bank')
-                    ->options(fn () => rekening_koran::pluck('no_referensi_bank', 'no_referensi_bank'))
-                    ->searchable()
-                    ->reactive(), 
+        Select::make('no_ref_bank')
+            ->label('No. Ref Bank')
+            ->options(fn () => rekening_koran::pluck('no_referensi_bank', 'no_referensi_bank'))
+            ->searchable()
+            ->reactive(),
 
-                    DatePicker::make('tanggal_transaksi')
-                    ->required()
-                    ->label('Tanggal Transaksi'),
+        DatePicker::make('tanggal_transaksi')
+            ->required()
+            ->label('Tanggal Transaksi'),
 
-                    TextInput::make('jumlah')
-                    ->required()
-                    ->label('Jumlah'),
+        TextInput::make('jumlah')
+            ->required()
+            ->label('Jumlah'),
 
-                    Select::make('tipe')
-                    ->options([
-                        'debit' => 'Debit',
-                        'kredit' => 'kredit',
-                    ]) ->label('Tipe')
-                    ->required(),
+        TextInput::make('tujuan_dana')
+            ->required()
+            ->label('Tujuan Dana'),
 
-                    Select::make('status')
-                    ->options([
-                        'approve' => 'Approve',
-                        'revisi' => 'Revisi'
-                    ]) ->label('Status')
-                    ->required(),
+        Select::make('tipe')
+            ->options([
+                'debit' => 'Debit',
+                'kredit' => 'Kredit',
+            ])
+            ->label('Tipe')
+            ->required(),
+    ]),
 
-                    TextInput::make('nominal_selisih')
-                    ->required()
-                    ->label('Nominal Selisih'),
+Fieldset::make('Pencairan dan Penerima')
+    ->schema([
+        TextInput::make('nama_pencair')
+            ->required()
+            ->label('Nama Pencair'),
 
-                    TextArea::make('analisis_selisih')
-                    ->required()
-                    ->label('Analisis Selisih'),
+        DatePicker::make('tanggal_dicairkan')
+            ->required()
+            ->label('Tanggal di Cairkan'),
 
-                    Select::make('tindakan')
-                    ->options([
-                        'koreksi' => 'Koreksi',
-                        'pending' => 'Pending',
-                        'abaikan' => 'Abaikan'
-                    ]) ->label('Status')
-                    ->required(),
+        TextInput::make('nama_penerima')
+            ->required()
+            ->label('Nama Penerima'),
 
-                    DatePicker::make('tanggal_validasi')
-                    ->required()
-                    ->label('Tanggal Validasi'),
+        DatePicker::make('tanggal_penerima')
+            ->required()
+            ->label('Tanggal Penerima'),
+    ]),
 
-                    TextInput::make('disetujui_oleh')
-                    ->required()
-                    ->label('Disetujui Oleh'),
+Fieldset::make('Status dan Analisis Selisih')
+    ->schema([
+        Select::make('status_disalurkan')
+            ->options([
+                'sudah' => 'Sudah',
+                'belum' => 'Belum',
+            ])
+            ->label('Status di Salurkan')
+            ->required(),
 
-                    TextArea::make('catatan')
-                    ->required()
-                    ->label('Catatan'),
+        TextInput::make('nominal_selisih')
+            ->required()
+            ->label('Nominal Selisih'),
 
-                    FileUpload::make('bukti_bukti')
-                    ->disk('public')
-                    ->multiple()
-                    ->required()
-                    ->nullable()
-                    ->label('Bukti-bukti Lainnya')
-                    ->downloadable()
-                    ->previewable(false),
-                ])
-            ]);
-    }
+        TextArea::make('analisis_selisih')
+            ->required()
+            ->label('Analisis Selisih'),
+
+        Select::make('tindakan')
+            ->options([
+                'koreksi' => 'Koreksi',
+                'pending' => 'Pending',
+                'abaikan' => 'Abaikan',
+            ])
+            ->label('Tindakan')
+            ->required(),
+    ]),
+
+Fieldset::make('Dokumen Pendukung')
+    ->schema([
+        FileUpload::make('bukti_pendukung')
+            ->disk('public')
+            ->multiple()
+            ->required()
+            ->nullable()
+            ->label('Bukti Pendukung di Terima')
+            ->downloadable()
+            ->previewable(false),
+
+        FileUpload::make('bukti_bukti')
+            ->disk('public')
+            ->multiple()
+            ->required()
+            ->nullable()
+            ->label('Bukti-bukti Lainnya')
+            ->downloadable()
+            ->previewable(false),
+    ]),
+
+Fieldset::make('Validasi dan Catatan')
+    ->schema([
+        DatePicker::make('tanggal_validasi')
+            ->required()
+            ->label('Tanggal Validasi'),
+
+        TextInput::make('disetujui_oleh')
+            ->required()
+            ->label('Disetujui Oleh'),
+
+            Select::make('status')
+            ->options([
+                'approve' => 'Approve',
+                'revisi' => 'Revisi',
+            ])
+            ->label('Status')
+            ->required(),
+
+        TextArea::make('catatan')
+            ->required()
+            ->label('Catatan'),
+    ]),
+]);
+}
+
 
     public static function table(Table $table): Table
     {
@@ -156,9 +209,65 @@ class FormPencocokanResource extends Resource
                 ->label('Tanggal Transaksi')
                 ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
 
+                TextColumn::make('nama_pencair')
+                ->searchable()
+                ->label('Nama Pencair'),
+
+                TextColumn::make('tanggal_dicairkan')
+                ->searchable()
+                ->label('Tanggal di Cairkan')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+
+                TextColumn::make('nama_penerima')
+                ->searchable()
+                ->label('Nama Penerima'),
+
+                TextColumn::make('tanggal_diterima')
+                ->searchable()
+                ->label('Tanggal di Terima')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+
                 TextColumn::make('jumlah')
                 ->searchable()
                 ->label('Jumlah'),
+
+                TextColumn::make('tujuan_dana')
+                ->searchable()
+                ->label('Tujuan Dana'),
+
+                TextColumn::make('status_disalurkan')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                    'sudah' => 'Sudah',
+                    'belum' => 'Belum',                            
+                default => ucfirst($state),
+            })
+            ->sortable()
+            ->searchable()
+            ->label('Status di Salurkan'),
+
+            TextColumn::make('bukti_pendukung')
+                ->label('Bukti Pendukung')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->bukti_pendukung) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->bukti_pendukung) ? $record->bukti_pendukung : json_decode($record->bukti_pendukung, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
 
                 TextColumn::make('tipe')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
