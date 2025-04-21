@@ -23,10 +23,19 @@ class form_pencocokan extends Model
         'tanggal_validasi',
         'disetujui_oleh',
         'catatan',
-        'bukti_bukti'
+        'bukti_bukti',
+
+        'nama_pencair',
+        'tanggal_dicairkan',
+        'nama_penerima',
+        'tanggal_diterima',
+        'tujuan_dana',
+        'status_disalurkan',
+        'bukti_pendukung',
     ];
 
     protected $casts = [
         "bukti_bukti" => 'array',
+        "bukti_pendukung" => 'array',
     ];
 }
