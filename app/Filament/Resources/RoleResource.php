@@ -17,11 +17,15 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\Permission\Models\Role;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
+use App\Models\Team;
 
 
 class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
+
+    // protected static ?string $tenantOwnershipRelationshipName = 'teams';
+
 
     protected static ?string $title = "Role";
     protected static ?string $navigationGroup = "Settings";
@@ -84,6 +88,12 @@ class RoleResource extends Resource
             
         ];
     }
+
+//     public function teams()
+// {
+//     return $this->belongsTo(Team::class);
+// }
+
 
     public static function getPages(): array
     {

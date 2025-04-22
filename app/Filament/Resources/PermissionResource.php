@@ -15,12 +15,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\Permission\Models\Permission;
 use Filament\Forms\Components\Card;
+use App\Models\Team;
 
 class PermissionResource extends Resource
 {
     protected static ?string $model = Permission::class;
 
     protected static ?string $title = "Permission";
+    // protected static ?string $tenantOwnershipRelationshipName = null;
+
     protected static ?string $navigationGroup = "Settings";
     protected static ?string $pluralLabel = "Permission";
     protected static ?string $navigationIcon = 'heroicon-o-key';

@@ -29,6 +29,8 @@ class UserResource extends Resource
     protected static ?string $pluralLabel = "User";
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationLabel = 'User';
+
+    protected static ?string $tenantOwnershipRelationshipName ='teams';
     protected static ?int $navigationSort = 1;
 
     protected static ?string $pluralModelLabel = 'User';

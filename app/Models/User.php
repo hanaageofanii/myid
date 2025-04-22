@@ -4,11 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasTenants;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Filament\Panel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
@@ -49,4 +54,24 @@ class User extends Authenticatable
     {
         return $this->hasRole('admin');
     }
+
+    // public function teams(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Team::class);
+    // }
+
+    // public function getTenants(Panel $panel): Collection
+    // {
+    //     return $this->teams;
+    // }
+
+    // public function canAccessTenant(Model $tenant): bool
+    // {
+    //     return $this->teams()->whereKey($tenant)->exists();
+    // }
+
+    // public function canAccessPanel(Panel $panel): bool
+    // {
+    //     return true;
+    // }
 }
