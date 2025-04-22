@@ -101,7 +101,7 @@ class FormKprResource extends Resource
                             ->options(fn ($get, $set, $record) => 
                                 collect($get('available_siteplans') ?? [])
                                     ->filter(fn ($label, $key) => !is_null($label)) 
-                                    ->toArray() 
+                                    ->toArray()
                                 + ($record?->siteplan ? [$record->siteplan => $record->siteplan] : [])
                             )
                             ->reactive()
