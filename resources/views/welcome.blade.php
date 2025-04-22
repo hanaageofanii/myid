@@ -17,7 +17,7 @@
                 </div>                             
                 <!-- Menu Navbar -->
                 <div class="hidden md:flex space-x-8">
-                    <a href="#" class="text-gray-700 hover:text-green-600">Home</a>
+                    <a href="#" class="text-gray-700 hover:text-green-600">Dashboard</a>
                     <a href="#" class="text-gray-700 hover:text-green-600">About</a>
                     <a href="#" class="text-gray-700 hover:text-green-600">Booking</a>
                     <a href="/admin/login" class="text-gray-700 hover:text-green-600">Login</a>
@@ -34,7 +34,7 @@
         </div>
         <!-- Mobile Menu (Muncul saat Tombol di Klik) -->
         <div id="mobile-menu" class="hidden md:hidden bg-white">
-            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-50">Home</a>
+            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-50">Dashboard</a>
             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-50">About</a>
             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-50">Booking</a>
             <a href="/admin/login" class="block px-4 py-2 text-gray-700 hover:bg-green-50">Login</a>

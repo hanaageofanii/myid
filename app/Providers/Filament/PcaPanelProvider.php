@@ -1,0 +1,73 @@
+<?php
+
+namespace App\Providers\Filament;
+
+use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\AuthenticateSession;
+use Filament\Http\Middleware\DisableBladeIconComponents;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Pages;
+use Filament\Panel;
+use Filament\PanelProvider;
+use Filament\Support\Colors\Color;
+use Filament\Widgets;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+
+class PcaPanelProvider extends PanelProvider
+{
+    public function panel(Panel $panel): Panel
+    {
+        return $panel
+            ->id('pca')
+            ->path('pca')
+            ->login()
+            ->darkMode(false)
+            ->registration()
+            ->brandName('PT. Purnama Karya Bersama')
+            ->colors([
+                'primary' => Color::Amber,
+                'danger' => Color::Rose,
+                'gray' => Color::Gray,
+                'info' => Color::Blue,
+                'success' => Color::Green,
+                'warning' => COlor::Red,
+            ])->font('Poppins')
+            ->brandLogo(request()->is('pca/login') ? asset('image/logo.png') : asset('image/logo-pkb.png'))
+            ->brandLogoHeight(request()->is('pca/login') ? '10rem' : '15rem')
+            ->discoverResources(in: app_path('Filament/Pca/Resources'), for: 'App\\Filament\\Pca\\Resources')
+            ->discoverPages(in: app_path('Filament/Pca/Pages'), for: 'App\\Filament\\Pca\\Pages')
+            ->pages([
+                Pages\Dashboard::class,
+            ])
+            ->discoverWidgets(in: app_path('Filament/Pca/Widgets'), for: 'App\\Filament\\Pca\\Widgets')
+            ->widgets([
+                Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
+            ])
+            ->middleware([
+                EncryptCookies::class,
+                AddQueuedCookiesToResponse::class,
+                StartSession::class,
+                AuthenticateSession::class,
+                ShareErrorsFromSession::class,
+                VerifyCsrfToken::class,
+                SubstituteBindings::class,
+                DisableBladeIconComponents::class,
+                DispatchServingFilamentEvent::class,
+            ])
+            ->authMiddleware([
+                Authenticate::class,
+            ])->favicon(asset('image/logo.png'));
+    }
+
+    public static function redirectTo(): ?string
+    {
+        return route('filament.pages.dashboard');
+    }
+
+}
