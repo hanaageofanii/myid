@@ -10,13 +10,13 @@ class EditAudit extends EditRecord
 {
     protected static string $resource = AuditResource::class;
 
-    protected static ?string $title = "Ubah Data Audit";
+    protected static ?string $title = "Ubah Data Audit GCV";
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Data Audit')
+            ->label('Hapus Data Audit GCV')
             ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
             ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?"),
 

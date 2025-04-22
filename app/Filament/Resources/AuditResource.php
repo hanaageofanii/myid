@@ -50,12 +50,12 @@ class AuditResource extends Resource
 {
     protected static ?string $model = Audit::class;
 
-    protected static ?string $title = "Audit";
+    protected static ?string $title = "Audit GCV";
     protected static ?string $navigationGroup = "Legal";
-    protected static ?string $pluralLabel = "Audit";
+    protected static ?string $pluralLabel = "Audit GCV";
     protected static ?string $navigationIcon = 'heroicon-o-folder';
-    protected static ?string $navigationLabel = 'Audit';
-    protected static ?string $pluralModelLabel = 'Daftar Audit';
+    protected static ?string $navigationLabel = 'Audit GCV';
+    protected static ?string $pluralModelLabel = 'Daftar Audit GCV';
 
     public static function form(Form $form): Form
     {

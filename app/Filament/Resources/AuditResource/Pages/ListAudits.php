@@ -15,7 +15,7 @@ class ListAudits extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->label('Buat Data Audit'),
+            ->label('Buat Data Audit GCV'),
         ];
     }
 

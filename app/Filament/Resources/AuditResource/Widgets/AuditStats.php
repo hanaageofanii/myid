@@ -13,7 +13,7 @@ class AuditStats extends BaseWidget
     protected static ?string $maxHeight = '300px';
     protected static ?string $pollingInterval = '10s';
     protected static bool $isLazy = false;
-    protected ?string $heading = 'Dashboard Audit';
+    protected ?string $heading = 'Dashboard Audit GCV';
     protected function getStats(): array
     {
             return [
