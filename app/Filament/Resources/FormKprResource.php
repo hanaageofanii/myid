@@ -46,6 +46,7 @@ use App\Filament\Resources\GCVResource;
 use App\Models\GCV;
 use App\Filament\Resources\KPRStats;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class FormKprResource extends Resource
 {
@@ -81,6 +82,11 @@ class FormKprResource extends Resource
                     ->required()
                     ->reactive()
                     ->label('Jenis Unit')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','KPR Officer']);
+                    })())
                     ->afterStateUpdated(function ($state, callable $set) {
                         if ($state) {
                             $bookedBlok = GCV::where('status', 'booking')
@@ -105,10 +111,17 @@ class FormKprResource extends Resource
                                 + ($record?->siteplan ? [$record->siteplan => $record->siteplan] : [])
                             )
                             ->reactive()
+                            ->required()
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','KPR Officer']);
+                            })())
                             ->afterStateUpdated(function($state, callable $set){
                                 $gcv = GCV::where('siteplan', $state)->first();
 
                                 if ($gcv) {
+                                    $set('tanggal_akad', $gcv->tanggal_akad);
                                     $set('tanggal_booking', $gcv->tanggal_booking);
                                     $set('nama_konsumen', $gcv->nama_konsumen);
                                     $set('agent', $gcv->agent);
@@ -119,6 +132,11 @@ class FormKprResource extends Resource
                         }),
                 
                 Forms\Components\Select::make('type')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','KPR Officer']);
+                    })())
                     ->options([
                         '29/60' => '29/60',
                         '30/60' => '30/60',
@@ -126,29 +144,152 @@ class FormKprResource extends Resource
                         '32/52' => '32/52',
                         '36/60' => '36/60',
                         '36/72' => '36/72',
-                    ])->nullable()->label('Type'),
+                    ])->nullable()->label('Type')->required(),
                     
-                Forms\Components\TextInput::make('luas')->numeric()->nullable()->label('Luas'),
-                Forms\Components\TextInput::make('agent')->nullable()->label('Agent'),
-                Forms\Components\DatePicker::make('tanggal_booking')->nullable()->label('Tanggal Booking'),
-                Forms\Components\DatePicker::make('tanggal_akad')->nullable()->label('Tanggal Akad'),
-                Forms\Components\TextInput::make('harga')->numeric()->nullable()->label('Harga')->prefix('Rp'),
-                Forms\Components\TextInput::make('maksimal_kpr')->nullable()->label('Maksimal KPR')->prefix('Rp'),
-                Forms\Components\TextInput::make('nama_konsumen')->nullable()->label('Nama Konsumen'),
-                Forms\Components\TextInput::make('nik')->nullable()->label('NIK'),
-                Forms\Components\TextInput::make('npwp')->nullable()->label('NPWP'),
-                Forms\Components\Textarea::make('alamat')->nullable()->label('Alamat'),
-                Forms\Components\TextInput::make('no_hp')->nullable()->label('No. Handphone'),
-                Forms\Components\TextInput::make('no_email')->email()->nullable()->label('Email'),
+                Forms\Components\TextInput::make('luas')
+                ->numeric()
+                ->nullable()
+                ->label('Luas')
+                ->required()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })()),
+
+                Forms\Components\TextInput::make('agent')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })())
+                ->nullable()
+                ->label('Agent')
+                ->required(),
+                Forms\Components\DatePicker::make('tanggal_booking')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })())
+                ->nullable()
+                ->label('Tanggal Booking')
+                ->required(),
+
+                Forms\Components\DatePicker::make('tanggal_akad')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })())
+                ->nullable()
+                ->label('Tanggal Akad')
+                ->required(),
+
+                Forms\Components\TextInput::make('harga')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })())
+                ->numeric()
+                ->nullable()
+                ->label('Harga')
+                ->prefix('Rp')
+                ->required(),
+
+                Forms\Components\TextInput::make('maksimal_kpr')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })())
+                ->nullable()
+                ->label('Maksimal KPR')
+                ->prefix('Rp')
+                ->required(),
+
+                Forms\Components\TextInput::make('nama_konsumen')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })())
+                ->nullable()
+                ->label('Nama Konsumen')
+                ->required(),
+
+                Forms\Components\TextInput::make('nik')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })())
+                ->nullable()
+                ->label('NIK')
+                ->required(),
+
+                Forms\Components\TextInput::make('npwp')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })())
+                ->nullable()
+                ->label('NPWP')
+                ->required(),
+
+                Forms\Components\Textarea::make('alamat')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })())
+                ->nullable()
+                ->label('Alamat')
+                ->required(),
+
+                Forms\Components\TextInput::make('no_hp')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })())
+                ->nullable()
+                ->label('No. Handphone')
+                ->required(),
+                Forms\Components\TextInput::make('no_email')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })())
+                ->email()
+                ->nullable()
+                ->label('Email')
+                ->required(),
+
                 Forms\Components\Select::make('pembayaran')
                     ->label('Pembayaran')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','KPR Officer']);
+                    })())
                     ->options([
                         'kpr' => 'KPR',
                         'cash' => 'Cash',
                         'cash_bertahap' => 'Cash Bertahap',
                         'promo' => 'Promo',
-                    ])->nullable(),
+                    ])->nullable()
+                    ->required(),
+
                 Forms\Components\Select::make('bank')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','KPR Officer']);
+                })())
                     ->options([
                         'btn_cikarang' => 'BTN Cikarang',
                         'btn_bekasi' => 'BTN Bekasi',
@@ -157,71 +298,125 @@ class FormKprResource extends Resource
                         'bjb_jababeka' => 'BJB Jababeka',
                         'btn_syariah' => 'BTN Syariah',
                         'brii_bekasi' => 'BRI Bekasi',
-                    ])->nullable()->label('Bank'),
-                Forms\Components\TextInput::make('no_rekening')->nullable()->label('No. Rekening'),
+                    ])->nullable()->label('Bank')->required(),
+
+                Forms\Components\TextInput::make('no_rekening')
+                ->nullable()
+                ->label('No. Rekening')
+                ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','KPR Officer']);
+                        })()),
+
                 Forms\Components\Select::make('status_akad')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','KPR Officer']);
+                    })())
                     ->options([
                         'akad' => 'Akad',
                         'batal' => 'Batal',
-                    ])->nullable()->label('Status Akad'),
+                    ])->nullable()->label('Status Akad')->required(),
                 
                     Forms\Components\Fieldset::make('Dokumen')
                     ->schema([
                         Forms\Components\FileUpload::make('ktp')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','KPR Officer']);
+                        })())
                             ->disk('public')
                             ->nullable()
                             ->label('KTP')
                             ->downloadable()
-                            ->previewable(false),
+                            ->previewable(false)->required(),
                 
                         Forms\Components\FileUpload::make('kk')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','KPR Officer']);
+                        })())
                             ->disk('public')
                             ->nullable()
                             ->label('Kartu Keluarga')
                             ->downloadable()
-                            ->previewable(false),
+                            ->previewable(false)->required(),
                 
                         Forms\Components\FileUpload::make('npwp_upload')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','KPR Officer']);
+                        })())
                             ->disk('public')
                             ->nullable()
                             ->label('NPWP')
                             ->downloadable()
-                            ->previewable(false),
+                            ->previewable(false)->required(),
                 
                         Forms\Components\FileUpload::make('buku_nikah')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','KPR Officer']);
+                        })())
                             ->disk('public')
                             ->nullable()
                             ->label('Buku Nikah')
                             ->downloadable()
-                            ->previewable(false),
+                            ->previewable(false)->required(),
                 
                         Forms\Components\FileUpload::make('akte_cerai')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','KPR Officer']);
+                        })())
                             ->disk('public')
                             ->nullable()
                             ->label('Akta Cerai')
                             ->downloadable()
-                            ->previewable(false),
+                            ->previewable(false)->required(),
                 
                         Forms\Components\FileUpload::make('akte_kematian')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','KPR Officer']);
+                        })())
                             ->disk('public')
                             ->nullable()
                             ->label('Akte Kematian')
                             ->downloadable()
-                            ->previewable(false),
+                            ->previewable(false)->required(),
                 
                         Forms\Components\FileUpload::make('kartu_bpjs')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','KPR Officer']);
+                        })())
                             ->disk('public')
                             ->nullable()
                             ->label('Kartu BPJS')
                             ->downloadable()
-                            ->previewable(false),
+                            ->previewable(false)->required(),
                 
                         Forms\Components\FileUpload::make('drk')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','KPR Officer']);
+                        })())
                             ->disk('public')
                             ->nullable()
                             ->label('DRK')
                             ->downloadable()
-                            ->previewable(false),
+                            ->previewable(false)->required(),
                     ]),
                 
             ]);

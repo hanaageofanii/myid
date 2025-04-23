@@ -76,11 +76,6 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Resources\RekeningKoranResource\Widgets\rekeningkoranStats::class,
                 \App\Filament\Resources\CekPerjalananResource\Widgets\cek_perjalananStats::class,
                 \App\Filament\Resources\FormPencocokanResource\Widgets\FormPencocokanStats::class,
-
-
-
-
-
             ])
             ->middleware([
                 EncryptCookies::class,

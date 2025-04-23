@@ -202,6 +202,18 @@ class GCVResource extends Resource
                         'akad' => 'Akad',
                         'batal' => 'Batal',
                     ])
+                    ->afterStateUpdated(function ($state, $set, $record) {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        if (is_null($state) && $user && $user->hasRole(['Direksi', 'Super admin','admin','Legal officer','KPR Stok'])) {
+                            $set('tanggal_akad', null);
+                            
+                
+                            $record->update([
+                                'tanggal_akad' => null,
+                            ]);
+                        }
+                    })
                     ->label('KPR Status')
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
@@ -214,7 +226,7 @@ class GCVResource extends Resource
                     ->disabled(fn ($get) => ! (function () use ($get) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin', 'KPR officer']) && $get('status') === 'akad';
+                        return $user && $user->hasRole(['admin', 'KPR officer']) && $get('kpr_status') === 'akad';
                     })()),
 
                 Forms\Components\Textarea::make('ket')

@@ -67,7 +67,7 @@ class AuditResource extends Resource
             ->disabled(fn () => ! (function () {
                 /** @var \App\Models\User|null $user */
                 $user = Auth::user();
-                return $user && $user->hasRole(['Admin','Legal officer']);
+                return $user && $user->hasRole(['admin','Legal officer']);
             })()),   
             
             TextInput::make('type')
@@ -76,22 +76,24 @@ class AuditResource extends Resource
                 ->disabled(fn () => ! (function () {
                     /** @var \App\Models\User|null $user */
                     $user = Auth::user();
-                    return $user && $user->hasRole(['Admin','Legal officer']);
+                    return $user && $user->hasRole(['admin','Legal officer']);
                 })()),
 
             Toggle::make('terbangun')
                 ->label('Terbangun')
+                ->required()
                 ->default(false)
                 ->onColor('success')
                 ->offColor('danger')
                 ->disabled(fn () => ! (function () {
                     /** @var \App\Models\User|null $user */
                     $user = Auth::user();
-                    return $user && $user->hasRole(['Admin','Legal officer']);
+                    return $user && $user->hasRole(['admin','Legal officer']);
                 })()),
 
             Select::make('status')
                 ->label('Status')
+                ->required()
                 ->options([
                     'akad' => 'Akad',
                 ])
@@ -99,86 +101,95 @@ class AuditResource extends Resource
                 ->disabled(fn () => ! (function () {
                     /** @var \App\Models\User|null $user */
                     $user = Auth::user();
-                    return $user && $user->hasRole(['Admin','Legal officer']);
+                    return $user && $user->hasRole(['admin','Legal officer']);
                 })()),
 
             Fieldset::make('Sertifikat')
                 ->schema([
                     TextInput::make('kode1')
                     ->label('Kode 1')
+                    ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     TextInput::make('luas1')
                     ->label('Luas 1 (m²)')
+                    ->required()
                     ->numeric()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     TextInput::make('kode2')
                     ->label('Kode 2')
+                    ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     TextInput::make('luas2')
                     ->label('Luas 2 (m²)')
                     ->numeric()
+                    ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
                     
                     TextInput::make('kode3')
                     ->label('Kode 3')
+                    ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     TextInput::make('luas3')
                     ->label('Luas 3 (m²)')
                     ->numeric()
+                    ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     TextInput::make('kode4')
                     ->label('Kode 4')
+                    ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     TextInput::make('luas4')
                     ->label('Luas 4 (m²)')
                     ->numeric()
+                    ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     TextInput::make('tanda_terima_sertifikat')
                     ->label('Tanda Terima Sertifikat')
                     ->columnSpanFull()
+                    ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
                 ])
                 ->columns(4),
@@ -187,43 +198,48 @@ class AuditResource extends Resource
                 ->schema([
                     TextInput::make('nop_pbb_pecahan')
                     ->label('NOP / PBB Pecahan')
+                    ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     TextInput::make('tanda_terima_nop')
                     ->label('Tanda Terima NOP')
+                    ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     TextInput::make('imb_pbg')
                     ->label('IMB / PBG')
+                    ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     TextInput::make('tanda_terima_imb_pbg')
                     ->label('Tanda Terima IMB/PBG')
+                    ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     Textarea::make('tanda_terima_tambahan')
                     ->label('Tanda Terima Tambahan')
+                    ->required()
                     ->rows(3)->columnSpanFull()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Admin','Legal officer']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
                 ])
                 ->columns(2),
@@ -234,52 +250,56 @@ class AuditResource extends Resource
                         ->disk('public')
                         ->multiple()
                         ->nullable()
+                        ->required()
                         ->label('Upload Sertifikat')
                         ->downloadable()
                         ->previewable(false)
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['Admin','Legal officer']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })()),
                     
                     FileUpload::make('up_nop')
                         ->disk('public')
                         ->nullable()
                         ->multiple()
+                        ->required()
                         ->label('Upload NOP')
                         ->downloadable()
                         ->previewable(false)
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['Admin','Legal officer']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })()),
 
                     FileUpload::make('up_imb_pbg')
                         ->disk('public')
                         ->nullable()
                         ->multiple()
+                        ->required()
                         ->label('Upload IMB/PBG')
                         ->downloadable()
                         ->previewable(false)
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['Admin','Legal officer']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })()),
                     
                     FileUpload::make('up_tambahan_lainnya')
                         ->disk('public')
                         ->nullable()
                         ->multiple()
+                        ->required()
                         ->label('Upload Tambahan Lainnya')
                         ->downloadable()
                         ->previewable(false)
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['Admin','Legal officer']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })()),
                     
                 ])

@@ -12,7 +12,7 @@ class form_kprPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Staff','Staff Legal','Staff KPR','Legal Officer']);
+        return $user->hasRole(['admin','Marketing','Super admin','Direksi','KPR Stok','KPR Officer','Legal Officer']);
     }
 
     /**
@@ -28,7 +28,7 @@ class form_kprPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','KPR Officer']);
     }
 
     /**
@@ -36,7 +36,7 @@ class form_kprPolicy
      */
     public function update(User $user, form_kpr $form_kpr): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff KPR','Staff Legal']);
+        return $user->hasRole(['admin','Super admin','Direksi','KPR Officer','KPR Stok']);
     }
 
     /**
