@@ -12,7 +12,7 @@ class GCVPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Staff','Staff Legal','Staff KPR','Legal Officer']);
+        return $user->hasRole(['admin','Marketing','Super admin','Direksi','KPR Officer','Legal officer','KPR Stok','Legal officer']);
     }
 
     /**
@@ -20,7 +20,7 @@ class GCVPolicy
      */
     public function view(User $user, GCV $GCV): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Legal Officer']);
+        return $user->hasRole(['admin','Marketing','Super admin','Direksi','KPR Officer']);
     }
 
     /**
@@ -36,7 +36,7 @@ class GCVPolicy
      */
     public function update(User $user, GCV $GCV): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff KPR','Staff Legal']);
+        return $user->hasRole(['admin','Super admin','Direksi','KPR Officer','KPR Stok','Legal officer']);
     }
 
     /**

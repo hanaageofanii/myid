@@ -38,10 +38,10 @@ use Illuminate\Database\Eloquent\Collection;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\ActionGroup;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\GCVResource\Widgets\GCVStats;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
 class GCVResource extends Resource
 {
@@ -52,6 +52,7 @@ class GCVResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
     protected static ?string $navigationLabel = 'GCV';
     protected static ?string $pluralModelLabel = 'Data GCV';
+
 
     public static function form(Form $form): Form
     {
@@ -152,7 +153,7 @@ class GCVResource extends Resource
                     ->afterStateUpdated(function ($state, $set, $record) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        if (is_null($state) && $user && $user->hasRole(['Direksi', 'Super admin','admin','Staff Legal', 'Staff KPR'])) {
+                        if (is_null($state) && $user && $user->hasRole(['Direksi', 'Super admin','admin','Legal officer','KPR Stok'])) {
                             $set('tanggal_booking', null);
                             $set('nama_konsumen', null);
                             $set('agent', null);
@@ -167,7 +168,7 @@ class GCVResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin', 'Staff Legal', 'Staff KPR','Direksi', 'Super admin']);
+                        return $user && $user->hasRole(['Direksi', 'Super admin','admin','Legal officer','KPR Stok']);
                     })()),
                     // ->required(),
 
@@ -176,7 +177,7 @@ class GCVResource extends Resource
                     ->disabled(fn ($get) => ! (function () use ($get) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin', 'Staff Legal', 'Staff KPR']) && $get('status') === 'booking';
+                        return $user && $user->hasRole(['admin', 'Legal officer', 'KPR Stok']) && $get('status') === 'booking';
                     })()),
 
                 Forms\Components\TextInput::make('nama_konsumen')
@@ -184,7 +185,7 @@ class GCVResource extends Resource
                     ->disabled(fn ($get) => ! (function () use ($get) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin', 'Staff Legal', 'Staff KPR']) && $get('status') === 'booking';
+                        return $user && $user->hasRole(['admin', 'Legal officer', 'KPR Stok']) && $get('status') === 'booking';
                     })()),
 
                 Forms\Components\TextInput::make('agent')
@@ -192,7 +193,7 @@ class GCVResource extends Resource
                     ->disabled(fn ($get) => ! (function () use ($get) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin', 'Staff Legal', 'Staff KPR']) && $get('status') === 'booking';
+                        return $user && $user->hasRole(['admin', 'Legal officer', 'KPR Stok']) && $get('status') === 'booking';
                     })()), 
 
                 Forms\Components\Select::make('kpr_status')
@@ -205,7 +206,7 @@ class GCVResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Staff']);
+                        return $user && $user->hasRole(['admin','KPR officer']);
                     })()),
 
                     Forms\Components\DatePicker::make('tanggal_akad')
@@ -213,7 +214,7 @@ class GCVResource extends Resource
                     ->disabled(fn ($get) => ! (function () use ($get) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin', 'Staff']) && $get('status') === 'booking';
+                        return $user && $user->hasRole(['admin', 'KPR officer']) && $get('status') === 'akad';
                     })()),
 
                 Forms\Components\Textarea::make('ket')
@@ -222,7 +223,7 @@ class GCVResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Staff']);
+                        return $user && $user->hasRole(['admin','KPR officer']);
                     })()),
             ]);
     }
@@ -462,12 +463,29 @@ class GCVResource extends Resource
     }
 
     public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+{
+    $query = parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ]);
+
+    /** @var \App\Models\User|null $user */
+    $user = Auth::user();
+
+    if ($user) {
+        if ($user->hasRole('Marketing')) {
+            $query->where(function ($q) {
+                $q->whereNull('kpr_status')
+                    ->orWhere('kpr_status', '!=', 'akad');
+            });
+        } elseif ($user->hasRole('Legal Officer')) {
+            $query->where('kpr_status', 'akad');
+        }
     }
+
+    return $query;
+}
+
 
     public static function getWidgets(): array
     {
