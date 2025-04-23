@@ -158,7 +158,7 @@ class GCVResource extends Resource
                     ->afterStateUpdated(function ($state, $set, $record) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        if (is_null($state) && $user && $user->hasRole(['Direksi', 'Super admin','admin','Legal officer','KPR Stok'])) {
+                        if (is_null($state) && $user && $user->hasRole(['Direksi', 'Super admin','admin'])) {
                             $set('tanggal_booking', null);
                             $set('nama_konsumen', null);
                             $set('agent', null);
