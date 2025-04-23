@@ -129,7 +129,8 @@ class FormKprResource extends Resource
                                     $set('type', $gcv->type);
                                     
                             }
-                        }),
+                        })->unique(ignoreRecord: true),
+
                 
                 Forms\Components\Select::make('type')
                     ->disabled(fn () => ! (function () {

@@ -72,7 +72,9 @@ class RekeningKoranResource extends Resource
                     ->label('No. Transaksi')
                     ->options(fn () => rekonsil::pluck('no_transaksi', 'no_transaksi'))
                     ->searchable()
-                    ->reactive(),
+                    ->reactive()
+                    ->unique(ignoreRecord: true),
+
                     // ->afterStateUpdated(function ($state, callable $set) {
                     //     if ($state) {
                     //         $data = rekonsil::where('no_referensi_bank', $state)->first();

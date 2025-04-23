@@ -111,6 +111,7 @@ class GCVResource extends Resource
                         ->searchable()
                         ->required()
                         ->reactive()
+                        ->unique(ignoreRecord: true)
                         ->afterStateUpdated(function ($state, callable $set) {
                             $audit = Audit::where('siteplan', $state)->first(); 
 

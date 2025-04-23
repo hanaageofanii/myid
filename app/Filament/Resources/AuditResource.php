@@ -68,7 +68,9 @@ class AuditResource extends Resource
                 /** @var \App\Models\User|null $user */
                 $user = Auth::user();
                 return $user && $user->hasRole(['admin','Legal officer']);
-            })()),   
+            })())
+            ->unique(ignoreRecord: true),
+
             
             TextInput::make('type')
                 ->label('Type')

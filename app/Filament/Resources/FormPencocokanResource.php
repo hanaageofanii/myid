@@ -69,13 +69,17 @@ class FormPencocokanResource extends Resource
             ->label('No. Transaksi')
             ->options(fn () => rekonsil::pluck('no_transaksi', 'no_transaksi'))
             ->searchable()
-            ->reactive(),
+            ->reactive()
+            ->unique(ignoreRecord: true),
+
 
         Select::make('no_ref_bank')
             ->label('No. Ref Bank')
             ->options(fn () => rekening_koran::pluck('no_referensi_bank', 'no_referensi_bank'))
             ->searchable()
-            ->reactive(),
+            ->reactive()
+            ->unique(ignoreRecord: true),
+
 
         DatePicker::make('tanggal_transaksi')
             ->required()
