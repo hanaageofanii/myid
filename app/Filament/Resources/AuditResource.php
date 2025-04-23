@@ -83,7 +83,7 @@ class AuditResource extends Resource
 
             Toggle::make('terbangun')
                 ->label('Terbangun')
-                ->required()
+                
                 ->default(false)
                 ->onColor('success')
                 ->offColor('danger')
@@ -95,11 +95,11 @@ class AuditResource extends Resource
 
             Select::make('status')
                 ->label('Status')
-                ->required()
+                
                 ->options([
                     'akad' => 'Akad',
                 ])
-                ->required()->nullable()->native(false)
+                ->nullable()->native(false)
                 ->disabled(fn () => ! (function () {
                     /** @var \App\Models\User|null $user */
                     $user = Auth::user();
@@ -110,7 +110,7 @@ class AuditResource extends Resource
                 ->schema([
                     TextInput::make('kode1')
                     ->label('Kode 1')
-                    ->required()
+                    
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -119,7 +119,7 @@ class AuditResource extends Resource
 
                     TextInput::make('luas1')
                     ->label('Luas 1 (m²)')
-                    ->required()
+                    
                     ->numeric()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
@@ -129,7 +129,7 @@ class AuditResource extends Resource
 
                     TextInput::make('kode2')
                     ->label('Kode 2')
-                    ->required()
+                    
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -139,7 +139,7 @@ class AuditResource extends Resource
                     TextInput::make('luas2')
                     ->label('Luas 2 (m²)')
                     ->numeric()
-                    ->required()
+                    
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -148,7 +148,7 @@ class AuditResource extends Resource
                     
                     TextInput::make('kode3')
                     ->label('Kode 3')
-                    ->required()
+                    
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -158,7 +158,7 @@ class AuditResource extends Resource
                     TextInput::make('luas3')
                     ->label('Luas 3 (m²)')
                     ->numeric()
-                    ->required()
+                    
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -167,7 +167,7 @@ class AuditResource extends Resource
 
                     TextInput::make('kode4')
                     ->label('Kode 4')
-                    ->required()
+                    
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -177,7 +177,7 @@ class AuditResource extends Resource
                     TextInput::make('luas4')
                     ->label('Luas 4 (m²)')
                     ->numeric()
-                    ->required()
+                    
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -187,7 +187,7 @@ class AuditResource extends Resource
                     TextInput::make('tanda_terima_sertifikat')
                     ->label('Tanda Terima Sertifikat')
                     ->columnSpanFull()
-                    ->required()
+                    
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -200,7 +200,7 @@ class AuditResource extends Resource
                 ->schema([
                     TextInput::make('nop_pbb_pecahan')
                     ->label('NOP / PBB Pecahan')
-                    ->required()
+                    
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -209,7 +209,7 @@ class AuditResource extends Resource
 
                     TextInput::make('tanda_terima_nop')
                     ->label('Tanda Terima NOP')
-                    ->required()
+                    
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -218,7 +218,7 @@ class AuditResource extends Resource
 
                     TextInput::make('imb_pbg')
                     ->label('IMB / PBG')
-                    ->required()
+                    
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -227,7 +227,7 @@ class AuditResource extends Resource
 
                     TextInput::make('tanda_terima_imb_pbg')
                     ->label('Tanda Terima IMB/PBG')
-                    ->required()
+                    
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -236,7 +236,7 @@ class AuditResource extends Resource
 
                     Textarea::make('tanda_terima_tambahan')
                     ->label('Tanda Terima Tambahan')
-                    ->required()
+                    
                     ->rows(3)->columnSpanFull()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
@@ -252,7 +252,7 @@ class AuditResource extends Resource
                         ->disk('public')
                         ->multiple()
                         ->nullable()
-                        ->required()
+                        
                         ->label('Upload Sertifikat')
                         ->downloadable()
                         ->previewable(false)
@@ -266,7 +266,7 @@ class AuditResource extends Resource
                         ->disk('public')
                         ->nullable()
                         ->multiple()
-                        ->required()
+                        
                         ->label('Upload NOP')
                         ->downloadable()
                         ->previewable(false)
@@ -280,7 +280,7 @@ class AuditResource extends Resource
                         ->disk('public')
                         ->nullable()
                         ->multiple()
-                        ->required()
+                        
                         ->label('Upload IMB/PBG')
                         ->downloadable()
                         ->previewable(false)
@@ -294,7 +294,7 @@ class AuditResource extends Resource
                         ->disk('public')
                         ->nullable()
                         ->multiple()
-                        ->required()
+                        
                         ->label('Upload Tambahan Lainnya')
                         ->downloadable()
                         ->previewable(false)

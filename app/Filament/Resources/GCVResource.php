@@ -107,8 +107,12 @@ class GCVResource extends Resource
 
                     Forms\Components\Select::make('siteplan')
                         ->label('Blok')
-                        ->options(Audit::pluck('siteplan', 'siteplan')->toArray()) 
-                        ->searchable()
+                        ->options(
+                            Audit::where('terbangun', '=', 1)
+                                ->pluck('siteplan', 'siteplan')
+                                ->toArray()     
+                                ) 
+                                ->searchable()
                         ->required()
                         ->reactive()
                         ->unique(ignoreRecord: true)
@@ -116,7 +120,7 @@ class GCVResource extends Resource
                             $audit = Audit::where('siteplan', $state)->first(); 
 
                             if ($audit) {
-                                $set('kpr_status', $audit->status === 'akad' ? 'akad' : null);
+                                // $set('kpr_status', $audit->status === 'akad' ? 'akad' : null);
                                 $set('type', $audit->type);
                             }
                         })->disabled(fn () => ! (function () {
@@ -203,6 +207,17 @@ class GCVResource extends Resource
                         'akad' => 'Akad',
                         'batal' => 'Batal',
                     ])
+                    ->afterStateUpdated(function ($state, $set, $get, $record) {
+                        if ($record && $record->siteplan) {
+                            $audit = \App\Models\Audit::where('siteplan', $record->siteplan)->first();
+                
+                            if ($audit) {
+                                $audit->update([
+                                    'status' => $state === 'akad' ? 'akad' : null,
+                                ]);
+                            }
+                        }
+                    })
                     ->afterStateUpdated(function ($state, $set, $record) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();

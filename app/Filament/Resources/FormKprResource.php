@@ -104,12 +104,17 @@ class FormKprResource extends Resource
                     Forms\Components\Select::make('siteplan')
                             ->label('Blok')
                             ->nullable()
-                            ->options(fn ($get, $set, $record) => 
-                                collect($get('available_siteplans') ?? [])
-                                    ->filter(fn ($label, $key) => !is_null($label)) 
-                                    ->toArray()
-                                + ($record?->siteplan ? [$record->siteplan => $record->siteplan] : [])
-                            )
+                            ->options(
+                                GCV::where('status', '=', 'booking')
+                                    ->pluck('siteplan', 'siteplan')
+                                    ->toArray()     
+                                    ) 
+                            // ->options(fn ($get, $set, $record) => 
+                            //     collect($get('available_siteplans') ?? [])
+                            //         ->filter(fn ($label, $key) => !is_null($label)) 
+                            //         ->toArray()
+                            //     + ($record?->siteplan ? [$record->siteplan => $record->siteplan] : [])
+                            // )
                             ->reactive()
                             ->required()
                             ->disabled(fn () => ! (function () {
