@@ -13,7 +13,7 @@ class AuditPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Staff','Staff Legal','Staff KPR','Legal Officer']);
+        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff Legal','Staff KPR','Legal officer']);
     }
 
     /**
@@ -21,7 +21,7 @@ class AuditPolicy
      */
     public function view(User $user, Audit $Audit): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Legal Officer']);
+        return $user->hasRole(['admin','Super admin','Direksi','Legal officer']);
     }
 
     /**
@@ -29,7 +29,7 @@ class AuditPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin', 'Legal officer']);
     }
 
     /**
@@ -37,7 +37,7 @@ class AuditPolicy
      */
     public function update(User $user, Audit $Audit): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff KPR','Staff Legal']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -45,7 +45,7 @@ class AuditPolicy
      */
     public function delete(User $user, Audit $Audit): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -53,7 +53,7 @@ class AuditPolicy
      */
     public function restore(User $user, Audit $Audit): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -61,6 +61,6 @@ class AuditPolicy
      */
     public function forceDelete(User $user, Audit $Audit): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 }
