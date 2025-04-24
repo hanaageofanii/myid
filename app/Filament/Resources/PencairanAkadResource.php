@@ -51,6 +51,7 @@ use App\Models\Audit;
 use App\Filament\Resources\GCVResource;
 use App\Models\GCV;
 use App\Filament\Resources\KPRStats;
+use Illuminate\Support\Facades\Auth;
 
 class PencairanAkadResource extends Resource
 {
@@ -71,6 +72,11 @@ class PencairanAkadResource extends Resource
                     ->label('Blok')
                     ->options(fn () => form_kpr::pluck('siteplan', 'siteplan')) 
                     ->searchable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
                         if ($state) {
@@ -94,15 +100,30 @@ class PencairanAkadResource extends Resource
                         'brii_bekasi' => 'BRI Bekasi',
                     ])
                     ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->label('Bank'),
                 
                     TextInput::make('nama_konsumen')
                     ->label('Nama Konsumen')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->dehydrated(),
                 
                 TextInput::make('max_kpr')
                     ->label('Maksimal KPR')
                     ->prefix('Rp')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->reactive()
                     ->afterStateUpdated(fn ($state, callable $set, $get) => 
                     $set('dana_jaminan', max(0, (int) $state - (int) $get('nilai_pencairan'))))
@@ -113,11 +134,21 @@ class PencairanAkadResource extends Resource
             ->schema([
                 DatePicker::make('tanggal_pencairan')
                 ->required()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Kasir 1']);
+                })())
                 ->label('Tanggal Pencarian Akad'),
 
             TextInput::make('nilai_pencairan')
                 ->label('Nilai Pencairan')
                 ->prefix('Rp')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Kasir 1']);
+                })())
                 ->dehydrated()
                 ->afterStateUpdated(fn ($state, callable $set, $get) => 
                 $set('dana_jaminan', max(0, (int) $get('max_kpr') - (int) $state)))
@@ -125,6 +156,11 @@ class PencairanAkadResource extends Resource
             
                 TextInput::make('dana_jaminan')
                 ->label('Dana Jaminan')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Kasir 1']);
+                })())
                 ->prefix('Rp')
                 ->reactive() 
                 ->dehydrated(),
@@ -135,7 +171,12 @@ class PencairanAkadResource extends Resource
             Fieldset::make('Dokumen')
                 ->schema([
                     FileUpload::make('up_rekening_koran')->disk('public')->nullable()->label('Rekening Koran')
-                        ->downloadable()->previewable(false),
+                        ->downloadable()->multiple()->previewable(false)
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Kasir 1']);
+                        })()),
                 ]),
         ]);
     }
@@ -177,6 +218,29 @@ class PencairanAkadResource extends Resource
             ->label('Dana Jaminan')            
             ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
 
+            TextColumn::make('up_rekening_koran')
+            ->label('Rekening Koran')
+            ->formatStateUsing(function ($record) {
+                if (!$record->up_rekening_koran) {
+                    return 'Tidak Ada Dokumen';
+                }
+
+                $files = is_array($record->up_rekening_koran) ? $record->up_rekening_koran : json_decode($record->up_rekening_koran, true);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    $files = [];
+                }
+
+                $output = '';
+                foreach ($files as $file) {
+                    $url = Storage::url($file);
+                    $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                }
+
+                return $output ?: 'Tidak Ada Dokumen';
+            })
+            ->html()
+            ->sortable(),
 
             ])
 
@@ -269,7 +333,9 @@ class PencairanAkadResource extends Resource
                     //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
                     RestoreAction::make()
                     ->color('info')
-                    ->label('Kembalikan Data')
+                    ->label(fn ($record) => "Kembalikan {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Kembalikan Blok{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengembalikan blok {$record->siteplan}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
@@ -278,7 +344,9 @@ class PencairanAkadResource extends Resource
                     ),
                     ForceDeleteAction::make()
                     ->color('primary')
-                    ->label('Hapus Permanen')
+                    ->label(fn ($record) => "Hapus Permanent {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok Permanent{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengahapus blok secara permanent {$record->siteplan}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
