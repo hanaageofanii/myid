@@ -56,6 +56,7 @@ use App\Models\Audit;
 use App\Filament\Resources\GCVResource;
 use App\Models\GCV;
 use App\Filament\Resources\KPRStats;
+use Illuminate\Support\Facades\Auth;
 
 
 class PengajuanDajamResource extends Resource
@@ -77,12 +78,17 @@ class PengajuanDajamResource extends Resource
                         ->label('Blok')
                         ->options(fn () => form_kpr::pluck('siteplan', 'siteplan'))
                         ->searchable()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                        })())
                         ->reactive()
                         ->afterStateUpdated(function ($state, callable $set) {
                             $kprData = form_kpr::where('siteplan', $state)->first();
                             $akadData = PencairanAkad::where('siteplan', $state)->first();
                             $pajakData = form_pajak::where('siteplan', $state)->first();
-                            $dajamData = dajam::where('siteplan', $state)->first();
+                            // $dajamData = dajam::where('siteplan', $state)->first();
 
                             $maxKpr = $kprData->maksimal_kpr ?? 0;
                             $nilaiPencairan = $akadData->nilai_pencairan ?? 0;
@@ -118,14 +124,29 @@ class PengajuanDajamResource extends Resource
                             'brii_bekasi' => 'BRI Bekasi',
                         ])
                         ->required()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                        })())
                         ->label('Bank'),
 
                     TextInput::make('nama_konsumen')
                         ->label('Nama Konsumen')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                        })())
                         ->reactive(),
                     
                     TextInput::make('no_debitur')
                         ->label('No. Debitur')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                        })())
                         ->reactive(),
 
                     Select::make('nama_dajam')
@@ -137,16 +158,36 @@ class PengajuanDajamResource extends Resource
                             'pph' => 'PPH',
                             'bphtb' => 'BPHTB',
                         ])
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                        })())
                         ->label('Nama Dajam'),
                     
                     TextInput::make('no_surat')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                         ->label('No. Surat'),
                         
                     
                     DatePicker::make('tanggal_pengajuan')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                         ->label('Tanggal Pengajuan'),
 
                     TextInput::make('nilai_pencairan')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('Nilai Pencairan'),
 
                     Select::make('status_dajam')
@@ -154,14 +195,40 @@ class PengajuanDajamResource extends Resource
                             'sudah_diajukan' => 'Sudah Diajukan',
                             'belum_diajukan' => 'Belum Diajukan',
                         ])
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                        })())
                         ->label('Status Dajam'),
                     
                         Fieldset::make('Dokumen')
                         ->schema([
-                            FileUpload::make('up_surat_pengajuan')->disk('public')->nullable()->label('Upload Surat Pengajuan')
-                                ->downloadable()->previewable(false),
-                            FileUpload::make('up_nominatif_pengajuan')->disk('public')->nullable()->label('Upload Nominatif Pengajuan')
-                                ->downloadable()->previewable(false),
+                            FileUpload::make('up_surat_pengajuan')
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal Pajak']);
+                            })())
+                            ->disk('public')
+                            ->nullable()
+                            ->label('Upload Surat Pengajuan')
+                            ->downloadable()
+                            ->multiple()
+                            ->previewable(false),
+
+                            FileUpload::make('up_nominatif_pengajuan')
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal Pajak']);
+                            })())
+                            ->disk('public')
+                            ->nullable()
+                            ->label('Upload Nominatif Pengajuan')
+                            ->downloadable()
+                            ->multiple()
+                            ->previewable(false),
                         ]),
             ]),
         ]);
@@ -228,24 +295,53 @@ class PengajuanDajamResource extends Resource
             ->searchable()
             ->label('Status Dajam'),
 
-            Tables\Columns\TextColumn::make('up_surat_pengajuan')
-            ->label('Upload Surat Pengajuan')
-            ->formatStateUsing(fn ($record) => $record->up_pbb
-            ? '<a href="' . Storage::url($record->up_pbb) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->up_pbb) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable()
-            ->searchable(),
+            TextColumn::make('up_surat_pengajuan')
+            ->label('Surat Pengajuan')
+            ->formatStateUsing(function ($record) {
+                if (!$record->up_surat_pengajuan) {
+                    return 'Tidak Ada Dokumen';
+                }
 
-        Tables\Columns\TextColumn::make('up_nominatif_pengajuan')
-            ->label('Upload Nominatif Pengajuan')
-            ->formatStateUsing(fn ($record) => $record->up_img
-            ? '<a href="' . Storage::url($record->up_img) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->up_img) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
+                $files = is_array($record->up_surat_pengajuan) ? $record->up_surat_pengajuan : json_decode($record->up_surat_pengajuan, true);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    $files = [];
+                }
+
+                $output = '';
+                foreach ($files as $file) {
+                    $url = Storage::url($file);
+                    $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                }
+
+                return $output ?: 'Tidak Ada Dokumen';
+            })
             ->html()
             ->sortable(),
+
+        TextColumn::make('up_nominatif_pengajuan')
+        ->label('Nominatif Pengajuan')
+        ->formatStateUsing(function ($record) {
+            if (!$record->up_bukti_setor_ppn) {
+                return 'Tidak Ada Dokumen';
+            }
+
+            $files = is_array($record->up_bukti_setor_ppn) ? $record->up_bukti_setor_ppn : json_decode($record->up_bukti_setor_ppn, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $files = [];
+            }
+
+            $output = '';
+            foreach ($files as $file) {
+                $url = Storage::url($file);
+                $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+            }
+
+            return $output ?: 'Tidak Ada Dokumen';
+        })
+        ->html()
+        ->sortable(),
             ])
 
             ->defaultSort('siteplan', 'asc')
