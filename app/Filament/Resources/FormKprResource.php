@@ -336,9 +336,10 @@ class FormKprResource extends Resource
                         })())
                             ->disk('public')
                             ->nullable()
+                            ->multiple()
                             ->label('KTP')
                             ->downloadable()
-                            ->previewable(false)->required(),
+                            ->previewable(false),
                 
                         Forms\Components\FileUpload::make('kk')
                         ->disabled(fn () => ! (function () {
@@ -348,9 +349,10 @@ class FormKprResource extends Resource
                         })())
                             ->disk('public')
                             ->nullable()
+                            ->multiple()
                             ->label('Kartu Keluarga')
                             ->downloadable()
-                            ->previewable(false)->required(),
+                            ->previewable(false),
                 
                         Forms\Components\FileUpload::make('npwp_upload')
                         ->disabled(fn () => ! (function () {
@@ -360,9 +362,10 @@ class FormKprResource extends Resource
                         })())
                             ->disk('public')
                             ->nullable()
+                            ->multiple()
                             ->label('NPWP')
                             ->downloadable()
-                            ->previewable(false)->required(),
+                            ->previewable(false),
                 
                         Forms\Components\FileUpload::make('buku_nikah')
                         ->disabled(fn () => ! (function () {
@@ -372,9 +375,10 @@ class FormKprResource extends Resource
                         })())
                             ->disk('public')
                             ->nullable()
+                            ->multiple()
                             ->label('Buku Nikah')
                             ->downloadable()
-                            ->previewable(false)->required(),
+                            ->previewable(false),
                 
                         Forms\Components\FileUpload::make('akte_cerai')
                         ->disabled(fn () => ! (function () {
@@ -384,9 +388,10 @@ class FormKprResource extends Resource
                         })())
                             ->disk('public')
                             ->nullable()
+                            ->multiple()
                             ->label('Akta Cerai')
                             ->downloadable()
-                            ->previewable(false)->required(),
+                            ->previewable(false),
                 
                         Forms\Components\FileUpload::make('akte_kematian')
                         ->disabled(fn () => ! (function () {
@@ -396,9 +401,10 @@ class FormKprResource extends Resource
                         })())
                             ->disk('public')
                             ->nullable()
+                            ->multiple()
                             ->label('Akte Kematian')
                             ->downloadable()
-                            ->previewable(false)->required(),
+                            ->previewable(false),
                 
                         Forms\Components\FileUpload::make('kartu_bpjs')
                         ->disabled(fn () => ! (function () {
@@ -408,9 +414,10 @@ class FormKprResource extends Resource
                         })())
                             ->disk('public')
                             ->nullable()
+                            ->multiple()
                             ->label('Kartu BPJS')
                             ->downloadable()
-                            ->previewable(false)->required(),
+                            ->previewable(false),
                 
                         Forms\Components\FileUpload::make('drk')
                         ->disabled(fn () => ! (function () {
@@ -420,9 +427,10 @@ class FormKprResource extends Resource
                         })())
                             ->disk('public')
                             ->nullable()
+                            ->multiple()
                             ->label('DRK')
                             ->downloadable()
-                            ->previewable(false)->required(),
+                            ->previewable(false),
                     ]),
                 
             ]);
@@ -505,85 +513,197 @@ class FormKprResource extends Resource
                     ->searchable()
                     ->label('Status Akad'),
                 
-        Tables\Columns\TextColumn::make('ktp')
-            ->label('KTP')
-            ->formatStateUsing(fn ($record) => $record->ktp 
-            ? '<a href="' . Storage::url($record->ktp) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->ktp) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable()
-            ->searchable(),
+                    TextColumn::make('ktp')
+                    ->label('KTP')
+                    ->formatStateUsing(function ($record) {
+                        if (!$record->ktp) {
+                            return 'Tidak Ada Dokumen';
+                        }
+    
+                        $files = is_array($record->ktp) ? $record->ktp : json_decode($record->ktp, true);
+    
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            $files = [];
+                        }
+    
+                        $output = '';
+                        foreach ($files as $file) {
+                            $url = Storage::url($file);
+                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                        }
+    
+                        return $output ?: 'Tidak Ada Dokumen';
+                    })
+                    ->html()
+                    ->sortable(),
 
-        Tables\Columns\TextColumn::make('kk')
-            ->label('Kartu Keluarga')
-            ->formatStateUsing(fn ($record) => $record->kk 
-            ? '<a href="' . Storage::url($record->kk) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->kk) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable()
-            ->searchable(),
+                    TextColumn::make('kk')
+                    ->label('Kartu Keluarga')
+                    ->formatStateUsing(function ($record) {
+                        if (!$record->kk) {
+                            return 'Tidak Ada Dokumen';
+                        }
+    
+                        $files = is_array($record->kk) ? $record->kk : json_decode($record->kk, true);
+    
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            $files = [];
+                        }
+    
+                        $output = '';
+                        foreach ($files as $file) {
+                            $url = Storage::url($file);
+                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                        }
+    
+                        return $output ?: 'Tidak Ada Dokumen';
+                    })
+                    ->html()
+                    ->sortable(),
 
-        Tables\Columns\TextColumn::make('npwp_upload')
-            ->label('NPWP')
-            ->formatStateUsing(fn ($record) => $record->npwp_upload 
-            ? '<a href="' . Storage::url($record->npwp_upload) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->npwp_upload) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable()
-            ->searchable(),
+                    TextColumn::make('npwp_upload')
+                    ->label('NPWP')
+                    ->formatStateUsing(function ($record) {
+                        if (!$record->npwp_upload) {
+                            return 'Tidak Ada Dokumen';
+                        }
+    
+                        $files = is_array($record->npwp_upload) ? $record->npwp_upload : json_decode($record->npwp_upload, true);
+    
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            $files = [];
+                        }
+    
+                        $output = '';
+                        foreach ($files as $file) {
+                            $url = Storage::url($file);
+                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                        }
+    
+                        return $output ?: 'Tidak Ada Dokumen';
+                    })
+                    ->html()
+                    ->sortable(),
 
-        Tables\Columns\TextColumn::make('buku_nikah')
-            ->label('Buku Nikah')
-            ->formatStateUsing(fn ($record) => $record->buku_nikah 
-            ? '<a href="' . Storage::url($record->buku_nikah) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->buku_nikah) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable()
-            ->searchable(),
+                    TextColumn::make('buku_nikah')
+                    ->label('Buku Nikah')
+                    ->formatStateUsing(function ($record) {
+                        if (!$record->buku_nikah) {
+                            return 'Tidak Ada Dokumen';
+                        }
+    
+                        $files = is_array($record->buku_nikah) ? $record->buku_nikah : json_decode($record->buku_nikah, true);
+    
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            $files = [];
+                        }
+    
+                        $output = '';
+                        foreach ($files as $file) {
+                            $url = Storage::url($file);
+                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                        }
+    
+                        return $output ?: 'Tidak Ada Dokumen';
+                    })
+                    ->html()
+                    ->sortable(),
 
-        Tables\Columns\TextColumn::make('akte_cerai')
-            ->label('Akte Cerai')
-            ->formatStateUsing(fn ($record) => $record->akte_cerai 
-            ? '<a href="' . Storage::url($record->akte_cerai) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->akte_cerai) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable()
-            ->searchable(),
+                    TextColumn::make('akte_cerai')
+                    ->label('Akta Cerai')
+                    ->formatStateUsing(function ($record) {
+                        if (!$record->akte_cerai) {
+                            return 'Tidak Ada Dokumen';
+                        }
+    
+                        $files = is_array($record->akte_cerai) ? $record->akte_cerai : json_decode($record->akte_cerai, true);
+    
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            $files = [];
+                        }
+    
+                        $output = '';
+                        foreach ($files as $file) {
+                            $url = Storage::url($file);
+                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                        }
+    
+                        return $output ?: 'Tidak Ada Dokumen';
+                    })
+                    ->html()
+                    ->sortable(),
 
-        Tables\Columns\TextColumn::make('akte_kematian')
-            ->label('Akte Kematian')
-            ->formatStateUsing(fn ($record) => $record->akte_kematian 
-            ? '<a href="' . Storage::url($record->akte_kematian) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->akte_kematian) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable()
-            ->searchable(),
+                    TextColumn::make('akte_kematian')
+                    ->label('Akta Kematian')
+                    ->formatStateUsing(function ($record) {
+                        if (!$record->akte_kematian) {
+                            return 'Tidak Ada Dokumen';
+                        }
+    
+                        $files = is_array($record->akte_kematian) ? $record->akte_kematian : json_decode($record->akte_kematian, true);
+    
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            $files = [];
+                        }
+    
+                        $output = '';
+                        foreach ($files as $file) {
+                            $url = Storage::url($file);
+                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                        }
+    
+                        return $output ?: 'Tidak Ada Dokumen';
+                    })
+                    ->html()
+                    ->sortable(),
 
-        Tables\Columns\TextColumn::make('kartu_bpjs')
-            ->label('Kartu BPJS')
-            ->formatStateUsing(fn ($record) => $record->kartu_bpjs 
-            ? '<a href="' . Storage::url($record->kartu_bpjs) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->kartu_bpjs) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable()
-            ->searchable(),
+                    TextColumn::make('kartu_bpjs')
+                    ->label('Kartu BPJS')
+                    ->formatStateUsing(function ($record) {
+                        if (!$record->kartu_bpjs) {
+                            return 'Tidak Ada Dokumen';
+                        }
+    
+                        $files = is_array($record->kartu_bpjs) ? $record->kartu_bpjs : json_decode($record->kartu_bpjs, true);
+    
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            $files = [];
+                        }
+    
+                        $output = '';
+                        foreach ($files as $file) {
+                            $url = Storage::url($file);
+                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                        }
+    
+                        return $output ?: 'Tidak Ada Dokumen';
+                    })
+                    ->html()
+                    ->sortable(),
 
-        Tables\Columns\TextColumn::make('drk')
-            ->label('DRK')
-            ->formatStateUsing(fn ($record) => $record->drk 
-            ? '<a href="' . Storage::url($record->up_efaktur) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->up_efaktur) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable()
-            ->searchable(),
+                    TextColumn::make('drk')
+                    ->label('DRK')
+                    ->formatStateUsing(function ($record) {
+                        if (!$record->drk) {
+                            return 'Tidak Ada Dokumen';
+                        }
+    
+                        $files = is_array($record->drk) ? $record->drk : json_decode($record->drk, true);
+    
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            $files = [];
+                        }
+    
+                        $output = '';
+                        foreach ($files as $file) {
+                            $url = Storage::url($file);
+                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                        }
+    
+                        return $output ?: 'Tidak Ada Dokumen';
+                    })
+                    ->html()
+                    ->sortable(),
             ])
             ->defaultSort('siteplan', 'asc')
             ->headerActions([

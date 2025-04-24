@@ -18,5 +18,17 @@ class form_kpr extends Model{
         'ktp', 'kk', 'npwp_upload', 'buku_nikah', 'akte_cerai', 'akte_kematian',
         'kartu_bpjs', 'drk'
     ];
+
+    protected $casts = [
+        "ktp" => 'array',
+        "kk" => 'array',
+        "npwp_upload" => 'array',
+        "buku_nikah" => 'array',
+        "akte_cerai" => 'array',
+        "akte_kematian" => 'array',
+        "kartu_bpjs" => 'array',
+        "drk" => 'array',
+
+    ];
 }
 

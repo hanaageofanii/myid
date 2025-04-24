@@ -99,7 +99,7 @@ class FormLegalResource extends Resource
                         Forms\Components\TextInput::make('imb_pbg')->nullable()->label('IMB/PBG'),
 
                         Forms\Components\TextInput::make('nop')->nullable()->label('NOP'),
-                        Forms\Components\TextInput::make('nop1')->nullable()->label('NOP Tambahan'),
+                        Forms\Components\TextInput::make('nop1')->nullable()->label('NOP Tambahan')->helperText('Jika irisan input data 2X'),
 
                         Forms\Components\Fieldset::make('Dokumen')
                         ->schema([
@@ -123,7 +123,7 @@ class FormLegalResource extends Resource
                                 ->label('IMG')
                                 ->downloadable()
                                 ->previewable(false),
-                    ]),                        
+                    ]),
             ]);
     }
 
