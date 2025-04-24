@@ -23,4 +23,9 @@ class pencairan_dajam extends Model
             'up_rekening_koran',
             'up_lainnya',
     ];
+
+    protected $casts =[
+        "up_rekening_korang" => 'array',
+        "up_lainnya" => 'array'
+    ];
 }

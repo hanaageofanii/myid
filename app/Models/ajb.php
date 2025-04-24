@@ -29,4 +29,9 @@ class ajb extends Model
         'up_bast',
         'up_validasi_bphtb',
     ];
+
+    protected $casts = [
+        "up_bast" => 'array',
+        "up_validasi_bphtb" => 'array'
+    ];
 }

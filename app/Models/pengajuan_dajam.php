@@ -23,4 +23,9 @@ class pengajuan_dajam extends Model
     'up_surat_pengajuan',
     'up_nominatif_pengajuan',
     ];
+
+    protected $casts = [
+        "up_surat_pengajuan" => 'array',
+        "up_nominatif_pengajuan" => 'array'
+    ];
 }

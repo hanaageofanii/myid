@@ -38,5 +38,12 @@ class verifikasi_dajam extends Model
         'total_pencairan_dajam',
         'sisa_dajam',
         'status_dajam',
+        'up_spd5',
+        'up_lainnya',
+    ];
+
+    protected $casts = [
+        "up_spd5" => 'array',
+        "up_lainnya" => 'array'
     ];
 }

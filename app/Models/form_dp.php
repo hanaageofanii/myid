@@ -24,4 +24,9 @@ class form_dp extends Model
         'up_kwitansi',
         'up_pricelist',
     ];
+
+    protected $casts = [
+        "up_kwitansi" => 'array',
+        "up_pricelist" => 'array'
+    ];
 }

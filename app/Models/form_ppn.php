@@ -29,4 +29,10 @@ class form_ppn extends Model
         "up_bukti_setor_ppn",
         "up_efaktur",
     ];
+    
+    protected $casts = [
+        "up_bukti_setor_ppn" => 'array',
+        "up_efaktur" => 'array'
+    ];
+
 }

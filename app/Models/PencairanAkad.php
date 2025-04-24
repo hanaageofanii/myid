@@ -20,4 +20,8 @@ class PencairanAkad extends Model
         "dana_jaminan",
         "up_rekening_koran",
     ];
+
+    protected $casts = [
+        "up_rekening_koran" => 'array'
+    ];
 }
