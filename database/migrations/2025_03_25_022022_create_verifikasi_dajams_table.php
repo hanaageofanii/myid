@@ -39,6 +39,8 @@ return new class extends Migration
             $table->date('tgl_pencairan_dajam_bphtb')->nullable();
             $table->string('total_pencairan_dajam')->nullable();
             $table->string('sisa_dajam')->nullable();
+            $table->json('up_spd5')->nullable();
+            $table->json('up_lainnya')->nullable();
             $table->enum('status_dajam',['sudah_diajukan','belum_diajukan'])->nullable();
             $table->timestamps();
         });
