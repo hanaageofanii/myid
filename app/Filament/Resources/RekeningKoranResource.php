@@ -48,6 +48,7 @@ use Filament\Tables\Filters\TrashedFilter;
 use App\Filament\Resources\Exception;
 use Filament\Tables\Actions\ForceDeleteAction;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 
 class RekeningKoranResource extends Resource
@@ -72,30 +73,39 @@ class RekeningKoranResource extends Resource
                     ->label('No. Transaksi')
                     ->options(fn () => rekonsil::pluck('no_transaksi', 'no_transaksi'))
                     ->searchable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->reactive()
                     ->unique(ignoreRecord: true),
-
-                    // ->afterStateUpdated(function ($state, callable $set) {
-                    //     if ($state) {
-                    //         $data = rekonsil::where('no_referensi_bank', $state)->first();
-                    //         if ($data) {
-                    //             $set('nama_konsumen', $data->nama_konsumen);
-                    //             $set('bank', $data->bank);
-                    //             $set('max_kpr', $data->maksimal_kpr);
-                    //         }
-                    //     }
-                    // }),
-
+                   
                     DatePicker::make('tanggal_mutasi')
                     ->label('Tanggal Mutasi')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     TextInput::make('keterangan_dari_bank')
                     ->label('Keterangan dari Bank')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     TextInput::make('nominal')
                     ->label('Nominal')
+                    ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Kasir 2']);
+                        })())
                     ->required(),
 
                     Select::make('tipe')
@@ -103,27 +113,57 @@ class RekeningKoranResource extends Resource
                         'debit' => 'Debit',
                         'kredit' => 'kredit',
                     ]) ->label('Tipe')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     TextInput::make('saldo')
                     ->label('Saldo')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     TextInput::make('no_referensi_bank')
                     ->label('No. Refrensi Bank')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     TextInput::make('bank')
                     ->label('Bank')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     TextInput::make('catatan')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->label('Catatan'),
 
                     FileUpload::make('up_rekening_koran')
                     ->disk('public')
                     ->multiple()
                     ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->nullable()
                     ->label('Upload Rekening Koran')
                     ->downloadable()
@@ -292,7 +332,9 @@ class RekeningKoranResource extends Resource
                     //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
                     RestoreAction::make()
                     ->color('info')
-                    ->label('Kembalikan Data')
+                    ->label(fn ($record) => "Kembalikan {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Kembalikan Blok{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengembalikan blok {$record->siteplan}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
@@ -301,7 +343,9 @@ class RekeningKoranResource extends Resource
                     ),
                     ForceDeleteAction::make()
                     ->color('primary')
-                    ->label('Hapus Permanen')
+                    ->label(fn ($record) => "Hapus Permanent {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok Permanent{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengahapus blok secara permanent {$record->siteplan}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
