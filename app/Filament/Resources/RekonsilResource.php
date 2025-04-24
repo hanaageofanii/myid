@@ -44,6 +44,7 @@ use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
+use Illuminate\Support\Facades\Auth;
 
 use Filament\Tables\Actions\ForceDeleteAction;
 
@@ -69,34 +70,74 @@ class RekonsilResource extends Resource
                     TextInput::make('no_transaksi')
                     ->label('No. Transaksi')
                     ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->unique(ignoreRecord: true),
 
                     DatePicker::make('tanggal_transaksi')
                     ->label('Tanggal Transaksi')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     TextInput::make('nama_yang_mencairkan')
                     ->label(' Nama yang Mencairkan')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     DatePicker::make('tanggal_diterima')
                     ->label('Tanggal di Terima')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     TextInput::make('nama_penerima')
                     ->label('Nama Penerima')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     TextInput::make('bank')
                     ->label('Bank')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     TextArea::make('deskripsi')
                     ->label('Deskripsi Keperluan')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     TextInput::make('jumlah_uang')
                     ->label('Jumlah Uang')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })())
                     ->required(),
 
                     Select::make('tipe')
@@ -104,18 +145,33 @@ class RekonsilResource extends Resource
                         'debit' => 'Debit',
                         'kredit' => 'kredit',
                     ]) ->label('Tipe')
-                    ->required(),
+                    ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })()),
 
                     Select::make('status_rekonsil')
                     ->options([
                         'belum' => 'Belum',
                         'sudah' => 'Sudah'
                     ]) ->label('Status Rekonsil')
-                    ->required(),
+                    ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })()),
 
                     TextArea::make('catatan')
                     ->label('Catatan')
-                    ->required(),
+                    ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2']);
+                    })()),
                 ])
             ]);
     }
@@ -158,6 +214,7 @@ class RekonsilResource extends Resource
 
                 TextColumn::make('jumlah_uang')
                 ->label('Jumlah Uang')
+                ->prefix('Rp')
                 ->searchable(),
 
                 TextColumn::make('tipe')
@@ -285,7 +342,9 @@ class RekonsilResource extends Resource
                     //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
                     RestoreAction::make()
                     ->color('info')
-                    ->label('Kembalikan Data')
+                    ->label(fn ($record) => "Kembalikan {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Kembalikan Blok{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengembalikan blok {$record->siteplan}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
@@ -294,7 +353,9 @@ class RekonsilResource extends Resource
                     ),
                     ForceDeleteAction::make()
                     ->color('primary')
-                    ->label('Hapus Permanen')
+                    ->label(fn ($record) => "Hapus Permanent {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok Permanent{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengahapus blok secara permanent {$record->siteplan}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
