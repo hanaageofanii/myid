@@ -50,6 +50,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\GCVResource;
 use App\Models\GCV;
 use App\Filament\Resources\KPRStats;
+use illuminate\Support\Facades\Auth;
 
 
 
@@ -73,6 +74,11 @@ class FormDpResource extends Resource
                     ->label('Site Plan')
                     ->options(fn () => form_kpr::pluck('siteplan', 'siteplan')) 
                     ->searchable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
                         if ($state) {
@@ -87,14 +93,29 @@ class FormDpResource extends Resource
         
                 TextInput::make('nama_konsumen')
                     ->label('Nama Konsumen')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->dehydrated(),
         
                 TextInput::make('harga')
                     ->label('Harga')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->prefix('Rp')
                     ->dehydrated(),
         
                 TextInput::make('max_kpr')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Kasir 1']);
+                })())
                     ->label('Maksimal KPR')
                     // ->prefix('Rp')
                     ->dehydrated(),
@@ -104,6 +125,11 @@ class FormDpResource extends Resource
             ->schema([
                 TextInput::make('sbum')
                     ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->label('SBUM')
                     ->prefix('Rp')
                     ->reactive()
@@ -121,12 +147,22 @@ class FormDpResource extends Resource
 
                 TextInput::make('sisa_pembayaran')
                     ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->reactive()
                     ->prefix('Rp')
                     ->label('Sisa Pembayaran'),
 
                 TextInput::make('dp')
                     ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->prefix('Rp')
                     ->label('Uang Muka (DP)')
                     ->reactive()
@@ -138,12 +174,22 @@ class FormDpResource extends Resource
 
                 TextInput::make('laba_rugi')
                     ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->reactive()
                     ->prefix('Rp')
                     ->label('Laba Rugi'),
 
                 DatePicker::make('tanggal_terima_dp')
                     ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->label('Tanggal Terima Uang Muka'),
 
                 Select::make('pembayaran')
@@ -152,6 +198,11 @@ class FormDpResource extends Resource
                         'potong_komisi' => 'Potong Komisi',
                         'promo' => 'Promo',
                     ])
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                     ->required()
                     ->label('Pembayaran'),
             ]),
@@ -159,9 +210,21 @@ class FormDpResource extends Resource
 
             Fieldset::make('Dokumen')
                 ->schema([
-                    FileUpload::make('up_kwitansi')->disk('public')->nullable()->label('Kwitansi')
+                    FileUpload::make('up_kwitansi')->disk('public')
+                    ->nullable()->label('Kwitansi')->multiple()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                         ->downloadable()->previewable(false),
-                    FileUpload::make('up_pricelist')->disk('public')->nullable()->label('Price List')
+                    FileUpload::make('up_pricelist')->disk('public')
+                    ->nullable()->label('Price List')->multiple()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                         ->downloadable()->previewable(false),
                 ]),
         ]);
@@ -217,20 +280,54 @@ class FormDpResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->label('Pembayaran'),
+
                 TextColumn::make('up_kwitansi')
-                    ->label('Kwitansi')
-                    ->formatStateUsing(fn ($record) => $record->up_kwitansi 
-                        ? '<a href="' . Storage::url($record->up_kwitansi) . '" target="_blank">Lihat</a> | 
-                        <a href="' . Storage::url($record->up_kwitansi) . '" download>Download</a>' 
-                        : 'Tidak Ada Dokumen')
-                    ->html(),
-                TextColumn::make('up_pricelist')
-                    ->label('Price List')
-                    ->formatStateUsing(fn ($record) => $record->up_pricelist 
-                        ? '<a href="' . Storage::url($record->up_pricelist) . '" target="_blank">Lihat</a> | 
-                        <a href="' . Storage::url($record->up_pricelist) . '" download>Download</a>' 
-                        : 'Tidak Ada Dokumen')
-                    ->html(),
+                ->label('Kwitansi')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_kwitansi) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_kwitansi) ? $record->up_kwitansi : json_decode($record->up_kwitansi, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+                 TextColumn::make('up_pricelist')
+                ->label('Price List')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_pricelist) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_pricelist) ? $record->up_pricelist : json_decode($record->up_pricelist, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
             ])
             ->defaultSort('siteplan', 'asc')
             ->headerActions([
@@ -317,7 +414,9 @@ class FormDpResource extends Resource
                     //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
                     RestoreAction::make()
                     ->color('info')
-                    ->label('Kembalikan Data')
+                    ->label(fn ($record) => "Kembalikan {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Kembalikan Blok{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengembalikan blok {$record->siteplan}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
@@ -326,7 +425,9 @@ class FormDpResource extends Resource
                     ),
                     ForceDeleteAction::make()
                     ->color('primary')
-                    ->label('Hapus Permanen')
+                    ->label(fn ($record) => "Hapus Permanent {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok Permanent{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengahapus blok secara permanent {$record->siteplan}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
