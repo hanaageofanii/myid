@@ -81,10 +81,10 @@ class FormPencocokanResource extends Resource
                 $rekonsil = \App\Models\rekonsil::where('no_transaksi', $state)->first();
 
                 if ($rekonsil) {
-                    $set('nama_yang_mencairkan', $rekonsil->nama_yang_mencairkan);
-                    $set('tanggal_diterima', $rekonsil->tanggal_diterima);
+                    $set('nama_pencair', $rekonsil->nama_yang_mencairkan);
+                    $set('tanggal_dicairkan', $rekonsil->tanggal_diterima);
                     $set('nama_penerima', $rekonsil->nama_penerima);
-                    $set('tanggal_transaksi', $rekonsil->tanggal_transaksi);
+                    $set('tanggal_penerima', $rekonsil->tanggal_transaksi);
                 }
             })
             ->unique(ignoreRecord: true),
