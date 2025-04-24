@@ -28,8 +28,8 @@ return new class extends Migration
             $table->date('tanggal_ajb')->nullable();
             $table->string('no_bast')->nullable();
             $table->string('tanggal_bast')->nullable();
-            $table->string('up_bast')->nullable();
-            $table->string('up_validasi_bphtb')->nullable();
+            $table->json('up_bast')->nullable();
+            $table->json('up_validasi_bphtb')->nullable();
             $table->timestamps();
         });
     }

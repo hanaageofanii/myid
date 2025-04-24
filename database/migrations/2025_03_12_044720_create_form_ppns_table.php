@@ -29,8 +29,8 @@ return new class extends Migration
             $table->date('tanggal_bayar_ppn')->nullable();
             $table->string('ntpn_ppn')->nullable();
 
-            $table->string('up_bukti_setor_ppn')->nullable()->nullable();
-            $table->string('up_efaktur')->nullable()->nullable();
+            $table->json('up_bukti_setor_ppn')->nullable()->nullable();
+            $table->json('up_efaktur')->nullable()->nullable();
             $table->timestamps();
         });
     }

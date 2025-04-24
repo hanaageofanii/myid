@@ -25,8 +25,8 @@ return new class extends Migration
             $table->date('tanggal_terima_dp')->nullable();
             $table->enum('pembayaran', ['cash','potong_komisi','promo'])->nullable();
 
-            $table->string('up_kwitansi')->nullable();
-            $table->string('up_pricelist')->nullable();
+            $table->json('up_kwitansi')->nullable();
+            $table->json('up_pricelist')->nullable();
             $table->timestamps();
         });
     }

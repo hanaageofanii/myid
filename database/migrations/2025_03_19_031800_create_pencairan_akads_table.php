@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('tanggal_pencairan')->nullable();
             $table->string('nilai_pencairan')->nullable();
             $table->string('dana_jaminan')->nullable();
-            $table->string('up_rekening_koran')->nullable();
+            $table->json('up_rekening_koran')->nullable();
             $table->timestamps();
         });
     }

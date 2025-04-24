@@ -34,9 +34,9 @@ return new class extends Migration
             $table->date('tanggal_validasi')->nullable();
             
 
-            $table->string('up_kode_billing')->nullable()->nullable();
-            $table->string('up_bukti_setor_pajak')->nullable()->nullable();
-            $table->string('up_suket_validasi')->nullable()->nullable();
+            $table->json('up_kode_billing')->nullable()->nullable();
+            $table->json('up_bukti_setor_pajak')->nullable()->nullable();
+            $table->json('up_suket_validasi')->nullable()->nullable();
             
             $table->timestamps();
 

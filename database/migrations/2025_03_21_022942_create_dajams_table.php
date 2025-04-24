@@ -30,8 +30,8 @@ return new class extends Migration
             $table->string('dajam_bphtb')->nullable();
             $table->string('pembukuan')->nullable();
 
-            $table->string('up_spd5')->nullable();
-            $table->string('up_lainnya')->nullable();
+            $table->json('up_spd5')->nullable();
+            $table->json('up_lainnya')->nullable();
             $table->timestamps();
         });
     }

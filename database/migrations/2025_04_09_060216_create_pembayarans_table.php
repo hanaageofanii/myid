@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('bukti_cek');
             $table->string('pemberi');
             $table->string('catatan');
-            $table->string('bukti_bukti');
+            $table->json('bukti_bukti');
             $table->timestamps();
         });
     }

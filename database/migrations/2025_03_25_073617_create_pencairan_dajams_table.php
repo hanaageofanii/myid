@@ -22,8 +22,8 @@ return new class extends Migration
             $table->date('tanggal_pencairan')->nullable();
             $table->string('nilai_pencairan')->nullable();
             $table->string('selisih_dajam')->nullable();
-            $table->string('up_rekening_koran')->nullable();
-            $table->string('up_lainnya')->nullable();
+            $table->json('up_rekening_koran')->nullable();
+            $table->json('up_lainnya')->nullable();
             $table->timestamps();
         });
     }
