@@ -57,6 +57,7 @@ use App\Models\Audit;
 use App\Filament\Resources\GCVResource;
 use App\Models\GCV;
 use App\Filament\Resources\KPRStats;
+use Illuminate\Support\Facades\Auth;
 
 
 class PencairanDajamResource extends Resource
@@ -78,12 +79,17 @@ class PencairanDajamResource extends Resource
                         ->label('Blok')
                         ->options(fn () => form_kpr::pluck('siteplan', 'siteplan'))
                         ->searchable()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Kasir 1']);
+                        })())
                         ->reactive()
                         ->afterStateUpdated(function ($state, callable $set) {
                             $kprData = form_kpr::where('siteplan', $state)->first();
                             // $akadData = PencairanAkad::where('siteplan', $state)->first();
                             // $pajakData = form_pajak::where('siteplan', $state)->first();
-                            $dajamData = dajam::where('siteplan', $state)->first();
+                            // $dajamData = dajam::where('siteplan', $state)->first();
                             $pengDajam = pengajuan_dajam::where('siteplan', $state)->first();
 
                             $maxKpr = $kprData->maksimal_kpr ?? 0;
@@ -111,15 +117,30 @@ class PencairanDajamResource extends Resource
                             'btn_syariah' => 'BTN Syariah',
                             'brii_bekasi' => 'BRI Bekasi',
                         ])
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Kasir 1']);
+                        })())
                         ->required()
                         ->label('Bank'),
 
                     TextInput::make('nama_konsumen')
                         ->label('Nama Konsumen')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Kasir 1']);
+                        })())
                         ->reactive(),
                     
                     TextInput::make('no_debitur')
                         ->label('No. Debitur')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Kasir 1']);
+                        })())
                         ->reactive(),
 
                     Select::make('nama_dajam')
@@ -131,11 +152,21 @@ class PencairanDajamResource extends Resource
                             'pph' => 'PPH',
                             'bphtb' => 'BPHTB',
                         ])
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Kasir 1']);
+                        })())
                         ->label('Nama Dajam'),
                     
                         TextInput::make('nilai_dajam')
                         ->label('Nilai Dajam')
                         ->live()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Kasir 1']);
+                        })())
                         ->reactive()
                         ->prefix('Rp')
                         ->afterStateUpdated(fn ($state, callable $set, callable $get) => 
@@ -144,6 +175,11 @@ class PencairanDajamResource extends Resource
                         
                     
                     DatePicker::make('tanggal_pencairan')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 1']);
+                    })())
                         ->label('Tanggal Pencairan')
                         ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
 
@@ -151,6 +187,11 @@ class PencairanDajamResource extends Resource
                         TextInput::make('nilai_pencairan')
                         ->label('Nilai Pencairan')
                         ->live()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Kasir 1']);
+                        })())
                         ->reactive()
                         ->prefix('Rp')
                         ->afterStateUpdated(fn ($state, callable $set, callable $get) => 
@@ -160,13 +201,29 @@ class PencairanDajamResource extends Resource
 
                         TextInput::make('selisih_dajam')
                         ->label('Selisih Dajam')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Kasir 1']);
+                        })())
                         ->prefix('Rp'),
                     
                         Fieldset::make('Dokumen')
                         ->schema([
-                            FileUpload::make('up_rekening_koran')->disk('public')->nullable()->label('Upload Rekening Korang')
+                            FileUpload::make('up_rekening_koran')->disk('public')->nullable()->multiple()
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Kasir 1']);
+                            })())->label('Upload Rekening Korang')
                                 ->downloadable()->previewable(false),
-                            FileUpload::make('up_lainnya')->disk('public')->nullable()->label('Upload Dokumen Lainnya')
+
+                            FileUpload::make('up_lainnya')->disk('public')
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Kasir 1']);
+                            })())->nullable()->label('Upload Dokumen Lainnya')->multiple()
                                 ->downloadable()->previewable(false),
                         ]),
             ]),
@@ -232,22 +289,51 @@ class PencairanDajamResource extends Resource
             ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
 
 
-            Tables\Columns\TextColumn::make('up_rekening_koran')
-            ->label('Upload Rekening Koran')
-            ->formatStateUsing(fn ($record) => $record->up_pbb
-            ? '<a href="' . Storage::url($record->up_pbb) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->up_pbb) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable()
-            ->searchable(),
+            TextColumn::make('up_rekening_koran')
+            ->label('Rekening Koran')
+            ->formatStateUsing(function ($record) {
+                if (!$record->up_rekening_koran) {
+                    return 'Tidak Ada Dokumen';
+                }
 
-        Tables\Columns\TextColumn::make('up_lainnya')
-            ->label('Upload Dokumen Lainnya')
-            ->formatStateUsing(fn ($record) => $record->up_img
-            ? '<a href="' . Storage::url($record->up_img) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->up_img) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
+                $files = is_array($record->up_rekening_koran) ? $record->up_rekening_koran : json_decode($record->up_rekening_koran, true);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    $files = [];
+                }
+
+                $output = '';
+                foreach ($files as $file) {
+                    $url = Storage::url($file);
+                    $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                }
+
+                return $output ?: 'Tidak Ada Dokumen';
+            })
+            ->html()
+            ->sortable(),
+
+            TextColumn::make('up_lainnya')
+            ->label('Dokumen Lainnya')
+            ->formatStateUsing(function ($record) {
+                if (!$record->up_lainnya) {
+                    return 'Tidak Ada Dokumen';
+                }
+
+                $files = is_array($record->up_lainnya) ? $record->up_lainnya: json_decode($record->up_lainnya, true);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    $files = [];
+                }
+
+                $output = '';
+                foreach ($files as $file) {
+                    $url = Storage::url($file);
+                    $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                }
+
+                return $output ?: 'Tidak Ada Dokumen';
+            })
             ->html()
             ->sortable(),
             ])
@@ -365,7 +451,9 @@ class PencairanDajamResource extends Resource
                     //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
                     RestoreAction::make()
                     ->color('info')
-                    ->label('Kembalikan Data')
+                    ->label(fn ($record) => "Kembalikan {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Kembalikan Blok{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengembalikan blok {$record->siteplan}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
@@ -374,7 +462,9 @@ class PencairanDajamResource extends Resource
                     ),
                     ForceDeleteAction::make()
                     ->color('primary')
-                    ->label('Hapus Permanen')
+                    ->label(fn ($record) => "Hapus Permanent {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok Permanent{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengahapus blok secara permanent {$record->siteplan}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
