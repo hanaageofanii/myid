@@ -329,6 +329,7 @@ class FormPajakResource extends Resource
                     Forms\Components\FileUpload::make('up_kode_billing')
                         ->disk('public')
                         ->nullable()
+                        ->multiple()
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
@@ -341,6 +342,7 @@ class FormPajakResource extends Resource
                     Forms\Components\FileUpload::make('up_bukti_setor_pajak')
                         ->disk('public')
                         ->nullable()
+                        ->multiple()
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
@@ -353,6 +355,7 @@ class FormPajakResource extends Resource
                     Forms\Components\FileUpload::make('up_suket_validasi')
                         ->disk('public')
                         ->nullable()
+                        ->multiple()
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
@@ -427,7 +430,10 @@ class FormPajakResource extends Resource
                 ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
                 Tables\Columns\TextColumn::make('ntpnpph')->sortable()->searchable()->label('NTPN PPH'),
                 Tables\Columns\TextColumn::make('validasi_pph')->sortable()->searchable()->label('Validasi PPH'),
-                Tables\Columns\TextColumn::make('tanggal_validasi')->sortable()->searchable()->label('Tanggal validasi')                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                Tables\Columns\TextColumn::make('tanggal_validasi')->sortable()->searchable()->label('Tanggal validasi')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)
+                ->translatedFormat('d F Y')),
+
                 Tables\Columns\TextColumn::make('up_kode_billing')
                     ->label('Dokumen Kode Billing')
                     ->formatStateUsing(fn ($record) => $record->up_kode_billing
