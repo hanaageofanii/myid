@@ -47,6 +47,8 @@ use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Actions\ForceDeleteAction;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasRoles;
 
 
 class FormPencocokanResource extends Resource
@@ -64,33 +66,69 @@ class FormPencocokanResource extends Resource
         return $form
             ->schema([
                 Fieldset::make('Informasi Transaksi')
-    ->schema([
-        Select::make('no_transaksi')
+            ->schema([
+                Select::make('no_transaksi')
             ->label('No. Transaksi')
             ->options(fn () => rekonsil::pluck('no_transaksi', 'no_transaksi'))
             ->searchable()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Legal officer']);
+            })())
             ->reactive()
+            ->afterStateUpdated(function ($state, callable $set) {
+                $rekonsil = \App\Models\rekonsil::where('no_transaksi', $state)->first();
+
+                if ($rekonsil) {
+                    $set('nama_yang_mencairkan', $rekonsil->nama_yang_mencairkan);
+                    $set('tanggal_diterima', $rekonsil->tanggal_diterima);
+                    $set('nama_penerima', $rekonsil->nama_penerima);
+                    $set('tanggal_transaksi', $rekonsil->tanggal_transaksi);
+                }
+            })
             ->unique(ignoreRecord: true),
+
 
 
         Select::make('no_ref_bank')
             ->label('No. Ref Bank')
             ->options(fn () => rekening_koran::pluck('no_referensi_bank', 'no_referensi_bank'))
             ->searchable()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->reactive()
             ->unique(ignoreRecord: true),
 
 
         DatePicker::make('tanggal_transaksi')
             ->required()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Tanggal Transaksi'),
 
         TextInput::make('jumlah')
             ->required()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Jumlah'),
 
         TextInput::make('tujuan_dana')
             ->required()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Tujuan Dana'),
 
         Select::make('tipe')
@@ -98,6 +136,11 @@ class FormPencocokanResource extends Resource
                 'debit' => 'Debit',
                 'kredit' => 'Kredit',
             ])
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Tipe')
             ->required(),
     ]),
@@ -106,18 +149,42 @@ Fieldset::make('Pencairan dan Penerima')
     ->schema([
         TextInput::make('nama_pencair')
             ->required()
+            ->reactive()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Nama Pencair'),
 
         DatePicker::make('tanggal_dicairkan')
             ->required()
+            ->reactive()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Tanggal di Cairkan'),
 
         TextInput::make('nama_penerima')
             ->required()
+            ->reactive()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Nama Penerima'),
 
         DatePicker::make('tanggal_penerima')
             ->required()
+            ->reactive()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Tanggal Penerima'),
     ]),
 
@@ -128,15 +195,30 @@ Fieldset::make('Status dan Analisis Selisih')
                 'sudah' => 'Sudah',
                 'belum' => 'Belum',
             ])
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Status di Salurkan')
             ->required(),
 
         TextInput::make('nominal_selisih')
             ->required()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Nominal Selisih'),
 
         TextArea::make('analisis_selisih')
             ->required()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Analisis Selisih'),
 
         Select::make('tindakan')
@@ -145,6 +227,11 @@ Fieldset::make('Status dan Analisis Selisih')
                 'pending' => 'Pending',
                 'abaikan' => 'Abaikan',
             ])
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Tindakan')
             ->required(),
     ]),
@@ -154,6 +241,11 @@ Fieldset::make('Dokumen Pendukung')
         FileUpload::make('bukti_pendukung')
             ->disk('public')
             ->multiple()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->required()
             ->nullable()
             ->label('Bukti Pendukung di Terima')
@@ -163,6 +255,11 @@ Fieldset::make('Dokumen Pendukung')
         FileUpload::make('bukti_bukti')
             ->disk('public')
             ->multiple()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->required()
             ->nullable()
             ->label('Bukti-bukti Lainnya')
@@ -174,10 +271,20 @@ Fieldset::make('Validasi dan Catatan')
     ->schema([
         DatePicker::make('tanggal_validasi')
             ->required()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Tanggal Validasi'),
 
         TextInput::make('disetujui_oleh')
             ->required()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Disetujui Oleh'),
 
             Select::make('status')
@@ -185,11 +292,21 @@ Fieldset::make('Validasi dan Catatan')
                 'approve' => 'Approve',
                 'revisi' => 'Revisi',
             ])
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Status Validasi')
             ->required(),
 
         TextArea::make('catatan')
             ->required()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Kasir 2']);
+            })())
             ->label('Catatan'),
     ]),
 ]);
