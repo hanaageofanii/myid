@@ -322,11 +322,11 @@ class PengajuanDajamResource extends Resource
         TextColumn::make('up_nominatif_pengajuan')
         ->label('Nominatif Pengajuan')
         ->formatStateUsing(function ($record) {
-            if (!$record->up_bukti_setor_ppn) {
+            if (!$record->up_nominatif_pengajuan) {
                 return 'Tidak Ada Dokumen';
             }
 
-            $files = is_array($record->up_bukti_setor_ppn) ? $record->up_bukti_setor_ppn : json_decode($record->up_bukti_setor_ppn, true);
+            $files = is_array($record->up_nominatif_pengajuan) ? $record->up_nominatif_pengajuan : json_decode($record->up_nominatif_pengajuan, true);
 
             if (json_last_error() !== JSON_ERROR_NONE) {
                 $files = [];
