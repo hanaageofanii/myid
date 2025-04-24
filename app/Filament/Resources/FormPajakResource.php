@@ -423,6 +423,7 @@ class FormPajakResource extends Resource
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.')),
 
                 Tables\Columns\TextColumn::make('kode_billing_pph')->sortable()->searchable()->label('Kode Billing PPH'),
+
                 Tables\Columns\TextColumn::make('tanggal_bayar_pph')
                 ->sortable()
                 ->searchable()
@@ -434,35 +435,77 @@ class FormPajakResource extends Resource
                 ->formatStateUsing(fn ($state) => Carbon::parse($state)
                 ->translatedFormat('d F Y')),
 
-                Tables\Columns\TextColumn::make('up_kode_billing')
-                    ->label('Dokumen Kode Billing')
-                    ->formatStateUsing(fn ($record) => $record->up_kode_billing
-                    ? '<a href="' . Storage::url($record->up_kode_billing) . '" target="_blank">Lihat </a> | 
-                    <a href="' . Storage::url($record->up_kode_billing) . '" download>Download</a>' 
-                    : 'Tidak Ada Dokumen')
-                    ->html()
-                    ->sortable()
-                    ->searchable(),
+                TextColumn::make('up_kode_billing')
+                ->label('Kode Billing')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_kode_billing) {
+                        return 'Tidak Ada Dokumen';
+                    }
 
-                Tables\Columns\TextColumn::make('up_bukti_setor_pajak')
-                    ->label('Dokumen Bukti Setor Pajak')
-                    ->formatStateUsing(fn ($record) => $record->up_bukti_setor_pajak
-                    ? '<a href="' . Storage::url($record->up_bukti_setor_pajak) . '" target="_blank">Lihat </a> | 
-                    <a href="' . Storage::url($record->up_bukti_setor_pajak) . '" download>Download</a>' 
-                    : 'Tidak Ada Dokumen')
-                    ->html()
-                    ->sortable()
-                    ->searchable(),
+                    $files = is_array($record->up_kode_billing) ? $record->up_kode_billing : json_decode($record->up_kode_billing, true);
 
-                Tables\Columns\TextColumn::make('up_suket_validasi')
-                    ->label('Dokumen Suket Validasi')
-                    ->formatStateUsing(fn ($record) => $record->up_suket_validasi
-                    ? '<a href="' . Storage::url($record->up_suket_validasi) . '" target="_blank">Lihat </a> | 
-                    <a href="' . Storage::url($record->up_suket_validasi ) . '" download>Download</a>' 
-                    : 'Tidak Ada Dokumen')
-                    ->html()
-                    ->sortable()
-                    ->searchable(),
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+                TextColumn::make('up_bukti_setor_pajak')
+                ->label('Bukti Setor Pajak')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_bukti_setor_pajak) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_bukti_setor_pajak) ? $record->up_bukti_setor_pajak : json_decode($record->up_bukti_setor_pajak, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+                TextColumn::make('up_suket_validasi')
+                ->label('Suket Validasi')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_suket_validasi) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_suket_validasi) ? $record->up_suket_validasi : json_decode($record->up_suket_validasi, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
 
             ])
             ->filters([
