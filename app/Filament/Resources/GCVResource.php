@@ -120,7 +120,6 @@ class GCVResource extends Resource
                             $audit = Audit::where('siteplan', $state)->first(); 
 
                             if ($audit) {
-                                // $set('kpr_status', $audit->status === 'akad' ? 'akad' : null);
                                 $set('type', $audit->type);
                             }
                         })->disabled(fn () => ! (function () {
