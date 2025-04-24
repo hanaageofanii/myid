@@ -812,7 +812,9 @@ class FormKprResource extends Resource
                     //     ->successRedirectUrl(route('filament.admin.resources.audits.index')),
                     Tables\Actions\RestoreAction::make()
                     ->color('info')
-                    ->label('Kembalikan Data')
+                    ->label(fn ($record) => "Kembalikan {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Kembalikan Blok{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengembalikan blok {$record->siteplan}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
@@ -821,7 +823,9 @@ class FormKprResource extends Resource
                     ),
                     Tables\Actions\ForceDeleteAction::make()
                     ->color('primary')
-                    ->label('Hapus Permanen')
+                    ->label(fn ($record) => "Hapus Permanent {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok Permanent{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengahapus blok secara permanent {$record->siteplan}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
