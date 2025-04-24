@@ -54,6 +54,8 @@ use App\Models\GCV;
 use App\Filament\Resources\KPRStats;
 use App\Models\form_legal;
 use App\Models\form_pajak;
+use Illuminate\Support\Facades\Auth;
+
 
 
 
@@ -76,6 +78,11 @@ class AjbResource extends Resource
                 ->label('Blok')
                 ->options(fn () => form_kpr::pluck('siteplan', 'siteplan')) 
                 ->searchable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
                 ->reactive()
                 ->afterStateUpdated(function ($state, callable $set) {
                     $kprData = form_kpr::where('siteplan', $state)->first();
@@ -101,25 +108,50 @@ class AjbResource extends Resource
                     TextInput::make('nop')
                     ->nullable  ()
                     ->label('NOP')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->reactive(),
 
                     TextInput::make('nama_konsumen')
                     ->nullable()
                     ->label('Nama Konsumen')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->reactive(),
 
                     TextInput::make('nik')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('NIK')
                     ->reactive(),
 
                     TextInput::make('npwp')
                     ->nullable()
                     ->label('NPWP')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->reactive(),
 
                     TextArea::make('alamat')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('Alamat')
                     ->reactive(),
                 ]),
@@ -128,38 +160,83 @@ class AjbResource extends Resource
                 ->schema([
                     TextInput::make('suket_validasi')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('No. Suket Validasi'),
 
                     TextInput::make('no_sspd_bptb')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('No. SSPD BPHTB'),
 
                     DatePicker::make('tanggal_sspd_bphtb')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('Tanggal SSPD BPHTB'),
 
                     TextInput::make(   'no_validasi_sspd_bphtb')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('No. Validasi SSPD BPHTB'),
 
                     TextInput::make('notaris')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('Notaris'),
 
                     TextInput::make('no_ajb')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('No. AJB'),
 
                     DatePicker::make('tanggal_ajb')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('Tanggal AJB'),
 
                     TextInput::make('no_bast')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('No. Bast'),
 
                     DatePicker::make(  'tanggal_bast')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('Tanggal Bast'),
                 ]),
                 Fieldset::make('Dokumen')
@@ -167,7 +244,26 @@ class AjbResource extends Resource
                     FileUpload::make('up_validasi_bphtb')
                     ->disk('public')
                     ->nullable()
-                    ->label('Validasi BPHTB')
+                    ->multiple()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
+                    ->label('Upload BPHTB')
+                    ->downloadable()
+                    ->previewable(false),
+
+                    FileUpload::make('up_bast')
+                    ->disk('public')
+                    ->nullable()
+                    ->multiple()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
+                    ->label('Upload Bast')
                     ->downloadable()
                     ->previewable(false),
                 ])
@@ -202,20 +298,54 @@ class AjbResource extends Resource
                 ->searchable()
                 ->label('Tanggal Bast')
                 ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+                
                 TextColumn::make('up_bast')
-                    ->label('Upload Bast')
-                    ->formatStateUsing(fn ($record) => $record->up_pricelist 
-                        ? '<a href="' . Storage::url($record->up_pricelist) . '" target="_blank">Lihat</a> | 
-                        <a href="' . Storage::url($record->up_pricelist) . '" download>Download</a>' 
-                        : 'Tidak Ada Dokumen')
-                    ->html(),
-                TextColumn::make('up_validasi_bphtb')
-                    ->label('Upload Validasi BPHTB')
-                    ->formatStateUsing(fn ($record) => $record->up_pricelist 
-                        ? '<a href="' . Storage::url($record->up_pricelist) . '" target="_blank">Lihat</a> | 
-                        <a href="' . Storage::url($record->up_pricelist) . '" download>Download</a>' 
-                        : 'Tidak Ada Dokumen')
-                    ->html(),
+                ->label('Bast')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_bast) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_bast) ? $record->up_bast : json_decode($record->up_bast, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+                TextColumn::make('up_bphtb')
+                ->label('BPHTB')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_bphtb) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_bphtb) ? $record->up_bphtb : json_decode($record->up_bphtb, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
             ])
             ->defaultSort('siteplan', 'asc')
             ->headerActions([
