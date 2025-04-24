@@ -80,7 +80,7 @@ class VerifikasiDajamResource extends Resource
                             $kprData = form_kpr::where('siteplan', $state)->first();
                             $akadData = PencairanAkad::where('siteplan', $state)->first();
                             $pajakData = form_pajak::where('siteplan', $state)->first();
-                            $dajamData = dajam::where('siteplan', $state)->first();
+                            // $dajamData = dajam::where('siteplan', $state)->first();
 
                             $maxKpr = $kprData->maksimal_kpr ?? 0;
                             $nilaiPencairan = $akadData->nilai_pencairan ?? 0;
@@ -353,8 +353,26 @@ class VerifikasiDajamResource extends Resource
                     ])
                     ->label('Status Dajam')
                 ]),
-            ]),
-        ]);
+
+                Fieldset::make('Dokumen')
+                ->schema([
+                    FileUpload::make('up_spd5')
+                        ->disk('public')
+                        ->nullable()
+                        ->label('Upload SPD 5')
+                        ->downloadable()
+                        ->previewable(false),
+
+                    FileUpload::make('up_lainnya')
+                        ->disk('public')
+                        ->nullable()
+                        ->label('Upload Lainnya')
+                        ->downloadable()
+                        ->previewable(false),
+                    ]),
+                
+                    ]),
+                ]);
     }
 
     public static function table(Table $table): Table
@@ -475,6 +493,25 @@ class VerifikasiDajamResource extends Resource
                 ->sortable()
                 ->searchable()
                 ->label('Status Dajam'),
+
+                Tables\Columns\TextColumn::make('up_spd5')
+            ->label('Upload SPD 5')
+            ->formatStateUsing(fn ($record) => $record->up_pbb
+            ? '<a href="' . Storage::url($record->up_pbb) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->up_pbb) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable()
+            ->searchable(),
+
+        Tables\Columns\TextColumn::make('up_lainnya')
+            ->label('Upload Dokumen Lainnya')
+            ->formatStateUsing(fn ($record) => $record->up_img
+            ? '<a href="' . Storage::url($record->up_img) . '" target="_blank">Lihat </a> | 
+            <a href="' . Storage::url($record->up_img) . '" download>Download</a>' 
+            : 'Tidak Ada Dokumen')
+            ->html()
+            ->sortable(),
                 ])
 
             ->defaultSort('siteplan', 'asc')
