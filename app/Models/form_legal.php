@@ -23,6 +23,12 @@ class form_legal extends Model
         'up_pbb' => null,
         'up_img' => null,
     ];
+
+    protected $casts =[
+        "up_sertifikat" => 'array',
+        "up_pbb" => 'array',
+        "up_img" => 'array'
+    ];
     
 
 

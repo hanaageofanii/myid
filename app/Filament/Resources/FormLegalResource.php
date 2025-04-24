@@ -44,6 +44,8 @@ use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
+use Illuminate\Support\Facades\Auth;
+
 
 
 
@@ -73,6 +75,11 @@ class FormLegalResource extends Resource
                             + ($record?->siteplan ? [$record->siteplan => $record->siteplan] : [])
                         )
                         ->reactive()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
                         ->afterStateUpdated(function ($state, callable $set) {
                             $gcv = form_kpr::where('siteplan', $state)->first(); 
 
@@ -81,45 +88,127 @@ class FormLegalResource extends Resource
                             }
                         }),
 
-                        Forms\Components\TextInput::make('nama_konsumen')->nullable()->label('Nama Konsumen'),
+                        Forms\Components\TextInput::make('nama_konsumen')
+                        ->nullable()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->label('Nama Konsumen'),
 
-                        Forms\Components\TextInput::make('id_rumah')->nullable()->label('No. ID Rumah'),
+                        Forms\Components\TextInput::make('id_rumah')
+                        ->nullable()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->label('No. ID Rumah'),
 
                         Forms\Components\Select::make('status_sertifikat')
                         ->label('Status Sertifikat')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
                         ->options([
                             'induk' => 'Induk',
                             'pecahan' => 'Pecahan',
                         ])->nullable(),
 
-                        Forms\Components\TextInput::make('no_sertifikat')->nullable()->label('No. Sertifikat'),
-                        Forms\Components\TextInput::make('nib')->nullable()->label('NIB'),
+                        Forms\Components\TextInput::make('no_sertifikat')
+                        ->nullable()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->label('No. Sertifikat'),
+                        Forms\Components\TextInput::make('nib')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->nullable()
+                        ->label('NIB'),
 
-                        Forms\Components\TextInput::make('luas_sertifikat')->nullable()->label('Luas Sertifikat'),
-                        Forms\Components\TextInput::make('imb_pbg')->nullable()->label('IMB/PBG'),
+                        Forms\Components\TextInput::make('luas_sertifikat')
+                        ->nullable()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->label('Luas Sertifikat'),
 
-                        Forms\Components\TextInput::make('nop')->nullable()->label('NOP'),
-                        Forms\Components\TextInput::make('nop1')->nullable()->label('NOP Tambahan')->helperText('Jika irisan input data 2X'),
+                        Forms\Components\TextInput::make('imb_pbg')
+                        ->nullable()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->label('IMB/PBG'),
+
+                        Forms\Components\TextInput::make('nop')
+                        ->nullable()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->label('NOP'),
+
+                        Forms\Components\TextInput::make('nop1')
+                        ->nullable()
+                        ->label('NOP Tambahan')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->helperText('Jika irisan input data 2X'),
 
                         Forms\Components\Fieldset::make('Dokumen')
                         ->schema([
                             Forms\Components\FileUpload::make('up_sertifikat')
                                 ->disk('public')
+                                ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })())
                                 ->nullable()
+                                ->multiple()
                                 ->label('Sertifikat')
                                 ->downloadable()
                                 ->previewable(false),
                     
                             Forms\Components\FileUpload::make('up_pbb')
                                 ->disk('public')
+                                ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })())
                                 ->nullable()
+                                ->multiple()
                                 ->label('PBB')
                                 ->downloadable()
                                 ->previewable(false),
                     
                             Forms\Components\FileUpload::make('up_img')
                                 ->disk('public')
+                                ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })())
                                 ->nullable()
+                                ->multiple()
                                 ->label('IMG')
                                 ->downloadable()
                                 ->previewable(false),
@@ -149,34 +238,77 @@ class FormLegalResource extends Resource
                 Tables\Columns\TextColumn::make('nop')->sortable()->searchable()->label('NOP'),
                 Tables\Columns\TextColumn::make('nop1')->sortable()->searchable()->label('NOP Tambahan'),
         
-        Tables\Columns\TextColumn::make('up_sertifikat')
-            ->label('Sertifikat')
-            ->formatStateUsing(fn ($record) => $record->up_sertifikat 
-            ? '<a href="' . Storage::url($record->up_sertifikat) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->up_sertifikat) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable()
-            ->searchable(),
+                TextColumn::make('up_sertifikat')
+                ->label('Sertifikat')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_sertifikat) {
+                        return 'Tidak Ada Dokumen';
+                    }
 
-        Tables\Columns\TextColumn::make('up_pbb')
-            ->label('PBB')
-            ->formatStateUsing(fn ($record) => $record->up_pbb
-            ? '<a href="' . Storage::url($record->up_pbb) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->up_pbb) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable()
-            ->searchable(),
+                    $files = is_array($record->up_sertifikat) ? $record->up_sertifikat : json_decode($record->up_sertifikat, true);
 
-        Tables\Columns\TextColumn::make('up_img')
-            ->label('IMG')
-            ->formatStateUsing(fn ($record) => $record->up_img
-            ? '<a href="' . Storage::url($record->up_img) . '" target="_blank">Lihat </a> | 
-            <a href="' . Storage::url($record->up_img) . '" download>Download</a>' 
-            : 'Tidak Ada Dokumen')
-            ->html()
-            ->sortable(),
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+                TextColumn::make('up_pbb')
+                ->label('PBB')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_pbb) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_pbb) ? $record->up_pbb : json_decode($record->up_pbb, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+                TextColumn::make('up_img')
+                ->label('IMG')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_img) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_img) ? $record->up_img : json_decode($record->up_img, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
 
             ])
             ->defaultSort('siteplan', 'asc')
