@@ -50,6 +50,7 @@ use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Forms\Components\FileUpload;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class FormPpnResource extends Resource  
 {
@@ -67,6 +68,11 @@ class FormPpnResource extends Resource
                 Forms\Components\Select::make('siteplan')
                     ->label('Blok')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->options(fn() => form_kpr::pluck('siteplan', 'siteplan')->toArray())
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set, callable $get) {
@@ -104,24 +110,87 @@ class FormPpnResource extends Resource
                     'tanah_lebih' => 'Tanah Lebih',
                     'kios' => 'Kios',
                 ])
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
                 ->required()
                 ->reactive()
                 ->nullable()
                 ->label('Jenis Unit'),
                 
-                Forms\Components\TextInput::make('nama_konsumen')->nullable()->label('Nama Konsumen'),
-                Forms\Components\TextInput::make('nik')->nullable()->label('NIK'),
-                Forms\Components\TextInput::make('npwp')->nullable()->label('NPWP'),
-                Forms\Components\TextArea::make('alamat')->nullable()->label('Alamat'),
-                Forms\Components\TextInput::make('no_seri_faktur')->nullable()->label('No. Seri Faktur'),
-                Forms\Components\DatePicker::make('tanggal_faktur')->nullable()->label('Tanggal Faktur'),
+                Forms\Components\TextInput::make('nama_konsumen')
+                ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->label('Nama Konsumen'),
+
+                Forms\Components\TextInput::make('nik')
+                ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->label('NIK'),
+
+                Forms\Components\TextInput::make('npwp')
+                ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->label('NPWP'),
+
+                Forms\Components\TextArea::make('alamat')
+                ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->label('Alamat'),
+
+                Forms\Components\TextInput::make('no_seri_faktur')
+                ->nullable()
+                ->label('No. Seri Faktur')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })()),
+
+                Forms\Components\DatePicker::make('tanggal_faktur')
+                ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->label('Tanggal Faktur'),
+
                 Forms\Components\TextInput::make('harga_jual')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('Harga Jual')
                     ->prefix('Rp'),
 
                 Forms\Components\TextInput::make('dpp_ppn')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('DPP PPN')
                     ->prefix('Rp'),
 
@@ -131,6 +200,11 @@ class FormPpnResource extends Resource
                         '12%' => '12 %',
                     ])
                     ->required()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->reactive()
                     ->nullable()
                     ->label('Tarif PPN')
@@ -150,6 +224,11 @@ class FormPpnResource extends Resource
 
                 Forms\Components\TextInput::make('jumlah_ppn')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('Jumlah PPN')
                     ->prefix('Rp'),
 
@@ -161,6 +240,11 @@ class FormPpnResource extends Resource
                         'dibebaskan' => 'Dibebaskan',
                         'bayar' => 'Bayar',
                     ])
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('Status PPN')
                     ->searchable()
                     ->native(false)
@@ -168,16 +252,34 @@ class FormPpnResource extends Resource
                 
                 Forms\Components\DatePicker::make('tanggal_bayar_ppn')
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('Tanggal Faktur')
                     ->required(fn (callable $get) => $get('status_ppn') === 'bayar'),
                                 
-                Forms\Components\TextInput::make('ntpn_ppn')->nullable()->label('BTPN PPN'),
+                Forms\Components\TextInput::make('ntpn_ppn')
+                ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->label('BTPN PPN'),
 
                 Forms\Components\Fieldset::make('Dokumen')
                     ->schema([
                         Forms\Components\FileUpload::make('up_bukti_setor_ppn')
                             ->disk('public')
                             ->nullable()
+                            ->multiple()
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal Pajak']);
+                            })())
                             ->label('Upload Bukti Setor PPN')
                             ->downloadable()
                             ->previewable(false),
@@ -185,6 +287,12 @@ class FormPpnResource extends Resource
                         Forms\Components\FileUpload::make('up_efaktur')
                             ->disk('public')
                             ->nullable()
+                            ->multiple()
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal Pajak']);
+                            })())
                             ->label('Upload E-Faktur')
                             ->downloadable()
                             ->previewable(false),
@@ -242,25 +350,53 @@ class FormPpnResource extends Resource
                 ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
                 Tables\Columns\TextColumn::make('ntpn_ppn')->sortable()->searchable()->label('NTPN PPN'),
 
-                Tables\Columns\TextColumn::make('up_bukti_setor_ppn')
-                    ->label('Upload Bukti Setor PPN')
-                    ->formatStateUsing(fn ($record) => $record->up_bukti_setor_ppn 
-                        ? '<a href="' . Storage::url($record->up_bukti_setor_ppn) . '" target="_blank">Lihat</a> | 
-                        <a href="' . Storage::url($record->up_bukti_setor_ppn) . '" download>Download</a>' 
-                        : 'Tidak Ada Dokumen')
-                    ->html()
-                    ->sortable()
-                    ->searchable(),
+                TextColumn::make('up_bukti_setor_ppn')
+                ->label('Setor PPN')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_bukti_setor_ppn) {
+                        return 'Tidak Ada Dokumen';
+                    }
 
-                Tables\Columns\TextColumn::make('up_efaktur')
-                    ->label('Upload E-Faktur')
-                    ->formatStateUsing(fn ($record) => $record->up_efaktur
-                        ? '<a href="' . Storage::url($record->up_efaktur) . '" target="_blank">Lihat </a> | 
-                        <a href="' . Storage::url($record->up_efaktur) . '" download>Download</a>' 
-                        : 'Tidak Ada Dokumen')
-                    ->html()
-                    ->sortable()
-                    ->searchable(),
+                    $files = is_array($record->up_bukti_setor_ppn) ? $record->up_bukti_setor_ppn : json_decode($record->up_bukti_setor_ppn, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+                TextColumn::make('up_efaktur')
+                ->label('E-Faktur')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_efaktur) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_efaktur) ? $record->up_efaktur : json_decode($record->up_efaktur, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
 
 
             ])
