@@ -47,6 +47,8 @@ use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 
 class FormPajakResource extends Resource
 {
@@ -72,6 +74,11 @@ class FormPajakResource extends Resource
                 ->nullable()
                 ->options(fn() => form_kpr::pluck('siteplan', 'siteplan')->toArray())
                 ->reactive()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
                 ->afterStateUpdated(function ($state, callable $set) {
                     $kprData = form_kpr::where('siteplan', $state)->first();
                     if ($kprData) {
@@ -108,7 +115,13 @@ class FormPajakResource extends Resource
                         }
                     }),
 
-            Forms\Components\TextInput::make('no_sertifikat')->nullable()->label('No. Sertifikat'),
+            Forms\Components\TextInput::make('no_sertifikat')
+            ->nullable()->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Legal Pajak']);
+            })())
+            ->label('No. Sertifikat'),
 
             Forms\Components\Select::make('kavling')
                     ->options([
@@ -119,20 +132,75 @@ class FormPajakResource extends Resource
                         'tanah_lebih' => 'Tanah Lebih',
                         'kios' => 'Kios',
                     ])
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->required()
                     ->reactive()
                     ->label('Jenis Unit'),
                     
-                Forms\Components\TextInput::make('nama_konsumen')->nullable()->label('Nama Konsumen'),
+                Forms\Components\TextInput::make('nama_konsumen')
+                ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->label('Nama Konsumen'),
 
-                Forms\Components\TextInput::make('nik')->nullable()->label('NIK'),
-                Forms\Components\TextInput::make('npwp')->nullable()->label('NPWP'),
-                Forms\Components\Textarea::make('alamat')->nullable()->label('Alamat'),
-                Forms\Components\TextInput::make('nop')->nullable()->label('NOP'),
-                Forms\Components\TextInput::make('luas_tanah')->nullable()->label('Luas Sertifikat'),
+                Forms\Components\TextInput::make('nik')
+                ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->label('NIK'),
+                Forms\Components\TextInput::make('npwp')
+                ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->label('NPWP'),
+
+                Forms\Components\Textarea::make('alamat')
+                ->nullable()->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->label('Alamat'),
+
+                Forms\Components\TextInput::make('nop')
+                ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->label('NOP'),
+
+                Forms\Components\TextInput::make('luas_tanah')
+                ->nullable()
+                ->label('Luas Sertifikat')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })()),
+
                 Forms\Components\TextInput::make('harga')
                 ->numeric()
                 ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
                 ->label('Harga')
                 ->reactive()
                 ->prefix('Rp')
@@ -145,6 +213,11 @@ class FormPajakResource extends Resource
                 Forms\Components\TextInput::make('npoptkp')
                     ->numeric()
                     ->nullable()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                    })())
                     ->label('NPOPTKP')
                     ->reactive()
                     ->prefix('Rp')
@@ -156,6 +229,11 @@ class FormPajakResource extends Resource
                 Forms\Components\TextInput::make('jumlah_bphtb')
                 ->numeric()
                 ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
                 ->label('Jumlah BPHTB')
                 ->prefix('Rp'),
 
@@ -167,6 +245,11 @@ class FormPajakResource extends Resource
                 ])
                 ->required()
                 ->reactive()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
                 ->afterStateUpdated(function (callable $set, callable $get) {
                     $harga = (float) str_replace(['.', ','], ['', ''], $get('harga') ?? '0');
             
@@ -185,20 +268,72 @@ class FormPajakResource extends Resource
                 Forms\Components\TextInput::make('jumlah_pph')
                 ->numeric()
                 ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
                 ->label('Jumlah PPH')                
                 ->prefix('Rp'),
                 
-                Forms\Components\TextInput::make('kode_billiing_pph')->numeric()->nullable()->label('Kode Billing PPH'),
-                Forms\Components\DatePicker::make('tanggal_bayar_pph')->nullable()->label('Tanggal Pembayaran PPH'),
-                Forms\Components\TextInput::make('ntpnpph')->numeric()->nullable()->label('NTPN PPH'),
-                Forms\Components\TextInput::make('validasi_pph')->numeric()->nullable()->label('Validasi PPH'),
-                Forms\Components\DatePicker::make('tanggal_validasi')->nullable()->label('Tanggal Validasi'),
+                Forms\Components\TextInput::make('kode_billiing_pph')
+                ->numeric()
+                ->nullable()
+                ->label('Kode Billing PPH')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })()),
+
+                Forms\Components\DatePicker::make('tanggal_bayar_pph')
+                ->nullable()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->label('Tanggal Pembayaran PPH'),
+
+                Forms\Components\TextInput::make('ntpnpph')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })())
+                ->numeric()
+                ->nullable()
+                ->label('NTPN PPH'),
+
+                Forms\Components\TextInput::make('validasi_pph')
+                ->numeric()
+                ->nullable()
+                ->label('Validasi PPH')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })()),
+
+                Forms\Components\DatePicker::make('tanggal_validasi')
+                ->nullable()
+                ->label('Tanggal Validasi')
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                })()),
 
                 Forms\Components\Fieldset::make('Dokumen')
                 ->schema([
                     Forms\Components\FileUpload::make('up_kode_billing')
                         ->disk('public')
                         ->nullable()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                        })())
                         ->label('Kode Billing')
                         ->downloadable()
                         ->previewable(false),
@@ -206,6 +341,11 @@ class FormPajakResource extends Resource
                     Forms\Components\FileUpload::make('up_bukti_setor_pajak')
                         ->disk('public')
                         ->nullable()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                        })())
                         ->label('Bukti Setor Pajak')
                         ->downloadable()
                         ->previewable(false),
@@ -213,6 +353,11 @@ class FormPajakResource extends Resource
                     Forms\Components\FileUpload::make('up_suket_validasi')
                         ->disk('public')
                         ->nullable()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                        })())
                         ->label('Suket Validasi')
                         ->downloadable()
                         ->previewable(false),                
