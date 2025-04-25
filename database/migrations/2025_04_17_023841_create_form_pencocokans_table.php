@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('form_pencocokans', function (Blueprint $table) {
             $table->id();
-            $table->string('no_transaksi');
-            $table->string('no_ref_bank');
-            $table->date('tanggal_transaksi');
-            $table->string('jumlah');
-            $table->enum('tipe',['debit', 'kredit']);
-            $table->enum('status', ['approve','revisi']);
-            $table->string('nominal_selisih');
-            $table->string('analisis_selisih');
-            $table->enum('tindakan',['koreksi', 'pending', 'abaikan']);
-            $table->date('tanggal_validasi');
-            $table->string('disetujui_oleh');
-            $table->string('catatan');
-            $table->json('bukti_bukti');
+            $table->string('no_transaksi')->nullable();
+            $table->string('no_ref_bank')->nullable();
+            $table->date('tanggal_transaksi')->nullable();
+            $table->string('jumlah')->nullable();
+            $table->enum('tipe',['debit', 'kredit'])->nullable();
+            $table->enum('status', ['approve','revisi'])->nullable();
+            $table->string('nominal_selisih')->nullable();
+            $table->string('analisis_selisih')->nullable();
+            $table->enum('tindakan',['koreksi', 'pending', 'abaikan'])->nullable();
+            $table->date('tanggal_validasi')->nullable();
+            $table->string('disetujui_oleh')->nullable();
+            $table->string('catatan')->nullable();
+            $table->json('bukti_bukti')->nullable();
 
             $table->string('nama_pencair')->nullable();
             $table->date('tanggal_dicairkan')->nullable();

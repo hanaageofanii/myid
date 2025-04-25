@@ -12,7 +12,7 @@ class form_legalPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Staff','Staff Legal','Staff KPR','Legal Officer']);
+        return $user->hasRole(['admin','Super admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
     }
 
     /**
@@ -20,7 +20,7 @@ class form_legalPolicy
      */
     public function view(User $user, form_legal $form_legal): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Legal Officer']);
+        return $user->hasRole(['admin','Super admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
     }
 
     /**
@@ -28,7 +28,7 @@ class form_legalPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -36,7 +36,7 @@ class form_legalPolicy
      */
     public function update(User $user, form_legal $form_legal): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff KPR','Staff Legal']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -44,7 +44,7 @@ class form_legalPolicy
      */
     public function delete(User $user, form_legal $form_legal): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -52,7 +52,7 @@ class form_legalPolicy
      */
     public function restore(User $user, form_legal $form_legal): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -60,7 +60,7 @@ class form_legalPolicy
      */
     public function forceDelete(User $user, form_legal $form_legal): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 }
 

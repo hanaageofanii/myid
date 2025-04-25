@@ -12,7 +12,7 @@ class ajbPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Staff','Staff Legal','Staff KPR','Legal Officer']);
+        return $user->hasRole(['admin','Super admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
     }
 
     /**
@@ -20,7 +20,7 @@ class ajbPolicy
      */
     public function view(User $user, ajb $ajb): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Legal Officer']);
+        return $user->hasRole(['admin','Super admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
     }
 
     /**
@@ -28,7 +28,7 @@ class ajbPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal Pajak']);
     }
 
     /**
@@ -36,7 +36,7 @@ class ajbPolicy
      */
     public function update(User $user, ajb $ajb): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff KPR','Staff Legal']);
+        return $user->hasRole(['admin','Legal Pajak']);
     }
 
     /**
@@ -44,7 +44,7 @@ class ajbPolicy
      */
     public function delete(User $user, ajb $ajb): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal Pajak']);
     }
 
     /**
@@ -52,7 +52,7 @@ class ajbPolicy
      */
     public function restore(User $user, ajb $ajb): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal Pajak']);
     }
 
     /**
@@ -60,6 +60,6 @@ class ajbPolicy
      */
     public function forceDelete(User $user, ajb $ajb): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal Pajak']);
     }
 }
