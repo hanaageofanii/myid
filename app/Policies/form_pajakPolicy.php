@@ -28,7 +28,7 @@ class form_pajakPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal Pajak']);
     }
 
     /**
@@ -36,7 +36,7 @@ class form_pajakPolicy
      */
     public function update(User $user, form_pajak $form_pajak): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff KPR','Staff Legal']);
+        return $user->hasRole(['admin','Legal Pajak']);
     }
 
     /**
@@ -44,7 +44,7 @@ class form_pajakPolicy
      */
     public function delete(User $user, form_pajak $form_pajak): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal Pajak']);
     }
 
     /**
@@ -52,7 +52,7 @@ class form_pajakPolicy
      */
     public function restore(User $user, form_pajak $form_pajak): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal Pajak']);
     }
 
     /**
@@ -60,7 +60,7 @@ class form_pajakPolicy
      */
     public function forceDelete(User $user, form_pajak $form_pajak): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal Pajak']);
     }
 }
 

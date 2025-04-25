@@ -13,7 +13,7 @@ class form_pencocokanPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Staff','Staff Legal','Staff KPR','Legal Officer']);
+        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff Legal','Staff KPR','Legal Officer']);
     }
 
     /**
