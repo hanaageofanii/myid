@@ -120,7 +120,8 @@ class FormPencocokanResource extends Resource
                 $user = Auth::user();
                 return $user && $user->hasRole(['admin','Kasir 2']);
             })())
-            ->label('Jumlah'),
+            ->label('Jumlah')
+            ->prefix('Rp'),
 
         TextInput::make('tujuan_dana')
             ->required()
@@ -204,16 +205,16 @@ Fieldset::make('Status dan Analisis Selisih')
             ->required(),
 
         TextInput::make('nominal_selisih')
-            ->required()
             ->disabled(fn () => ! (function () {
                 /** @var \App\Models\User|null $user */
                 $user = Auth::user();
                 return $user && $user->hasRole(['admin','Kasir 2']);
             })())
-            ->label('Nominal Selisih'),
+            ->label('Nominal Selisih')
+            ->prefix('Rp'),
 
         TextArea::make('analisis_selisih')
-            ->required()
+            // ->required()
             ->disabled(fn () => ! (function () {
                 /** @var \App\Models\User|null $user */
                 $user = Auth::user();
@@ -246,7 +247,6 @@ Fieldset::make('Dokumen Pendukung')
                 $user = Auth::user();
                 return $user && $user->hasRole(['admin','Kasir 2']);
             })())
-            ->required()
             ->nullable()
             ->label('Bukti Pendukung di Terima')
             ->downloadable()
@@ -260,30 +260,27 @@ Fieldset::make('Dokumen Pendukung')
                 $user = Auth::user();
                 return $user && $user->hasRole(['admin','Kasir 2']);
             })())
-            ->required()
             ->nullable()
             ->label('Bukti-bukti Lainnya')
             ->downloadable()
             ->previewable(false),
     ]),
 
-Fieldset::make('Validasi dan Catatan')
+    Fieldset::make('Validasi dan Catatan')
     ->schema([
         DatePicker::make('tanggal_validasi')
-            ->required()
             ->disabled(fn () => ! (function () {
                 /** @var \App\Models\User|null $user */
                 $user = Auth::user();
-                return $user && $user->hasRole(['admin','Kasir 2']);
+                return $user && $user->hasRole(['admin','Direksi']);
             })())
             ->label('Tanggal Validasi'),
 
         TextInput::make('disetujui_oleh')
-            ->required()
             ->disabled(fn () => ! (function () {
                 /** @var \App\Models\User|null $user */
                 $user = Auth::user();
-                return $user && $user->hasRole(['admin','Kasir 2']);
+                return $user && $user->hasRole(['admin','Direksi']);
             })())
             ->label('Disetujui Oleh'),
 
@@ -295,17 +292,15 @@ Fieldset::make('Validasi dan Catatan')
             ->disabled(fn () => ! (function () {
                 /** @var \App\Models\User|null $user */
                 $user = Auth::user();
-                return $user && $user->hasRole(['admin','Kasir 2']);
+                return $user && $user->hasRole(['admin','Direksi']);
             })())
-            ->label('Status Validasi')
-            ->required(),
+            ->label('Status Validasi'),
 
         TextArea::make('catatan')
-            ->required()
             ->disabled(fn () => ! (function () {
                 /** @var \App\Models\User|null $user */
                 $user = Auth::user();
-                return $user && $user->hasRole(['admin','Kasir 2']);
+                return $user && $user->hasRole(['admin','Direksi']);
             })())
             ->label('Catatan'),
     ]),
