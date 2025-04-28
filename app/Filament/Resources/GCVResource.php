@@ -54,6 +54,7 @@ class GCVResource extends Resource
     protected static ?string $pluralModelLabel = 'Data GCV';
 
 
+    
     public static function form(Form $form): Form
     {
         return $form
@@ -172,7 +173,7 @@ class GCVResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['Direksi', 'Super admin','admin','Legal officer','KPR Stok']);
+                        return $user && $user->hasRole(['Direksi', 'Super admin','admin','Legal officer','Legal Pajak','KPR Stok']);
                     })()),
                     // ->required(),
 
@@ -181,7 +182,7 @@ class GCVResource extends Resource
                     ->disabled(fn ($get) => ! (function () use ($get) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin', 'Legal officer', 'KPR Stok']) && $get('status') === 'booking';
+                        return $user && $user->hasRole(['admin', 'Legal officer','Legal Pajak', 'KPR Stok']) && $get('status') === 'booking';
                     })()),
 
                 Forms\Components\TextInput::make('nama_konsumen')
@@ -189,7 +190,7 @@ class GCVResource extends Resource
                     ->disabled(fn ($get) => ! (function () use ($get) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin', 'Legal officer', 'KPR Stok']) && $get('status') === 'booking';
+                        return $user && $user->hasRole(['admin', 'Legal officer','Legal Pajak', 'KPR Stok']) && $get('status') === 'booking';
                     })()),
 
                 Forms\Components\TextInput::make('agent')
@@ -197,7 +198,7 @@ class GCVResource extends Resource
                     ->disabled(fn ($get) => ! (function () use ($get) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin', 'Legal officer', 'KPR Stok']) && $get('status') === 'booking';
+                        return $user && $user->hasRole(['admin', 'Legal officer','Legal Pajak', 'KPR Stok']) && $get('status') === 'booking';
                     })()), 
 
                 Forms\Components\Select::make('kpr_status')
@@ -220,7 +221,7 @@ class GCVResource extends Resource
                     ->afterStateUpdated(function ($state, $set, $record) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        if (is_null($state) && $user && $user->hasRole(['Direksi', 'Super admin','admin','Legal officer','KPR Stok'])) {
+                        if (is_null($state) && $user && $user->hasRole(['Direksi', 'Super admin','admin','KPR Stok'])) {
                             $set('tanggal_akad', null);
                             
                 
@@ -509,7 +510,7 @@ class GCVResource extends Resource
                 $q->whereNull('kpr_status')
                     ->orWhere('kpr_status', '!=', 'akad');
             });
-        } elseif ($user->hasRole('Legal Officer')) {
+        } elseif ($user->hasRole(['Legal Officer','Legal Pajak'])) {
             $query->where('kpr_status', 'akad');
         }
     }

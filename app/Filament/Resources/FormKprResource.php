@@ -900,12 +900,21 @@ class FormKprResource extends Resource
 
 
     public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+{
+    $query = parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ]);
+
+    /** @var \App\Models\User|null $user */
+    $user = Auth::user();
+
+    if ($user && $user->hasRole(['Legal Officer', 'Legal Pajak'])) {
+        $query->where('kpr_status', 'akad');
     }
+
+    return $query;
+}
 
     // public static function getWidgets(): array
     // {
