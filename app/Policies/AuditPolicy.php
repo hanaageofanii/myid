@@ -13,7 +13,7 @@ class AuditPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
+        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak']);
     }
 
     /**
@@ -21,7 +21,7 @@ class AuditPolicy
      */
     public function view(User $user, Audit $Audit): bool
     {
-        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
+        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak']);
     }
 
     /**
