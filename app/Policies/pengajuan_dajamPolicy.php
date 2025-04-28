@@ -29,7 +29,7 @@ class pengajuan_dajamPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin','Legal officer','Legal Pajak']);
+        return $user->hasRole(['admin','Legal Pajak']);
     }
 
     /**
