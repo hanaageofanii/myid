@@ -13,7 +13,7 @@ class pengajuan_dajamPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Staff','Staff Legal','Staff KPR','Legal Officer']);
+        return $user->hasRole(['admin','Direksi', 'Legal officer','Legal Pajak']);
     }
 
     /**
@@ -21,7 +21,7 @@ class pengajuan_dajamPolicy
      */
     public function view(User $user, pengajuan_dajam $pengajuan_dajam): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Legal Officer']);
+        return $user->hasRole(['admin','Direksi', 'Legal officer','Legal Pajak']);
     }
 
     /**
@@ -29,7 +29,7 @@ class pengajuan_dajamPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal officer','Legal Pajak']);
     }
 
     /**
@@ -37,7 +37,7 @@ class pengajuan_dajamPolicy
      */
     public function update(User $user, pengajuan_dajam $pengajuan_dajam): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff KPR','Staff Legal']);
+        return $user->hasRole(['admin','Legal officer','Legal Pajak']);
     }
 
     /**
@@ -45,7 +45,7 @@ class pengajuan_dajamPolicy
      */
     public function delete(User $user, pengajuan_dajam $pengajuan_dajam): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal officer','Legal Pajak']);
     }
 
     /**
@@ -53,7 +53,7 @@ class pengajuan_dajamPolicy
      */
     public function restore(User $user, pengajuan_dajam $pengajuan_dajam): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal officer','Legal Pajak']);
     }
 
     /**
@@ -61,7 +61,7 @@ class pengajuan_dajamPolicy
      */
     public function forceDelete(User $user, pengajuan_dajam $pengajuan_dajam): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Legal officer','Legal Pajak']);
     }
 }
 
