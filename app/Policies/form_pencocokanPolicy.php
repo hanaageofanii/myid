@@ -13,7 +13,7 @@ class form_pencocokanPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff Legal','Staff KPR','Legal Officer']);
+        return $user->hasRole(['admin','Direksi', 'Kasir 1', 'Kasir 2']);
     }
 
     /**
@@ -21,7 +21,7 @@ class form_pencocokanPolicy
      */
     public function view(User $user, form_pencocokan $form_pencocokan): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Legal Officer']);
+        return $user->hasRole(['admin','Direksi', 'Kasir 1', 'Kasir 2']);
     }
 
     /**
@@ -29,7 +29,7 @@ class form_pencocokanPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Kasir 1', 'Kasir 2']);
     }
 
     /**
@@ -37,7 +37,7 @@ class form_pencocokanPolicy
      */
     public function update(User $user, form_pencocokan $form_pencocokan): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff KPR','Staff Legal']);
+        return $user->hasRole(['admin','Direksi', 'Kasir 1', 'Kasir 2']);
     }
 
     /**
@@ -45,7 +45,7 @@ class form_pencocokanPolicy
      */
     public function delete(User $user, form_pencocokan $form_pencocokan): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin', 'Kasir 1', 'Kasir 2']);
     }
 
     /**
@@ -53,7 +53,7 @@ class form_pencocokanPolicy
      */
     public function restore(User $user, form_pencocokan $form_pencocokan): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin', 'Kasir 1', 'Kasir 2']);
     }
 
     /**
@@ -61,7 +61,7 @@ class form_pencocokanPolicy
      */
     public function forceDelete(User $user, form_pencocokan $form_pencocokan): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin', 'Kasir 1', 'Kasir 2']);
     }
 }
 
