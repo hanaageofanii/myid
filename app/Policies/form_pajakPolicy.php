@@ -12,7 +12,7 @@ class form_pajakPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
+        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak']);
     }
 
     /**
@@ -20,7 +20,7 @@ class form_pajakPolicy
      */
     public function view(User $user, form_pajak $form_pajak): bool
     {
-        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
+        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak']);
     }
 
     /**
