@@ -12,7 +12,7 @@ class form_ppnPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Staff','Staff Legal','Staff KPR','Legal Officer']);
+        return $user->hasRole(['admin','Direksi', 'Legal Pajak', 'Legal officer']);
     }
 
     /**
@@ -20,7 +20,7 @@ class form_ppnPolicy
      */
     public function view(User $user,form_ppn $form_ppn): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Legal Officer']);
+        return $user->hasRole(['admin','Direksi', 'Legal Pajak', 'Legal officer']);
     }
 
     /**
@@ -28,7 +28,7 @@ class form_ppnPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Direksi', 'Legal Pajak', 'Legal officer']);
     }
 
     /**
@@ -36,7 +36,7 @@ class form_ppnPolicy
      */
     public function update(User $user,form_ppn $form_ppn): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff KPR','Staff Legal']);
+        return $user->hasRole(['admin', 'Legal Pajak']);
     }
 
     /**
@@ -44,7 +44,7 @@ class form_ppnPolicy
      */
     public function delete(User $user,form_ppn $form_ppn): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin', 'Legal Pajak']);
     }
 
     /**
@@ -52,7 +52,7 @@ class form_ppnPolicy
      */
     public function restore(User $user,form_ppn $form_ppn): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin', 'Legal Pajak']);
     }
 
     /**
@@ -60,7 +60,7 @@ class form_ppnPolicy
      */
     public function forceDelete(User $user,form_ppn $form_ppn): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin', 'Legal Pajak']);
     }
 }
 
