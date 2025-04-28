@@ -14,7 +14,7 @@
                 <!-- Logo -->
                 <div class="text-2xl font-bold text-green-600 flex items-center gap-2">
                     <img src="/image/logo.png" alt="Logo PT. Purnama Karya Bersama" class="h-20 w-auto !important">
-                </div>
+                </div>                             
                 <!-- Menu Navbar -->
                 <div class="hidden md:flex space-x-8">
                     <a href="#" class="text-gray-700 hover:text-green-600">Dashboard</a>
