@@ -15,6 +15,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 
+/**
+ * @method bool hasRole(array|string|\Spatie\Permission\Contracts\Role|\Illuminate\Support\Collection|int $roles, string|null $guard = null)
+ */
+
 class User extends Authenticatable
 {
     use HasRoles, HasApiTokens, HasFactory, Notifiable, HasRoles;

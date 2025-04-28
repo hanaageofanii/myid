@@ -21,6 +21,7 @@ use Filament\Facades\Filament;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 use App\Filament\Resources\GCVResource\Widgets\GCVStats;
 use App\Filament\Resources\RekonsilResource\Widgets\rekonsilStats;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -42,7 +43,7 @@ class AdminPanelProvider extends PanelProvider
                 'gray' => Color::Gray,
                 'info' => Color::Blue,
                 'success' => Color::Green,
-                'warning' => COlor::Red,
+                'warning' => Color::Red,
             ])->font('Poppins')
             ->brandLogo(request()->is('admin/login') ? asset('image/logo.png') : asset('image/logo-pkb.png'))
             ->brandLogoHeight(request()->is('admin/login') ? '10rem' : '15rem')
@@ -66,7 +67,8 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Resources\FormPajakResource\Widgets\PajakStats::class,
                 \App\Filament\Resources\FormPpnResource\Widgets\PPNStats::class,
                 \App\Filament\Resources\PencairanAkadResource\Widgets\AkadStats::class,
-                \App\Filament\Resources\AjbResource\Widgets\AjbStats::class,                \App\Filament\Resources\VerifikasiDajamResource\Widgets\verifikasiDajamStats::class,
+                \App\Filament\Resources\AjbResource\Widgets\AjbStats::class,                
+                \App\Filament\Resources\VerifikasiDajamResource\Widgets\verifikasiDajamStats::class,
                 \App\Filament\Resources\PengajuanDajamResource\Widgets\PenDajamStats::class,
                 \App\Filament\Resources\PencairanDajamResource\Widgets\pencairanDajamStats::class,
                 \App\Filament\Resources\RekonsilResource\Widgets\rekonsilStats::class,
