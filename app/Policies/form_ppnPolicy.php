@@ -28,7 +28,7 @@ class form_ppnPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin','Direksi', 'Legal Pajak', 'Legal officer']);
+        return $user->hasRole(['admin', 'Legal Pajak']);
     }
 
     /**
