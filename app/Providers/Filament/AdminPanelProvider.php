@@ -22,6 +22,7 @@ use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 use App\Filament\Resources\GCVResource\Widgets\GCVStats;
 use App\Filament\Resources\RekonsilResource\Widgets\rekonsilStats;
 use Illuminate\Support\Facades\Auth;
+use App\Filament\Pages\CustomPage;
 
 
 
@@ -51,31 +52,32 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
-            ])
+       ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->plugin(
                 FilamentFullCalendarPlugin::make()
             )
             ->widgets([
                 Widgets\AccountWidget::class,
+                
                 // Widgets\FilamentInfoWidget::class,
                 // \App\Filament\Widgets\CalendarWidget::class,
-                \App\Filament\Resources\AuditResource\Widgets\AuditStats::class,
-                \App\Filament\Resources\GCVResource\Widgets\GCVStats::class, 
-                \App\Filament\Resources\FormKprResource\Widgets\KPRStats::class,
-                \App\Filament\Resources\FormLegalResource\Widgets\SertifikatStats::class,
-                \App\Filament\Resources\FormPajakResource\Widgets\PajakStats::class,
-                \App\Filament\Resources\FormPpnResource\Widgets\PPNStats::class,
-                \App\Filament\Resources\PencairanAkadResource\Widgets\AkadStats::class,
-                \App\Filament\Resources\AjbResource\Widgets\AjbStats::class,                
-                \App\Filament\Resources\VerifikasiDajamResource\Widgets\verifikasiDajamStats::class,
-                \App\Filament\Resources\PengajuanDajamResource\Widgets\PenDajamStats::class,
-                \App\Filament\Resources\PencairanDajamResource\Widgets\pencairanDajamStats::class,
-                \App\Filament\Resources\RekonsilResource\Widgets\rekonsilStats::class,
-                \App\Filament\Resources\FormDpResource\Widgets\DPStats::class,
-                \App\Filament\Resources\RekeningKoranResource\Widgets\rekeningkoranStats::class,
-                \App\Filament\Resources\CekPerjalananResource\Widgets\cek_perjalananStats::class,
-                \App\Filament\Resources\FormPencocokanResource\Widgets\FormPencocokanStats::class,
+                // \App\Filament\Resources\AuditResource\Widgets\AuditStats::class,
+                // \App\Filament\Resources\GCVResource\Widgets\GCVStats::class, 
+                // \App\Filament\Resources\FormKprResource\Widgets\KPRStats::class,
+                // \App\Filament\Resources\FormLegalResource\Widgets\SertifikatStats::class,
+                // \App\Filament\Resources\FormPajakResource\Widgets\PajakStats::class,
+                // \App\Filament\Resources\FormPpnResource\Widgets\PPNStats::class,
+                // \App\Filament\Resources\PencairanAkadResource\Widgets\AkadStats::class,
+                // \App\Filament\Resources\AjbResource\Widgets\AjbStats::class,                
+                // \App\Filament\Resources\VerifikasiDajamResource\Widgets\verifikasiDajamStats::class,
+                // \App\Filament\Resources\PengajuanDajamResource\Widgets\PenDajamStats::class,
+                // \App\Filament\Resources\PencairanDajamResource\Widgets\pencairanDajamStats::class,
+                // \App\Filament\Resources\RekonsilResource\Widgets\rekonsilStats::class,
+                // \App\Filament\Resources\FormDpResource\Widgets\DPStats::class,
+                // \App\Filament\Resources\RekeningKoranResource\Widgets\rekeningkoranStats::class,
+                // \App\Filament\Resources\CekPerjalananResource\Widgets\cek_perjalananStats::class,
+                // \App\Filament\Resources\FormPencocokanResource\Widgets\FormPencocokanStats::class,
             ])
             ->middleware([
                 EncryptCookies::class,
