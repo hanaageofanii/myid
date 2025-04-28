@@ -12,7 +12,7 @@ class ajbPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
+        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak']);
     }
 
     /**
@@ -20,7 +20,7 @@ class ajbPolicy
      */
     public function view(User $user, ajb $ajb): bool
     {
-        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
+        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak']);
     }
 
     /**
