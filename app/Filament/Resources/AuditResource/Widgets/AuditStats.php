@@ -6,6 +6,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\Audit;
 use Filament\Widgets\StatsOverviewWidget\Card;
 use Filament\Support\Colors\Color;
+
 class AuditStats extends BaseWidget
 {
     protected static ?int $sort = 1;
@@ -14,6 +15,7 @@ class AuditStats extends BaseWidget
     protected static ?string $pollingInterval = '10s';
     protected static bool $isLazy = false;
     protected ?string $heading = 'Dashboard Audit GCV';
+    
     protected function getStats(): array
     {
             return [
@@ -50,5 +52,17 @@ class AuditStats extends BaseWidget
                 ]),               
             ];
         }
+
+        // public static function canView(): bool
+        // {
+        //     return auth()->user()->role !== 'Marketing';
+        // }
+        
+        // public static function canView(): bool
+        // {
+        //     return auth()->user()->role === ['admin','Direksi','Super admin','Legal Pajak','Legal officer','KPR Stok','KPR officer','Kasir 1','Kasir 2'];
+        // }
+        
+
     }
 

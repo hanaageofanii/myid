@@ -57,7 +57,7 @@ class AdminPanelProvider extends PanelProvider
                 FilamentFullCalendarPlugin::make()
             )
             ->widgets([
-                // Widgets\AccountWidget::class,
+                Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
                 // \App\Filament\Widgets\CalendarWidget::class,
                 \App\Filament\Resources\AuditResource\Widgets\AuditStats::class,
@@ -88,6 +88,7 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            
             ->authMiddleware([
                 Authenticate::class,
             ])->favicon(asset('image/logo.png'));

@@ -85,4 +85,9 @@ class GCVStats extends BaseWidget
 
         ];
     }
+    // public static function canView(): bool
+    // {
+    //     return in_array(auth()->user()->role, ['Marketing']);
+    // }
+
 }

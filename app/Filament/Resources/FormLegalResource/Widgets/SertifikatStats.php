@@ -38,4 +38,8 @@ class SertifikatStats extends BaseWidget
             ]), 
         ];
     }
+    // public static function canView(): bool
+    //     {
+    //         return auth()->user()->role === ['admin','Direksi','Super admin','Legal Pajak','Legal officer','KPR Stok','KPR officer','Kasir 1','Kasir 2'];
+    //     }
 }
