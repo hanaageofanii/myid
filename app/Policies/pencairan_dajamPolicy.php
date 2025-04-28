@@ -12,7 +12,7 @@ class pencairan_dajamPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Staff','Staff Legal','Staff KPR','Legal Officer']);
+        return $user->hasRole(['admin','Direksi','Kasir 1','Kasir 2']);
     }
 
     /**
@@ -20,7 +20,7 @@ class pencairan_dajamPolicy
      */
     public function view(User $user, pencairan_dajam $pencairan_dajam): bool
     {
-        return $user->hasRole(['admin','Marketing','Super admin','Direksi','Legal Officer']);
+        return $user->hasRole(['admin','Direksi','Kasir 1','Kasir 2']);
     }
 
     /**
@@ -28,7 +28,7 @@ class pencairan_dajamPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Kasir 1','Kasir 2']);
     }
 
     /**
@@ -36,7 +36,7 @@ class pencairan_dajamPolicy
      */
     public function update(User $user, pencairan_dajam $pencairan_dajam): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Staff','Staff KPR','Staff Legal']);
+        return $user->hasRole(['admin','Kasir 1','Kasir 2']);
     }
 
     /**
@@ -44,7 +44,7 @@ class pencairan_dajamPolicy
      */
     public function delete(User $user, pencairan_dajam $pencairan_dajam): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Kasir 1','Kasir 2']);
     }
 
     /**
@@ -52,7 +52,7 @@ class pencairan_dajamPolicy
      */
     public function restore(User $user, pencairan_dajam $pencairan_dajam): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Kasir 1','Kasir 2']);
     }
 
     /**
@@ -60,7 +60,7 @@ class pencairan_dajamPolicy
      */
     public function forceDelete(User $user, pencairan_dajam $pencairan_dajam): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','Kasir 1','Kasir 2']);
     }
 }
 
