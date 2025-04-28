@@ -12,7 +12,7 @@ class form_dpPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi', 'Kasir 1','Kasir 2']);
+        return $user->hasRole(['admin','Direksi', 'Kasir 1','Kasir 2']);
     }
 
     /**
@@ -20,7 +20,7 @@ class form_dpPolicy
      */
     public function view(User $user, form_dp $form_dp): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi', 'Kasir 1','Kasir 2']);
+        return $user->hasRole(['admin','Direksi', 'Kasir 1','Kasir 2']);
     }
 
     /**

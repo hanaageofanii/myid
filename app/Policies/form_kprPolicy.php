@@ -12,7 +12,7 @@ class form_kprPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
+        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
     }
 
     /**
@@ -20,7 +20,7 @@ class form_kprPolicy
      */
     public function view(User $user, form_kpr $form_kpr): bool
     {
-        return $user->hasRole(['admin','Super admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
+        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak', 'Kasir 1','Kasir 2','KPR Stok','KPR Officer']);
     }
 
     /**
