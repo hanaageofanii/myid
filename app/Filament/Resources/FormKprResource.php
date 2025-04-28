@@ -909,8 +909,8 @@ class FormKprResource extends Resource
     /** @var \App\Models\User|null $user */
     $user = Auth::user();
 
-    if ($user && $user->hasRole(['Legal Officer', 'Legal Pajak'])) {
-        $query->where('kpr_status', 'akad');
+    if ($user && $user->hasRole(['Legal officer', 'Legal Pajak'])) {
+        $query->where('status_akad', 'akad');
     }
 
     return $query;

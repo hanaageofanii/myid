@@ -510,7 +510,7 @@ class GCVResource extends Resource
                 $q->whereNull('kpr_status')
                     ->orWhere('kpr_status', '!=', 'akad');
             });
-        } elseif ($user->hasRole(['Legal Officer','Legal Pajak'])) {
+        } elseif ($user->hasRole(['Legal officer','Legal Pajak'])) {
             $query->where('kpr_status', 'akad');
         }
     }
