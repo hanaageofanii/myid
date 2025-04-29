@@ -65,7 +65,7 @@ class PCAResource extends Resource
                     'gcv_cira' => 'GCV Cira',
                     'gcv' => 'GCV',
                     'tkr' => 'TKR',
-                    'pca1' => 'PCA1',
+                    'pca1' => 'PCA ',
                 ])
                 ->label('Proyek')
                 ->required()
