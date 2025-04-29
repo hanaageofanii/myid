@@ -13,7 +13,21 @@ class ListAjbPCAS extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Buat Data AJB'),
         ];
+    }
+
+    // protected function getHeaderWidgets(): array
+    // {
+    //     return [
+    //         AjbStats::class,
+    //     ];
+    // }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
     }
 }
