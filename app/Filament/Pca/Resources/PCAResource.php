@@ -65,7 +65,7 @@ class PCAResource extends Resource
                     'gcv_cira' => 'GCV Cira',
                     'gcv' => 'GCV',
                     'tkr' => 'TKR',
-                    'pca1' => 'PCA ',
+                    'pca1' => 'PCA 1',
                 ])
                 ->label('Proyek')
                 ->required()
@@ -82,7 +82,6 @@ class PCAResource extends Resource
                     'taman_kertamukti_residence' => 'Taman Kertamukti Residence',
                     'pesona_cengkong_asri_1' => 'Pesona Cengkong Asri 1',
                 ])
-                ->label('Nama Perusahaan')
                 ->required()
                 ->disabled(fn () => ! (function () {
                     /** @var \App\Models\User|null $user */
