@@ -13,7 +13,7 @@ class form_kpr_pcaPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak','KPR Stok','KPR Officer']);
     }
 
     /**
@@ -21,7 +21,7 @@ class form_kpr_pcaPolicy
      */
     public function view(User $user, form_kpr_pca $formKprPca): bool
     {
-        //
+        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak','KPR Stok','KPR Officer']);
     }
 
     /**
@@ -29,7 +29,7 @@ class form_kpr_pcaPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasRole(['admin','KPR Officer']);
     }
 
     /**
@@ -37,7 +37,7 @@ class form_kpr_pcaPolicy
      */
     public function update(User $user, form_kpr_pca $formKprPca): bool
     {
-        //
+        return $user->hasRole(['admin','KPR Officer']);
     }
 
     /**
@@ -45,7 +45,7 @@ class form_kpr_pcaPolicy
      */
     public function delete(User $user, form_kpr_pca $formKprPca): bool
     {
-        //
+        return $user->hasRole(['admin','KPR Officer']);
     }
 
     /**
@@ -53,7 +53,7 @@ class form_kpr_pcaPolicy
      */
     public function restore(User $user, form_kpr_pca $formKprPca): bool
     {
-        //
+        return $user->hasRole(['admin']);
     }
 
     /**
@@ -61,6 +61,6 @@ class form_kpr_pcaPolicy
      */
     public function forceDelete(User $user, form_kpr_pca $formKprPca): bool
     {
-        //
+        return $user->hasRole(['admin']);
     }
 }
