@@ -5,6 +5,7 @@ namespace App\Filament\Pca\Resources;
 use App\Filament\Pca\Resources\PCAResource\Pages;
 use App\Filament\Pca\Resources\PCAResource\RelationManagers;
 use App\Models\PCA;
+use App\Filament\Resources\PCAResource\Widgets\PCAStats;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -42,7 +43,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\ActionGroup;
-use App\Filament\Resources\GCVResource\Widgets\GCVStats;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -485,6 +485,13 @@ class PCAResource extends Resource
             //
         ];
     }
+
+    // public static function getWidgets(): array
+    // {
+    //     return [
+    //         PCAStats::class,
+    //     ];
+    // }
 
     public static function getPages(): array
     {

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Filament\Pca\Resources\PcaResource\Widgets;
+namespace App\Filament\Pca\Resources\PCAResource\Widgets;
 
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
-class PCAOverviewWidget extends BaseWidget
+class PCAStats extends BaseWidget
 {
     protected function getStats(): array
     {
