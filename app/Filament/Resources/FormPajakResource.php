@@ -277,7 +277,6 @@ class FormPajakResource extends Resource
                 ->prefix('Rp'),
                 
                 Forms\Components\TextInput::make('kode_billiing_pph')
-                ->numeric()
                 ->nullable()
                 ->label('Kode Billing PPH')
                 ->disabled(fn () => ! (function () {
