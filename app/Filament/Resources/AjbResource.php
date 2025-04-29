@@ -65,10 +65,10 @@ class AjbResource extends Resource
 
     protected static ?string $title = "AJB";
     protected static ?string $navigationGroup = "Legal - Pajak";
-    protected static ?string $pluralLabel = "AJB";
+    protected static ?string $pluralLabel = "AJB GCV";
     protected static ?string $navigationIcon = 'heroicon-o-document';
-    protected static ?string $navigationLabel = 'AJB';
-    protected static ?string $pluralModelLabel = 'Daftar AJB';
+    protected static ?string $navigationLabel = 'AJB GCV';
+    protected static ?string $pluralModelLabel = 'Daftar AJB GCV';
     public static function form(Form $form): Form
     {
         return $form->schema([

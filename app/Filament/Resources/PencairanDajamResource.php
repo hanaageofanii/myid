@@ -64,11 +64,11 @@ class PencairanDajamResource extends Resource
 {
     protected static ?string $model = pencairan_dajam::class;
 
-    protected static ?string $title = "Form Pencairan Dajam";
+    protected static ?string $title = "Form Pencairan Dajam GCV";
     protected static ?string $navigationGroup = "Keuangan";
-    protected static ?string $pluralLabel = "Data Pencairan Dajam";
-    protected static ?string $navigationLabel = "Pencairan Dajam";
-    protected static ?string $pluralModelLabel = 'Daftar Pencairan Dajam';
+    protected static ?string $pluralLabel = "Data Pencairan Dajam GCV";
+    protected static ?string $navigationLabel = "Pencairan Dajam GCV";
+    protected static ?string $pluralModelLabel = 'Daftar Pencairan Dajam GCV';
     protected static ?string $navigationIcon = 'heroicon-o-queue-list';
     public static function form(Forms\Form $form): Forms\Form
     {

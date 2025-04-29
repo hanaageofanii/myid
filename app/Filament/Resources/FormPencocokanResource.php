@@ -57,9 +57,9 @@ class FormPencocokanResource extends Resource
 
     protected static ?int $navigationSort = 4;
     protected static ?string $navigationGroup = "Kasir";
-    protected static ?string $pluralLabel = "Form Pencocokan Data Rekening";
-    protected static ?string $navigationLabel = "Form Pencocokan Data Rekening";
-    protected static ?string $pluralModelLabel = 'Daftar Form Pencocokan Data Rekening';
+    protected static ?string $pluralLabel = "Validasi Data Rekening";
+    protected static ?string $navigationLabel = "Validasi Data Rekening";
+    protected static ?string $pluralModelLabel = 'Daftar Validasi Data Rekening';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
     public static function form(Form $form): Form
     {

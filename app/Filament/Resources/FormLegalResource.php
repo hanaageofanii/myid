@@ -53,12 +53,12 @@ class FormLegalResource extends Resource
 {
     protected static ?string $model = form_legal::class;
 
-    protected static ?string $title = "Input Sertifikat";
+    protected static ?string $title = "Input Sertifikat GCV";
     protected static ?string $navigationGroup = "Legal";
-    protected static ?string $pluralLabel = "Form Input Sertifikat";
+    protected static ?string $pluralLabel = "Form Input Sertifikat GCV";
     protected static ?string $navigationIcon = 'heroicon-o-inbox-stack';
-    protected static ?string $navigationLabel = 'Sertifikat';
-    protected static ?string $pluralModelLabel = 'Daftar Input Sertifikat';
+    protected static ?string $navigationLabel = 'Sertifikat GCV';
+    protected static ?string $pluralModelLabel = 'Daftar Input Sertifikat GCV';
 
 
     public static function form(Form $form): Form

@@ -59,11 +59,11 @@ class FormDpResource extends Resource
 {
     protected static ?string $model = form_dp::class;
 
-    protected static ?string $title = "Form Input Data Uang Muka";
+    protected static ?string $title = "Data Uang Muka GCV";
     protected static ?string $navigationGroup = "Keuangan";
-    protected static ?string $pluralLabel = "Data Uang Muka";
-    protected static ?string $navigationLabel = "Uang Muka";
-    protected static ?string $pluralModelLabel = 'Daftar Uang Muka';
+    protected static ?string $pluralLabel = "Data Uang Muka GCV";
+    protected static ?string $navigationLabel = "Uang Muka GCV";
+    protected static ?string $pluralModelLabel = 'Daftar Uang Muka GCV';
     protected static ?string $navigationIcon = 'heroicon-o-folder-arrow-down';
     public static function form(Form $form): Form
     {

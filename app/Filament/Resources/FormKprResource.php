@@ -50,15 +50,15 @@ use Illuminate\Support\Facades\Auth;
 
 class FormKprResource extends Resource
 {
-    protected static ?string $title = "Form Input Data Penjualan";
+    protected static ?string $title = "Data Penjualan GCV";
 
     protected static ?string $navigationGroup = "KPR";
 
-    protected static ?string $pluralLabel = "Data Penjualan KPR";
+    protected static ?string $pluralLabel = "Data Penjualan KPR GCV";
 
-    protected static ?string $navigationLabel = "Form Penjualan";
+    protected static ?string $navigationLabel = "Form Penjualan GCV";
 
-    protected static ?string $pluralModelLabel = 'Daftar Data Penjualan KPR';
+    protected static ?string $pluralModelLabel = 'Daftar Data Penjualan KPR GCV';
 
 
 

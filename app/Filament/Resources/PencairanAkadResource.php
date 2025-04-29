@@ -57,11 +57,11 @@ class PencairanAkadResource extends Resource
 {
     protected static ?string $model = PencairanAkad::class;
 
-    protected static ?string $title = "Form Input Data Pencairan Akad";
+    protected static ?string $title = "Form Input Data Pencairan Akad GCV";
     protected static ?string $navigationGroup = "Keuangan";
-    protected static ?string $pluralLabel = "Data Pencairan Akad";
-    protected static ?string $navigationLabel = "Pencairan Akad";
-    protected static ?string $pluralModelLabel = 'Daftar Pencairan';
+    protected static ?string $pluralLabel = "Data Pencairan Akad GCV";
+    protected static ?string $navigationLabel = "Pencairan Akad GCV";
+    protected static ?string $pluralModelLabel = 'Daftar Pencairan GCV';
     protected static ?string $navigationIcon = 'heroicon-o-cloud-arrow-up';
     public static function form(Form $form): Form
     {

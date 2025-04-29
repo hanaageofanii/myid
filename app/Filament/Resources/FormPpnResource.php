@@ -55,11 +55,11 @@ use Illuminate\Support\Facades\Auth;
 class FormPpnResource extends Resource  
 {
     protected static ?string $model = form_ppn::class;
-    protected static ?string $title = "Form Data Faktur PPN";
+    protected static ?string $title = "Form Data Faktur PPN GCV";
     protected static ?string $navigationGroup = "Legal - Pajak";
-    protected static ?string $pluralLabel = "Data Faktur PPN";
-    protected static ?string $navigationLabel = "Faktur PPN";
-    protected static ?string $pluralModelLabel = 'Daftar Faktur PPN';
+    protected static ?string $pluralLabel = "Data Faktur PPN GCV";
+    protected static ?string $navigationLabel = "Faktur PPN GCV";
+    protected static ?string $pluralModelLabel = 'Daftar Faktur PPN GCV';
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     public static function form(Form $form): Form
     {

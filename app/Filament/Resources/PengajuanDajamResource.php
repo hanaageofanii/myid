@@ -62,11 +62,11 @@ use Illuminate\Support\Facades\Auth;
 class PengajuanDajamResource extends Resource
 {
     protected static ?string $model = pengajuan_dajam::class;
-    protected static ?string $title = "Form Pengajuan Dajam";
+    protected static ?string $title = "Form Pengajuan Dajam GCV";
     protected static ?string $navigationGroup = "Legal";
-    protected static ?string $pluralLabel = "Data Pengajuan Dajam";
-    protected static ?string $navigationLabel = "Pengajuan Dajam";
-    protected static ?string $pluralModelLabel = 'Daftar Pengajuan Dajam';
+    protected static ?string $pluralLabel = "Data Pengajuan Dajam GCV";
+    protected static ?string $navigationLabel = "Pengajuan Dajam GCV";
+    protected static ?string $pluralModelLabel = 'Daftar Pengajuan Dajam GCV';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     public static function form(Forms\Form $form): Forms\Form

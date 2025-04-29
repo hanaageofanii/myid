@@ -54,15 +54,15 @@ class FormPajakResource extends Resource
 {
     protected static ?string $model = form_pajak::class;
 
-    protected static ?string $title = "Form Validasi PPH";
+    protected static ?string $title = "Form Validasi PPH GCV";
 
     protected static ?string $navigationGroup = "Legal - Pajak";
 
-    protected static ?string $pluralLabel = "Data Validasi PPH";
+    protected static ?string $pluralLabel = "Data Validasi PPH GCV";
 
-    protected static ?string $navigationLabel = "Validasi PPH";
+    protected static ?string $navigationLabel = "Validasi PPH GCV";
 
-    protected static ?string $pluralModelLabel = 'Daftar Validasi PPH';
+    protected static ?string $pluralModelLabel = 'Daftar Validasi PPH GCV';
     protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
 
     public static function form(Form $form): Form
