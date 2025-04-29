@@ -52,7 +52,7 @@ use App\Models\Audit;
 use App\Filament\Resources\FormLegalResource;
 use App\Models\GCV;
 use App\Filament\Resources\KPRStats;
-use App\Models\form_legal;
+use App\Models\form_legal_pca;
 use App\Models\form_pajak;
 use Illuminate\Support\Facades\Auth;
 
