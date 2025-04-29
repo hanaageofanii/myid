@@ -14,7 +14,7 @@ class ListAuditPCAS extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->label('Buat Data Audit GCV'),
+            ->label('Buat Data Audit PCA'),
         ];
     }
 

@@ -11,11 +11,11 @@ use Filament\Notifications\Notification;
 class CreateAuditPCA extends CreateRecord
 {
     protected static string $resource = AuditPCAResource::class;
-    protected static ?string $title = "Buat Data Audit GCV ";
+    protected static ?string $title = "Buat Data Audit PCA ";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
-        ->label('Tambah Data Audit GCV');
+        ->label('Tambah Data Audit PCA');
     }
 
     protected function getCreateAnotherFormAction(): Actions\Action
