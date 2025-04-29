@@ -13,7 +13,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\ajb;
-use App\Models\form_kpr;
 use Filament\Forms\Components\Fieldset;
 use App\Models\PencairanAkad;
 use App\Models\form_dp;
@@ -48,7 +47,7 @@ use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Actions\ForceDeleteAction;
-use App\Models\FormKpr;
+use App\Models\form_kpr_pca;
 use App\Models\Audit;
 use App\Filament\Resources\FormLegalResource;
 use App\Models\GCV;
@@ -74,7 +73,7 @@ class AjbPCAResource extends Resource
             ->schema([
                 Select::make('siteplan')
                 ->label('Blok')
-                ->options(fn () => form_kpr::pluck('siteplan', 'siteplan')) 
+                ->options(fn () => form_kpr_pca::pluck('siteplan', 'siteplan')) 
                 ->searchable()
                 ->disabled(fn () => ! (function () {
                     /** @var \App\Models\User|null $user */
@@ -83,7 +82,7 @@ class AjbPCAResource extends Resource
                 })())
                 ->reactive()
                 ->afterStateUpdated(function ($state, callable $set) {
-                    $kprData = form_kpr::where('siteplan', $state)->first();
+                    $kprData = form_kpr_pca::where('siteplan', $state)->first();
                     if ($kprData) {
                         $set('kavling', $kprData->jenis_unit);
                         $set('nama_konsumen', $kprData->nama_konsumen);
@@ -93,7 +92,7 @@ class AjbPCAResource extends Resource
                 }
             
 
-                        $legalData = form_legal::where('siteplan', $state)->first();
+                        $legalData = form_legal_pca::where('siteplan', $state)->first();
                         if ($legalData) {
                             $set('nop', $legalData->nop);
                         }
