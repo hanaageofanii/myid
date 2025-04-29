@@ -13,7 +13,7 @@ class AuditPCAPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak']);
     }
 
     /**
@@ -21,7 +21,7 @@ class AuditPCAPolicy
      */
     public function view(User $user, AuditPCA $auditPCA): bool
     {
-        //
+        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak']);
     }
 
     /**
@@ -29,7 +29,7 @@ class AuditPCAPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasRole(['admin', 'Legal officer']);
     }
 
     /**
@@ -37,7 +37,7 @@ class AuditPCAPolicy
      */
     public function update(User $user, AuditPCA $auditPCA): bool
     {
-        //
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -45,7 +45,7 @@ class AuditPCAPolicy
      */
     public function delete(User $user, AuditPCA $auditPCA): bool
     {
-        //
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -53,7 +53,7 @@ class AuditPCAPolicy
      */
     public function restore(User $user, AuditPCA $auditPCA): bool
     {
-        //
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -61,6 +61,6 @@ class AuditPCAPolicy
      */
     public function forceDelete(User $user, AuditPCA $auditPCA): bool
     {
-        //
+        return $user->hasRole(['admin','Legal officer']);
     }
 }
