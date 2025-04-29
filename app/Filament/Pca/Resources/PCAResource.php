@@ -14,8 +14,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\GCV;
-use App\Models\Audit;
-use App\Filament\Resources\AuditResource;
+use App\Models\AuditPCA;
+use App\Filament\Resources\AuditPCAResource;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Actions\ViewAction;
@@ -109,7 +109,7 @@ class PCAResource extends Resource
                 Forms\Components\Select::make('siteplan')
                     ->label('Blok')
                     ->options(
-                        Audit::where('terbangun', '=', 1)
+                        AuditPCA::where('terbangun', '=', 1)
                             ->pluck('siteplan', 'siteplan')
                             ->toArray()     
                             ) 
@@ -118,10 +118,10 @@ class PCAResource extends Resource
                     ->reactive()
                     ->unique(ignoreRecord: true)
                     ->afterStateUpdated(function ($state, callable $set) {
-                        $audit = Audit::where('siteplan', $state)->first(); 
+                        $audit_p_c_a_s = AuditPCA::where('siteplan', $state)->first(); 
 
-                        if ($audit) {
-                            $set('type', $audit->type);
+                        if ($audit_p_c_a_s) {
+                            $set('type', $audit_p_c_a_s->type);
                         }
                     })->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
@@ -478,6 +478,14 @@ class PCAResource extends Resource
             ]);
             
 }
+
+public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
 
     public static function getRelations(): array
     {
