@@ -24,6 +24,5 @@ class rekonsil extends Model
         'tipe',
         'status_rekonsil',
         'catatan',
-
     ];
 }
