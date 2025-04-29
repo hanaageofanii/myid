@@ -17,8 +17,12 @@ class AjbPCAResource extends Resource
 {
     protected static ?string $model = AjbPCA::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $title = "AJB";
+    protected static ?string $navigationGroup = "Legal - Pajak";
+    protected static ?string $pluralLabel = "AJB";
+    protected static ?string $navigationIcon = 'heroicon-o-document';
+    protected static ?string $navigationLabel = 'AJB';
+    protected static ?string $pluralModelLabel = 'Daftar AJB';
     public static function form(Form $form): Form
     {
         return $form
