@@ -83,7 +83,7 @@ class AjbPCAResource extends Resource
                 })())
                 ->reactive()
                 ->afterStateUpdated(function ($state, callable $set) {
-                    $kprData = form_kpr::where('siteplan', $state)->first();
+                    $kprData = form_kpr_pca::where('siteplan', $state)->first();
                     if ($kprData) {
                         $set('kavling', $kprData->jenis_unit);
                         $set('nama_konsumen', $kprData->nama_konsumen);
