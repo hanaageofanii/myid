@@ -240,8 +240,8 @@ class FormPajakResource extends Resource
                 Forms\Components\Select::make('tarif_pph')
                 ->label('Tarif PPH')
                 ->options([
-                    '1' => '1 %',
-                    '2.5' => '2.5 %',
+                    '1%' => '1 %',
+                    '2,5%' => '2,5 %',
                 ])
                 ->required()
                 ->reactive()
@@ -411,7 +411,7 @@ class FormPajakResource extends Resource
         
                 Tables\Columns\TextColumn::make('tarif_pph')->sortable()->searchable()->label('Tarif PPH')->formatStateUsing(fn (string $state): string => match ($state) {
                     '1%' => '1 %',
-                    '2.5%' => '2.5 %',
+                    '2,5%' => '2,5 %',
                     default => $state, 
                 }),
                 

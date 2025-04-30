@@ -18,7 +18,7 @@ class form_pajak extends Model
         'tanggal_bayar_pph','ntpnpph','validasi_pph','tanggal_validasi','up_kode_bill','up_bukti_setor_pajak','up_suket_validasi'
     ];
 
-    protected $cast = [
+    protected $casts = [
         "up_kode_bill" => 'array',
         "up_bukti_setor_pajak" => 'array',
         "up_suket_validasi" => 'array',
