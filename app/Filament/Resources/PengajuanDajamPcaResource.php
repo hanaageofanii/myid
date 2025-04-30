@@ -51,8 +51,8 @@ use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Actions\ForceDeleteAction;
 use App\Models\Audit;
-use App\Filament\Resources\GCVResource;
-use App\Models\GCV;
+use App\Filament\Resources\PCAResource;
+use App\Models\PCA;
 use App\Filament\Resources\KPRStats;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,11 +60,13 @@ class PengajuanDajamPcaResource extends Resource
 {
     protected static ?string $model = pengajuan_dajam_pca::class;
 
-    protected static ?string $title = "Form Pengajuan Dajam GCV";
+    protected static ?string $title = "Form Pengajuan Dajam PCA";
     protected static ?string $navigationGroup = "Legal";
-    protected static ?string $pluralLabel = "Data Pengajuan Dajam GCV";
-    protected static ?string $navigationLabel = "Pengajuan Dajam GCV";
-    protected static ?string $pluralModelLabel = 'Daftar Pengajuan Dajam GCV';
+    protected static ?string $pluralLabel = "Data Pengajuan Dajam PCA";
+    protected static ?string $navigationLabel = "Pengajuan Dajam PCA";
+    protected static ?string $pluralModelLabel = 'Daftar Pengajuan Dajam PCA';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+
     public static function form(Form $form): Form
     {
         return $form->schema([
