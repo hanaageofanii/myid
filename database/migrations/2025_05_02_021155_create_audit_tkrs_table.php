@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('audit_t_k_r_s', function (Blueprint $table) {
+        Schema::create('audit_tkrs', function (Blueprint $table) {
             $table->id();
             $table->string('siteplan');
             $table->string('type');
@@ -47,6 +47,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('audit_t_k_r_s');
+        Schema::dropIfExists('audit_tkrs');
     }
 };

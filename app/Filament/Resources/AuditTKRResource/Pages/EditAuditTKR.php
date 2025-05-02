@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\AuditTKRResource\Pages;
+namespace App\Filament\Resources\AuditTkrResource\Pages;
 
-use App\Filament\Resources\AuditTKRResource;
+use App\Filament\Resources\AuditTkrResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditAuditTKR extends EditRecord
+class EditAuditTkr extends EditRecord
 {
-    protected static string $resource = AuditTKRResource::class;
+    protected static string $resource = AuditTkrResource::class;
 
     protected static ?string $title = "Ubah Data Audit TKR";
 

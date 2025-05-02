@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Filament\Resources\AuditTKRResource\Pages;
+namespace App\Filament\Resources\AuditTkrResource\Pages;
 
-use App\Filament\Resources\AuditTKRResource;
+use App\Filament\Resources\AuditTkrResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Resources\AuditTKRResource\Widgets\AuditTKR;
+use App\Filament\Resources\AuditTkrResource\Widgets\audit_tkrStats;
 
 
-class ListAuditTKRS extends ListRecords
+class ListAuditTkrs extends ListRecords
 {
-    protected static string $resource = AuditTKRResource::class;
+    protected static string $resource = AuditTkrResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -23,7 +23,7 @@ class ListAuditTKRS extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            AuditTKR::class,
+            audit_tkrStats::class,
         ];
     }
 

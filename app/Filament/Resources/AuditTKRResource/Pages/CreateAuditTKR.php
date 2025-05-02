@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Filament\Resources\AuditTKRResource\Pages;
+namespace App\Filament\Resources\AuditTkrResource\Pages;
 
-use App\Filament\Resources\AuditTKRResource;
+use App\Filament\Resources\AuditTkrResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Notifications\Notification;
 
 
-class CreateAuditTKR extends CreateRecord
+class CreateAuditTkr extends CreateRecord
 {
-    protected static string $resource = AuditTKRResource::class;
-    protected static ?string $title = "Buat Data Audit GCV ";
+    protected static string $resource = AuditTkrResource::class;
+    protected static ?string $title = "Buat Data Audit TKR ";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
-        ->label('Tambah Data Audit GCV');
+        ->label('Tambah Data Audit TKR');
     }
 
     protected function getCreateAnotherFormAction(): Actions\Action
