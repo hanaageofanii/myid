@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 
-
-class form_legal_pca extends Model
+class LegalTkr extends Model
 {
     use HasFactory, SoftDeletes, HasRoles;
+
+    // protected $table = 'form_legals';
+
     protected $fillable = [
         'id','siteplan','nama_konsumen','id_rumah','status_sertifikat',
         'no_sertifikat','nib','luas_sertifikat','imb_pbg','nop','nop1',

@@ -12,8 +12,6 @@ class form_legal extends Model
 {
     use HasFactory, SoftDeletes, HasRoles;
 
-    protected $table = 'form_legals';
-
     protected $fillable = [
         'id','siteplan','nama_konsumen','id_rumah','status_sertifikat',
         'no_sertifikat','nib','luas_sertifikat','imb_pbg','nop','nop1',
