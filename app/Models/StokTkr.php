@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 
 
-class GCV extends Model
+class StokTkr extends Model
 {
     use HasFactory, SoftDeletes, HasRoles;
 
@@ -33,6 +33,6 @@ class GCV extends Model
 
     public function audit()
     {
-        return $this->belongsTo(AuditPCA::class, 'siteplan');
+        return $this->belongsTo(audit_tkr::class, 'siteplan');
     }
 }
