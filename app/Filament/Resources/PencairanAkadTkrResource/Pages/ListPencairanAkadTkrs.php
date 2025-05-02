@@ -5,7 +5,8 @@ namespace App\Filament\Resources\PencairanAkadTkrResource\Pages;
 use App\Filament\Resources\PencairanAkadTkrResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Resources\PencairanAkadTkrResource\Widgets\PencairanAkadTkr;
+use App\Models\PencairanAkadTkr;
+// use App\Filament\Resources\PencairanAkadTkrResource\Widgets\PencairanAkadTkr;
 
 
 class ListPencairanAkadTkrs extends ListRecords
