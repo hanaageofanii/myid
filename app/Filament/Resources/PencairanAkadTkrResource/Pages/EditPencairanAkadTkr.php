@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Filament\Resources\FormDpTkrResource\Pages;
+namespace App\Filament\Resources\PencairanAkadTkrResource\Pages;
 
-use App\Filament\Resources\FormDpTkrResource;
+use App\Filament\Resources\PencairanAkadTkrResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditFormDpTkr extends EditRecord
+class EditPencairanAkadTkr extends EditRecord
 {
-    protected static string $resource = FormDpTkrResource::class;
+    protected static string $resource = PencairanAkadTkrResource::class;
 
-    protected static ?string $title = "Ubah Data Form DP";
+    protected static ?string $title = "Ubah Data Pencairan Akad";
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Data Uang Muka')
+            ->label('Hapus Data Pencairan Akad')
             ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
             ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?"),
+
         ];
     }
 
@@ -27,4 +28,5 @@ class EditFormDpTkr extends EditRecord
         return parent::getSaveFormAction()
         ->label('Simpan');
     }
+    
 }

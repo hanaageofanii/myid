@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Filament\Resources\VerifikasiDajamTkrResource\Pages;
+namespace App\Filament\Resources\PencairanAkadTkrResource\Pages;
 
-use App\Filament\Resources\VerifikasiDajamTkrResource;
+use App\Filament\Resources\PencairanAkadTkrResource;
 use Filament\Actions;
-use Filament\Resources\Pages\CreateRecord;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\CreateRecord;
 
-
-class CreateVerifikasiDajamTkr extends CreateRecord
+class CreatePencairanAkadTkr extends CreateRecord
 {
-    protected static string $resource = VerifikasiDajamTkrResource::class;
-    protected static ?string $title = "Buat Data Verifikasi Dajam";
+    protected static string $resource = PencairanAkadTkrResource::class;
+    protected static ?string $title = "Buat Data Pencairan Akad";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
@@ -36,8 +35,8 @@ class CreateVerifikasiDajamTkr extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Data Verifikasi Dajam Disimpan')
-            ->body('Data Verifikasi Dajam telah berhasil disimpan.');
+            ->title('Data Pencairan Akad Disimpan')
+            ->body('Data Pencairan Akad telah berhasil disimpan.');
     }
 
     protected function getSaveFormAction(): Actions\Action

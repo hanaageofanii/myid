@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Filament\Resources\VerifikasiDajamTkrResource\Pages;
+namespace App\Filament\Resources\PencairanAkadTkrResource\Pages;
 
-use App\Filament\Resources\VerifikasiDajamTkrResource;
+use App\Filament\Resources\PencairanAkadTkrResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Resources\VerifikasiDajamTkrResource\Widgets\verifikasiDajamTkr;
+use App\Filament\Resources\PencairanAkadTkrResource\Widgets\PencairanAkadTkr;
 
 
-class ListVerifikasiDajamTkrs extends ListRecords
+class ListPencairanAkadTkrs extends ListRecords
 {
-    protected static string $resource = VerifikasiDajamTkrResource::class;
+    protected static string $resource = PencairanAkadTkrResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make()
-            ->label('Buat Data Verifikasi Dajam'),
+            ->label('Buat Data Pencairan Akad'),
         ];
     }
     protected function getHeaderWidgets(): array
     {
         return [
-            verifikasiDajamTkr::class,
+            PencairanAkadTkr::class,
         ];
     }
 
@@ -32,5 +32,4 @@ class ListVerifikasiDajamTkrs extends ListRecords
         ->label('Simpan');
     }
 }
-
 
