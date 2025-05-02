@@ -16,7 +16,7 @@ class ListAuditTkrs extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->label('Buat Data Audit PCA'),
+            ->label('Buat Data Audit TKR'),
         ];
     }
 
