@@ -19,6 +19,8 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
+// use App\Filament\Resources\StokTkrResource\Widgets\stok_tkr;
+
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\DatePicker;
@@ -519,12 +521,12 @@ return $query;
 }
 
 
-// public static function getWidgets(): array
-// {
-//     return [
-//         GCVStats::class,
-//     ];
-// }
+public static function getWidgets(): array
+{
+    return [
+        stok_tkr::class,
+    ];
+}
 
     public static function getPages(): array
     {
