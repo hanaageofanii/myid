@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tkrs', function (Blueprint $table) {
+        Schema::create('stok_tkrs', function (Blueprint $table) {
             $table->id();
             $table->enum('proyek', ['gcv_cira','gcv','tkr','tkr_cira','pca1'])->nullable();
             $table->enum('nama_perusahaan', ['grand_cikarang_village','taman_kertamukti_residence','pesona_cengkong_asri_1'])->nullable();
@@ -37,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tkrs');
+        Schema::dropIfExists('stok_tkrs');
     }
 };

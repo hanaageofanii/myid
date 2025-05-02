@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\TkrResource\Pages;
+namespace App\Filament\Resources\StokTkrResource\Pages;
 
-use App\Filament\Resources\TkrResource;
+use App\Filament\Resources\StokTkrResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditTkr extends EditRecord
+class EditStokTkr extends EditRecord
 {
-    protected static string $resource = TkrResource::class;
+    protected static string $resource = StokTkrResource::class;
 
     protected function getHeaderActions(): array
     {

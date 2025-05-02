@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TkrResource\Pages;
-use App\Filament\Resources\TkrResource\RelationManagers;
-use App\Models\Tkr;
+use App\Filament\Resources\StokTkrResource\Pages;
+use App\Filament\Resources\StokTkrResource\RelationManagers;
+use App\Models\stok_tkr;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,7 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Models\Audit;
+use App\Models\audit_tkr;
 use App\Filament\Resources\AuditResource;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\TrashedFilter;
@@ -44,9 +44,9 @@ use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class TkrResource extends Resource
+class StokTkrResource extends Resource
 {
-    protected static ?string $model = Tkr::class;
+    protected static ?string $model = stok_tkr::class;
 
     protected static ?string $title = "Taman Kertamukti Residence";
     protected static ?string $navigationGroup = "Stok";
@@ -109,7 +109,7 @@ class TkrResource extends Resource
                     Forms\Components\Select::make('siteplan')
                         ->label('Blok')
                         ->options(
-                            Audit::where('terbangun', '=', 1)
+                            audit_tkr::where('terbangun', '=', 1)
                                 ->pluck('siteplan', 'siteplan')
                                 ->toArray()     
                                 ) 
@@ -118,7 +118,7 @@ class TkrResource extends Resource
                         ->reactive()
                         ->unique(ignoreRecord: true)
                         ->afterStateUpdated(function ($state, callable $set) {
-                            $audit = Audit::where('siteplan', $state)->first(); 
+                            $audit = audit_tkr::where('siteplan', $state)->first(); 
 
                             if ($audit) {
                                 $set('type', $audit->type);
@@ -262,7 +262,7 @@ class TkrResource extends Resource
             Tables\Columns\TextColumn::make('proyek')->label('Proyek')
             ->formatStateUsing(fn (string $state): string => match ($state)
             {
-                    'gcv_cira' => 'gcv Cira',
+                    'gcv_cira' => 'GCV Cira',
                     'gcv' => 'GCV',
                     'tkr' => 'TKR',
                     'tkr_cira' => 'TKR Cira',
@@ -519,19 +519,19 @@ return $query;
 }
 
 
-public static function getWidgets(): array
-{
-    return [
-        tkr::class,
-    ];
-}
+// public static function getWidgets(): array
+// {
+//     return [
+//         GCVStats::class,
+//     ];
+// }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTkrs::route('/'),
-            'create' => Pages\CreateTkr::route('/create'),
-            'edit' => Pages\EditTkr::route('/{record}/edit'),
+            'index' => Pages\ListStokTkrs::route('/'),
+            'create' => Pages\CreateStokTkr::route('/create'),
+            'edit' => Pages\EditStokTkr::route('/{record}/edit'),
         ];
     }
 }
