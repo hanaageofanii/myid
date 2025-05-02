@@ -15,18 +15,18 @@ class AjbStats extends BaseWidget
     protected static ?string $maxHeight = '300px';
     protected static ?string $pollingInterval = '10s';
     protected static bool $isLazy = false;
-    protected ?string $heading = 'Dashboard AJB';
+    protected ?string $heading = 'Dashboard AJB GCV';
 
     protected function getStats(): array
     {
         return [
             Card::make('Total Data AJB', ajb::count())
             ->extraAttributes([
-                'style' => 'background-color: #FFC85B; border-color: #234C63;'
+                'style' => 'background-color: #FFff; border-color: #234C63;'
             ]),    
             Card::make('Total Site Plan', ajb::distinct('siteplan')->count('siteplan'))
             ->extraAttributes([
-                'style' => 'background-color: #FFC85B; border-color: #234C63;'
+                'style' => 'background-color: #FFff; border-color: #234C63;'
             ]),            
         ];
     }
