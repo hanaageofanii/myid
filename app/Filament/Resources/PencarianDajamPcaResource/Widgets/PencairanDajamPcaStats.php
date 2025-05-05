@@ -4,11 +4,10 @@ namespace App\Filament\Resources\PencairanDajamPcaResource\Widgets;
 
 use App\Models\pencairan_dajam_pca;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
-use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget\Card;
 
+class PencairanDajamPcaStats extends BaseWidget
 
-class pencarian_dajam_pca extends BaseWidget
 {
     protected static ?int $sort = 13;
 

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PencairanDajamTkrResource\Pages;
 
+use App\Filament\Resources\PencairanDajamResource\Widgets\pencairanDajamTkrStats;
 use App\Filament\Resources\PencairanDajamTkrResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -22,7 +23,7 @@ class ListPencairanDajamTkrs extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            PencairanDajamTkr::class,
+            pencairanDajamTkrStats::class,
         ];
     }
 
