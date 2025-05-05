@@ -10,10 +10,23 @@ class EditBukuRekonsil extends EditRecord
 {
     protected static string $resource = BukuRekonsilResource::class;
 
+    protected static ?string $title = "Ubah Data Rekonsil";
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+            ->label('Hapus Rekonsil')
+            ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->no_check}")
+            ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->no_check}?"),
+
         ];
     }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
+    }
+    
 }

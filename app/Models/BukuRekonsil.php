@@ -19,6 +19,8 @@ class BukuRekonsil extends Model
         'nama_penerima',
         'account_bank',
         'bank',
+        'jenis',
+        'rekening',
         'deskripsi',
         'jumlah_uang',
         'tipe',
@@ -28,6 +30,11 @@ class BukuRekonsil extends Model
 
 
     ];
+
+    protected $casts = [
+        'bukti_bukti' => 'array',
+    ];
+    
 
 
 }

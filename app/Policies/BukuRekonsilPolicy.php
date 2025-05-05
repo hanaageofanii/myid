@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\BukuRekonsil;
 
 class BukuRekonsilPolicy
 {
@@ -17,7 +18,7 @@ class BukuRekonsilPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, BukuRekonsilPolicy $BukuRekonsilPolicy): bool
+    public function view(User $user, BukuRekonsil $BukuRekonsil): bool
     {
         return $user->hasRole(['admin','Direksi','Kasir 1','Kasir 2']);
     }
@@ -33,7 +34,7 @@ class BukuRekonsilPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, BukuRekonsilPolicy $BukuRekonsilPolicy): bool
+    public function update(User $user, BukuRekonsil $BukuRekonsil): bool
     {
         return $user->hasRole(['admin','Kasir 1','Kasir 2']);
     }
@@ -41,7 +42,7 @@ class BukuRekonsilPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, BukuRekonsilPolicy $BukuRekonsilPolicy): bool
+    public function delete(User $user, BukuRekonsil $BukuRekonsil): bool
     {
         return $user->hasRole(['admin','Kasir 1','Kasir 2']);
     }
@@ -49,7 +50,7 @@ class BukuRekonsilPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, BukuRekonsilPolicy $BukuRekonsilPolicy): bool
+    public function restore(User $user, BukuRekonsil $BukuRekonsil): bool
     {
         return $user->hasRole(['admin','Kasir 1','Kasir 2']);
     }
@@ -57,7 +58,7 @@ class BukuRekonsilPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, BukuRekonsilPolicy $BukuRekonsilPolicy): bool
+    public function forceDelete(User $user, BukuRekonsil $BukuRekonsil): bool
     {
         return $user->hasRole(['admin','Kasir 1','Kasir 2']);
     }

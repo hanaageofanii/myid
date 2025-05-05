@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('nama_penerima')->nullable();
             $table->string('account_bank')->nullable();
             $table->string('bank')->nullable();
+            $table->enum('jenis',['operasional','escrow'])->nullable();
+            $table->string('rekening')->nullable();
             $table->string('deskripsi')->nullable();
             $table->string('jumlah_uang')->nullable();
             $table->enum('tipe',['debit','kredit'])->nullable();
