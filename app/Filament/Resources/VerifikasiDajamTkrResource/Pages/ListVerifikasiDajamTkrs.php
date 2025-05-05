@@ -5,7 +5,8 @@ namespace App\Filament\Resources\VerifikasiDajamTkrResource\Pages;
 use App\Filament\Resources\VerifikasiDajamTkrResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Resources\VerifikasiDajamTkrResource\Widgets\verifikasiDajamTkr;
+use App\Filament\Resources\VerifikasiDajamTkrResource\Widgets\VerifikasiDajamTkrStats;
+
 
 
 class ListVerifikasiDajamTkrs extends ListRecords
@@ -22,7 +23,7 @@ class ListVerifikasiDajamTkrs extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            verifikasiDajamTkr::class,
+            VerifikasiDajamTkrStats::class,
         ];
     }
 

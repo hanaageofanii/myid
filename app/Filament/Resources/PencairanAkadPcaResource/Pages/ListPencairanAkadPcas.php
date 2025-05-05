@@ -6,7 +6,7 @@ use App\Filament\Resources\PencairanAkadPcaResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\PencairanAkadPcaResource\Widgets\pencairan_akad_pca;
-
+use App\Filament\Resources\PencairanAkadPcaResource\Widgets\PencairanAkadPcaStats;
 
 class ListPencairanAkadPcas extends ListRecords
 {
@@ -23,7 +23,7 @@ class ListPencairanAkadPcas extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            pencairan_akad_pca::class,
+            PencairanAkadPcaStats::class,
         ];
     }
 

@@ -2,12 +2,13 @@
 
 namespace App\Filament\Resources\PencairanAkadPcaResource\Widgets;
 
+use App\Models\pencairan_akad_pca;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget\Card;
 
 
-class pencairan_akad_pca extends BaseWidget
+class PencairanAkadPcaStats extends BaseWidget
 {
     protected static ?int $sort = 8;
 
