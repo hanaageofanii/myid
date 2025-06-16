@@ -1,4 +1,4 @@
-<?php  
+<?php
 
 namespace App\Filament\Resources;
 
@@ -56,7 +56,7 @@ class GCVResource extends Resource
     protected static ?string $pluralModelLabel = 'Data GCV';
 
 
-    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -113,17 +113,19 @@ class GCVResource extends Resource
                         ->options(
                             Audit::where('terbangun', '=', 1)
                                 ->pluck('siteplan', 'siteplan')
-                                ->toArray()     
-                                ) 
+                                ->toArray()
+                                )
                                 ->searchable()
                         ->required()
                         ->reactive()
                         ->unique(ignoreRecord: true)
                         ->afterStateUpdated(function ($state, callable $set) {
-                            $audit = Audit::where('siteplan', $state)->first(); 
+                            $audit = Audit::where('siteplan', $state)->first();
 
                             if ($audit) {
                                 $set('type', $audit->type);
+                                $set('luas_tanah', $audit->luas);
+
                             }
                         })->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
@@ -131,7 +133,7 @@ class GCVResource extends Resource
                             return $user && $user->hasRole(['admin','KPR Stok']);
                         })()),
 
-                
+
                 Forms\Components\TextInput::make('type')
                     ->label('Type')
                     ->required()
@@ -140,7 +142,7 @@ class GCVResource extends Resource
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','KPR Stok']);
                     })()),
-                
+
 
                 Forms\Components\TextInput::make('luas_tanah')
                     ->numeric()
@@ -164,7 +166,7 @@ class GCVResource extends Resource
                             $set('tanggal_booking', null);
                             $set('nama_konsumen', null);
                             $set('agent', null);
-                
+
                             $record->update([
                                 'tanggal_booking' => null,
                                 'nama_konsumen' => null,
@@ -201,8 +203,8 @@ class GCVResource extends Resource
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin', 'Legal officer','Legal Pajak', 'KPR Stok']) && $get('status') === 'booking';
-                    })()), 
-                
+                    })()),
+
                 Forms\Components\Select::make('status_sertifikat')
                     ->options([
                         'pecah' => 'SUDAH PECAH',
@@ -238,7 +240,7 @@ class GCVResource extends Resource
                     ->afterStateUpdated(function ($state, $set, $get, $record) {
                         if ($record && $record->siteplan) {
                             $audit = \App\Models\Audit::where('siteplan', $record->siteplan)->first();
-                
+
                             if ($audit) {
                                 $audit->update([
                                     'status' => $state === 'akad' ? 'akad' : null,
@@ -251,8 +253,8 @@ class GCVResource extends Resource
                         $user = Auth::user();
                         if (is_null($state) && $user && $user->hasRole(['Direksi', 'Super admin','admin','KPR Stok'])) {
                             $set('tanggal_akad', null);
-                            
-                
+
+
                             $record->update([
                                 'tanggal_akad' => null,
                             ]);
@@ -354,7 +356,7 @@ class GCVResource extends Resource
                         'sp3k' => 'SP3K',
                         'akad' => 'Akad',
                         'batal' => 'Batal',
-                        default => $state, 
+                        default => $state,
                     })->searchable(),
                 Tables\Columns\TextColumn::make('tanggal_akad')->date()->label('Tanggal Akad')->searchable()                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
 
@@ -370,19 +372,19 @@ class GCVResource extends Resource
                     ->label('Terbooking')
                     ->query(fn ($query) => $query->where('status','booking'))
                     ->toggle(),
-                    
+
                      Tables\Filters\Filter::make('belum_terbooking')
                     ->label('Belum Terbooking')
                     ->query(fn ($query) => $query->whereNull('status'))
                     ->toggle(),
-            
+
                 Tables\Filters\TrashedFilter::make()
                     ->label('Data yang dihapus')
                     ->native(false),
 
-                    
-            
-                Tables\Filters\SelectFilter::make('kpr_status') 
+
+
+                Tables\Filters\SelectFilter::make('kpr_status')
                     ->label('Status KPR')
                     ->options([
                         'sp3k' => 'SP3K',
@@ -390,8 +392,8 @@ class GCVResource extends Resource
                         'batal' => 'Batal',
                     ])
                     ->native(false),
-                    
-                Tables\Filters\SelectFilter::make('kavling') 
+
+                Tables\Filters\SelectFilter::make('kavling')
                     ->label('Jenis Unit')
                     ->options([
                         'standar' => 'Standar',
@@ -404,23 +406,23 @@ class GCVResource extends Resource
                     ->native(false),
 
 
-                Tables\Filters\SelectFilter::make('proyek') 
+                Tables\Filters\SelectFilter::make('proyek')
                     ->label('Proyek')
                     ->options([
                         'gcv_cira' => 'GCV Cira',
                         'gcv' => 'GCV',
                     ])
                     ->native(false),
-                    
-                 Tables\Filters\SelectFilter::make('status_sertifikat') 
+
+                 Tables\Filters\SelectFilter::make('status_sertifikat')
                 ->label('Status Sertifikat')
                 ->options([
                     'pecah' => 'Sudah Pecah',
                     'belum' => 'Belum Pecah',
                 ])
                 ->native(false),
-                
-            Tables\Filters\SelectFilter::make('status_pembayaran') 
+
+            Tables\Filters\SelectFilter::make('status_pembayaran')
                 ->label('Status Pembayaran')
                 ->options([
                     'cash' => 'Cash',
@@ -429,7 +431,7 @@ class GCVResource extends Resource
                     'promo' => 'Promo',
                 ])
                 ->native(false),
-            
+
 // Filter::make('tanggal_booking')
 //     ->label('Tanggal Booking')
 //     ->form([
@@ -444,12 +446,12 @@ class GCVResource extends Resource
 //             ->when($data['until'], fn ($q) => $q->whereDate('tanggal_booking', '<=', $data['until']));
 //     }),
 
-                            
+
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormMaxHeight('400px')
             ->filtersFormColumns(4)
             ->filtersFormWidth(MaxWidth::FourExtraLarge)
-            
+
             ->actions([
                 ActionGroup::make([
                     ViewAction::make()
@@ -462,7 +464,7 @@ class GCVResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Data GCV Diperbarui')
-                                ->body('Data GCV telah berhasil disimpan.')),                    
+                                ->body('Data GCV telah berhasil disimpan.')),
                                 DeleteAction::make()
                                 ->color('danger')
                                 ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
@@ -501,23 +503,23 @@ class GCVResource extends Resource
                     ),
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
-            
+
                 ->groupedBulkActions([
                     BulkAction::make('delete')
                         ->label('Hapus')
-                        ->icon('heroicon-o-trash') 
+                        ->icon('heroicon-o-trash')
                         ->color('danger')
                         ->successNotification(
                             Notification::make()
                                 ->success()
                                 ->title('Data GCV')
-                                ->body('Data GCV berhasil dihapus.'))                        
+                                ->body('Data GCV berhasil dihapus.'))
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
-                
+
                     BulkAction::make('forceDelete')
                         ->label('Hapus Permanent')
-                        ->icon('heroicon-o-x-circle') 
+                        ->icon('heroicon-o-x-circle')
                         ->color('warning')
                         ->successNotification(
                             Notification::make()
@@ -525,16 +527,16 @@ class GCVResource extends Resource
                                 ->title('Data GCV')
                                 ->body('Data GCV berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
-                
+
                     BulkAction::make('export')
                         ->label('Download Data')
-                        ->icon('heroicon-o-arrow-down-tray') 
+                        ->icon('heroicon-o-arrow-down-tray')
                         ->color('info')
                         ->action(fn (Collection $records) => static::exportData($records)),
-                
+
                     Tables\Actions\RestoreBulkAction::make()
                         ->label('Kembalikan Data')
-                        ->icon('heroicon-o-arrow-path') 
+                        ->icon('heroicon-o-arrow-path')
                         ->color('success')
                         ->button()
                         ->successNotification(
@@ -543,7 +545,7 @@ class GCVResource extends Resource
                                 ->title('Data GCV')
                                 ->body('Data GCV berhasil dikembalikan.')),
                 ]);
-                
+
     }
 
     public static function getRelations(): array
@@ -554,11 +556,11 @@ class GCVResource extends Resource
     public static function exportData(Collection $records)
     {
         $csvData = "ID, Proyek, Nama Perumahan, Kavling, Siteplan/Blok, Type, Luas Tanah, Status, Tanggal Booking, Nama Konsumen, Agent, Status KPR, Keterangan, User, Tanggal Update\n";
-    
+
         foreach ($records as $record) {
             $csvData .= "{$record->id}, {$record->proyek}, {$record->nama_perusahaan}, {$record->kavling}, {$record->siteplan}, {$record->type}, {$record->luas_tanah}, {$record->status}, {$record->tanggal_booking}, {$record->nama_konsumen}, {$record->agent}, {$record->kpr_status}, {$record->ket}, {$record->user}, {$record->tanggal_update}\n";
         }
-    
+
         return response()->streamDownload(fn () => print($csvData), 'GCV.csv');
     }
 

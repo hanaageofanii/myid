@@ -68,7 +68,7 @@ class AuditTkrResource extends Resource
             })())
             ->unique(ignoreRecord: true),
 
-            
+
             TextInput::make('type')
                 ->label('Type')
                 ->required()
@@ -77,7 +77,7 @@ class AuditTkrResource extends Resource
                     $user = Auth::user();
                     return $user && $user->hasRole(['admin','Legal officer']);
                 })()),
-                
+
             TextInput::make('luas')
                 ->label('Luas')
                 ->required()
@@ -89,7 +89,7 @@ class AuditTkrResource extends Resource
 
             Toggle::make('terbangun')
                 ->label('Terbangun')
-                
+
                 ->default(false)
                 ->onColor('success')
                 ->offColor('danger')
@@ -101,7 +101,7 @@ class AuditTkrResource extends Resource
 
             Select::make('status')
                 ->label('Status')
-                
+
                 ->options([
                     'akad' => 'Akad',
                 ])
@@ -116,7 +116,7 @@ class AuditTkrResource extends Resource
                 ->schema([
                     TextInput::make('kode1')
                     ->label('Kode 1')
-                    
+
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -125,7 +125,7 @@ class AuditTkrResource extends Resource
 
                     TextInput::make('luas1')
                     ->label('Luas 1 (m²)')
-                    
+
                     ->numeric()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
@@ -135,7 +135,7 @@ class AuditTkrResource extends Resource
 
                     TextInput::make('kode2')
                     ->label('Kode 2')
-                    
+
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -145,16 +145,16 @@ class AuditTkrResource extends Resource
                     TextInput::make('luas2')
                     ->label('Luas 2 (m²)')
                     ->numeric()
-                    
+
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
-                    
+
                     TextInput::make('kode3')
                     ->label('Kode 3')
-                    
+
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -164,7 +164,7 @@ class AuditTkrResource extends Resource
                     TextInput::make('luas3')
                     ->label('Luas 3 (m²)')
                     ->numeric()
-                    
+
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -173,7 +173,7 @@ class AuditTkrResource extends Resource
 
                     TextInput::make('kode4')
                     ->label('Kode 4')
-                    
+
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -183,7 +183,7 @@ class AuditTkrResource extends Resource
                     TextInput::make('luas4')
                     ->label('Luas 4 (m²)')
                     ->numeric()
-                    
+
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -193,7 +193,7 @@ class AuditTkrResource extends Resource
                     TextInput::make('tanda_terima_sertifikat')
                     ->label('Tanda Terima Sertifikat')
                     ->columnSpanFull()
-                    
+
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -206,7 +206,7 @@ class AuditTkrResource extends Resource
                 ->schema([
                     TextInput::make('nop_pbb_pecahan')
                     ->label('NOP / PBB Pecahan')
-                    
+
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -215,7 +215,7 @@ class AuditTkrResource extends Resource
 
                     TextInput::make('tanda_terima_nop')
                     ->label('Tanda Terima NOP')
-                    
+
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -224,7 +224,7 @@ class AuditTkrResource extends Resource
 
                     TextInput::make('imb_pbg')
                     ->label('IMB / PBG')
-                    
+
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -233,7 +233,7 @@ class AuditTkrResource extends Resource
 
                     TextInput::make('tanda_terima_imb_pbg')
                     ->label('Tanda Terima IMB/PBG')
-                    
+
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -242,7 +242,7 @@ class AuditTkrResource extends Resource
 
                     Textarea::make('tanda_terima_tambahan')
                     ->label('Tanda Terima Tambahan')
-                    
+
                     ->rows(3)->columnSpanFull()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
@@ -251,14 +251,14 @@ class AuditTkrResource extends Resource
                     })()),
                 ])
                 ->columns(2),
-            
+
                 Fieldset::make('Upload Berkas')
                 ->schema([
                     FileUpload::make('up_sertifikat')
                         ->disk('public')
                         ->multiple()
                         ->nullable()
-                        
+
                         ->label('Upload Sertifikat')
                         ->downloadable()
                         ->previewable(false)
@@ -267,12 +267,12 @@ class AuditTkrResource extends Resource
                             $user = Auth::user();
                             return $user && $user->hasRole(['admin','Legal officer']);
                         })()),
-                    
+
                     FileUpload::make('up_nop')
                         ->disk('public')
                         ->nullable()
                         ->multiple()
-                        
+
                         ->label('Upload NOP')
                         ->downloadable()
                         ->previewable(false)
@@ -286,7 +286,7 @@ class AuditTkrResource extends Resource
                         ->disk('public')
                         ->nullable()
                         ->multiple()
-                        
+
                         ->label('Upload IMB/PBG')
                         ->downloadable()
                         ->previewable(false)
@@ -295,12 +295,12 @@ class AuditTkrResource extends Resource
                             $user = Auth::user();
                             return $user && $user->hasRole(['admin','Legal officer']);
                         })()),
-                    
+
                     FileUpload::make('up_tambahan_lainnya')
                         ->disk('public')
                         ->nullable()
                         ->multiple()
-                        
+
                         ->label('Upload Tambahan Lainnya')
                         ->downloadable()
                         ->previewable(false)
@@ -309,7 +309,7 @@ class AuditTkrResource extends Resource
                             $user = Auth::user();
                             return $user && $user->hasRole(['admin','Legal officer']);
                         })()),
-                    
+
                 ])
                 ->columns(2),
         ]);
@@ -347,7 +347,7 @@ class AuditTkrResource extends Resource
             TextColumn::make('tanda_terima_imb_pbg')->label('Tanda Terima IMB/PBG')->limit(20)->searchable(),
             TextColumn::make('tanda_terima_tambahan')->label('Tanda Terima Tambahan')->limit(50)->searchable(),
 
-            
+
             TextColumn::make('up_sertifikat')
                 ->label('Upload Sertifikat')
                 ->formatStateUsing(function ($record) {
@@ -470,8 +470,8 @@ class AuditTkrResource extends Resource
                             $q->where('status', $data['status'])
                         )
                     ),
-            
-                Filter::make('terbangun') 
+
+                Filter::make('terbangun')
                     ->label('Terbangun')
                     ->form([
                         Select::make('terbangun')
@@ -487,7 +487,7 @@ class AuditTkrResource extends Resource
                             $q->where('terbangun', $data['terbangun'])
                         )
                     ),
-            
+
                     Filter::make('created_from')
                     ->label('Dari Tanggal')
                     ->form([
@@ -499,7 +499,7 @@ class AuditTkrResource extends Resource
                             $q->whereDate('created_at', '>=', $data['created_from'])
                         )
                     ),
-                
+
                 Filter::make('created_until')
                     ->label('Sampai Tanggal')
                     ->form([
@@ -510,13 +510,13 @@ class AuditTkrResource extends Resource
                         $query->when($data['created_until'] ?? null, fn ($q) =>
                             $q->whereDate('created_at', '<=', $data['created_until'])
                         )
-                    ),                
+                    ),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormMaxHeight('400px')
             ->filtersFormColumns(4)
             ->filtersFormWidth(MaxWidth::FourExtraLarge)
-                                    
-        
+
+
             ->actions([
                 ActionGroup::make([
                     ViewAction::make()
@@ -529,7 +529,7 @@ class AuditTkrResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Data Audit Diperbarui')
-                                ->body('Data Audit telah berhasil disimpan.')),                    
+                                ->body('Data Audit telah berhasil disimpan.')),
                     DeleteAction::make()
                                 ->color('danger')
                                 ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
@@ -568,23 +568,23 @@ class AuditTkrResource extends Resource
                     ),
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
-            
+
                 ->groupedBulkActions([
                     BulkAction::make('delete')
                         ->label('Hapus')
-                        ->icon('heroicon-o-trash') 
+                        ->icon('heroicon-o-trash')
                         ->color('danger')
                         ->successNotification(
                             Notification::make()
                                 ->success()
                                 ->title('Data Audit')
-                                ->body('Data Audit berhasil dihapus.'))                        
+                                ->body('Data Audit berhasil dihapus.'))
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
-                
+
                     BulkAction::make('forceDelete')
                         ->label('Hapus Permanent')
-                        ->icon('heroicon-o-x-circle') 
+                        ->icon('heroicon-o-x-circle')
                         ->color('warning')
                         ->successNotification(
                             Notification::make()
@@ -592,16 +592,16 @@ class AuditTkrResource extends Resource
                                 ->title('Data Audit')
                                 ->body('Data Audit berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
-                
+
                     BulkAction::make('export')
                         ->label('Download Data')
-                        ->icon('heroicon-o-arrow-down-tray') 
+                        ->icon('heroicon-o-arrow-down-tray')
                         ->color('info')
                         ->action(fn (Collection $records) => static::exportData($records)),
-                
+
                     Tables\Actions\RestoreBulkAction::make()
                         ->label('Kembalikan Data')
-                        ->icon('heroicon-o-arrow-path') 
+                        ->icon('heroicon-o-arrow-path')
                         ->color('success')
                         ->button()
                         ->successNotification(
@@ -610,20 +610,20 @@ class AuditTkrResource extends Resource
                                 ->title('Data Audit')
                                 ->body('Data Audit berhasil dikembalikan.')),
                 ]);
-                
+
     }
-    
+
     public static function exportData(Collection $records)
     {
         $csvData = "ID, Site Plan, Type, Terbangun, Status, Tanda Terima Sertifikat, 1, Luas, 2, Luas, 3, Luas, 4, Luas, NOP / PBB Pecahan, Tanda Terima NOP, IMB / PBG, Tanda Terima IMB/PBG, Tanda Terima Tambahan\n";
-    
+
         foreach ($records as $record) {
             $csvData .= "{$record->id}, {$record->siteplan}, {$record->type}, {$record->terbangun}, {$record->status}, {$record->tanda_terima_sertifikat}, {$record->kode1}, {$record->luas1}, {$record->kode2}, {$record->luas2}, {$record->kode3}, {$record->luas3}, {$record->kode4}, {$record->luas4}, {$record->nop_pbb_pecahan}, {$record->tanda_terima_nop}, {$record->imb_pbg}, {$record->tanda_terima_imb_pbg}, {$record->tanda_terima_tambahan}\n";
         }
-    
+
         return response()->streamDownload(fn () => print($csvData), 'Audit.csv');
     }
-    
+
 
     public static function getRelations(): array
     {
