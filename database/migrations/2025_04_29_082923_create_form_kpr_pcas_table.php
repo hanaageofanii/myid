@@ -34,14 +34,15 @@ return new class extends Migration
             $table->enum('status_akad',['akad','batal'])->nullable();
             
             // Upload data
-            $table->json('ktp')->nullable();
-            $table->json('kk')->nullable();
-            $table->json('npwp_upload')->nullable();
-            $table->json('buku_nikah')->nullable();
-            $table->json('akte_cerai')->nullable();
-            $table->json('akte_kematian')->nullable();
-            $table->json('kartu_bpjs')->nullable();
-            $table->json('drk')->nullable();
+            $table->json('data_diri')->nullable();
+            $table->boolean('ktp')->nullable();
+            $table->boolean('kk')->nullable();
+            $table->boolean('npwp_upload')->nullable();
+            $table->boolean('buku_nikah')->nullable();
+            $table->boolean('akte_cerai')->nullable();
+            $table->boolean('akte_kematian')->nullable();
+            $table->boolean('kartu_bpjs')->nullable();
+            $table->boolean('drk')->nullable();
             $table->timestamps();
         });
     }

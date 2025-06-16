@@ -15,11 +15,11 @@ class form_legal_pca extends BaseWidget
     protected static ?string $maxHeight = '300px';
     protected static ?string $pollingInterval = '10s';
     protected static bool $isLazy = false;
-    protected ?string $heading = 'Dashboard Sertifikat PCA';
+    protected ?string $heading = 'Dashboard Legalitas PCA';
     protected function getStats(): array
     {
         return [
-            Card::make('Total Data Sertifikat', ModelsForm_legal_pca::count())
+            Card::make('Total Data Legalitas', ModelsForm_legal_pca::count())
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]), 
@@ -27,11 +27,11 @@ class form_legal_pca extends BaseWidget
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]),  
-            Card::make('Status Sertifikat Induk', ModelsForm_legal_pca::where('status_sertifikat', 'induk')->count())
+            Card::make('Status Legalitas Induk', ModelsForm_legal_pca::where('status_sertifikat', 'induk')->count())
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]),            
-            Card::make('Status Sertfikat Pecahan', ModelsForm_legal_pca::where('status_sertifikat','pecahan')->count())
+            Card::make('Status Legalitas Pecahan', ModelsForm_legal_pca::where('status_sertifikat','pecahan')->count())
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]), 

@@ -79,7 +79,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive()
                         ->afterStateUpdated(function ($state, callable $set) {
@@ -124,7 +124,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->required()
                         ->label('Bank'),
@@ -134,7 +134,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive(),
                     
@@ -143,7 +143,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive(),
 
@@ -152,7 +152,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->prefix('Rp')
                         ->reactive(),
@@ -162,7 +162,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->prefix('Rp')
                         ->reactive()
@@ -187,7 +187,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->prefix('Rp')
                         ->reactive(),
@@ -199,7 +199,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive()
                         ->afterStateUpdated(function (callable $set, $get) {
@@ -224,7 +224,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive()
                         ->afterStateUpdated(fn ($state, callable $set, $get) => 
@@ -240,7 +240,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive()
                         ->afterStateUpdated(fn ($state, callable $set, $get) => 
@@ -261,7 +261,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive()
                         ->afterStateUpdated(fn ($state, callable $set, $get) => 
@@ -281,7 +281,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive()
                         ->afterStateUpdated(fn ($state, callable $set, $get) => 
@@ -301,7 +301,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive()
                         ->afterStateUpdated(fn ($state, callable $set, $get) => 
@@ -321,7 +321,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive()
                         ->afterStateUpdated(fn ($state, callable $set, $get) => 
@@ -341,7 +341,7 @@ class VerifikasiDajamResource extends Resource
                             ->disabled(fn () => ! (function () {
                                 /** @var \App\Models\User|null $user */
                                 $user = Auth::user();
-                                return $user && $user->hasRole(['admin','Legal Pajak']);
+                                return $user && $user->hasRole(['admin','Legal officer']);
                             })())
                             // ->dehydrated()
                             ->live()
@@ -367,7 +367,7 @@ class VerifikasiDajamResource extends Resource
                             ->disabled(fn () => ! (function () {
                                 /** @var \App\Models\User|null $user */
                                 $user = Auth::user();
-                                return $user && $user->hasRole(['admin','Legal Pajak']);
+                                return $user && $user->hasRole(['admin','Legal officer']);
                             })())
                             ->live()
                             ->dehydrated()
@@ -389,7 +389,7 @@ class VerifikasiDajamResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     DatePicker::make('tgl_pencairan_dajam_imb')
@@ -397,7 +397,7 @@ class VerifikasiDajamResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     DatePicker::make('tgl_pencairan_dajam_listrik')
@@ -405,7 +405,7 @@ class VerifikasiDajamResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     DatePicker::make('tgl_pencairan_dajam_jkk')
@@ -413,7 +413,7 @@ class VerifikasiDajamResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     DatePicker::make('tgl_pencairan_dajam_pph')
@@ -421,7 +421,7 @@ class VerifikasiDajamResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     DatePicker::make('tgl_pencairan_dajam_bphtb')
@@ -429,7 +429,7 @@ class VerifikasiDajamResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
 
                     TextInput::make('total_pencairan_dajam')
@@ -440,7 +440,7 @@ class VerifikasiDajamResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->afterStateUpdated(fn ($state, callable $set, $get) => 
                         $set('sisa_dajam', max(0, (int) $get('total_dajam') - (int) $state))
@@ -453,7 +453,7 @@ class VerifikasiDajamResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->prefix('Rp')
                     ->afterStateUpdated(fn ($state, callable $set, $get) => 
@@ -475,25 +475,46 @@ class VerifikasiDajamResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('Status Dajam')
                 ]),
 
                 Fieldset::make('Dokumen')
                 ->schema([
-                    FileUpload::make('up_spd5')
-                        ->disk('public')
-                        ->nullable()
-                        ->multiple()
-                        ->disabled(fn () => ! (function () {
-                            /** @var \App\Models\User|null $user */
-                            $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
-                        })())
-                        ->label('Upload SPD 5')
-                        ->downloadable()
-                        ->previewable(false),
+                     FileUpload::make('up_spd5')
+            ->disk('public')
+            ->nullable()
+            ->multiple()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Legal officer']);
+            })())
+            ->label('Upload SPD 5')
+            ->downloadable()
+            ->previewable(false)
+            ->afterStateHydrated(function ($component, $state) {
+                $day = now()->day;
+
+                if ($day === 4 && blank($state)) {
+                    Notification::make()
+                        ->title('⚠️ Wajib Upload SPD 5')
+                        ->body('Hari ini tanggal 4. Harap upload SPD 5.')
+                        ->warning()
+                        ->persistent()
+                        ->send();
+                }
+
+                if ($day > 4 && blank($state)) {
+                    Notification::make()
+                        ->title('❗ SPD 5 Belum Di-upload')
+                        ->body('Tanggal upload SPD 5 sudah lewat. Harap segera lengkapi dokumen.')
+                        ->danger()
+                        ->persistent()
+                        ->send();
+                }
+            }),
 
                     FileUpload::make('up_lainnya')
                         ->disk('public')
@@ -502,7 +523,7 @@ class VerifikasiDajamResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->label('Upload Lainnya')
                         ->downloadable()

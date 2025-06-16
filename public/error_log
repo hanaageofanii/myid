@@ -1,0 +1,5 @@
+[12-Jun-2025 02:49:07 UTC] PHP Fatal error:  Cannot redeclare App\Models\form_kpr::$casts in /home/gcvsyste/public_html/myid/app/Models/form_kpr.php on line 28
+[12-Jun-2025 03:40:19 UTC] PHP Fatal error:  Cannot declare class App\Policies\FormKprTkr because the name is already in use in /home/gcvsyste/public_html/myid/app/Policies/FormKprTkr.php on line 8
+[12-Jun-2025 04:03:12 UTC] PHP Fatal error:  Cannot use App\Policies\form_kpr_pcaPolicy as form_kpr_pcaPolicy because the name is already in use in /home/gcvsyste/public_html/myid/app/Providers/AuthServiceProvider.php on line 76
+[12-Jun-2025 04:03:15 UTC] PHP Fatal error:  Cannot use App\Policies\form_kpr_pcaPolicy as form_kpr_pcaPolicy because the name is already in use in /home/gcvsyste/public_html/myid/app/Providers/AuthServiceProvider.php on line 76
+[12-Jun-2025 04:03:16 UTC] PHP Fatal error:  Cannot use App\Policies\form_kpr_pcaPolicy as form_kpr_pcaPolicy because the name is already in use in /home/gcvsyste/public_html/myid/app/Providers/AuthServiceProvider.php on line 76

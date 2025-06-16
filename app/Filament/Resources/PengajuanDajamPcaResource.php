@@ -79,7 +79,7 @@ class PengajuanDajamPcaResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive()
                         ->afterStateUpdated(function ($state, callable $set) {
@@ -125,7 +125,7 @@ class PengajuanDajamPcaResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->label('Bank'),
 
@@ -134,7 +134,7 @@ class PengajuanDajamPcaResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive(),
                     
@@ -143,7 +143,7 @@ class PengajuanDajamPcaResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive(),
 
@@ -159,7 +159,7 @@ class PengajuanDajamPcaResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->label('Nama Dajam'),
                     
@@ -167,7 +167,7 @@ class PengajuanDajamPcaResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                         ->label('No. Surat'),
                         
@@ -176,7 +176,7 @@ class PengajuanDajamPcaResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                         ->label('Tanggal Pengajuan'),
 
@@ -184,7 +184,8 @@ class PengajuanDajamPcaResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal
+                        officer']);
                     })())
                     ->label('Nilai Pencairan'),
 
@@ -196,7 +197,7 @@ class PengajuanDajamPcaResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->label('Status Dajam'),
                     
@@ -206,7 +207,7 @@ class PengajuanDajamPcaResource extends Resource
                             ->disabled(fn () => ! (function () {
                                 /** @var \App\Models\User|null $user */
                                 $user = Auth::user();
-                                return $user && $user->hasRole(['admin','Legal Pajak']);
+                                return $user && $user->hasRole(['admin','Legal officer']);
                             })())
                             ->disk('public')
                             ->nullable()
@@ -219,7 +220,7 @@ class PengajuanDajamPcaResource extends Resource
                             ->disabled(fn () => ! (function () {
                                 /** @var \App\Models\User|null $user */
                                 $user = Auth::user();
-                                return $user && $user->hasRole(['admin','Legal Pajak']);
+                                return $user && $user->hasRole(['admin','Legal officer']);
                             })())
                             ->disk('public')
                             ->nullable()

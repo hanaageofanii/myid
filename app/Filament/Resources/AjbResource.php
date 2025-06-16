@@ -64,7 +64,7 @@ class AjbResource extends Resource
     protected static ?string $model = Ajb::class;
 
     protected static ?string $title = "AJB";
-    protected static ?string $navigationGroup = "Legal - Pajak";
+    protected static ?string $navigationGroup = "Legal";
     protected static ?string $pluralLabel = "AJB GCV";
     protected static ?string $navigationIcon = 'heroicon-o-document';
     protected static ?string $navigationLabel = 'AJB GCV';
@@ -81,7 +81,7 @@ class AjbResource extends Resource
                 ->disabled(fn () => ! (function () {
                     /** @var \App\Models\User|null $user */
                     $user = Auth::user();
-                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                    return $user && $user->hasRole(['admin','Legal officer']);
                 })())
                 ->reactive()
                 ->afterStateUpdated(function ($state, callable $set) {
@@ -111,7 +111,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->reactive(),
 
@@ -121,7 +121,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->reactive(),
 
@@ -130,7 +130,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('NIK')
                     ->reactive(),
@@ -141,7 +141,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->reactive(),
 
@@ -150,7 +150,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('Alamat')
                     ->reactive(),
@@ -163,7 +163,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('No. Suket Validasi'),
 
@@ -172,7 +172,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('No. SSPD BPHTB'),
 
@@ -181,7 +181,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('Tanggal SSPD BPHTB'),
 
@@ -190,7 +190,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('No. Validasi SSPD BPHTB'),
 
@@ -199,7 +199,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('Notaris'),
 
@@ -208,7 +208,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('No. AJB'),
 
@@ -217,7 +217,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('Tanggal AJB'),
 
@@ -226,7 +226,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('No. Bast'),
 
@@ -235,7 +235,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('Tanggal Bast'),
                 ]),
@@ -248,7 +248,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('Upload BPHTB')
                     ->downloadable()
@@ -261,7 +261,7 @@ class AjbResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('Upload Bast')
                     ->downloadable()

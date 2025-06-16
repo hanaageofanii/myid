@@ -18,7 +18,7 @@ class EditBukuRekonsil extends EditRecord
             Actions\DeleteAction::make()
             ->label('Hapus Rekonsil')
             ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->no_check}")
-            ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->no_check}?"),
+            ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus {$record->no_check}?"),
 
         ];
     }

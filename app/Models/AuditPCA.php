@@ -16,6 +16,7 @@ class AuditPCA extends Model
         "type",
         "terbangun",
         "status",
+        "luas",
         "kode1",
         "kode2",
         "kode3",

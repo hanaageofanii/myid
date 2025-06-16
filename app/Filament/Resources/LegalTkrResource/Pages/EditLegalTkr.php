@@ -10,13 +10,13 @@ class EditLegalTkr extends EditRecord
 {
     protected static string $resource = LegalTkrResource::class;
 
-    protected static ?string $title = "Ubah Data Sertifikat";
+    protected static ?string $title = "Ubah Data Legalitas";
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Data Sertifikat')
+            ->label('Hapus Data Legalitas')
             ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
             ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?"),
         ];

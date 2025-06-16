@@ -20,12 +20,12 @@ use App\Models\GCV;
 use Illuminate\Support\Facades\Storage;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BooleanColumn;
-use Filament\Forms\Components\Textarea;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Database\Eloquent\Collection;
@@ -145,7 +145,7 @@ class FormPpnPcaResource extends Resource
             })())
             ->label('NPWP'),
 
-            Forms\Components\TextArea::make('alamat')
+            Forms\Components\Textarea::make('alamat')
             ->nullable()
             ->disabled(fn () => ! (function () {
                 /** @var \App\Models\User|null $user */

@@ -3,8 +3,9 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\StokTkr;
 
-class pca
+class StokTKRPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -17,7 +18,7 @@ class pca
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, PCA $PCA): bool
+    public function view(User $user, StokTkr $StokTkr): bool
     {
         return $user->hasRole(['admin','Marketing','Super admin','Direksi','KPR Officer','Legal Pajak','Legal officer']);
     }
@@ -27,13 +28,13 @@ class pca
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','KPR Stok']);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, PCA $PCA): bool
+    public function update(User $user, StokTkr $StokTkr): bool
     {
         return $user->hasRole(['admin','Super admin','Direksi','KPR Officer','KPR Stok']);
     }
@@ -41,15 +42,15 @@ class pca
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, PCA $PCA): bool
+    public function delete(User $user, StokTkr $StokTkr): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','KPR Stok']);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, PCA $PCA): bool
+    public function restore(User $user, StokTkr $StokTkr): bool
     {
         return $user->hasRole(['admin']);
     }
@@ -57,10 +58,9 @@ class pca
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, PCA $PCA): bool
+    public function forceDelete(User $user, StokTkr $StokTkr): bool
     {
         return $user->hasRole(['admin']);
     }
 }
-
 

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('buku_rekonsils', function (Blueprint $table) {
             $table->id();
             $table->enum('nama_perusahaan', ['langgeng_pertiwi_development','agung_purnama_bakti','purnama_karya_bersama'])->nullable();
+            $table->string('no_check')->nullable();
             $table->date('tanggal_check')->nullable();
             $table->string('nama_pencair')->nullable();
             $table->date('tanggal_dicairkan')->nullable();
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->enum('tipe',['debit','kredit'])->nullable();
             $table->string('saldo')->nullable();
             $table->enum('status_disalurkan',['sudah','belum'])->nullable();
+            $table->string('catatan')->nullable();
             $table->json('bukti_bukti')->nullable();
 
             $table->timestamps();

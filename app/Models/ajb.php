@@ -10,6 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 class ajb extends Model
 {
     use HasFactory, SoftDeletes, HasRoles;
+    
 
     protected $fillable = [
         'siteplan',

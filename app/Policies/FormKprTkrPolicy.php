@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\form_kpr;
 use App\Models\User;
+use App\Models\FormKprTkr;
 
-class form_kprPolicy
+class FormKprTkrPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -18,7 +18,7 @@ class form_kprPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, form_kpr $form_kpr): bool
+    public function view(User $user, FormKprTkr $FormKprTkr): bool
     {
         return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak','KPR Stok','KPR Officer','Lapangan','Kasir 1','Kasir 2']);
     }
@@ -34,7 +34,7 @@ class form_kprPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, form_kpr $form_kpr): bool
+    public function update(User $user, FormKprTkr $FormKprTkr): bool
     {
         return $user->hasRole(['admin','KPR Officer']);
     }
@@ -42,7 +42,7 @@ class form_kprPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, form_kpr $form_kpr): bool
+    public function delete(User $user, FormKprTkr $FormKprTkr): bool
     {
         return $user->hasRole(['admin','KPR Officer']);
     }
@@ -50,7 +50,7 @@ class form_kprPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, form_kpr $form_kpr): bool
+    public function restore(User $user, FormKprTkr $FormKprTkr): bool
     {
         return $user->hasRole(['admin']);
     }
@@ -58,7 +58,7 @@ class form_kprPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, form_kpr $form_kpr): bool
+    public function forceDelete(User $user, FormKprTkr $FormKprTkr): bool
     {
         return $user->hasRole(['admin']);
     }

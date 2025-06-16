@@ -13,6 +13,7 @@ class BukuRekonsil extends Model
 
     protected $fillable=[
         'nama_perusahaan',
+        'no_check',
         'tanggal_check',
         'nama_pencair',
         'tanggal_dicairkan',
@@ -26,6 +27,7 @@ class BukuRekonsil extends Model
         'tipe',
         'saldo',
         'status_disalurkan',
+        'catatan',
         'bukti_bukti',
 
 

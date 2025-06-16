@@ -80,6 +80,15 @@ class AuditResource extends Resource
                     $user = Auth::user();
                     return $user && $user->hasRole(['admin','Legal officer']);
                 })()),
+                
+            TextInput::make('luas')
+                ->label('Luas')
+                ->required()
+                ->disabled(fn () => ! (function () {
+                    /** @var \App\Models\User|null $user */
+                    $user = Auth::user();
+                    return $user && $user->hasRole(['admin','Legal officer']);
+                })()),
 
             Toggle::make('terbangun')
                 ->label('Terbangun')
@@ -315,6 +324,7 @@ class AuditResource extends Resource
         ->columns([
             TextColumn::make('siteplan')->label('Site Plan')->searchable(),
             TextColumn::make('type')->label('Type')->searchable(),
+            TextColumn::make('luas')->label('Luas')->searchable(),
             BooleanColumn::make('terbangun')->label('Terbangun')->searchable(),
             TextColumn::make('status')
             ->label('Status')

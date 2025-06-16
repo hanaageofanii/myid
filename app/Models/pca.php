@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 
 
-class pca extends Model
+class Pca extends Model
 {
     use HasFactory, SoftDeletes, HasRoles;
 
@@ -28,6 +28,8 @@ class pca extends Model
         "ket",
         "user",
         "tanggal_update",
+        "status_sertifikat",
+        "status_pembayaran",
 
     ];
 

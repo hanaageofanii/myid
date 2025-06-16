@@ -28,7 +28,7 @@ class GCVPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','KPR Stok']);
     }
 
     /**
@@ -44,7 +44,7 @@ class GCVPolicy
      */
     public function delete(User $user, GCV $GCV): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin','KPR Stok']);
     }
 
     /**

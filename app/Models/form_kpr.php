@@ -16,21 +16,22 @@ class form_kpr extends Model{
     protected $fillable = [
         'jenis_unit', 'siteplan', 'type', 'luas', 'agent', 'tanggal_booking', 'tanggal_akad',
         'harga', 'maksimal_kpr', 'nama_konsumen', 'nik', 'npwp', 'alamat', 'no_hp',
-        'no_email', 'pembayaran', 'bank', 'no_rekening', 'status_akad',
+        'no_email', 'pembayaran', 'bank', 'no_rekening', 'status_akad', 'data_diri',
         'ktp', 'kk', 'npwp_upload', 'buku_nikah', 'akte_cerai', 'akte_kematian',
         'kartu_bpjs', 'drk'
     ];
+    
 
-    protected $casts = [
-        "ktp" => 'array',
-        "kk" => 'array',
-        "npwp_upload" => 'array',
-        "buku_nikah" => 'array',
-        "akte_cerai" => 'array',
-        "akte_kematian" => 'array',
-        "kartu_bpjs" => 'array',
-        "drk" => 'array',
-
-    ];
+   protected $casts = [
+    'data_diri' => 'array',
+    'ktp' => 'boolean',
+    'kk' => 'boolean',
+    'npwp_upload' => 'boolean',
+    'buku_nikah' => 'boolean',
+    'akte_cerai' => 'boolean',
+    'akte_kematian' => 'boolean',
+    'kartu_bpjs' => 'boolean',
+    'drk' => 'boolean',
+];
 }
 

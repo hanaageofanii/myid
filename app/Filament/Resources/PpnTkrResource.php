@@ -146,7 +146,7 @@ class PpnTkrResource extends Resource
             })())
             ->label('NPWP'),
 
-            Forms\Components\TextArea::make('alamat')
+            Forms\Components\Textarea::make('alamat')
             ->nullable()
             ->disabled(fn () => ! (function () {
                 /** @var \App\Models\User|null $user */

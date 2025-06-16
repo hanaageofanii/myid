@@ -57,7 +57,7 @@ class FormLegalResource extends Resource
     protected static ?string $navigationGroup = "Legal";
     protected static ?string $pluralLabel = "Form Input Sertifikat GCV";
     protected static ?string $navigationIcon = 'heroicon-o-inbox-stack';
-    protected static ?string $navigationLabel = 'Sertifikat GCV';
+    protected static ?string $navigationLabel = 'Legalitas GCV';
     protected static ?string $pluralModelLabel = 'Daftar Input Sertifikat GCV';
 
 

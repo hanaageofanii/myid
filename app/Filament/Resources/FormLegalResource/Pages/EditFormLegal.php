@@ -10,7 +10,7 @@ class EditFormLegal extends EditRecord
 {
     protected static string $resource = FormLegalResource::class;
 
-    protected static ?string $title = "Ubah Data Sertifikat";
+    protected static ?string $title = "Ubah Data Legalitas";
 
     protected function getHeaderActions(): array
     {

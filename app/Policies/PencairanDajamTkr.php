@@ -11,7 +11,7 @@ class PencairanDajamTkr
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Direksi', 'Legal officer','Legal Pajak']);
+        return $user->hasRole(['admin','Direksi', 'Kasir 1','Kasir 2']);
     }
 
     /**
@@ -19,7 +19,7 @@ class PencairanDajamTkr
      */
     public function view(User $user, PencairanDajamTkr $PencairanDajamTkr): bool
     {
-        return $user->hasRole(['admin','Direksi', 'Legal officer','Legal Pajak']);
+        return $user->hasRole(['admin','Direksi', 'Kasir 1','Kasir 2']);
     }
 
     /**
@@ -27,7 +27,7 @@ class PencairanDajamTkr
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin','Legal Pajak']);
+        return $user->hasRole(['admin','Direksi', 'Kasir 1','Kasir 2']);
     }
 
     /**
@@ -35,7 +35,7 @@ class PencairanDajamTkr
      */
     public function update(User $user, PencairanDajamTkr $PencairanDajamTkr): bool
     {
-        return $user->hasRole(['admin','Legal officer','Legal Pajak']);
+        return $user->hasRole(['admin','Direksi', 'Kasir 1','Kasir 2']);
     }
 
     /**
@@ -43,7 +43,7 @@ class PencairanDajamTkr
      */
     public function delete(User $user, PencairanDajamTkr $PencairanDajamTkr): bool
     {
-        return $user->hasRole(['admin','Legal officer','Legal Pajak']);
+        return $user->hasRole(['admin','Direksi', 'Kasir 1','Kasir 2']);
     }
 
     /**
@@ -51,7 +51,7 @@ class PencairanDajamTkr
      */
     public function restore(User $user, PencairanDajamTkr $PencairanDajamTkr): bool
     {
-        return $user->hasRole(['admin','Legal officer','Legal Pajak']);
+        return $user->hasRole(['admin','Direksi', 'Kasir 1','Kasir 2']);
     }
 
     /**
@@ -59,7 +59,7 @@ class PencairanDajamTkr
      */
     public function forceDelete(User $user, PencairanDajamTkr $PencairanDajamTkr): bool
     {
-        return $user->hasRole(['admin','Legal officer','Legal Pajak']);
+        return $user->hasRole(['admin','Direksi', 'Kasir 1','Kasir 2']);
     }
 }
 

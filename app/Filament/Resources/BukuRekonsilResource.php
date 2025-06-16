@@ -80,7 +80,9 @@ class BukuRekonsilResource extends Resource
 
                     TextInput::make('no_check')
                     ->label('No. Check')
-                    ->required()
+                    // ->required()
+                    ->dehydrated(true)
+                    // ->unique(ignoreRecord: true)
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -103,8 +105,7 @@ class BukuRekonsilResource extends Resource
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })())
-                    ->required(),
+                    })()),
 
                     DatePicker::make('tanggal_dicairkan')
                     ->label('Tanggal di Cairkan')
@@ -112,8 +113,7 @@ class BukuRekonsilResource extends Resource
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })())
-                    ->required(),
+                    })()),
 
                     TextInput::make('nama_penerima')
                     ->label(' Nama Penerima')
@@ -121,8 +121,7 @@ class BukuRekonsilResource extends Resource
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })())
-                    ->required(),
+                    })()),
 
                     TextInput::make('account_bank')
                     ->label('Akun Bank Penerima')
@@ -130,8 +129,7 @@ class BukuRekonsilResource extends Resource
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })())
-                    ->required(),
+                    })()),
 
                     Select::make('bank')
                     ->label('Bank')
@@ -161,7 +159,7 @@ class BukuRekonsilResource extends Resource
                             $set('rekening', null); 
                         }
                     })
-                    ->required()
+                    // ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -200,7 +198,7 @@ class BukuRekonsilResource extends Resource
             $set('rekening', null);  
         }
     })
-    ->required()
+    // ->required()
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
@@ -216,7 +214,7 @@ class BukuRekonsilResource extends Resource
                         return $user && $user->hasRole(['admin','Kasir 1','Kasir 2']);
                     })()),
 
-                    TextInput::make('deskripsi')
+                    TextArea::make('deskripsi')
                     ->label(' Deskripsi')
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
@@ -226,26 +224,68 @@ class BukuRekonsilResource extends Resource
                     ->required(),
 
                     TextInput::make('jumlah_uang')
-                    ->label('Jumlah Uang')
-                    ->disabled(fn () => ! (function () {
-                        /** @var \App\Models\User|null $user */
-                        $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })())
-                    ->required(),
+                        ->label('Jumlah Uang')
+                        ->required()
+                        ->reactive()
+                        ->afterStateUpdated(function (callable $get, callable $set) {
+                            $perusahaan = $get('nama_perusahaan');
+                            $tipe = $get('tipe');
+                            $jumlahUang = (int) $get('jumlah_uang');
 
-                    Select::make('tipe')
-                    ->label('Tipe')
-                    ->options([
-                        'debit' => 'Debit',
-                        'kredit' => 'Kredit',
-                    ])
-                    ->disabled(fn () => ! (function () {
-                        /** @var \App\Models\User|null $user */
-                        $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })())
-                    ->required(),
+                            if (! $perusahaan || ! $tipe || $jumlahUang === null) {
+                                return;
+                            }
+
+                            $saldoSebelumnya = \App\Models\BukuRekonsil::where('nama_perusahaan', $perusahaan)
+                                ->selectRaw("SUM(CASE WHEN tipe = 'debit' THEN jumlah_uang ELSE -jumlah_uang END) as total")
+                                ->value('total') ?? 0;
+
+                            // Hitung saldo baru
+                            $saldoBaru = $tipe === 'debit'
+                                ? $saldoSebelumnya + $jumlahUang
+                                : $saldoSebelumnya - $jumlahUang;
+
+                            $set('saldo', $saldoBaru);
+                        })
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
+                        })()),
+
+                        Select::make('tipe')
+                        ->label('Tipe')
+                        ->options([
+                            'debit' => 'Debit',
+                            'kredit' => 'Kredit',
+                        ])
+                        ->reactive()
+                        ->afterStateUpdated(function (callable $get, callable $set) {
+                            $perusahaan = $get('nama_perusahaan');
+                            $tipe = $get('tipe');
+                            $jumlahUang = (int) $get('jumlah_uang');
+                    
+                            if (! $perusahaan || ! $tipe || $jumlahUang === null) {
+                                return;
+                            }
+                    
+                            // Hitung total saldo perusahaan
+                            $saldoSebelumnya = \App\Models\BukuRekonsil::where('nama_perusahaan', $perusahaan)
+                                ->selectRaw("SUM(CASE WHEN tipe = 'debit' THEN jumlah_uang ELSE -jumlah_uang END) as total")
+                                ->value('total') ?? 0;
+                    
+                            $saldoBaru = $tipe === 'debit'
+                                ? $saldoSebelumnya + $jumlahUang
+                                : $saldoSebelumnya - $jumlahUang;
+                    
+                            $set('saldo', $saldoBaru);
+                        })
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
+                        })()),
+                    
 
                     TextInput::make('saldo')
                     ->label('Saldo')
@@ -256,7 +296,7 @@ class BukuRekonsilResource extends Resource
                     })()),
 
                     Select::make('status_disalurkan')
-                    ->label('Status di Salurkan')
+                    ->label('Status di Cairkan')
                     ->options([
                         'sudah' => 'Sudah',
                         'belum' => 'Belum',
@@ -265,8 +305,15 @@ class BukuRekonsilResource extends Resource
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })())
-                    ->required(),
+                    })()),
+                    
+                    TextInput::make('catatan')
+                    ->label('Catatan')
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
+                    })()),
 
                     Forms\Components\FileUpload::make('bukti_bukti')
                     ->disk('public')
@@ -336,9 +383,11 @@ class BukuRekonsilResource extends Resource
 
                 Tables\Columns\TextColumn::make('deskripsi')->label('Deskripsi')
                 ->searchable(),
+                // ->wrap()->limit(300) ->tooltip(fn ($record) => $record->deskripsi),
 
                 Tables\Columns\TextColumn::make('jumlah_uang')->label('Jumlah Uang')
-                ->searchable()->prefix('Rp. '),
+                ->searchable()            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),                
+
 
                 Tables\Columns\TextColumn::make('tipe')->label('Tipe')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
@@ -349,23 +398,27 @@ class BukuRekonsilResource extends Resource
 
                 
                 Tables\Columns\TextColumn::make('saldo')->label('Saldo')
-                ->searchable()->prefix('Rp. '),
+                ->searchable()            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),                
 
-                Tables\Columns\TextColumn::make('status_disalurkan')->label('Status di Salurkan')
+
+                Tables\Columns\TextColumn::make('status_disalurkan')->label('Status di Cairkan')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
                    'sudah' => 'Sudah',
                    'belum' => 'Belum',
                     default => $state,
                 })->searchable(),
+                
+                Tables\Columns\TextColumn::make('catatan')->label('Catatan')
+                ->searchable(),
 
                 TextColumn::make('bukti_bukti')
                 ->label('Bukti - Bukti')
                 ->formatStateUsing(function ($record) {
-                    if (!$record->up_kode_billing) {
+                    if (!$record->bukti_bukti) {
                         return 'Tidak Ada Dokumen';
                     }
 
-                    $files = is_array($record->up_kode_billing) ? $record->up_kode_billing : json_decode($record->up_kode_billing, true);
+                    $files = is_array($record->bukti_bukti) ? $record->bukti_bukti : json_decode($record->bukti_bukti, true);
 
                     if (json_last_error() !== JSON_ERROR_NONE) {
                         $files = [];
@@ -385,7 +438,7 @@ class BukuRekonsilResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status_disalurkan')
-                    ->label('Status di Salurkan')
+                    ->label('Status di Cairkan')
                     ->options([
                         'sudah' => 'Sudah',
                         'belum' => 'Belum',                                           
@@ -410,6 +463,21 @@ class BukuRekonsilResource extends Resource
                     ->options([
                         'debit' => 'Debit',
                         'kredit' => 'Kredit',
+                    ])
+                    ->native(false),
+                    
+                    Tables\Filters\SelectFilter::make('bank') 
+                    ->label('Bank')
+                    ->options([
+                         'btn_karawang' => 'BTN Karawang',
+                    'btn_cikarang' => 'BTN Cikarang',
+                    'btn_bekasi' => 'BTN Bekasi',
+                    'bjb_cikarang' => 'BJB Cikarang',
+                    'bri_pekayon' => 'BRI Pekayon',
+                    'bjb_syariah' => 'BJB Syariah',
+                    'btn_cibubur' => 'BTN Cibubur',
+                    'bni_kuningan' => 'BNI Kuningan',
+                    'mandiri_cikarang' => 'Mandiri Cikarang',
                     ])
                     ->native(false),
             
@@ -456,9 +524,9 @@ class BukuRekonsilResource extends Resource
                                 ->body('Data Rekonsil telah berhasil disimpan.')),                    
                                 DeleteAction::make()
                                 ->color('danger')
-                                ->label(fn ($record) => "Hapus Blok {$record->no_check}")
+                                ->label(fn ($record) => "Hapus {$record->no_check}")
                                 ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok {$record->no_check}")
-                                ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->no_check}?")
+                                ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus {$record->no_check}?")
                                 ->successNotification(
                                     Notification::make()
                                         ->success()
@@ -471,8 +539,8 @@ class BukuRekonsilResource extends Resource
                     Tables\Actions\RestoreAction::make()
                     ->color('info')
                     ->label(fn ($record) => "Kembalikan {$record->no_check}")
-                    ->modalHeading(fn ($record) => "Konfirmasi Kembalikan Blok{$record->no_check}")
-                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengembalikan blok {$record->no_check}?")
+                    ->modalHeading(fn ($record) => "Konfirmasi Kembalikan {$record->no_check}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengembalikan {$record->no_check}?")
                     ->successNotification(
                         Notification::make()
                             ->success()
@@ -482,8 +550,8 @@ class BukuRekonsilResource extends Resource
                     Tables\Actions\ForceDeleteAction::make()
                     ->color('primary')
                     ->label(fn ($record) => "Hapus Permanent {$record->no_check}")
-                    ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok Permanent{$record->no_check}")
-                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengahapus blok secara permanent {$record->no_check}?")
+                    ->modalHeading(fn ($record) => "Konfirmasi Hapus Permanent{$record->no_check}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengahapus secara permanent {$record->no_check}?")
                     ->successNotification(
                         Notification::make()
                             ->success()

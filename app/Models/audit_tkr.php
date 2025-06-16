@@ -14,6 +14,7 @@ class audit_tkr extends Model
     protected $fillable = [
         "siteplan",
         "type",
+        "luas",
         "terbangun",
         "status",
         "kode1",

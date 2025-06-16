@@ -43,10 +43,12 @@ use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Filters\TrashedFilter;
 use App\Filament\Resources\PCAResource;
-use App\Models\pca;
+use App\Models\Pca;
 use App\Filament\Resources\KPRStats;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Checkbox;
+use Filament\Tables\Columns\CheckboxColumn;
 
 class FormKprPcaResource extends Resource
 {
@@ -84,7 +86,7 @@ class FormKprPcaResource extends Resource
                     })())
                     ->afterStateUpdated(function ($state, callable $set) {
                         if ($state) {
-                            $bookedBlok = pca::where('status', 'booking')
+                            $bookedBlok = Pca::where('kpr_status', 'akad')
                                 ->where('kavling', $state)
                                 ->get('siteplan')
                                 ->pluck('siteplan')
@@ -96,40 +98,39 @@ class FormKprPcaResource extends Resource
                         }
                     }),
 
-                    Forms\Components\Select::make('siteplan')
-                            ->label('Blok')
-                            ->nullable()
-                            ->options(
-                                pca::where('status', '=', 'booking')
-                                    ->pluck('siteplan', 'siteplan')
-                                    ->toArray()     
-                                    ) 
-                            // ->options(fn ($get, $set, $record) => 
-                            //     collect($get('available_siteplans') ?? [])
-                            //         ->filter(fn ($label, $key) => !is_null($label)) 
-                            //         ->toArray()
-                            //     + ($record?->siteplan ? [$record->siteplan => $record->siteplan] : [])
-                            // )
-                            ->reactive()
-                            ->required()
-                            ->disabled(fn () => ! (function () {
-                                /** @var \App\Models\User|null $user */
-                                $user = Auth::user();
-                                return $user && $user->hasRole(['admin','KPR Officer']);
-                            })())
-                            ->afterStateUpdated(function($state, callable $set){
-                                $pca = pca::where('siteplan', $state)->first();
-
-                                if ($pca) {
-                                    $set('tanggal_akad', $pca->tanggal_akad);
-                                    $set('tanggal_booking', $pca->tanggal_booking);
-                                    $set('nama_konsumen', $pca->nama_konsumen);
-                                    $set('agent', $pca->agent);
-                                    $set('luas', $pca->luas_tanah);
-                                    $set('type', $pca->type);
-                                    
-                            }
-                        })->unique(ignoreRecord: true),
+                   Forms\Components\Select::make('siteplan')
+                    ->label('Blok')
+                    ->nullable()
+                    ->reactive()
+                    ->required()
+                    ->options(function (callable $get) {
+                        $jenisUnit = $get('jenis_unit'); // Ambil jenis unit yg dipilih
+                
+                        if (!$jenisUnit) {
+                            return [];
+                        }
+                
+                        return \App\Models\Pca::where('kpr_status', 'akad')
+                            ->where('kavling', $jenisUnit)
+                            ->pluck('siteplan', 'siteplan')
+                            ->toArray();
+                    })
+                    ->disabled(fn () => ! Auth::user()?->hasRole(['admin', 'KPR Officer']))
+                    ->afterStateUpdated(function($state, callable $set){
+                        $pca = \App\Models\Pca::where('siteplan', $state)->first();
+                
+                        if ($pca) {
+                            $set('tanggal_akad', $pca->tanggal_akad);
+                            $set('tanggal_booking', $pca->tanggal_booking);
+                            $set('nama_konsumen', $pca->nama_konsumen);
+                            $set('agent', $pca->agent);
+                            $set('luas', $pca->luas_tanah);
+                            $set('type', $pca->type);
+                            $set('status_akad', $pca->kpr_status);
+                            $set('pembayaran', $pca->status_pembayaran);
+                        }
+                    })
+                    ->unique(ignoreRecord: true),
 
                 
                 Forms\Components\Select::make('type')
@@ -257,8 +258,8 @@ class FormKprPcaResource extends Resource
                     return $user && $user->hasRole(['admin','KPR Officer']);
                 })())
                 ->nullable()
-                ->label('No. Handphone')
-                ->required(),
+                ->label('No. Handphone'),
+                
                 Forms\Components\TextInput::make('no_email')
                 ->disabled(fn () => ! (function () {
                     /** @var \App\Models\User|null $user */
@@ -267,8 +268,7 @@ class FormKprPcaResource extends Resource
                 })())
                 ->email()
                 ->nullable()
-                ->label('Email')
-                ->required(),
+                ->label('Email'),
 
                 Forms\Components\Select::make('pembayaran')
                     ->label('Pembayaran')
@@ -321,9 +321,47 @@ class FormKprPcaResource extends Resource
                         'batal' => 'Batal',
                     ])->nullable()->label('Status Akad')->required(),
                 
+                   Forms\Components\Fieldset::make('Cek Kelengkapan Dokumen Data Diri')
+                    ->schema([
+                    Checkbox::make('ktp')
+                        ->label('KTP')
+                        ->accepted()
+                        ->inline(),
+                    
+                     Checkbox::make('kk')
+                        ->label('Kartu Keluarga')
+                        ->accepted()
+                        ->inline(),
+                    
+                    Checkbox::make('npwp_upload')
+                        ->label('NPWP')
+                        ->inline(),
+                    
+                    Checkbox::make('buku_nikah')
+                        ->label('Buku Nikah')
+                        ->inline(),
+                    
+                    Checkbox::make('akte_cerai')
+                        ->label('Akta Cerai')
+                        ->inline(),
+                    
+                    Checkbox::make('akte_kematian')
+                        ->label('Akta Kematian')
+                        ->inline(),
+                    
+                    Checkbox::make('kartu_bpjs')
+                        ->label('Kartu BPJS')
+                        ->inline(),
+                    
+                    Checkbox::make('drk')
+                        ->label('DRK')
+                        ->accepted()
+                        ->inline(),
+                    ]),
+                
                     Forms\Components\Fieldset::make('Dokumen')
                     ->schema([
-                        Forms\Components\FileUpload::make('ktp')
+                        Forms\Components\FileUpload::make('data_diri')
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
@@ -332,100 +370,100 @@ class FormKprPcaResource extends Resource
                             ->disk('public')
                             ->nullable()
                             ->multiple()
-                            ->label('KTP')
+                            ->label('Upload Data Diri')
                             ->downloadable()
                             ->previewable(false),
                 
-                        Forms\Components\FileUpload::make('kk')
-                        ->disabled(fn () => ! (function () {
-                            /** @var \App\Models\User|null $user */
-                            $user = Auth::user();
-                            return $user && $user->hasRole(['admin','KPR Officer']);
-                        })())
-                            ->disk('public')
-                            ->nullable()
-                            ->multiple()
-                            ->label('Kartu Keluarga')
-                            ->downloadable()
-                            ->previewable(false),
+                        // Forms\Components\FileUpload::make('kk')
+                        // ->disabled(fn () => ! (function () {
+                        //     /** @var \App\Models\User|null $user */
+                        //     $user = Auth::user();
+                        //     return $user && $user->hasRole(['admin','KPR Officer']);
+                        // })())
+                        //     ->disk('public')
+                        //     ->nullable()
+                        //     ->multiple()
+                        //     ->label('Kartu Keluarga')
+                        //     ->downloadable()
+                        //     ->previewable(false),
                 
-                        Forms\Components\FileUpload::make('npwp_upload')
-                        ->disabled(fn () => ! (function () {
-                            /** @var \App\Models\User|null $user */
-                            $user = Auth::user();
-                            return $user && $user->hasRole(['admin','KPR Officer']);
-                        })())
-                            ->disk('public')
-                            ->nullable()
-                            ->multiple()
-                            ->label('NPWP')
-                            ->downloadable()
-                            ->previewable(false),
+                        // Forms\Components\FileUpload::make('npwp_upload')
+                        // ->disabled(fn () => ! (function () {
+                        //     /** @var \App\Models\User|null $user */
+                        //     $user = Auth::user();
+                        //     return $user && $user->hasRole(['admin','KPR Officer']);
+                        // })())
+                        //     ->disk('public')
+                        //     ->nullable()
+                        //     ->multiple()
+                        //     ->label('NPWP')
+                        //     ->downloadable()
+                        //     ->previewable(false),
                 
-                        Forms\Components\FileUpload::make('buku_nikah')
-                        ->disabled(fn () => ! (function () {
-                            /** @var \App\Models\User|null $user */
-                            $user = Auth::user();
-                            return $user && $user->hasRole(['admin','KPR Officer']);
-                        })())
-                            ->disk('public')
-                            ->nullable()
-                            ->multiple()
-                            ->label('Buku Nikah')
-                            ->downloadable()
-                            ->previewable(false),
+                        // Forms\Components\FileUpload::make('buku_nikah')
+                        // ->disabled(fn () => ! (function () {
+                        //     /** @var \App\Models\User|null $user */
+                        //     $user = Auth::user();
+                        //     return $user && $user->hasRole(['admin','KPR Officer']);
+                        // })())
+                        //     ->disk('public')
+                        //     ->nullable()
+                        //     ->multiple()
+                        //     ->label('Buku Nikah')
+                        //     ->downloadable()
+                        //     ->previewable(false),
                 
-                        Forms\Components\FileUpload::make('akte_cerai')
-                        ->disabled(fn () => ! (function () {
-                            /** @var \App\Models\User|null $user */
-                            $user = Auth::user();
-                            return $user && $user->hasRole(['admin','KPR Officer']);
-                        })())
-                            ->disk('public')
-                            ->nullable()
-                            ->multiple()
-                            ->label('Akta Cerai')
-                            ->downloadable()
-                            ->previewable(false),
+                        // Forms\Components\FileUpload::make('akte_cerai')
+                        // ->disabled(fn () => ! (function () {
+                        //     /** @var \App\Models\User|null $user */
+                        //     $user = Auth::user();
+                        //     return $user && $user->hasRole(['admin','KPR Officer']);
+                        // })())
+                        //     ->disk('public')
+                        //     ->nullable()
+                        //     ->multiple()
+                        //     ->label('Akta Cerai')
+                        //     ->downloadable()
+                        //     ->previewable(false),
                 
-                        Forms\Components\FileUpload::make('akte_kematian')
-                        ->disabled(fn () => ! (function () {
-                            /** @var \App\Models\User|null $user */
-                            $user = Auth::user();
-                            return $user && $user->hasRole(['admin','KPR Officer']);
-                        })())
-                            ->disk('public')
-                            ->nullable()
-                            ->multiple()
-                            ->label('Akte Kematian')
-                            ->downloadable()
-                            ->previewable(false),
+                        // Forms\Components\FileUpload::make('akte_kematian')
+                        // ->disabled(fn () => ! (function () {
+                        //     /** @var \App\Models\User|null $user */
+                        //     $user = Auth::user();
+                        //     return $user && $user->hasRole(['admin','KPR Officer']);
+                        // })())
+                        //     ->disk('public')
+                        //     ->nullable()
+                        //     ->multiple()
+                        //     ->label('Akte Kematian')
+                        //     ->downloadable()
+                        //     ->previewable(false),
                 
-                        Forms\Components\FileUpload::make('kartu_bpjs')
-                        ->disabled(fn () => ! (function () {
-                            /** @var \App\Models\User|null $user */
-                            $user = Auth::user();
-                            return $user && $user->hasRole(['admin','KPR Officer']);
-                        })())
-                            ->disk('public')
-                            ->nullable()
-                            ->multiple()
-                            ->label('Kartu BPJS')
-                            ->downloadable()
-                            ->previewable(false),
+                        // Forms\Components\FileUpload::make('kartu_bpjs')
+                        // ->disabled(fn () => ! (function () {
+                        //     /** @var \App\Models\User|null $user */
+                        //     $user = Auth::user();
+                        //     return $user && $user->hasRole(['admin','KPR Officer']);
+                        // })())
+                        //     ->disk('public')
+                        //     ->nullable()
+                        //     ->multiple()
+                        //     ->label('Kartu BPJS')
+                        //     ->downloadable()
+                        //     ->previewable(false),
                 
-                        Forms\Components\FileUpload::make('drk')
-                        ->disabled(fn () => ! (function () {
-                            /** @var \App\Models\User|null $user */
-                            $user = Auth::user();
-                            return $user && $user->hasRole(['admin','KPR Officer']);
-                        })())
-                            ->disk('public')
-                            ->nullable()
-                            ->multiple()
-                            ->label('DRK')
-                            ->downloadable()
-                            ->previewable(false),
+                        // Forms\Components\FileUpload::make('drk')
+                        // ->disabled(fn () => ! (function () {
+                        //     /** @var \App\Models\User|null $user */
+                        //     $user = Auth::user();
+                        //     return $user && $user->hasRole(['admin','KPR Officer']);
+                        // })())
+                        //     ->disk('public')
+                        //     ->nullable()
+                        //     ->multiple()
+                        //     ->label('DRK')
+                        //     ->downloadable()
+                        //     ->previewable(false),
                     ]),
                 
             ]);
@@ -507,14 +545,38 @@ class FormKprPcaResource extends Resource
                     ->searchable()
                     ->label('Status Akad'),
                 
-                    TextColumn::make('ktp')
-                    ->label('KTP')
+                    CheckboxColumn::make('kk')
+                        ->label('Kartu Keluarga'),
+                        
+                    CheckboxColumn::make('ktp')
+                    ->label('KTP'),
+                    
+                    CheckboxColumn::make('npwp_upload')
+                    ->label('NPWP'),
+                    
+                    CheckboxColumn::make('buku_nikah')
+                    ->label('Buku Nikah'),
+                    
+                    CheckboxColumn::make('akte_cerai')
+                    ->label('Akte Cerai'),
+                    
+                    CheckboxColumn::make('akte_kematian')
+                    ->label('Akte Kematian'),
+                    
+                    CheckboxColumn::make('kartu_bpjs')
+                    ->label('Kartu BPJS'),
+                    
+                    CheckboxColumn::make('drk')
+                    ->label('DRK'),
+                
+                    TextColumn::make('data_diri')
+                    ->label('Data Diri')
                     ->formatStateUsing(function ($record) {
-                        if (!$record->ktp) {
+                        if (!$record->data_diri) {
                             return 'Tidak Ada Dokumen';
                         }
     
-                        $files = is_array($record->ktp) ? $record->ktp : json_decode($record->ktp, true);
+                        $files = is_array($record->data_diri) ? $record->data_diri : json_decode($record->data_diri, true);
     
                         if (json_last_error() !== JSON_ERROR_NONE) {
                             $files = [];
@@ -531,173 +593,173 @@ class FormKprPcaResource extends Resource
                     ->html()
                     ->sortable(),
 
-                    TextColumn::make('kk')
-                    ->label('Kartu Keluarga')
-                    ->formatStateUsing(function ($record) {
-                        if (!$record->kk) {
-                            return 'Tidak Ada Dokumen';
-                        }
+                    // TextColumn::make('kk')
+                    // ->label('Kartu Keluarga')
+                    // ->formatStateUsing(function ($record) {
+                    //     if (!$record->kk) {
+                    //         return 'Tidak Ada Dokumen';
+                    //     }
     
-                        $files = is_array($record->kk) ? $record->kk : json_decode($record->kk, true);
+                    //     $files = is_array($record->kk) ? $record->kk : json_decode($record->kk, true);
     
-                        if (json_last_error() !== JSON_ERROR_NONE) {
-                            $files = [];
-                        }
+                    //     if (json_last_error() !== JSON_ERROR_NONE) {
+                    //         $files = [];
+                    //     }
     
-                        $output = '';
-                        foreach ($files as $file) {
-                            $url = Storage::url($file);
-                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
-                        }
+                    //     $output = '';
+                    //     foreach ($files as $file) {
+                    //         $url = Storage::url($file);
+                    //         $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    //     }
     
-                        return $output ?: 'Tidak Ada Dokumen';
-                    })
-                    ->html()
-                    ->sortable(),
+                    //     return $output ?: 'Tidak Ada Dokumen';
+                    // })
+                    // ->html()
+                    // ->sortable(),
 
-                    TextColumn::make('npwp_upload')
-                    ->label('NPWP')
-                    ->formatStateUsing(function ($record) {
-                        if (!$record->npwp_upload) {
-                            return 'Tidak Ada Dokumen';
-                        }
+                    // TextColumn::make('npwp_upload')
+                    // ->label('NPWP')
+                    // ->formatStateUsing(function ($record) {
+                    //     if (!$record->npwp_upload) {
+                    //         return 'Tidak Ada Dokumen';
+                    //     }
     
-                        $files = is_array($record->npwp_upload) ? $record->npwp_upload : json_decode($record->npwp_upload, true);
+                    //     $files = is_array($record->npwp_upload) ? $record->npwp_upload : json_decode($record->npwp_upload, true);
     
-                        if (json_last_error() !== JSON_ERROR_NONE) {
-                            $files = [];
-                        }
+                    //     if (json_last_error() !== JSON_ERROR_NONE) {
+                    //         $files = [];
+                    //     }
     
-                        $output = '';
-                        foreach ($files as $file) {
-                            $url = Storage::url($file);
-                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
-                        }
+                    //     $output = '';
+                    //     foreach ($files as $file) {
+                    //         $url = Storage::url($file);
+                    //         $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    //     }
     
-                        return $output ?: 'Tidak Ada Dokumen';
-                    })
-                    ->html()
-                    ->sortable(),
+                    //     return $output ?: 'Tidak Ada Dokumen';
+                    // })
+                    // ->html()
+                    // ->sortable(),
 
-                    TextColumn::make('buku_nikah')
-                    ->label('Buku Nikah')
-                    ->formatStateUsing(function ($record) {
-                        if (!$record->buku_nikah) {
-                            return 'Tidak Ada Dokumen';
-                        }
+                    // TextColumn::make('buku_nikah')
+                    // ->label('Buku Nikah')
+                    // ->formatStateUsing(function ($record) {
+                    //     if (!$record->buku_nikah) {
+                    //         return 'Tidak Ada Dokumen';
+                    //     }
     
-                        $files = is_array($record->buku_nikah) ? $record->buku_nikah : json_decode($record->buku_nikah, true);
+                    //     $files = is_array($record->buku_nikah) ? $record->buku_nikah : json_decode($record->buku_nikah, true);
     
-                        if (json_last_error() !== JSON_ERROR_NONE) {
-                            $files = [];
-                        }
+                    //     if (json_last_error() !== JSON_ERROR_NONE) {
+                    //         $files = [];
+                    //     }
     
-                        $output = '';
-                        foreach ($files as $file) {
-                            $url = Storage::url($file);
-                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
-                        }
+                    //     $output = '';
+                    //     foreach ($files as $file) {
+                    //         $url = Storage::url($file);
+                    //         $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    //     }
     
-                        return $output ?: 'Tidak Ada Dokumen';
-                    })
-                    ->html()
-                    ->sortable(),
+                    //     return $output ?: 'Tidak Ada Dokumen';
+                    // })
+                    // ->html()
+                    // ->sortable(),
 
-                    TextColumn::make('akte_cerai')
-                    ->label('Akta Cerai')
-                    ->formatStateUsing(function ($record) {
-                        if (!$record->akte_cerai) {
-                            return 'Tidak Ada Dokumen';
-                        }
+                    // TextColumn::make('akte_cerai')
+                    // ->label('Akta Cerai')
+                    // ->formatStateUsing(function ($record) {
+                    //     if (!$record->akte_cerai) {
+                    //         return 'Tidak Ada Dokumen';
+                    //     }
     
-                        $files = is_array($record->akte_cerai) ? $record->akte_cerai : json_decode($record->akte_cerai, true);
+                    //     $files = is_array($record->akte_cerai) ? $record->akte_cerai : json_decode($record->akte_cerai, true);
     
-                        if (json_last_error() !== JSON_ERROR_NONE) {
-                            $files = [];
-                        }
+                    //     if (json_last_error() !== JSON_ERROR_NONE) {
+                    //         $files = [];
+                    //     }
     
-                        $output = '';
-                        foreach ($files as $file) {
-                            $url = Storage::url($file);
-                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
-                        }
+                    //     $output = '';
+                    //     foreach ($files as $file) {
+                    //         $url = Storage::url($file);
+                    //         $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    //     }
     
-                        return $output ?: 'Tidak Ada Dokumen';
-                    })
-                    ->html()
-                    ->sortable(),
+                    //     return $output ?: 'Tidak Ada Dokumen';
+                    // })
+                    // ->html()
+                    // ->sortable(),
 
-                    TextColumn::make('akte_kematian')
-                    ->label('Akta Kematian')
-                    ->formatStateUsing(function ($record) {
-                        if (!$record->akte_kematian) {
-                            return 'Tidak Ada Dokumen';
-                        }
+                    // TextColumn::make('akte_kematian')
+                    // ->label('Akta Kematian')
+                    // ->formatStateUsing(function ($record) {
+                    //     if (!$record->akte_kematian) {
+                    //         return 'Tidak Ada Dokumen';
+                    //     }
     
-                        $files = is_array($record->akte_kematian) ? $record->akte_kematian : json_decode($record->akte_kematian, true);
+                    //     $files = is_array($record->akte_kematian) ? $record->akte_kematian : json_decode($record->akte_kematian, true);
     
-                        if (json_last_error() !== JSON_ERROR_NONE) {
-                            $files = [];
-                        }
+                    //     if (json_last_error() !== JSON_ERROR_NONE) {
+                    //         $files = [];
+                    //     }
     
-                        $output = '';
-                        foreach ($files as $file) {
-                            $url = Storage::url($file);
-                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
-                        }
+                    //     $output = '';
+                    //     foreach ($files as $file) {
+                    //         $url = Storage::url($file);
+                    //         $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    //     }
     
-                        return $output ?: 'Tidak Ada Dokumen';
-                    })
-                    ->html()
-                    ->sortable(),
+                    //     return $output ?: 'Tidak Ada Dokumen';
+                    // })
+                    // ->html()
+                    // ->sortable(),
 
-                    TextColumn::make('kartu_bpjs')
-                    ->label('Kartu BPJS')
-                    ->formatStateUsing(function ($record) {
-                        if (!$record->kartu_bpjs) {
-                            return 'Tidak Ada Dokumen';
-                        }
+                    // TextColumn::make('kartu_bpjs')
+                    // ->label('Kartu BPJS')
+                    // ->formatStateUsing(function ($record) {
+                    //     if (!$record->kartu_bpjs) {
+                    //         return 'Tidak Ada Dokumen';
+                    //     }
     
-                        $files = is_array($record->kartu_bpjs) ? $record->kartu_bpjs : json_decode($record->kartu_bpjs, true);
+                    //     $files = is_array($record->kartu_bpjs) ? $record->kartu_bpjs : json_decode($record->kartu_bpjs, true);
     
-                        if (json_last_error() !== JSON_ERROR_NONE) {
-                            $files = [];
-                        }
+                    //     if (json_last_error() !== JSON_ERROR_NONE) {
+                    //         $files = [];
+                    //     }
     
-                        $output = '';
-                        foreach ($files as $file) {
-                            $url = Storage::url($file);
-                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
-                        }
+                    //     $output = '';
+                    //     foreach ($files as $file) {
+                    //         $url = Storage::url($file);
+                    //         $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    //     }
     
-                        return $output ?: 'Tidak Ada Dokumen';
-                    })
-                    ->html()
-                    ->sortable(),
+                    //     return $output ?: 'Tidak Ada Dokumen';
+                    // })
+                    // ->html()
+                    // ->sortable(),
 
-                    TextColumn::make('drk')
-                    ->label('DRK')
-                    ->formatStateUsing(function ($record) {
-                        if (!$record->drk) {
-                            return 'Tidak Ada Dokumen';
-                        }
+                    // TextColumn::make('drk')
+                    // ->label('DRK')
+                    // ->formatStateUsing(function ($record) {
+                    //     if (!$record->drk) {
+                    //         return 'Tidak Ada Dokumen';
+                    //     }
     
-                        $files = is_array($record->drk) ? $record->drk : json_decode($record->drk, true);
+                    //     $files = is_array($record->drk) ? $record->drk : json_decode($record->drk, true);
     
-                        if (json_last_error() !== JSON_ERROR_NONE) {
-                            $files = [];
-                        }
+                    //     if (json_last_error() !== JSON_ERROR_NONE) {
+                    //         $files = [];
+                    //     }
     
-                        $output = '';
-                        foreach ($files as $file) {
-                            $url = Storage::url($file);
-                            $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
-                        }
+                    //     $output = '';
+                    //     foreach ($files as $file) {
+                    //         $url = Storage::url($file);
+                    //         $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    //     }
     
-                        return $output ?: 'Tidak Ada Dokumen';
-                    })
-                    ->html()
-                    ->sortable(),
+                    //     return $output ?: 'Tidak Ada Dokumen';
+                    // })
+                    // ->html()
+                    // ->sortable(),
             ])
             ->defaultSort('siteplan', 'asc')
             ->headerActions([

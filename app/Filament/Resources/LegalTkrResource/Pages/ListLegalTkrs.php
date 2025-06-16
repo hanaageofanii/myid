@@ -16,7 +16,7 @@ class ListLegalTkrs extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->label('Buat Data Sertifikat'),
+            ->label('Buat Data Legalitas'),
         ];
     }
     protected function getHeaderWidgets(): array

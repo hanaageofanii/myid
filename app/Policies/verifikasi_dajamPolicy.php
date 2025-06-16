@@ -28,7 +28,7 @@ class verifikasi_dajamPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin','Legal Pajak']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -36,7 +36,7 @@ class verifikasi_dajamPolicy
      */
     public function update(User $user, verifikasi_dajam $verifikasi_dajam): bool
     {
-        return $user->hasRole(['admin','Legal Pajak']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -44,7 +44,7 @@ class verifikasi_dajamPolicy
      */
     public function delete(User $user, verifikasi_dajam $verifikasi_dajam): bool
     {
-        return $user->hasRole(['admin','Legal Pajak']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**

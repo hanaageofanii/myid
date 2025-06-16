@@ -72,7 +72,7 @@ class PcaResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole('admin');
+                        return $user && $user->hasRole(['admin','KPR Stok']);
                     })()),
 
                 Forms\Components\Select::make('nama_perusahaan')
@@ -87,7 +87,7 @@ class PcaResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole('admin');
+                        return $user && $user->hasRole(['admin','KPR Stok']);
                     })()),
 
                 Forms\Components\Select::make('kavling')
@@ -104,7 +104,7 @@ class PcaResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole('admin');
+                        return $user && $user->hasRole(['admin','KPR Stok']);
                     })()),
 
                     Forms\Components\Select::make('siteplan')
@@ -127,7 +127,7 @@ class PcaResource extends Resource
                         })->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole('admin');
+                            return $user && $user->hasRole(['admin','KPR Stok']);
                         })()),
 
                 
@@ -137,7 +137,7 @@ class PcaResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole('admin');
+                        return $user && $user->hasRole(['admin','KPR Stok']);
                     })()),
                 
 
@@ -148,7 +148,7 @@ class PcaResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole('admin');
+                        return $user && $user->hasRole(['admin','KPR Stok']);
                     })()),
 
                 Forms\Components\Select::make('status')
@@ -201,6 +201,32 @@ class PcaResource extends Resource
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin', 'Legal officer','Legal Pajak', 'KPR Stok']) && $get('status') === 'booking';
                     })()), 
+                    
+                 Forms\Components\Select::make('status_sertifikat')
+                    ->options([
+                        'pecah' => 'SUDAH PECAH',
+                        'belum' => 'BELUM PECAH',
+                    ])
+                    ->label('Status Sertifikat')
+                     ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal officer']);
+                    })()),
+                    
+                    Forms\Components\Select::make('status_pembayaran')
+                    ->options([
+                        'cash' => 'CASH',
+                        'kpr' => 'KPR',
+                        'cash_bertahap' => 'CASH BERTAHAP',
+                        'promo' => 'PROMO',
+                    ])
+                    ->label('Status Pembayaran')
+                     ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','KPR Stok']);
+                    })()),
 
                 Forms\Components\Select::make('kpr_status')
                     ->options([
@@ -235,7 +261,7 @@ class PcaResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','KPR officer']);
+                        return $user && $user->hasRole(['admin','KPR Officer']);
                     })()),
 
                     Forms\Components\DatePicker::make('tanggal_akad')
@@ -243,7 +269,7 @@ class PcaResource extends Resource
                     ->disabled(fn ($get) => ! (function () use ($get) {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin', 'KPR officer']) && $get('kpr_status') === 'akad';
+                        return $user && $user->hasRole(['admin', 'KPR Officer']) && $get('kpr_status') === 'akad';
                     })()),
 
                 Forms\Components\Textarea::make('ket')
@@ -252,7 +278,7 @@ class PcaResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','KPR officer']);
+                        return $user && $user->hasRole(['admin','KPR Officer']);
                     })()),
             ]);
     }
@@ -306,6 +332,21 @@ class PcaResource extends Resource
                 Tables\Columns\TextColumn::make('tanggal_booking')->date()->label('Tanggal Booking')->searchable()                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
                 Tables\Columns\TextColumn::make('nama_konsumen')->label('Nama Konsumen')->searchable(),
                 Tables\Columns\TextColumn::make('agent')->label('Agent')->searchable(),
+                
+                 Tables\Columns\TextColumn::make('status_sertifikat')->label('Status Sertifikat')
+            ->formatStateUsing(fn (string $state): string => match ($state) {
+                'pecah' => 'SUDAH PECAH',
+                'belum' => 'BELUM PECAH',
+                default => $state,
+            })->searchable(),
+            Tables\Columns\TextColumn::make('status_pembayaran')->label('Status Pembayaran')
+            ->formatStateUsing(fn (string $state): string => match ($state) {
+                'cash' => 'CASH',
+                'kpr' => 'KPR',
+                'cash_bertahap' => 'CASH BERTAHAP',
+                'promo' => 'PROMO',
+                default => $state,
+            })->searchable(),
                 Tables\Columns\TextColumn::make('kpr_status')
                     ->label('KPR Status')
                     ->default(fn ($record) => $record->audit_p_c_a_s?->status === 'akad' ? 'Akad' : $record->kpr_status)
@@ -325,17 +366,31 @@ class PcaResource extends Resource
                 ->disabled(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
-                    ->label('Status')
-                    ->options([
-                        'booking' => 'Booking',
-                    ]) ->native(false),
+                Tables\Filters\Filter::make('booking')
+                    ->label('Terbooking')
+                    ->query(fn ($query) => $query->where('status','booking'))
+                    ->toggle(),
+                    
+                     Tables\Filters\Filter::make('belum_terbooking')
+                    ->label('Belum Terbooking')
+                    ->query(fn ($query) => $query->whereNull('status'))
+                    ->toggle(),
             
                 Tables\Filters\TrashedFilter::make()
                     ->label('Data yang dihapus')
                     ->native(false),
 
-                    
+                Tables\Filters\SelectFilter::make('kavling') 
+                    ->label('Jenis Unit')
+                    ->options([
+                        'standar' => 'Standar',
+                        'khusus' => 'Khusus',
+                        'hook' => 'Hook',
+                        'komersil' => 'Komersil',
+                        'tanah_lebih' => 'Tanah Lebih',
+                        'kios' => 'Kios',
+                    ])
+                    ->native(false),
             
                 Tables\Filters\SelectFilter::make('kpr_status') 
                     ->label('Status KPR')
@@ -345,6 +400,24 @@ class PcaResource extends Resource
                         'batal' => 'Batal',
                     ])
                     ->native(false),
+                
+                 Tables\Filters\SelectFilter::make('status_sertifikat') 
+                ->label('Status Sertifikat')
+                ->options([
+                    'pecah' => 'Sudah Pecah',
+                    'belum' => 'Belum Pecah',
+                ])
+                ->native(false),
+                
+            Tables\Filters\SelectFilter::make('status_pembayaran') 
+                ->label('Status Pembayaran')
+                ->options([
+                    'cash' => 'Cash',
+                    'kpr' => 'KPR',
+                    'cash_bertahap' => 'Cash Bertahap',
+                    'promo' => 'Promo',
+                ])
+                ->native(false),
 
 
                 Tables\Filters\SelectFilter::make('proyek') 
@@ -355,29 +428,19 @@ class PcaResource extends Resource
                     ])
                     ->native(false),
             
-                Filter::make('created_from')
-                    ->label('Dari Tanggal')
-                    ->form([
-                        DatePicker::make('created_from')
-                            ->label('Dari'),
-                    ])
-                    ->query(fn ($query, $data) =>
-                        $query->when($data['created_from'] ?? null, fn ($q) =>
-                            $q->whereDate('created_at', '>=', $data['created_from'])
-                        )
-                    ),
-            
-                Filter::make('created_until')
-                    ->label('Sampai Tanggal')
-                    ->form([
-                        DatePicker::make('created_until')
-                            ->label('Sampai'),
-                    ])
-                    ->query(fn ($query, $data) =>
-                        $query->when($data['created_until'] ?? null, fn ($q) =>
-                            $q->whereDate('created_at', '<=', $data['created_until'])
-                        )
-                    ),
+    //             Filter::make('tanggal_booking')
+    // ->label('Tanggal Booking')
+    // ->form([
+    //     Grid::make(2)->schema([
+    //         DatePicker::make('from')->label('Dari'),
+    //         DatePicker::make('until')->label('Sampai'),
+    //     ])
+    // ])
+    // ->query(function ($query, array $data) {
+    //     return $query
+    //         ->when($data['from'], fn ($q) => $q->whereDate('tanggal_booking', '>=', $data['from']))
+    //         ->when($data['until'], fn ($q) => $q->whereDate('tanggal_booking', '<=', $data['until']));
+    // }),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormMaxHeight('400px')
             ->filtersFormColumns(4)
@@ -503,18 +566,28 @@ class PcaResource extends Resource
         ]);
 
     /** @var \App\Models\User|null $user */
-    $user = Auth::user();
+$user = Auth::user();
 
-    if ($user) {
-        if ($user->hasRole('Marketing')) {
-            $query->where(function ($q) {
-                $q->whereNull('kpr_status')
-                    ->orWhere('kpr_status', '!=', 'akad');
+if ($user) {
+    if ($user->hasRole('Marketing')) {
+        $query->where(function ($q) {
+            // HANYA yang belum booking
+            $q->where(function ($qStatus) {
+                $qStatus->whereNull('status')
+                        ->orWhere('status', '!=', 'booking');
+            })
+            // DAN kpr_status bukan akad atau batal sp3k
+            ->where(function ($qKpr) {
+                $qKpr->whereNull('kpr_status')
+                     ->orWhereNotIn('kpr_status', ['akad', 'batal',' sp3k']);
             });
-        } elseif ($user->hasRole(['Legal officer','Legal Pajak'])) {
-            $query->where('kpr_status', 'akad');
-        }
+        });
+    } elseif ($user->hasRole(['Legal officer', 'Legal Pajak'])) {
+        // Legal tetap khusus yg sudah akad
+        $query->where('kpr_status', 'akad');
     }
+}
+
 
     return $query;
 }

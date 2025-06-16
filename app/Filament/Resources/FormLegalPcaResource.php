@@ -49,12 +49,12 @@ class FormLegalPcaResource extends Resource
 {
     protected static ?string $model = form_legal_pca::class;
 
-    protected static ?string $title = "Input Sertifikat PCA";
+    protected static ?string $title = "Legalitas PCA";
     protected static ?string $navigationGroup = "Legal";
-    protected static ?string $pluralLabel = "Form Input Sertifikat PCA";
+    protected static ?string $pluralLabel = "Form Legalitas PCA";
     protected static ?string $navigationIcon = 'heroicon-o-inbox-stack';
-    protected static ?string $navigationLabel = 'Sertifikat PCA';
-    protected static ?string $pluralModelLabel = 'Daftar Input Sertifikat PCA';
+    protected static ?string $navigationLabel = 'Legalitas PCA';
+    protected static ?string $pluralModelLabel = 'Daftar Legalitas PCA';
     public static function form(Form $form): Form
     {
         return $form

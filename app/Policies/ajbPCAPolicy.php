@@ -29,7 +29,7 @@ class ajbPCAPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin','Legal Pajak']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -37,7 +37,7 @@ class ajbPCAPolicy
      */
     public function update(User $user, ajbPCA $ajbPCA): bool
     {
-        return $user->hasRole(['admin','Legal Pajak']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -45,7 +45,7 @@ class ajbPCAPolicy
      */
     public function delete(User $user, ajbPCA $ajbPCA): bool
     {
-        return $user->hasRole(['admin','Legal Pajak']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -53,7 +53,7 @@ class ajbPCAPolicy
      */
     public function restore(User $user, ajbPCA $ajbPCA): bool
     {
-        return $user->hasRole(['admin','Legal Pajak']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
@@ -61,6 +61,6 @@ class ajbPCAPolicy
      */
     public function forceDelete(User $user, ajbPCA $ajbPCA): bool
     {
-        return $user->hasRole(['admin','Legal Pajak']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 }

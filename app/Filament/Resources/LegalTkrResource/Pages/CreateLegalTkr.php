@@ -11,7 +11,7 @@ use Filament\Notifications\Notification;
 class CreateLegalTkr extends CreateRecord
 {
     protected static string $resource = LegalTkrResource::class;
-    protected static ?string $title = "Buat Data Sertifikat";
+    protected static ?string $title = "Buat Data Legalitas";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
@@ -36,8 +36,8 @@ class CreateLegalTkr extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Data Sertifikat Disimpan')
-            ->body('Data Sertifikat telah berhasil disimpan.');
+            ->title('Data Legalitas Disimpan')
+            ->body('Data Legalitas telah berhasil disimpan.');
     }
 
     protected function getSaveFormAction(): Actions\Action

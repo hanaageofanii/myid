@@ -49,12 +49,12 @@ class LegalTkrResource extends Resource
 {
     protected static ?string $model = LegalTkr::class;
 
-    protected static ?string $title = "Input Sertifikat TKR";
+    protected static ?string $title = "Legalitas";
     protected static ?string $navigationGroup = "Legal";
-    protected static ?string $pluralLabel = "Form Input Sertifikat TKR";
+    protected static ?string $pluralLabel = "Legalitas TKR";
     protected static ?string $navigationIcon = 'heroicon-o-inbox-stack';
-    protected static ?string $navigationLabel = 'Sertifikat TKR';
-    protected static ?string $pluralModelLabel = 'Daftar Input Sertifikat TKR';
+    protected static ?string $navigationLabel = 'Legalitas TKR';
+    protected static ?string $pluralModelLabel = 'Daftar Legalitas TKR';
 
     public static function form(Form $form): Form
     {

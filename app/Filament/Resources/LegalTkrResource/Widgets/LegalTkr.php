@@ -15,11 +15,11 @@ class LegalTkr extends BaseWidget
     protected static ?string $maxHeight = '300px';
     protected static ?string $pollingInterval = '10s';
     protected static bool $isLazy = false;
-    protected ?string $heading = 'Dashboard Sertifikat TKR';
+    protected ?string $heading = 'Dashboard Legalitas TKR';
     protected function getStats(): array
     {
         return [
-            Card::make('Total Data Sertifikat', ModelsLegalTkr::count())
+            Card::make('Total Data Legalitas', ModelsLegalTkr::count())
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]), 
@@ -27,11 +27,11 @@ class LegalTkr extends BaseWidget
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]),  
-            Card::make('Status Sertifikat Induk', ModelsLegalTkr::where('status_sertifikat', 'induk')->count())
+            Card::make('Status Legalitas Induk', ModelsLegalTkr::where('status_sertifikat', 'induk')->count())
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]),            
-            Card::make('Status Sertfikat Pecahan', ModelsLegalTkr::where('status_sertifikat','pecahan')->count())
+            Card::make('Status Legalitas Pecahan', ModelsLegalTkr::where('status_sertifikat','pecahan')->count())
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]), 

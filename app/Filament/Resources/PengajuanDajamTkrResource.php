@@ -78,7 +78,7 @@ class PengajuanDajamTkrResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive()
                         ->afterStateUpdated(function ($state, callable $set) {
@@ -124,7 +124,7 @@ class PengajuanDajamTkrResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->label('Bank'),
 
@@ -133,7 +133,7 @@ class PengajuanDajamTkrResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive(),
                     
@@ -142,7 +142,7 @@ class PengajuanDajamTkrResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->reactive(),
 
@@ -158,7 +158,7 @@ class PengajuanDajamTkrResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->label('Nama Dajam'),
                     
@@ -166,7 +166,7 @@ class PengajuanDajamTkrResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                         ->label('No. Surat'),
                         
@@ -175,7 +175,7 @@ class PengajuanDajamTkrResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                         ->label('Tanggal Pengajuan'),
 
@@ -183,7 +183,7 @@ class PengajuanDajamTkrResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                        return $user && $user->hasRole(['admin','Legal officer']);
                     })())
                     ->label('Nilai Pencairan'),
 
@@ -195,7 +195,7 @@ class PengajuanDajamTkrResource extends Resource
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal Pajak']);
+                            return $user && $user->hasRole(['admin','Legal officer']);
                         })())
                         ->label('Status Dajam'),
                     
@@ -205,7 +205,7 @@ class PengajuanDajamTkrResource extends Resource
                             ->disabled(fn () => ! (function () {
                                 /** @var \App\Models\User|null $user */
                                 $user = Auth::user();
-                                return $user && $user->hasRole(['admin','Legal Pajak']);
+                                return $user && $user->hasRole(['admin','Legal officer']);
                             })())
                             ->disk('public')
                             ->nullable()
@@ -218,7 +218,7 @@ class PengajuanDajamTkrResource extends Resource
                             ->disabled(fn () => ! (function () {
                                 /** @var \App\Models\User|null $user */
                                 $user = Auth::user();
-                                return $user && $user->hasRole(['admin','Legal Pajak']);
+                                return $user && $user->hasRole(['admin','Legal officer']);
                             })())
                             ->disk('public')
                             ->nullable()

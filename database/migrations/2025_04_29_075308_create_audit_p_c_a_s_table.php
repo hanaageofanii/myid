@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('audit_p_c_a_s', function (Blueprint $table) {
             $table->id();
             $table->string('siteplan');
+              $table->integer('luas');
             $table->string('type');
             $table->boolean('terbangun')->default(false);
             $table->enum('status', ['akad','stock'])->nullable();

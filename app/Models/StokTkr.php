@@ -28,6 +28,8 @@ class StokTkr extends Model
         "ket",
         "user",
         "tanggal_update",
+        "status_sertifikat",
+        "status_pembayaran",
 
     ];
 

@@ -16,11 +16,11 @@ class SertifikatStats extends BaseWidget
     protected static ?string $maxHeight = '300px';
     protected static ?string $pollingInterval = '10s';
     protected static bool $isLazy = false;
-    protected ?string $heading = 'Dashboard Sertifikat GCV';
+    protected ?string $heading = 'Dashboard Legalitas GCV';
     protected function getStats(): array
     {
         return [
-            Card::make('Total Data Sertifikat', form_legal::count())
+            Card::make('Total Data Legalitas', form_legal::count())
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]), 
@@ -28,11 +28,11 @@ class SertifikatStats extends BaseWidget
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]),  
-            Card::make('Status Sertifikat Induk', form_legal::where('status_sertifikat', 'induk')->count())
+            Card::make('Status Legalitas Induk', form_legal::where('status_sertifikat', 'induk')->count())
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]),            
-            Card::make('Status Sertfikat Pecahan', form_legal::where('status_sertifikat','pecahan')->count())
+            Card::make('Status Legalitas Pecahan', form_legal::where('status_sertifikat','pecahan')->count())
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]), 

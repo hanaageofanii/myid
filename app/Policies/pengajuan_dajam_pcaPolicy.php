@@ -28,7 +28,7 @@ class pengajuan_dajam_pcaPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin','Legal Pajak']);
+        return $user->hasRole(['admin','Legal officer']);
     }
 
     /**
