@@ -76,7 +76,8 @@ use App\Policies\form_dp_pcaPolicy;
 use App\Policies\pencairan_akad_pcaPolicy;
 use App\Policies\PencairanDajamTkrPolicy;
 use App\Policies\verifikasi_dajam_pcaPolicy;
-
+use App\Models\kas_kecil;
+use App\Policies\KasKecilPolicy;
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -169,6 +170,8 @@ class AuthServiceProvider extends ServiceProvider
 
 
  \App\Models\VerifikasiDajamTkr::class => \App\Policies\VerifikasiDajamTkrPolicy::class,
+
+ \App\Models\kas_kecil::class => \App\Policies\KasKecilPolicy::class,
 
 ];
 
