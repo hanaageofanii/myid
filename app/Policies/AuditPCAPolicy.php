@@ -3,8 +3,9 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\AuditPCA;
 
-class AuditPCA
+class AuditPCAPolicy
 {
     /**
     /**
