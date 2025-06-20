@@ -136,27 +136,27 @@ class BukuRekonsilResource extends Resource
                     ->options(function (callable $get) {
                         // Get the selected 'nama_perusahaan' value
                         $perusahaan = $get('nama_perusahaan');
-                        
+
                         return Rekening::where('nama_perusahaan', $perusahaan)
-                            ->pluck('bank', 'bank') 
-                            ->unique() 
+                            ->pluck('bank', 'bank')
+                            ->unique()
                             ->map(function ($item) {
-                                return strtoupper(str_replace('_', ' ', $item)); 
+                                return strtoupper(str_replace('_', ' ', $item));
                             })
-                            ->toArray(); 
+                            ->toArray();
                     })
                     ->reactive()
                     ->afterStateUpdated(function (callable $get, callable $set) {
                         $data = Rekening::where('nama_perusahaan', $get('nama_perusahaan'))
                             ->where('bank', $get('bank'))
                             ->first();
-                
+
                         if ($data) {
-                            $set('jenis', $data->jenis); 
-                            $set('rekening', $data->rekening); 
+                            $set('jenis', $data->jenis);
+                            $set('rekening', $data->rekening);
                         } else {
-                            $set('jenis', null);  
-                            $set('rekening', null); 
+                            $set('jenis', null);
+                            $set('rekening', null);
                         }
                     })
                     // ->required()
@@ -165,7 +165,7 @@ class BukuRekonsilResource extends Resource
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
                     })()),
-                
+
 
     Select::make('jenis')
     ->label('Jenis')
@@ -183,9 +183,9 @@ class BukuRekonsilResource extends Resource
             ->map(function ($item) {
                 return ucfirst(strtolower($item));
             })
-            ->toArray(); 
+            ->toArray();
     })
-    ->reactive() 
+    ->reactive()
     ->afterStateUpdated(function (callable $get, callable $set) {
         $data = Rekening::where('nama_perusahaan', $get('nama_perusahaan'))
             ->where('bank', $get('bank'))
@@ -195,7 +195,7 @@ class BukuRekonsilResource extends Resource
         if ($data) {
             $set('rekening', $data->rekening);
         } else {
-            $set('rekening', null);  
+            $set('rekening', null);
         }
     })
     // ->required()
@@ -264,20 +264,20 @@ class BukuRekonsilResource extends Resource
                             $perusahaan = $get('nama_perusahaan');
                             $tipe = $get('tipe');
                             $jumlahUang = (int) $get('jumlah_uang');
-                    
+
                             if (! $perusahaan || ! $tipe || $jumlahUang === null) {
                                 return;
                             }
-                    
+
                             // Hitung total saldo perusahaan
                             $saldoSebelumnya = \App\Models\BukuRekonsil::where('nama_perusahaan', $perusahaan)
                                 ->selectRaw("SUM(CASE WHEN tipe = 'debit' THEN jumlah_uang ELSE -jumlah_uang END) as total")
                                 ->value('total') ?? 0;
-                    
+
                             $saldoBaru = $tipe === 'debit'
                                 ? $saldoSebelumnya + $jumlahUang
                                 : $saldoSebelumnya - $jumlahUang;
-                    
+
                             $set('saldo', $saldoBaru);
                         })
                         ->disabled(fn () => ! (function () {
@@ -285,7 +285,7 @@ class BukuRekonsilResource extends Resource
                             $user = Auth::user();
                             return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
                         })()),
-                    
+
 
                     TextInput::make('saldo')
                     ->label('Saldo')
@@ -306,7 +306,7 @@ class BukuRekonsilResource extends Resource
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
                     })()),
-                    
+
                     TextInput::make('catatan')
                     ->label('Catatan')
                     ->disabled(fn () => ! (function () {
@@ -348,14 +348,14 @@ class BukuRekonsilResource extends Resource
                 ->searchable(),
 
                 Tables\Columns\TextColumn::make('tanggal_check')->label('Tanggal Check')
-                ->searchable()                
+                ->searchable()
                 ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
 
                 Tables\Columns\TextColumn::make('nama_pencair')->label('Nama Pencair')
                 ->searchable(),
 
                 Tables\Columns\TextColumn::make('tanggal_dicairkan')->label('Tanggal di Cairkan')
-                ->searchable()                
+                ->searchable()
                 ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
 
                 Tables\Columns\TextColumn::make('nama_penerima')->label('Nama Penerima')
@@ -386,7 +386,7 @@ class BukuRekonsilResource extends Resource
                 // ->wrap()->limit(300) ->tooltip(fn ($record) => $record->deskripsi),
 
                 Tables\Columns\TextColumn::make('jumlah_uang')->label('Jumlah Uang')
-                ->searchable()            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),                
+                ->searchable()            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
 
 
                 Tables\Columns\TextColumn::make('tipe')->label('Tipe')
@@ -396,9 +396,9 @@ class BukuRekonsilResource extends Resource
                     default => $state,
                 })->searchable(),
 
-                
+
                 Tables\Columns\TextColumn::make('saldo')->label('Saldo')
-                ->searchable()            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),                
+                ->searchable()            ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
 
 
                 Tables\Columns\TextColumn::make('status_disalurkan')->label('Status di Cairkan')
@@ -407,7 +407,7 @@ class BukuRekonsilResource extends Resource
                    'belum' => 'Belum',
                     default => $state,
                 })->searchable(),
-                
+
                 Tables\Columns\TextColumn::make('catatan')->label('Catatan')
                 ->searchable(),
 
@@ -441,14 +441,14 @@ class BukuRekonsilResource extends Resource
                     ->label('Status di Cairkan')
                     ->options([
                         'sudah' => 'Sudah',
-                        'belum' => 'Belum',                                           
+                        'belum' => 'Belum',
                         ]) ->native(false),
-            
+
                 Tables\Filters\TrashedFilter::make()
                     ->label('Data yang dihapus')
                     ->native(false),
 
-                Tables\Filters\SelectFilter::make('nama_perusahaan') 
+                Tables\Filters\SelectFilter::make('nama_perusahaan')
                     ->label('Nama Perusahaan')
                     ->options([
                         'langgeng_pertiwi_development' => 'PT. Langgeng Pertiwi Development',
@@ -458,15 +458,15 @@ class BukuRekonsilResource extends Resource
                     ->native(false),
 
 
-                Tables\Filters\SelectFilter::make('tipe') 
+                Tables\Filters\SelectFilter::make('tipe')
                     ->label('Tipe')
                     ->options([
                         'debit' => 'Debit',
                         'kredit' => 'Kredit',
                     ])
                     ->native(false),
-                    
-                    Tables\Filters\SelectFilter::make('bank') 
+
+                    Tables\Filters\SelectFilter::make('bank')
                     ->label('Bank')
                     ->options([
                          'btn_karawang' => 'BTN Karawang',
@@ -480,7 +480,7 @@ class BukuRekonsilResource extends Resource
                     'mandiri_cikarang' => 'Mandiri Cikarang',
                     ])
                     ->native(false),
-            
+
                 Filter::make('created_from')
                     ->label('Dari Tanggal')
                     ->form([
@@ -492,7 +492,7 @@ class BukuRekonsilResource extends Resource
                             $q->whereDate('created_at', '>=', $data['created_from'])
                         )
                     ),
-            
+
                 Filter::make('created_until')
                     ->label('Sampai Tanggal')
                     ->form([
@@ -508,7 +508,7 @@ class BukuRekonsilResource extends Resource
             ->filtersFormMaxHeight('400px')
             ->filtersFormColumns(4)
             ->filtersFormWidth(MaxWidth::FourExtraLarge)
-            
+
             ->actions([
                 ActionGroup::make([
                     ViewAction::make()
@@ -521,7 +521,7 @@ class BukuRekonsilResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Data Rekonsil Diperbarui')
-                                ->body('Data Rekonsil telah berhasil disimpan.')),                    
+                                ->body('Data Rekonsil telah berhasil disimpan.')),
                                 DeleteAction::make()
                                 ->color('danger')
                                 ->label(fn ($record) => "Hapus {$record->no_check}")
@@ -560,23 +560,23 @@ class BukuRekonsilResource extends Resource
                     ),
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
-            
+
                 ->groupedBulkActions([
                     BulkAction::make('delete')
                         ->label('Hapus')
-                        ->icon('heroicon-o-trash') 
+                        ->icon('heroicon-o-trash')
                         ->color('danger')
                         ->successNotification(
                             Notification::make()
                                 ->success()
                                 ->title('Data Rekonsil')
-                                ->body('Data Rekonsil berhasil dihapus.'))                        
+                                ->body('Data Rekonsil berhasil dihapus.'))
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
-                
+
                     BulkAction::make('forceDelete')
                         ->label('Hapus Permanent')
-                        ->icon('heroicon-o-x-circle') 
+                        ->icon('heroicon-o-x-circle')
                         ->color('warning')
                         ->successNotification(
                             Notification::make()
@@ -584,16 +584,16 @@ class BukuRekonsilResource extends Resource
                                 ->title('Data Rekonsil')
                                 ->body('Data Rekonsil berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
-                
+
                     BulkAction::make('export')
                         ->label('Download Data')
-                        ->icon('heroicon-o-arrow-down-tray') 
+                        ->icon('heroicon-o-arrow-down-tray')
                         ->color('info')
                         ->action(fn (Collection $records) => static::exportData($records)),
-                
+
                     Tables\Actions\RestoreBulkAction::make()
                         ->label('Kembalikan Data')
-                        ->icon('heroicon-o-arrow-path') 
+                        ->icon('heroicon-o-arrow-path')
                         ->color('success')
                         ->button()
                         ->successNotification(
@@ -602,7 +602,7 @@ class BukuRekonsilResource extends Resource
                                 ->title('Data Rekonsil')
                                 ->body('Data Rekonsil berhasil dikembalikan.')),
                 ]);
-                
+
     }
 
     public static function getRelations(): array
@@ -613,11 +613,11 @@ class BukuRekonsilResource extends Resource
     public static function exportData(Collection $records)
     {
         $csvData = "Id, Nama Perusahaan, No. Check, Tanggal Check, Nama Pencair, Tanggal di Cairkan, Nama Penerima, Account Bank, Bank, Jenis, No. Rekening, Jumlah Uang, Tipe, Saldo, Status di Salurkan\n";
-    
+
         foreach ($records as $record) {
             $csvData .= "{$record->id}, {$record->nama_perusahaan}, {$record->no_check}, {$record->tanggal_check}, {$record->nama_pencair}, {$record->tanggal_dicairkan}, {$record->nama_penerima}, {$record->account_bank}, {$record->bank}, {$record->jenis}, {$record->rekening}, {$record->deskripsi}, {$record->jumlah_uang}, {$record->tipe}, {$record->saldo}, {$record->status_disalurkan} \n";
         }
-    
+
         return response()->streamDownload(fn () => print($csvData), 'BukuRekonsil.csv');
     }
 

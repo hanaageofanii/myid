@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('kas_kecils', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal');
-            $table->string('deskripsi');
-            $table->string('debit');
-            $table->string('kredit');
-            $table->string('keterangan');
+            $table->enum('nama_perusahaan', ['langgeng_pertiwi_development','agung_purnama_bakti','purnama_karya_bersama'])->nullable();
+            $table->date('tanggal')->nullable();
+            $table->string('deskripsi')->nullable();
+            $table->enum('tipe',['debit','kredit'])->nullable();
+            $table->string('jumlah_uang')->nullable();
+            $table->string('saldo')->nullable();
+            $table->string('catatan')->nullable();
             $table->json('bukti')->nullable();
             $table->timestamps();
         });

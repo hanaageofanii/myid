@@ -14,10 +14,12 @@ class kas_kecil extends Model
 
     protected $fillable = [
         "tanggal",
+        "perusahaan",
         "deskripsi",
-        "debit",
-        "kredit",
-        "keterangan",
+        "jumlah_uang",
+        "tipe",
+        "saldo",
+        "catatan",
         "bukti",
     ];
 
