@@ -3,8 +3,9 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\PengajuanDajamTkr;
 
-class PengajuanDajamTkr
+class PengajuanDajamTkrPolicy
 {
     /**
      * Determine whether the user can view any models.
