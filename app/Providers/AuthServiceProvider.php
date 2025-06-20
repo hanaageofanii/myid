@@ -30,9 +30,9 @@ use Spatie\Permission\Models\Permission;
 use App\Policies\PermissionPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\ajbPolicy;
-use App\Policies\AjbTkr;
+use App\Policies\AjbTkrPolicy;
 use App\Policies\audit_tkr as PoliciesAudit_tkr;
-use App\Policies\AuditPCA;
+use App\Policies\AuditPCAPolicy;
 use App\Policies\AuditPolicy;
 use App\Policies\BukuRekonsilPolicy;
 use App\Policies\dajamPolicy;
@@ -43,18 +43,18 @@ use App\Policies\form_legalPolicy;
 use App\Policies\form_pajakPolicy;
 use App\Policies\form_ppn_pcaPolicy;
 use App\Policies\form_ppnPolicy;
-use App\Policies\FormDpTkr;
+use App\Policies\FormDpTkrPolicy;
 use App\Policies\FormKprTkrPolicy;
 use App\Policies\GCVPolicy;
-use App\Policies\PajakTkr;
+use App\Policies\PajakTkrPolicy;
 use App\Policies\pembayaranPolicy;
-use App\Policies\pencairan_dajam_pca;
+use App\Policies\pencairan_dajam_pcaPolicy;
 use App\Policies\pencairan_dajamPolicy;
 use App\Policies\PencairanAkadPolicy;
-use App\Policies\PencairanAkadTkr as PoliciesPencairanAkadTkr;
+use App\Policies\PencairanAkadTkrPolicy;
 use App\Policies\pengajuan_dajamPolicy;
-use App\Policies\PengajuanDajamTkr;
-use App\Policies\PpnTkr;
+use App\Policies\PengajuanDajamTkrPolicy;
+use App\Policies\PpnTkrPolicy;
 use App\Policies\form_kpr_pcaPolicy;
 use App\Policies\StokTKRPolicy;
 use App\Policies\RekeningPolicy;
@@ -74,7 +74,7 @@ use App\Models\verifikasi_dajam_pca;
 use App\Models\form_legal_pca;
 use App\Policies\form_dp_pcaPolicy;
 use App\Policies\pencairan_akad_pcaPolicy;
-use App\Policies\PencairanDajamTkr;
+use App\Policies\PencairanDajamTkrPolicy;
 use App\Policies\verifikasi_dajam_pcaPolicy;
 
 // use Illuminate\Support\Facades\Gate;
@@ -97,14 +97,14 @@ class AuthServiceProvider extends ServiceProvider
 
     \App\Models\AjbPCA::class => \App\Policies\ajbPCAPolicy::class,
 
- \App\Models\AjbTkr::class => \App\Policies\AjbTkr::class,
+ \App\Models\AjbTkr::class => \App\Policies\AjbTkrPolicy::class,
 
 \App\Models\Audit::class => \App\Policies\AuditPolicy::class,
 
 
- \App\Models\audit_tkr::class => \App\Policies\audit_tkr::class,
+ \App\Models\audit_tkr::class => \App\Policies\audit_tkrPolicy::class,
 
- \App\Models\AuditPCA::class => \App\Policies\AuditPCA::class,
+ \App\Models\AuditPCA::class => \App\Policies\AuditPCAPolicy::class,
 
  \App\Models\BukuRekonsil::class => \App\Policies\BukuRekonsilPolicy::class,
 
@@ -126,35 +126,35 @@ class AuthServiceProvider extends ServiceProvider
 
  \App\Models\form_ppn::class => \App\Policies\form_ppnPolicy::class,
 
- \App\Models\FormDpTkr::class => \App\Policies\FormDpTkr::class,
+ \App\Models\FormDpTkr::class => \App\Policies\FormDpTkrPolicy::class,
 
  \App\Models\FormKprTkr::class => \App\Policies\FormKprTkrPolicy::class,
 
  \App\Models\GCV::class => \App\Policies\GCVPolicy::class,
 
- \App\Models\LegalTkr::class => \App\Policies\LegalTkr::class,
+ \App\Models\LegalTkr::class => \App\Policies\LegalTkrPolicy::class,
 
- \App\Models\PajakTkr::class => \App\Policies\PajakTkr::class,
+ \App\Models\PajakTkr::class => \App\Policies\PajakTkrPolicy::class,
 
  \App\Models\Pca::class => \App\Policies\PcaPolicy::class,
 
  \App\Models\pencairan_akad_pca::class => \App\Policies\pencairan_akad_pcaPolicy::class,
 
  \App\Models\pencairan_dajam::class => \App\Policies\pencairan_dajamPolicy::class,
- 
+
  \App\Models\pengajuan_dajam_pca::class => \App\Policies\pengajuan_dajam_pcaPolicy::class,
 
  \App\Models\PencairanAkad::class => \App\Policies\PencairanAkadPolicy::class,
 
- \App\Models\PencairanAkadTkr::class => \App\Policies\PencairanAkadTkr::class,
+ \App\Models\PencairanAkadTkr::class => \App\Policies\PencairanAkadTkrPolicy::class,
 
- \App\Models\PencairanDajamTkr::class => \App\Policies\PencairanDajamTkr::class,
+ \App\Models\PencairanDajamTkr::class => \App\Policies\PencairanDajamTkrPolicy::class,
 
- \App\Models\pencairan_dajam_pca::class => \App\Policies\pencairan_dajam_pca::class,
+ \App\Models\pencairan_dajam_pca::class => \App\Policies\pencairan_dajam_pcaPolicy::class,
 
  \App\Models\pengajuan_dajam::class => \App\Policies\pengajuan_dajamPolicy::class,
 
- \App\Models\PengajuanDajamTkr::class => \App\Policies\PengajuanDajamTkr::class,
+ \App\Models\PengajuanDajamTkr::class => \App\Policies\PengajuanDajamTkrPolicy::class,
 
  \App\Models\PpnTkr::class => \App\Policies\PpnTkr::class,
 
@@ -169,7 +169,7 @@ class AuthServiceProvider extends ServiceProvider
 
 
  \App\Models\VerifikasiDajamTkr::class => \App\Policies\VerifikasiDajamTkrPolicy::class,
-    
+
 ];
 
 
