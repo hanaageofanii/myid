@@ -19,4 +19,8 @@ class kas_kecil extends Model
         "kredit",
         "keterangan",
     ];
+
+    protected $casts = [
+        'bukti' => 'array',
+    ];
 }
