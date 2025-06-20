@@ -3,8 +3,9 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\LegalTkr;
 
-class LegalTkr
+class LegalTkrPolicy
 {
    /**
      * Determine whether the user can view any models.
