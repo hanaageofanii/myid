@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('kas_kecils', function (Blueprint $table) {
             $table->id();
+            $table->date('tanggal');
+            $table->string('deskripsi');
+            $table->string('debit');
+            $table->string('kredit');
+            $table->string('keterangan');
             $table->timestamps();
         });
     }
