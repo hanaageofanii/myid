@@ -3,8 +3,9 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\PpnTkr;
 
-class PpnTkr
+class PpnTkrPolicy
 {
     /**
      * Determine whether the user can view any models.
