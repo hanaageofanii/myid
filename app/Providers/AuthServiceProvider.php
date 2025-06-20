@@ -156,7 +156,7 @@ class AuthServiceProvider extends ServiceProvider
 
  \App\Models\PengajuanDajamTkr::class => \App\Policies\PengajuanDajamTkrPolicy::class,
 
- \App\Models\PpnTkr::class => \App\Policies\PpnTkr::class,
+ \App\Models\PpnTkr::class => \App\Policies\PpnTkrPolicy::class,
 
 
  \App\Models\Rekening::class => \App\Policies\RekeningPolicy::class,
