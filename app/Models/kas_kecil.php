@@ -18,6 +18,7 @@ class kas_kecil extends Model
         "debit",
         "kredit",
         "keterangan",
+        "bukti",
     ];
 
     protected $casts = [

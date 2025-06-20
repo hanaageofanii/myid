@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('debit');
             $table->string('kredit');
             $table->string('keterangan');
+            $table->json('bukti')->nullable();
             $table->timestamps();
         });
     }
