@@ -55,7 +55,7 @@ class KasKecilResource extends Resource
 protected static ?string $navigationGroup = "Kasir";
     protected static ?string $pluralLabel = "Kas Kecil";
     protected static ?string $navigationLabel = "Kas Kecil";
-    protected static ?string $pluralModelLabel = 'Daftar Kecil';
+    protected static ?string $pluralModelLabel = 'Daftar Kas Kecil';
     protected static ?string $navigationIcon = 'heroicon-o-plus';
     public static function form(Form $form): Form
     {
@@ -235,11 +235,11 @@ protected static ?string $navigationGroup = "Kasir";
                 TextColumn::make('bukti')
                 ->label('Bukti')
                 ->formatStateUsing(function ($record) {
-                    if (!$record->bukti_bukti) {
+                    if (!$record->bukti) {
                         return 'Tidak Ada Dokumen';
                     }
 
-                    $files = is_array($record->bukti_bukti) ? $record->bukti_bukti : json_decode($record->bukti_bukti, true);
+                    $files = is_array($record->bukti) ? $record->bukti : json_decode($record->bukti, true);
 
                     if (json_last_error() !== JSON_ERROR_NONE) {
                         $files = [];

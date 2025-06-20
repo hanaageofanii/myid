@@ -36,7 +36,7 @@ class BukuRekonsil extends Model
     protected $casts = [
         'bukti_bukti' => 'array',
     ];
-    
+
 
 
 }
