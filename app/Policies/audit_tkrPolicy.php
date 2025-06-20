@@ -3,8 +3,9 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\audit_tkr;
 
-class audit_tkr
+class audit_tkrPolicy
 {
     /**
     /**
