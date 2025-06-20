@@ -3,8 +3,9 @@
 namespace App\Policies;
 
 use App\Models\User;
+USE App\Models\pencairan_dajam_pca;
 
-class pencairan_dajam_pca
+class pencairan_dajam_pcaPolicy
 {
     /**
      * Determine whether the user can view any models.
