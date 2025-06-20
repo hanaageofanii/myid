@@ -14,7 +14,7 @@ class kas_kecil extends Model
 
     protected $fillable = [
         "tanggal",
-        "perusahaan",
+        "nama_perusahaan",
         "deskripsi",
         "jumlah_uang",
         "tipe",
