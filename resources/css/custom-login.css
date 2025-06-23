@@ -1,6 +1,6 @@
 body {
     animation: theme 21s linear infinite;
-    
+
     &:after,
     &:before {
         content: '';
@@ -8,8 +8,8 @@ body {
         position: fixed;
         z-index: -1;
         top: 0;
-        width: 100vw;  
-        height: 100vh; 
+        width: 100vw;
+        height: 100vh;
         width: 100vmax;
         height: 100vmax;
         background: rgba(0,0,0,0.05);
@@ -29,27 +29,27 @@ body {
 
 @keyframes theme {
     0% {
-        background: #FFBF00; /* Amber */
+        background: #73BBA3; /* Amber */
     }
-    
+
     20% {
-        background: #FFAA00; /* Slightly darker amber */
+        background: #F6FB7A; /* Slightly darker amber */
     }
-    
+
     40% {
-        background: #FF9900; /* Darker amber */
+        background: #73BBA3; /* Darker amber */
     }
-    
+
     60% {
-        background: #FF8C00; /* Even darker amber */
+        background: #B4E380; /* Even darker amber */
     }
-    
+
     80% {
-        background: #FF7F00; /* Rich amber */
+        background: #88D66C; /* Rich amber */
     }
 
     100% {
-        background: #FFBF00; /* Amber again */
+        background: #F6FB7A; /* Amber again */
     }
 }
 
@@ -57,7 +57,7 @@ body {
     0% {
         transform: rotate(0deg);
     }
-    
+
     100% {
         transform: rotate(360deg);
     }
