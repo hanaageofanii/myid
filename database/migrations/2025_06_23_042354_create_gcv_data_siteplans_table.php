@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('gcv_data_siteplans', function (Blueprint $table) {
             $table->id();
+            $table->string('siteplan')->nullable();
+            $table->enum('kavling',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();
+            $table->integer('luas')->nullable();
+            $table->string('type')->nullable();
+            $table->boolean('terbangun')->default(false)->nullable();
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

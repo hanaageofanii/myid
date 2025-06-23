@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('gcvDataSiteplan', function (Blueprint $table) {
-            //
+        Schema::table('gcv_data_siteplans', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('gcvDataSiteplan', function (Blueprint $table) {
+        Schema::table('gcv_data_siteplans', function (Blueprint $table) {
             //
         });
     }
