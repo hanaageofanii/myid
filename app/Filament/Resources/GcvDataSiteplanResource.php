@@ -72,7 +72,7 @@ class GcvDataSiteplanResource extends Resource
                                 ->disabled(fn () => ! (function () {
                                     /** @var \App\Models\User|null $user */
                                     $user = Auth::user();
-                                    return $user && $user->hasRole(['admin','KPR Stok']);
+                                    return $user && $user->hasRole(['admin','Legal officer']);
                                 })()),
 
                             Toggle::make('terbangun')
@@ -83,7 +83,7 @@ class GcvDataSiteplanResource extends Resource
                                 ->disabled(fn () => ! (function () {
                                     /** @var \App\Models\User|null $user */
                                     $user = Auth::user();
-                                    return $user && $user->hasRole(['admin','KPR Stok']);
+                                return $user && $user->hasRole(['admin','Legal officer']);
                                 })()),
                            ])
                             ->columns(2),
@@ -108,7 +108,8 @@ class GcvDataSiteplanResource extends Resource
                                 ->disabled(fn () => ! (function () {
                                     /** @var \App\Models\User|null $user */
                                     $user = Auth::user();
-                                    return $user && $user->hasRole(['admin','KPR Stok']);
+                                return $user && $user->hasRole(['admin','Legal officer']);
+
                                 })()),
 
                             TextInput::make('type')
@@ -117,7 +118,8 @@ class GcvDataSiteplanResource extends Resource
                                 ->disabled(fn () => ! (function () {
                                     /** @var \App\Models\User|null $user */
                                     $user = Auth::user();
-                                    return $user && $user->hasRole(['admin','KPR Stok']);
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+
                                 })()),
 
                             TextInput::make('luas')
@@ -126,7 +128,7 @@ class GcvDataSiteplanResource extends Resource
                                 ->disabled(fn () => ! (function () {
                                     /** @var \App\Models\User|null $user */
                                     $user = Auth::user();
-                                    return $user && $user->hasRole(['admin','KPR Stok']);
+                                 return $user && $user->hasRole(['admin','Legal officer']);
                                 })()),
                         ])
                         ->columns(3),
@@ -141,7 +143,7 @@ class GcvDataSiteplanResource extends Resource
                                 ->disabled(fn () => ! (function () {
                                     /** @var \App\Models\User|null $user */
                                     $user = Auth::user();
-                                    return $user && $user->hasRole(['admin','KPR Stok']);
+                                return $user && $user->hasRole(['admin','Legal officer']);
                                 })()),
                         ]),
                 ]),
