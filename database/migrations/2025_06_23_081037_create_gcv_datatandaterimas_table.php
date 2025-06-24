@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->string('siteplan');
             $table->integer('luas');
+            $table->enum('kavling',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();
             $table->string('type');
             $table->boolean('terbangun')->default(false);
             $table->enum('status', ['akad','stock'])->nullable();

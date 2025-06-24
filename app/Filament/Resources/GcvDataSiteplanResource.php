@@ -62,9 +62,9 @@ class GcvDataSiteplanResource extends Resource
         ->schema([
            Wizard::make([
             Wizard\Step::make('Informasi')
+                ->description('Data utama terkait Siteplan')
                 ->schema([
                     Section::make('Informasi')
-                        ->description('Data utama terkait Siteplan')
                         ->schema([
                             TextInput::make('siteplan')
                                 ->label('Site Plan')
@@ -85,14 +85,15 @@ class GcvDataSiteplanResource extends Resource
                                     $user = Auth::user();
                                 return $user && $user->hasRole(['admin','Legal officer']);
                                 })()),
-                           ])
+                        ])
                             ->columns(2),
                         ]),
 
             Wizard\Step::make('Detail Unit')
+            ->description('Informasi spesifikasi unit')
                 ->schema([
                     Section::make('Detail Unit')
-                        ->description('Informasi mengenai jenis dan spesifikasi unit')
+
                         ->schema([
                             Select::make('kavling')
                                 ->label('Jenis Unit')

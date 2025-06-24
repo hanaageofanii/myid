@@ -15,6 +15,7 @@ class gcv_datatandaterima extends Model
         "siteplan",
         "type",
         "terbangun",
+        "kavling",
         "status",
         "status_bn",
         "luas",
