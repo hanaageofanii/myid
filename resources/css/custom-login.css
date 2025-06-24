@@ -12,7 +12,7 @@ body {
         height: 100vh;
         width: 100vmax;
         height: 100vmax;
-        background: rgba(0,0,0,0.05);
+        background: rgba(0, 0, 0, 0.05);
         animation: background 90s linear infinite;
     }
 
@@ -29,27 +29,27 @@ body {
 
 @keyframes theme {
     0% {
-        background: #73BBA3; /* Amber */
+        background: #73bba3; /* Amber */
     }
 
     20% {
-        background: #F6FB7A; /* Slightly darker amber */
+        background: #f6fb7a; /* Slightly darker amber */
     }
 
     40% {
-        background: #73BBA3; /* Darker amber */
+        background: #73bba3; /* Darker amber */
     }
 
     60% {
-        background: #B4E380; /* Even darker amber */
+        background: #b4e380; /* Even darker amber */
     }
 
     80% {
-        background: #88D66C; /* Rich amber */
+        background: #88d66c; /* Rich amber */
     }
 
     100% {
-        background: #F6FB7A; /* Amber again */
+        background: #f6fb7a; /* Amber again */
     }
 }
 

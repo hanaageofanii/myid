@@ -13,6 +13,21 @@ return new class extends Migration
     {
         Schema::create('gcv_legalitas', function (Blueprint $table) {
             $table->id();
+
+            $table->string('siteplan')->nullable();
+            $table->enum('kavling',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();
+            $table->string('id_rumah')->nullable();
+            $table->enum('status_sertifikat', ['induk','pecahan'])->nullable();
+            $table->string('nib')->nullable();
+            $table->string('imb_pbg')->nullable();
+            $table->string('nop')->nullable();
+            $table->string('nop1')->nullable();
+
+            $table->json('up_sertifikat')->nullable();
+            $table->json('up_pbb')->nullable();
+            $table->json('up_img')->nullable();
+            $table->json('sertifikat_list')->nullable(); //noted: ini bukan database file.
+
             $table->timestamps();
         });
     }
