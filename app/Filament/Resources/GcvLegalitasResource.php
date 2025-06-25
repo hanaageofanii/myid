@@ -129,7 +129,8 @@ class GcvLegalitasResource extends Resource
             ->map(fn ($item) => ['nop' => trim($item)])
             ->toArray();
 
-        $set('nop', $nopList);
+        $set('nop', $nopList);        
+        
         $set('imb_pbg', $data->imb_pbg ?? null);
     }
 })
@@ -311,7 +312,7 @@ class GcvLegalitasResource extends Resource
                         'pecahan' => 'Pecahan',
                 default => $state,
                 }),
-
+                Tables\Columns\TextColumn::make('nib')->sortable()->searchable()->label('NIB'),
                 Tables\Columns\TextColumn::make('sertifikat_list')
                     ->label('Data Sertifikat')
                     ->formatStateUsing(function ($state) {
@@ -350,7 +351,6 @@ class GcvLegalitasResource extends Resource
     })
     ->wrap()
     ->limit(999),
-                Tables\Columns\TextColumn::make('nib')->sortable()->searchable()->label('NIB'),
                 Tables\Columns\TextColumn::make('imb_pbg')->sortable()->searchable()->label('IMB/PBG'),
                 Tables\Columns\TextColumn::make('keterangan')->sortable()->searchable()->label('Keterangan'),
                 TextColumn::make('up_sertifikat')
