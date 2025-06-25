@@ -20,8 +20,7 @@ return new class extends Migration
             $table->enum('status_sertifikat', ['induk','pecahan'])->nullable();
             $table->string('nib')->nullable();
             $table->string('imb_pbg')->nullable();
-            $table->string('nop')->nullable();
-            $table->string('nop1')->nullable();
+            $table->json('nop')->nullable();
 
             $table->json('up_sertifikat')->nullable();
             $table->json('up_pbb')->nullable();

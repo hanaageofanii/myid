@@ -43,7 +43,7 @@ use Filament\Forms\Components\Wizard\Step;
 use Illuminate\Validation\Rule;
 use App\Models\gcv_datatandaterima;
 use Filament\Forms\Components\Repeater;
-use App\Filament\Resources\GcvDatatandaterimaResource\Widgets\gcv_datatandaterimaStats;
+use App\Filament\Resources\GcvLegalitasResource\Widgets\gcv_legalitasStats;
 class GcvLegalitasResource extends Resource
 {
     protected static ?string $model = gcv_legalitas::class;
@@ -152,6 +152,7 @@ class GcvLegalitasResource extends Resource
                         'pecahan' => 'Pecahan',
                     ])
                     ->nullable()
+                    ->columnSpanFull()
                     ->disabled(fn () => ! (function () {
                                     /** @var \App\Models\User|null $user */
                                     $user = Auth::user();
@@ -183,25 +184,6 @@ class GcvLegalitasResource extends Resource
                                     $user = Auth::user();
                                     return $user && $user->hasRole(['admin','Legal officer']);
                                 })()),
-
-                // Forms\Components\TextInput::make('no_sertifikat')
-                //     ->label('No. Sertifikat')
-                //     ->nullable()
-                //     ->disabled(fn () => ! (function () {
-                //                     /** @var \App\Models\User|null $user */
-                //                     $user = Auth::user();
-                //                     return $user && $user->hasRole(['admin','Legal officer']);
-                //                 })()),
-
-                //                 Forms\Components\TextInput::make('luas_sertifikat')
-                //     ->label('Luas Sertifikat')
-                //     ->nullable()
-                //     ->disabled(fn () => ! (function () {
-                //                     /** @var \App\Models\User|null $user */
-                //                     $user = Auth::user();
-                //                     return $user && $user->hasRole(['admin','Legal officer']);
-                //                 })())                            ->columnSpanFull(),
-
             ]),
 
         Step::make('Legal Dokumen')
@@ -223,32 +205,31 @@ class GcvLegalitasResource extends Resource
                                                                     $user = Auth::user();
                                                                     return $user && $user->hasRole(['admin','Legal officer']);
                                                                 })()),
-                Forms\Components\TextInput::make('nop')
-                    ->label('NOP')
-                    ->nullable()
-                    ->disabled(fn () => ! (function () {
-                                    /** @var \App\Models\User|null $user */
-                                    $user = Auth::user();
-                                    return $user && $user->hasRole(['admin','Legal officer']);
-                                })()),
-                Forms\Components\TextInput::make('nop1')
-                                    ->label('NOP Tambahan')
-                                    ->nullable()
-                                    ->helperText('Jika irisan input data 2X')
-                                    ->disabled(fn () => ! (function () {
-                                                    /** @var \App\Models\User|null $user */
-                                                    $user = Auth::user();
-                                                    return $user && $user->hasRole(['admin','Legal officer']);
-                                                })()),
+                 Forms\Components\Repeater::make('nop')
+    ->label('Daftar NOP')
+    ->schema([
+        Forms\Components\TextInput::make('nop')
+            ->label('NOP')
+            ->nullable(),
+    ])
+    ->addActionLabel('Tambah NOP')
+    ->defaultItems(1)
+    ->columnSpanFull()
+    ->reorderable()
+    ->columns(1)
+    ->disabled(fn () => ! (function () {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin','Legal officer']);
+    })()),
+     ]),
 
-
-            ])->columns(2),
 
         Step::make('Upload Dokumen')
             ->description('Informasi file dokumen')
             ->schema([
                 Forms\Components\FileUpload::make('up_sertifikat')
-                    ->label('Sertifikat')
+                    ->label('Upload Sertifikat')
                     ->disk('public')
                     ->nullable()
                     ->multiple()
@@ -261,7 +242,7 @@ class GcvLegalitasResource extends Resource
                                 })()),
 
                 Forms\Components\FileUpload::make('up_pbb')
-                    ->label('PBB/NOP')
+                    ->label('Upload PBB/NOP')
                     ->disk('public')
                     ->nullable()
                     ->multiple()
@@ -274,7 +255,7 @@ class GcvLegalitasResource extends Resource
                                 })()),
 
                 Forms\Components\FileUpload::make('up_img')
-                    ->label('IMG')
+                    ->label('Upload IMG')
                     ->disk('public')
                     ->nullable()
                     ->multiple()
@@ -294,27 +275,350 @@ class GcvLegalitasResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('siteplan')->sortable()->searchable()->label('Blok'),
+                TextColumn::make('kavling')->label('Kavling')
+                ->formatStateUsing(fn (string $state): string => match ($state) {
+                    'standar' => 'Standar',
+                    'khusus' => 'Khusus',
+                    'hook' => 'Hook',
+                    'komersil' => 'Komersil',
+                    'tanah_lebih' => 'Tanah Lebih',
+                    'kios' => 'Kios',
+                    default => $state,
+                })->searchable(),
+                Tables\Columns\TextColumn::make('id_rumah')->sortable()->searchable()->label('No. ID Rumah'),
+                Tables\Columns\TextColumn::make('status_sertifikat')
+                ->sortable()
+                ->searchable()
+                ->label('Status Sertifikat')
+                ->formatStateUsing(fn ($state) => match ($state) {
+                        'induk' => 'Induk',
+                        'pecahan' => 'Pecahan',
+                default => $state,
+                }),
+
+                Tables\Columns\TextColumn::make('sertifikat_list')
+                    ->label('Data Sertifikat')
+                    ->formatStateUsing(function ($state) {
+                        if (is_string($state) && str_contains($state, '{') && !str_starts_with($state, '[')) {
+                            $state = '[' . $state . ']';
+                        }
+
+                        $state = is_string($state) ? json_decode($state, true) : $state;
+
+                        if (!is_array($state) || empty($state)) {
+                            return '-';
+                        }
+
+                        return collect($state)
+                            ->map(fn ($item) => ($item['kode'] ?? '-') . ' (' . ($item['luas'] ?? '-') . ' m²)')
+                            ->implode(', ');
+                    })
+                    ->wrap()
+                    ->limit(999),
+                Tables\Columns\TextColumn::make('nop')
+    ->label('NOP')
+    ->formatStateUsing(function ($state) {
+        if (is_string($state) && str_contains($state, '{') && !str_starts_with($state, '[')) {
+            $state = '[' . $state . ']';
+        }
+
+        $state = is_string($state) ? json_decode($state, true) : $state;
+
+        if (!is_array($state) || empty($state)) {
+            return '-';
+        }
+
+        return collect($state)
+            ->map(fn ($item) => $item['nop'] ?? '-')
+            ->implode(', ');
+    })
+    ->wrap()
+    ->limit(999),
+                Tables\Columns\TextColumn::make('nib')->sortable()->searchable()->label('NIB'),
+                Tables\Columns\TextColumn::make('imb_pbg')->sortable()->searchable()->label('IMB/PBG'),
+                TextColumn::make('up_sertifikat')
+                ->label('File Sertifikat')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_sertifikat) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_sertifikat) ? $record->up_sertifikat : json_decode($record->up_sertifikat, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+                TextColumn::make('up_pbb')
+                ->label('File PBB')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_pbb) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_pbb) ? $record->up_pbb : json_decode($record->up_pbb, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+                TextColumn::make('up_img')
+                ->label('File IMG')
+                ->formatStateUsing(function ($record) {
+                    if (!$record->up_img) {
+                        return 'Tidak Ada Dokumen';
+                    }
+
+                    $files = is_array($record->up_img) ? $record->up_img : json_decode($record->up_img, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $files = [];
+                    }
+
+                    $output = '';
+                    foreach ($files as $file) {
+                        $url = Storage::url($file);
+                        $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
+                    }
+
+                    return $output ?: 'Tidak Ada Dokumen';
+                })
+                ->html()
+                ->sortable(),
+
+            ])
+            ->defaultSort('siteplan', 'asc')
+            ->headerActions([
+                Action::make('count')
+                    ->label(fn ($livewire): string => 'Total: ' . $livewire->getFilteredTableQuery()->count())
+                    ->disabled(),
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\TrashedFilter::make()
+                ->label('Data yang dihapus')
+                ->native(false),
+
+                Filter::make('kavling')
+                    ->label('Kavling')
+                    ->form([
+                        Select::make('kavling')
+                            ->options([
+                                'standar' => 'Standar',
+                                'khusus' => 'Khusus',
+                                'hook' => 'Hook',
+                                'komersil' => 'Komersil',
+                                'tanah_lebih' => 'Tanah Lebih',
+                                'kios' => 'Kios',
+                            ])
+                            ->nullable()
+                            ->native(false),
+                            ])
+                            ->query(fn ($query, $data) =>
+                                $query->when(isset($data['kavling']), fn ($q) =>
+                                    $q->where('kavling', $data['kavling'])
+                                )
+                            ),
+                Filter::make('status_sertifikat')
+                    ->label('Status Sertifikat')
+                    ->form([
+                        Select::make('status_sertifikat')
+                            ->options([
+                                'induk' => 'Induk',
+                                'pecahan' => 'Pecahan',
+                            ])
+                            ->nullable()
+                            ->native(false),
+                            ])
+                            ->query(fn ($query, $data) =>
+                                $query->when(isset($data['kavling']), fn ($q) =>
+                                    $q->where('kavling', $data['kavling'])
+                                )
+                            ),
+                Filter::make('created_from')
+                    ->label('Dari Tanggal')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari')
+                            ->displayFormat('Y-m-d'),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_from'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '>=', $data['created_from'])
+                        )
+                    ),
+
+                Filter::make('created_until')
+                    ->label('Sampai Tanggal')
+                    ->form([
+                        DatePicker::make('created_until')
+                            ->label('Sampai')
+                            ->displayFormat('Y-m-d'),
+                    ])
+                    ->query(fn ($query, $data) =>
+                        $query->when($data['created_until'] ?? null, fn ($q) =>
+                            $q->whereDate('created_at', '<=', $data['created_until'])
+                        )
+                    ),
+
+            ], layout: FiltersLayout::AboveContent)
+            ->filtersFormMaxHeight('200px')
+            ->filtersFormColumns(5)
+            ->filtersFormWidth(MaxWidth::FourExtraLarge)
+
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+                ActionGroup::make([
+                    ViewAction::make()
+                        ->color('success')
+                        ->label('Lihat'),
+                    EditAction::make()
+                        ->color('info')
+                        ->label('Ubah')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Legalitas Diperbarui')
+                                ->body('Data Legalitas  telah berhasil disimpan.')),
+                    DeleteAction::make()
+                                ->color('danger')
+                                ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
+                                ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok {$record->siteplan}")
+                                ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?")
+                                ->successNotification(
+                                    Notification::make()
+                                        ->success()
+                                        ->title('Data Legalitas Dihapus')
+                                        ->body('Data Legalitas telah berhasil dihapus.')),
+                    // RestoreAction::make()
+                    //     ->label('Pulihkan')
+                    //     ->successNotificationTitle('Data berhasil dipulihkan')
+                    //     ->successRedirectUrl(route('filament.admin.resources.Siteplans.index')),
+                    Tables\Actions\RestoreAction::make()
+                    ->color('info')
+                    ->label(fn ($record) => "Kembalikan {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Kembalikan Blok{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengembalikan blok {$record->siteplan}?")
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Legalitas')
+                            ->body('Data Legalitas berhasil dikembalikan.')
+                    ),
+                    Tables\Actions\ForceDeleteAction::make()
+                    ->color('primary')
+                    ->label(fn ($record) => "Hapus Permanent {$record->siteplan}")
+                    ->modalHeading(fn ($record) => "Konfirmasi Hapus Blok Permanent{$record->siteplan}")
+                    ->modalDescription(fn ($record) => "Apakah Anda yakin ingin mengahapus blok secara permanent {$record->siteplan}?")
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Data Legalitas')
+                            ->body('Data Legalitas  berhasil dihapus secara permanen.')
+                    ),
+                    ])->button()->label('Action'),
+                ], position: ActionsPosition::BeforeCells)
+
+                ->groupedBulkActions([
+                    BulkAction::make('delete')
+                        ->label('Hapus')
+                        ->icon('heroicon-o-trash')
+                        ->color('danger')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Legalitas')
+                                ->body('Data Legalitas berhasil dihapus.'))
+                                ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->delete()),
+
+                    BulkAction::make('forceDelete')
+                        ->label('Hapus Permanent')
+                        ->icon('heroicon-o-x-circle')
+                        ->color('warning')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Legalitas')
+                                ->body('Data Legalitas berhasil dihapus secara permanen.'))
+                                ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each->forceDelete()),
+
+                    BulkAction::make('export')
+                        ->label('Download Data')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->color('info')
+                        ->action(fn (Collection $records) => static::exportData($records)),
+
+                    Tables\Actions\RestoreBulkAction::make()
+                        ->label('Kembalikan Data')
+                        ->icon('heroicon-o-arrow-path')
+                        ->color('success')
+                        ->button()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Data Legalitas')
+                                ->body('Data Legalitas berhasil dikembalikan.')),
+                ]);
+
     }
+
+    public static function exportData(Collection $records)
+    {
+        $csvData = "ID, Site Plan, Kavling, Id. Rumah, Status Sertifikat, NIB, IMB, NOP, Sertifikat List\n";
+
+        foreach ($records as $record) {
+            $csvData .= "{$record->id}, {$record->siteplan}, $record->kavling}, {$record->id_rumah}, {$record->status_sertifikat}, {$record->nib}, {$record->imb_pbg}, $record->nop}, {$record->sertifikat_list}\n";
+        }
+
+        return response()->streamDownload(fn () => print($csvData), 'DataLegalitas.csv');
+    }
+
 
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
+
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+
+        public static function getWidgets(): array
+        {
+            return [
+                gcv_legalitasStats::class,
+            ];
+        }
 
     public static function getPages(): array
     {
