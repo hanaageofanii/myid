@@ -55,7 +55,7 @@ class GcvStokResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-folder';
     protected static ?string $navigationLabel = 'Stok > Data Booking';
     protected static ?string $pluralModelLabel = 'Data Bookingan';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
     public static function form(Form $form): Form
     {
         return $form
