@@ -61,7 +61,9 @@ class GcvStokResource extends Resource
         return $form
             ->schema([
                 Wizard::make([
-                Step::make('Data Proyek')->schema([
+                Step::make('Data Proyek')
+                ->description('Informasi dasar proyek')
+                ->schema([
                 Select::make('proyek')
                 ->options([
                     'gcv_cira' => 'GCV Cira',
@@ -152,7 +154,9 @@ class GcvStokResource extends Resource
                                     })()),        
                                 ])->columns(2),
 
-        Step::make('Status Bookingan')->schema([
+        Step::make('Status Bookingan')
+        ->description('Informasi data booking')
+        ->schema([
             Select::make('status')
                 ->options(['booking' => 'Booking'])
                 ->label('Status')
@@ -201,7 +205,9 @@ class GcvStokResource extends Resource
                         return $user && $user->hasRole(['admin','KPR Officer']);
                     })()),        ]),
 
-        Step::make('Legalitas')->schema([
+        Step::make('Legalitas')
+        ->description('Informasi data legalitas')
+        ->schema([
             Select::make('status_sertifikat')
                 ->options([
                     'pecah' => 'SUDAH PECAH',
@@ -228,7 +234,9 @@ class GcvStokResource extends Resource
                     })()),
                 ])->columns(2),
 
-        Step::make('Status KPR')->schema([
+        Step::make('Status KPR')                
+        ->description('Informasi status kpr')
+        ->schema([
             Select::make('kpr_status')
                 ->options([
                     'sp3k' => 'SP3K',

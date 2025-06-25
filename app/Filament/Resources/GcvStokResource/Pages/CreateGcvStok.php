@@ -36,8 +36,8 @@ class CreateGcvStok extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Data Stok Disimpan')
-            ->body('Data Stok telah berhasil disimpan.');
+            ->title('Data Bookingan Disimpan')
+            ->body('Data Bookingan telah berhasil disimpan.');
     }
 
     protected function getSaveFormAction(): Actions\Action
