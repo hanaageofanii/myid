@@ -124,6 +124,13 @@ class GcvLegalitasResource extends Resource
         }
 
         $set('sertifikat_list', $sertifikatList);
+
+        $nopList = collect(explode(',', $data->nop_pbb_pecahan))
+            ->map(fn ($item) => ['nop' => trim($item)])
+            ->toArray();
+
+        $set('nop', $nopList);
+        $set('imb_pbg', $data->imb_pbg ?? null);
     }
 })
     ->disabled(fn () => ! (function () {
