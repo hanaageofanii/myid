@@ -62,7 +62,7 @@ class GcvStokResource extends Resource
             ->schema([
                 Wizard::make([
                 Step::make('Data Proyek')
-                ->description('Informasi dasar proyek')
+                ->description('Informasi data proyek')
                 ->schema([
                 Select::make('proyek')
                 ->options([
