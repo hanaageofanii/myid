@@ -226,6 +226,15 @@ return $form->schema([
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Legal officer']);
                     })()),
+
+                    TextArea::make('keterangan')
+                            ->label('Keterangan')
+                            ->required()->columnSpanFull()
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })()),
             ]),
 
         Step::make('Upload Berkas')
@@ -315,8 +324,7 @@ return $form->schema([
             TextColumn::make('imb_pbg')->label('IMB / PBG')->limit(20)->searchable(),
             TextColumn::make('tanda_terima_imb_pbg')->label('Tanda Terima IMB/PBG')->limit(20)->searchable(),
             TextColumn::make('tanda_terima_tambahan')->label('Tanda Terima Tambahan')->limit(50)->searchable(),
-
-
+            TextColumn::make('keterangan')->label('Keterangan')->searchable(),
             TextColumn::make('up_sertifikat')
                 ->label('File Tanda Terima Sertifikat')
                 ->formatStateUsing(function ($record) {

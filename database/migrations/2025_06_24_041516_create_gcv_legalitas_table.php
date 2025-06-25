@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('nib')->nullable();
             $table->string('imb_pbg')->nullable();
             $table->json('nop')->nullable();
+            $table->string('keterangan')->nullable();
 
             $table->json('up_sertifikat')->nullable();
             $table->json('up_pbb')->nullable();

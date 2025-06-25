@@ -36,7 +36,8 @@ class gcv_datatandaterima extends Model
         "up_sertifikat",
         "up_nop",
         "up_imb_pbg",
-        "up_tambahan_lainnya"
+        "up_tambahan_lainnya",
+        "keterangan",
 
 
     ];

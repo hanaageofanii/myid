@@ -13,7 +13,7 @@ class gcv_legalitas extends Model
 
     protected $fillable = [
         'id','siteplan','kavling','id_rumah','status_sertifikat','nib','imb_pbg','nop',
-        'up_sertifikat','up_img','up_pbb','sertifikat_list'
+        'up_sertifikat','up_img','up_pbb','sertifikat_list',"keterangan"
     ];
 
     protected $attributes = [

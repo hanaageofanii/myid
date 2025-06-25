@@ -37,6 +37,7 @@ return new class extends Migration
             $table->string('imb_pbg')->nullable();
             $table->string('tanda_terima_imb_pbg')->nullable();
             $table->text('tanda_terima_tambahan')->nullable();
+            $table->string('keterangan')->nullable();
 
             $table->json('up_sertifikat')->nullable();
             $table->json('up_nop')->nullable();

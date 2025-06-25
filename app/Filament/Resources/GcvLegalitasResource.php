@@ -222,6 +222,14 @@ class GcvLegalitasResource extends Resource
         $user = Auth::user();
         return $user && $user->hasRole(['admin','Legal officer']);
     })()),
+    TextArea::make('keterangan')
+                            ->label('Keterangan')
+                            ->required()->columnSpanFull()
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })()),
      ]),
 
 
@@ -337,6 +345,7 @@ class GcvLegalitasResource extends Resource
     ->limit(999),
                 Tables\Columns\TextColumn::make('nib')->sortable()->searchable()->label('NIB'),
                 Tables\Columns\TextColumn::make('imb_pbg')->sortable()->searchable()->label('IMB/PBG'),
+                Tables\Columns\TextColumn::make('keterangan')->sortable()->searchable()->label('Keterangan'),
                 TextColumn::make('up_sertifikat')
                 ->label('File Sertifikat')
                 ->formatStateUsing(function ($record) {
