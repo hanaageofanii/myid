@@ -11,11 +11,11 @@ class CreateGcvStok extends CreateRecord
 {
     protected static string $resource = GcvStokResource::class;
     
-    protected static ?string $title = "Buat Data Stok";
+    protected static ?string $title = "Buat Data Bookingan";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
-        ->label('Tambah Data Stok');
+        ->label('Tambah Data Bookingan');
     }
 
     protected function getCreateAnotherFormAction(): Actions\Action

@@ -10,13 +10,13 @@ class EditGcvStok extends EditRecord
 {
     protected static string $resource = GcvStokResource::class;
 
-    protected static ?string $title = "Ubah Data Stok";
+    protected static ?string $title = "Ubah Data Bookingan";
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Data Stok')
+            ->label('Hapus Data Bookingan')
             ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
             ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?"),
 

@@ -12,7 +12,7 @@ class gcv_stokStats extends BaseWidget
     protected static ?string $maxHeight = '300px';
     protected static ?string $pollingInterval = '10s';
     protected static bool $isLazy = false;
-    protected ?string $heading = 'Dashboard Stok';
+    protected ?string $heading = 'Dashboard Bookingan';
     protected function getStats(): array
     {
         return [
