@@ -63,4 +63,3 @@ class gcvLegalitasPolicy
         return $user->hasRole(['admin','Legal officer']);
     }
 }
-
