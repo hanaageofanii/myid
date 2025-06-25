@@ -5,6 +5,8 @@ namespace App\Filament\Resources\GcvStokResource\Pages;
 use App\Filament\Resources\GcvStokResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\GcvStokResource\Widgets\gcv_stokStats;
+
 
 class ListGcvStoks extends ListRecords
 {
@@ -13,7 +15,21 @@ class ListGcvStoks extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Buat Data Stok'),
         ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            gcv_stokStats::class,
+        ];
+    }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+        ->label('Simpan');
     }
 }
