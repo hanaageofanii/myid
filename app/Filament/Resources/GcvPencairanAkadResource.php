@@ -17,7 +17,13 @@ class GcvPencairanAkadResource extends Resource
 {
     protected static ?string $model = gcv_pencairan_akad::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+        protected static ?string $title = "Data Pencairan Akad";
+    protected static ?string $navigationGroup = "GCV";
+    protected static ?string $pluralLabel = "Data Pencairan Akad";
+    protected static ?string $navigationLabel = 'Keuangan > Data Pencairan Akad';
+    protected static ?string $pluralModelLabel = 'Data Pencairan Akad';
+    protected static ?int $navigationSort = 3;
+    protected static ?string $navigationIcon = 'heroicon-o-cloud-arrow-up';
 
     public static function form(Form $form): Form
     {
