@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('nilai_pencairan')->nullable();
             $table->string('dana_jaminan')->nullable();
             $table->string('no_debitur')->nullable();
-            $table->string('jenis_pembayaran')->nullable();
+            $table->enum('status_pembayaran',['cash','cash_bertahap','kpr','promo'])->nullable();
             $table->enum('kavling',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();
             $table->json('up_spd5')->nullable();
             $table->json('up_rekening_koran')->nullable();

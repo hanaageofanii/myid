@@ -83,57 +83,57 @@ class GcvLegalitasResource extends Resource
                         })()),
 
                     Forms\Components\Select::make('siteplan')
-    ->label('Blok')
-    ->searchable()
-    ->required()
-    ->reactive()
-    ->options(function (callable $get) {
-        $selectedKavling = $get('kavling');
-        if (! $selectedKavling) {
-            return [];
-        }
+                    ->label('Blok')
+                    ->searchable()
+                    ->required()
+                    ->reactive()
+                    ->options(function (callable $get) {
+                        $selectedKavling = $get('kavling');
+                        if (! $selectedKavling) {
+                            return [];
+                        }
 
-        return GcvDataSiteplan::where('kavling', $selectedKavling)
-            ->pluck('siteplan', 'siteplan')
-            ->toArray();
-    })
-    ->afterStateUpdated(function ($state, callable $set, callable $get) {
-    $selectedKavling = $get('kavling');
+                        return GcvDataSiteplan::where('kavling', $selectedKavling)
+                            ->pluck('siteplan', 'siteplan')
+                            ->toArray();
+                    })
+                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                    $selectedKavling = $get('kavling');
 
-    if (!$selectedKavling) {
-        return;
-    }
+                    if (!$selectedKavling) {
+                        return;
+                    }
 
-    $data = gcv_datatandaterima::where('siteplan', $state)
-        ->where('kavling', $selectedKavling)
-        ->first();
+                    $data = gcv_datatandaterima::where('siteplan', $state)
+                        ->where('kavling', $selectedKavling)
+                        ->first();
 
-    if ($data) {
-        $sertifikatList = [];
+                    if ($data) {
+                        $sertifikatList = [];
 
-        for ($i = 1; $i <= 4; $i++) {
-            $luas = $data->{'luas' . $i} ?? null;
-            $kode = $data->{'kode' . $i} ?? null;
+                        for ($i = 1; $i <= 4; $i++) {
+                            $luas = $data->{'luas' . $i} ?? null;
+                            $kode = $data->{'kode' . $i} ?? null;
 
-            if (!empty($luas) || !empty($kode)) {
-                $sertifikatList[] = [
-                    'luas' => $luas,
-                    'kode' => $kode,
-                ];
-            }
-        }
+                            if (!empty($luas) || !empty($kode)) {
+                                $sertifikatList[] = [
+                                    'luas' => $luas,
+                                    'kode' => $kode,
+                                ];
+                            }
+                        }
 
-        $set('sertifikat_list', $sertifikatList);
+                        $set('sertifikat_list', $sertifikatList);
 
-        $nopList = collect(explode(',', $data->nop_pbb_pecahan))
-            ->map(fn ($item) => ['nop' => trim($item)])
-            ->toArray();
+                        $nopList = collect(explode(',', $data->nop_pbb_pecahan))
+                            ->map(fn ($item) => ['nop' => trim($item)])
+                            ->toArray();
 
-        $set('nop', $nopList);
+                        $set('nop', $nopList);
 
-        $set('imb_pbg', $data->imb_pbg ?? null);
-    }
-})
+                        $set('imb_pbg', $data->imb_pbg ?? null);
+                    }
+                })
     ->disabled(fn () => ! (function () {
                                     /** @var \App\Models\User|null $user */
                                     $user = Auth::user();

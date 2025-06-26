@@ -553,6 +553,15 @@ class GcvKprResource extends Resource
                             $q->where('jenis_unit', $data['jenis_unit'])
                         )
                     ),
+                    Tables\Filters\SelectFilter::make('pembayaran')
+                ->label('Status Pembayaran')
+                ->options([
+                    'cash' => 'Cash',
+                    'kpr' => 'KPR',
+                    'cash_bertahap' => 'Cash Bertahap',
+                    'promo' => 'Promo',
+                ])
+                ->native(false),
 
                     Filter::make('created_from')
                     ->label('Dari Tanggal')
@@ -581,7 +590,7 @@ class GcvKprResource extends Resource
                     ),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormMaxHeight('400px')
-            ->filtersFormColumns(5)
+            ->filtersFormColumns(3)
             ->filtersFormWidth(MaxWidth::FourExtraLarge)
 
 

@@ -22,7 +22,7 @@ class gcv_pencairan_akad extends Model
             "tanggal_pencairan",
             "nilai_pencairan",
             "dana_jaminan",
-            "jenis_pembayaran",
+            "status_pembayaran",
             "no_debitur",
             "up_spd5",
             "up_rekening_koran",
