@@ -51,7 +51,7 @@ class GcvLegalitasResource extends Resource
     protected static ?string $title = "Data Legalitas";
     protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Legalitas";
-    protected static ?string $navigationIcon = 'heroicon-o-folder';
+    protected static ?string $navigationIcon = 'heroicon-o-folder-open';
     protected static ?string $navigationLabel = 'Legal > Data Legalitas';
     protected static ?string $pluralModelLabel = 'Data Legalitas';
     protected static ?int $navigationSort = 3;
@@ -129,8 +129,8 @@ class GcvLegalitasResource extends Resource
             ->map(fn ($item) => ['nop' => trim($item)])
             ->toArray();
 
-        $set('nop', $nopList);        
-        
+        $set('nop', $nopList);
+
         $set('imb_pbg', $data->imb_pbg ?? null);
     }
 })

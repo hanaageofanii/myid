@@ -49,7 +49,7 @@ class GcvDatatandaterimaResource extends Resource
     protected static ?string $title = "Data Tanda Terima";
     protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Tanda Terima";
-    protected static ?string $navigationIcon = 'heroicon-o-folder';
+    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
     protected static ?string $navigationLabel = 'Legal > Data Tanda Terima';
     protected static ?string $pluralModelLabel = 'Data Tanda Terima';
     protected static ?int $navigationSort = 2;

@@ -52,7 +52,7 @@ class GcvStokResource extends Resource
     protected static ?string $title = "Data Bookingan";
     protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Bookingan";
-    protected static ?string $navigationIcon = 'heroicon-o-folder';
+    protected static ?string $navigationIcon = 'heroicon-o-document-chart-bar';
     protected static ?string $navigationLabel = 'Stok > Data Booking';
     protected static ?string $pluralModelLabel = 'Data Bookingan';
     protected static ?int $navigationSort = 4;
@@ -79,7 +79,7 @@ class GcvStokResource extends Resource
                                         $user = Auth::user();
                                         return $user && $user->hasRole(['admin','KPR Officer']);
                                     })()),
-                                    
+
             Select::make('nama_perusahaan')
                 ->options([
                     'grand_cikarang_village' => 'Grand Cikarang Village',
@@ -93,7 +93,7 @@ class GcvStokResource extends Resource
                                         $user = Auth::user();
                                         return $user && $user->hasRole(['admin','KPR Officer']);
                                     })()),
-                                    
+
             Select::make('kavling')
                 ->options([
                     'standar' => 'Standar',
@@ -110,7 +110,7 @@ class GcvStokResource extends Resource
                                         $user = Auth::user();
                                         return $user && $user->hasRole(['admin','KPR Officer']);
                                     })()),
-                                    
+
             Select::make('siteplan')
                 ->label('Blok')
                 ->options(
@@ -151,7 +151,7 @@ class GcvStokResource extends Resource
                                         /** @var \App\Models\User|null $user */
                                         $user = Auth::user();
                                         return $user && $user->hasRole(['admin','KPR Officer']);
-                                    })()),        
+                                    })()),
                                 ])->columns(2),
 
         Step::make('Status Bookingan')
@@ -188,7 +188,7 @@ class GcvStokResource extends Resource
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','KPR Officer']);
                     })()),
-                    
+
             TextInput::make('nama_konsumen')
                 ->label('Nama Konsumen')
                 ->disabled(fn () => ! (function () {
@@ -234,7 +234,7 @@ class GcvStokResource extends Resource
                     })()),
                 ])->columns(2),
 
-        Step::make('Status KPR')                
+        Step::make('Status KPR')
         ->description('Informasi status kpr')
         ->schema([
             Select::make('kpr_status')
@@ -272,7 +272,7 @@ class GcvStokResource extends Resource
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','KPR Officer']);
                     })()),
-                    
+
             DatePicker::make('tanggal_akad')
                 ->label('Tanggal Akad')
                 ->disabled(fn () => ! (function () {
@@ -288,7 +288,7 @@ class GcvStokResource extends Resource
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','KPR Officer']);
-                    })()),       
+                    })()),
                 ]),
     ])
     ->columnSpanFull()
@@ -344,7 +344,7 @@ class GcvStokResource extends Resource
                 default => $state,
             })->searchable(),
 
-            Tables\Columns\TextColumn::make('tanggal_booking')->date()->label('Tanggal Booking')->searchable()                
+            Tables\Columns\TextColumn::make('tanggal_booking')->date()->label('Tanggal Booking')->searchable()
             ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
             Tables\Columns\TextColumn::make('nama_konsumen')->label('Nama Konsumen')->searchable(),
             Tables\Columns\TextColumn::make('agent')->label('Agent')->searchable(),
@@ -371,7 +371,7 @@ class GcvStokResource extends Resource
                     'batal' => 'Batal',
                     default => $state,
                 })->searchable(),
-            Tables\Columns\TextColumn::make('tanggal_akad')->date()->label('Tanggal Akad')->searchable()                
+            Tables\Columns\TextColumn::make('tanggal_akad')->date()->label('Tanggal Akad')->searchable()
             ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
         ])
             ->defaultSort('siteplan', 'asc')
