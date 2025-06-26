@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('gcv_pencairan_dajams', function (Blueprint $table) {
             $table->id();
+                        $table->string('siteplan')->nullable();
+            $table->string('bank')->nullable();
+            $table->string('no_debitur')->nullable();
+            $table->string('nama_konsumen')->nullable();
+            $table->enum('nama_dajam',['sertifikat','imb','listrik','jkk','bestek','pph','bphtb'])->nullable();
+            $table->string('nilai_dajam')->nullable();
+            $table->date('tanggal_pencairan')->nullable();
+            $table->string('nilai_pencairan')->nullable();
+            $table->string('selisih_dajam')->nullable();
+            $table->json('up_rekening_koran')->nullable();
+            $table->json('up_lainnya')->nullable();
             $table->timestamps();
         });
     }
