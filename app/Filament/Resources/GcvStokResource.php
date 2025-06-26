@@ -359,7 +359,7 @@ class GcvStokResource extends Resource
             Tables\Columns\TextColumn::make('status_sertifikat')->label('Status Sertifikat')
             ->formatStateUsing(fn (string $state): string => match ($state) {
                 'induk' => 'Induk',
-                'pecah' => 'Pecah',
+                'pecah' => 'Pecahan',
                 default => $state,
             })->searchable(),
             Tables\Columns\TextColumn::make('status_pembayaran')->label('Status Pembayaran')
