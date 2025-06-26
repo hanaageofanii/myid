@@ -9,11 +9,12 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateGcvKpr extends CreateRecord
 {
-     protected static ?string $title = "Buat Data KPR";
+    protected static string $resource = GcvKprResource::class;
+    protected static ?string $title = "Buat Data Akad KPR";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
-        ->label('Tambah Data KPR');
+        ->label('Tambah Data Akad KPR');
     }
 
     protected function getCreateAnotherFormAction(): Actions\Action
@@ -34,8 +35,8 @@ class CreateGcvKpr extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Data KPR Disimpan')
-            ->body('Data KPR telah berhasil disimpan.');
+            ->title('Data Akad KPR Disimpan')
+            ->body('Data Akad KPR telah berhasil disimpan.');
     }
 
     protected function getSaveFormAction(): Actions\Action

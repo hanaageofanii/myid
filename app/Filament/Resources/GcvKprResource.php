@@ -50,12 +50,12 @@ class GcvKprResource extends Resource
 {
     protected static ?string $model = gcv_kpr::class;
 
-    protected static ?string $title = "Data Akad";
+    protected static ?string $title = "Data Akad KPR";
     protected static ?string $navigationGroup = "GCV";
-    protected static ?string $pluralLabel = "Data Akad";
+    protected static ?string $pluralLabel = "Data Akad KPR";
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
-    protected static ?string $navigationLabel = 'KPR > Data Akad';
-    protected static ?string $pluralModelLabel = 'Data Akad';
+    protected static ?string $navigationLabel = 'KPR > Data Akad KPR';
+    protected static ?string $pluralModelLabel = 'Data Akad KPR';
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form

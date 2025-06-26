@@ -16,7 +16,7 @@ class ListGcvKprs extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->label('Buat Data KPR'),
+            ->label('Buat Data Akad KPR'),
         ];
     }
 
