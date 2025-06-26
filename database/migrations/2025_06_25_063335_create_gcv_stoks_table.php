@@ -29,7 +29,7 @@ return new class extends Migration
             $table->text('ket')->nullable();
             $table->string('user')->nullable();
             $table->date('tanggal_update')->nullable();
-            $table->enum('status_sertifikat',['pecah','belum'])->nullable();
+            $table->enum('status_sertifikat',['induk','pecahan'])->nullable();
             $table->enum('status_pembayaran',['cash','cash_bertahap','kpr','promo'])->nullable();
 
             $table->timestamps();

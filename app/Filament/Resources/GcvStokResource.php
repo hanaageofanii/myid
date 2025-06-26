@@ -6,6 +6,7 @@ use App\Filament\Resources\GcvStokResource\Pages;
 use App\Filament\Resources\GcvStokResource\RelationManagers;
 use App\Models\gcv_stok;
 use App\Models\gcvDataSiteplan;
+use App\Models\gcv_legalitas;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -122,11 +123,18 @@ class GcvStokResource extends Resource
                 ->unique(ignoreRecord: true)
                 ->afterStateUpdated(function ($state, $set) {
                     $audit = gcvDataSiteplan::where('siteplan', $state)->first();
+                    $legalitas =gcv_legalitas::where( 'siteplan', $state)->first();
 
                     if ($audit) {
                         $set('type', $audit->type);
                         $set('luas_tanah', $audit->luas);
                     }
+
+                    if($legalitas){
+                        $set('status_sertifikat', $legalitas->status_sertifikat);
+                    }
+
+
                 })
                 ->disabled(fn () => ! (function () {
                                         /** @var \App\Models\User|null $user */
@@ -210,8 +218,8 @@ class GcvStokResource extends Resource
         ->schema([
             Select::make('status_sertifikat')
                 ->options([
-                    'pecah' => 'SUDAH PECAH',
-                    'belum' => 'BELUM PECAH',
+                    'induk' => 'Induk',
+                    'pecah' => 'Pecah',
                 ])
                 ->label('Status Sertifikat')
                 ->disabled(fn () => ! (function () {
@@ -350,8 +358,8 @@ class GcvStokResource extends Resource
             Tables\Columns\TextColumn::make('agent')->label('Agent')->searchable(),
             Tables\Columns\TextColumn::make('status_sertifikat')->label('Status Sertifikat')
             ->formatStateUsing(fn (string $state): string => match ($state) {
-                'pecah' => 'SUDAH PECAH',
-                'belum' => 'BELUM PECAH',
+                'induk' => 'Induk',
+                'pecah' => 'Pecah',
                 default => $state,
             })->searchable(),
             Tables\Columns\TextColumn::make('status_pembayaran')->label('Status Pembayaran')

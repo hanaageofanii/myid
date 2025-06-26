@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('gcv_pencairan_akads', function (Blueprint $table) {
-            $table->softDeleted();
+            $table->softDeletes();
         });
     }
 
