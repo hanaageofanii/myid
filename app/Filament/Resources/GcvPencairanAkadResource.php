@@ -252,6 +252,20 @@ class GcvPencairanAkadResource extends Resource
                             ->nullable()
                             ->multiple()
                             ->downloadable()
+                            ->afterStateHydrated(function ($component, $state) {
+                                $day = now()->day;
+
+                                if (blank($state)) {
+                                    Notification::make()
+                                        ->title($day > 4 ? '❗ SPD 5 Belum Di-upload' : '⚠️ Wajib Upload SPD 5')
+                                        ->body($day > 4
+                                            ? 'Tanggal upload SPD 5 sudah lewat. Harap segera lengkapi dokumen.'
+                                            : 'Hari ini tanggal 4. Harap upload SPD 5.')
+                                        ->{ $day > 4 ? 'danger' : 'warning' }()
+                                        ->persistent()
+                                        ->send();
+                                                }
+                                    })
                             ->previewable(false)
                             ->disabled(fn () => ! (function () {
                                 /** @var \App\Models\User|null $user */
