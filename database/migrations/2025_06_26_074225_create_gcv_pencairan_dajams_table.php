@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('gcv_pencairan_dajams', function (Blueprint $table) {
             $table->id();
-                        $table->string('siteplan')->nullable();
+            $table->string('siteplan')->nullable();
+            $table->enum('kavling',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();
             $table->string('bank')->nullable();
             $table->string('no_debitur')->nullable();
             $table->string('nama_konsumen')->nullable();
