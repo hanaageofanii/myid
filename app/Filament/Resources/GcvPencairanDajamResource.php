@@ -275,7 +275,93 @@ class GcvPencairanDajamResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('kavling')
+                ->label('Kavling')
+                ->formatStateUsing(fn(string $state): string => match ($state){
+                    'standar' => 'Standar',
+                    'khusus' => 'Khusus',
+                    'hook' => 'Hook',
+                    'komersil' => 'Komersil',
+                    'tanah_lebih' => 'Tanah Lebih',
+                    'kios' => 'Kios',
+                    default => $state,
+                })->searchable(),
+
+                TextColumn::make('siteplan')
+                ->sortable()
+                ->searchabale()
+                ->label('Blok'),
+
+                TextColumn::make('bank')
+                ->formatStateUsing(fn (string $state): string =>match($state){
+                    'btn_cikarang' => 'BTN Cikarang',
+                    'btn_bekasi' => 'BTN Bekasi',
+                    'btn_karawang' => 'BTN Karawang',
+                    'bjb_syariah' => 'BJB Syariah',
+                    'bjb_jababeka' => 'BJB Jababeka',
+                    'btn_syariah' => 'BTN Syariah',
+                    'brii_bekasi' => 'BRI Bekasi',
+                    default => ucfirst($state)
+                })
+                ->sortbale()
+                ->searchable()
+                ->label('Bank'),
+
+                TextColumn::make('nama_konsumen')
+                ->searchable()
+                ->label('Nama Konsumen')
+                ->sortable(),
+
+                TextColumn::make('no_debitur')
+                ->serachable()
+                ->sortable()
+                ->label('No. Debitur'),
+
+                TextColumn::make('nama_dajam')
+                ->formatStateUsing(fn(string $state): string => match ($state){
+                    'sertifikat' => 'Sertifikat',
+                    'imb' => 'IMB',
+                    'jkk' => 'JKK',
+                    'bestek' => 'Bestek',
+                    'pph' => 'PPH',
+                    'bphtb' => 'BPHTB',
+                    default => ucfirst($state),
+                })
+                ->sortable()
+                ->searchable()
+                ->label('Nama Dajam'),
+
+                TextColumn::make('nilai_dajam')
+                ->sortable()
+                ->searchable()
+                ->label('Nilai Dajam')
+                ->formatStateUsing(fn($state)=>'Rp ' . number_format((float)$state, 0, ',', '.')),
+
+                TextColumn::make('tanggal_pencairan')
+                ->searchable()
+                ->sortable()
+                ->label('Tanggal Pencairan')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+
+                TextColumn::make('nilai_pencairan')
+                ->sortable()
+                ->searchable()
+                ->label('Nilai Pencairan')
+                ->formatStateUsing(fn($state)=>'Rp ' . number_format((float)$state, 0, ',', '.')),
+
+                TextColumn::make('selisih_dajam')
+                ->sortable()
+                ->searchable()
+                ->label('Selisih Dajam')
+                ->formatStateUsing(fn($state)=>'Rp ' . number_format((float)$state, 0, ',', '.')),
+
+                TextColumn::make('up_rekening_koran')
+                ->label('File Rekening Koran')
+                ->formatStateUsing(function ($record){
+                    if (!$record->up_rekening_koran){
+                        return 'Tidak Ada Dokumen';
+                    }
+                })
             ])
             ->filters([
                 //
