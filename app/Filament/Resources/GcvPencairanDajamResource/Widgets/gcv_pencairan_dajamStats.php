@@ -26,40 +26,40 @@ class gcv_pencairan_dajamStats extends BaseWidget
             ->extraAttributes([
                 'style' => 'background-color: #ffff; border-color: #234C63;'
             ]),
-            Card::make('BTN Cikarang', gcv_pencairan_dajam::where('bank', 'BTN Cikarang')->count())
-            ->extraAttributes([
-                'style' => 'background-color: #ffff; border-color: #234C63;'
-            ]),
+            // Card::make('BTN Cikarang', gcv_pencairan_dajam::where('bank', 'BTN Cikarang')->count())
+            // ->extraAttributes([
+            //     'style' => 'background-color: #ffff; border-color: #234C63;'
+            // ]),
 
-            Card::make('BTN Bekasi', gcv_pencairan_dajam::where('bank', 'btn_bekasi')->count())
-                ->extraAttributes([
-                    'style' => 'background-color: #ffff; border-color: #234C63;'
-                ]),
+            // Card::make('BTN Bekasi', gcv_pencairan_dajam::where('bank', 'btn_bekasi')->count())
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #ffff; border-color: #234C63;'
+            //     ]),
 
-            Card::make('BTN Karawang', gcv_pencairan_dajam::where('bank', 'btn_karawang')->count())
-                ->extraAttributes([
-                    'style' => 'background-color: #ffff; border-color: #234C63;'
-                ]),
+            // Card::make('BTN Karawang', gcv_pencairan_dajam::where('bank', 'btn_karawang')->count())
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #ffff; border-color: #234C63;'
+            //     ]),
 
-            Card::make('BJB Syariah', gcv_pencairan_dajam::where('bank', 'bjb_syariah')->count())
-                ->extraAttributes([
-                    'style' => 'background-color: #ffff; border-color: #234C63;'
-                ]),
+            // Card::make('BJB Syariah', gcv_pencairan_dajam::where('bank', 'bjb_syariah')->count())
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #ffff; border-color: #234C63;'
+            //     ]),
 
-            Card::make('BJB Jababeka', gcv_pencairan_dajam::where('bank', 'bjb_jababeka')->count())
-                ->extraAttributes([
-                    'style' => 'background-color: #ffff; border-color: #234C63;'
-                ]),
+            // Card::make('BJB Jababeka', gcv_pencairan_dajam::where('bank', 'bjb_jababeka')->count())
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #ffff; border-color: #234C63;'
+            //     ]),
 
-            Card::make('BTN Syariah', gcv_pencairan_dajam::where('bank', 'btn_syariah')->count())
-                ->extraAttributes([
-                    'style' => 'background-color: #ffff; border-color: #234C63;'
-                ]),
+            // Card::make('BTN Syariah', gcv_pencairan_dajam::where('bank', 'btn_syariah')->count())
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #ffff; border-color: #234C63;'
+            //     ]),
 
-            Card::make('BRI Bekasi', gcv_pencairan_dajam::where('bank', 'brii_bekasi')->count())
-                ->extraAttributes([
-                    'style' => 'background-color: #ffff; border-color: #234C63;'
-                ]),
+            // Card::make('BRI Bekasi', gcv_pencairan_dajam::where('bank', 'brii_bekasi')->count())
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #ffff; border-color: #234C63;'
+            //     ]),
             Card::make('Dajam Sertifikat', gcv_pencairan_dajam::where('nama_dajam', 'sertifikat')->count())
                 ->extraAttributes([
                     'style' => 'background-color: #ffff; border-color: #234C63;'
