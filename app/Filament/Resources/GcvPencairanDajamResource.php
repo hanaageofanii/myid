@@ -101,7 +101,8 @@ class GcvPencairanDajamResource extends Resource
                                     return [];
                                 }
 
-                                return GcvDataSiteplan::where('kavling', $selectedKavling)
+                                return gcv_kpr::where('jenis_unit', $selectedKavling)
+                                    ->where('status_akad', 'akad')
                                     ->pluck('siteplan', 'siteplan')
                                     ->toArray();
                             })

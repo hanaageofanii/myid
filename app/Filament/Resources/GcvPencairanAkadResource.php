@@ -95,40 +95,44 @@ class GcvPencairanAkadResource extends Resource
                             return $user && $user->hasRole(['admin','Kasir 1']);
                         })()),
 
+                        //
+
                         Select::make('siteplan')
-                            ->label('Blok')
-                            ->options(function (callable $get) {
-                                                    $selectedKavling = $get('kavling');
-                                                    if (! $selectedKavling) {
-                                                        return [];
-                                                    }
+    ->label('Blok')
+    ->options(function (callable $get) {
+        $selectedKavling = $get('kavling');
+        if (! $selectedKavling) {
+            return [];
+        }
 
-                                                    return GcvDataSiteplan::where('kavling', $selectedKavling)
-                                                        ->pluck('siteplan', 'siteplan')
-                                                        ->toArray();
-                                                })
-                            ->searchable()
-                            ->disabled(fn () => ! (function () {
-                                /** @var \App\Models\User|null $user */
-                                $user = Auth::user();
-                                return $user && $user->hasRole(['admin','Kasir 1']);
-                            })())
-                            ->reactive()
-                            ->afterStateUpdated(function ($state, callable $set) {
-                                if ($state) {
-                                    $data = gcv_kpr::where('siteplan', $state)->first();
-                                    if ($data) {
-                                        $set('nama_konsumen', $data->nama_konsumen);
-                                        $set('bank', $data->bank);
-                                        $set('max_kpr', $data->maksimal_kpr);
-                                    }
+        return gcv_kpr::where('jenis_unit', $selectedKavling)
+            ->where('status_akad', 'akad')
+            ->pluck('siteplan', 'siteplan')
+            ->toArray();
+    })
+    ->searchable()
+    ->disabled(fn () => ! (function () {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin','Kasir 1']);
+    })())
+    ->reactive()
+    ->afterStateUpdated(function ($state, callable $set) {
+        if ($state) {
+            $data = gcv_kpr::where('siteplan', $state)->first();
+            if ($data) {
+                $set('nama_konsumen', $data->nama_konsumen);
+                $set('bank', $data->bank);
+                $set('max_kpr', $data->maksimal_kpr);
+            }
 
-                                    $bayar = gcv_stok::where('siteplan', $state)->first();
-                                    if ($state){
-                                        $set('status_pembayaran', $bayar->status_pembayaran);
-                                    }
-                                }
-                            }),
+            $bayar = gcv_stok::where('siteplan', $state)->first();
+            if ($state) {
+                $set('status_pembayaran', $bayar->status_pembayaran ?? null);
+            }
+        }
+    }),
+
 
                         TextInput::make('nama_konsumen')
                             ->label('Nama Konsumen')

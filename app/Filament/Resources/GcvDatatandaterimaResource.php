@@ -64,15 +64,6 @@ return $form->schema([
                 Section::make('Data Kavling')
                 ->columns(3)
                     ->schema([
-                        // TextInput::make('siteplan')
-                        //     ->label('Site Plan')
-                        //     ->required()
-                        //     ->unique(ignoreRecord: true)
-                        //     ->disabled(fn () => ! (function () {
-                        //         /** @var \App\Models\User|null $user */
-                        //         $user = Auth::user();
-                        //         return $user && $user->hasRole(['admin','Legal officer']);
-                        //     })()),
                     Select::make('kavling')
                         ->label('Kavling')
                         ->options([

@@ -120,7 +120,6 @@ class GcvStokResource extends Resource
                 ->searchable()
                 ->required()
                 ->reactive()
-                ->unique(ignoreRecord: true)
                 ->afterStateUpdated(function ($state, $set) {
                     $audit = gcvDataSiteplan::where('siteplan', $state)->first();
                     $legalitas =gcv_legalitas::where( 'siteplan', $state)->first();

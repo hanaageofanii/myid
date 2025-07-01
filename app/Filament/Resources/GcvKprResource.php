@@ -124,9 +124,7 @@ class GcvKprResource extends Resource
                             $set('status_akad', $gcv->kpr_status);
                             $set('pembayaran', $gcv->status_pembayaran);
                         }
-                    })
-                    ->unique(ignoreRecord: true),
-
+                    }),
                 Forms\Components\Select::make('type')
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
