@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('no_surat')->nullable();
             $table->date('tanggal_pengajuan')->nullable();
             $table->string('nilai_pencairan')->nullable();
-            $table->enum('status_dajam',['sudah_diajukan','belum_diajukan'])->nullable();
+            // $table->enum('status_dajam',['sudah_diajukan','belum_diajukan'])->nullable();
             $table->string('up_surat_pengajuan')->nullable();
             $table->json('up_nominatif_pengajuan')->nullable();
             $table->json('catatan')->nullable();

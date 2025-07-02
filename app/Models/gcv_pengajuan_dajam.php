@@ -22,7 +22,7 @@ class gcv_pengajuan_dajam extends Model
     'no_surat',
     'tanggal_pengajuan',
     'nilai_pencairan',
-    'status_dajam',
+    // 'status_dajam',
     'catatan',
     'up_surat_pengajuan',
     'up_nominatif_pengajuan',
