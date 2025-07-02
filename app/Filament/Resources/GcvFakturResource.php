@@ -635,7 +635,6 @@ public static function getEloquentQuery(): Builder
         ]);
 }
 
-
     public static function getPages(): array
     {
         return [
