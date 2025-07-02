@@ -14,6 +14,7 @@ class gcv_pengajuan_dajam extends Model
 
     protected $fillable =[
     'siteplan',
+    'kavling',
     'bank',
     'no_debitur',
     'nama_konsumen',

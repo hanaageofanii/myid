@@ -23,7 +23,7 @@ class GcvPengajuanDajamResource extends Resource
     {
         return $form
             ->schema([
-                //
+
             ]);
     }
 
