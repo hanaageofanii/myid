@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('gcv_pengajuan_dajams', function (Blueprint $table) {
             $table->id();
+
+
+
             $table->timestamps();
         });
     }
