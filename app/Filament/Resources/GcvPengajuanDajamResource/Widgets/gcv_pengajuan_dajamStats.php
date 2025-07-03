@@ -61,14 +61,14 @@ class gcv_pengajuan_dajamStats extends BaseWidget
                 ->extraAttributes([
                     'style' => 'background-color: #ffff; border-color: #234C63;'
                 ]),
-            Card::make('Sudah Diajukan', gcv_pengajuan_dajam::where('status_dajam', 'sudah_diajukan')->count())
-                ->extraAttributes([
-                    'style' => 'background-color: #ffff; border-color: #234C63;'
-                ]),
-            Card::make('Belum Diajukan', gcv_pengajuan_dajam::where('status_dajam', 'belum_diajukan')->count())
-                ->extraAttributes([
-                    'style' => 'background-color: #ffff; border-color: #234C63;'
-                ]),
+            // Card::make('Sudah Diajukan', gcv_pengajuan_dajam::where('status_dajam', 'sudah_diajukan')->count())
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #ffff; border-color: #234C63;'
+            //     ]),
+            // Card::make('Belum Diajukan', gcv_pengajuan_dajam::where('status_dajam', 'belum_diajukan')->count())
+            //     ->extraAttributes([
+            //         'style' => 'background-color: #ffff; border-color: #234C63;'
+            //     ]),
             Card::make('Dajam Sertifikat', gcv_pengajuan_dajam::where('nama_dajam', 'sertifikat')->count())
                 ->extraAttributes([
                     'style' => 'background-color: #ffff; border-color: #234C63;'

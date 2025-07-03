@@ -115,7 +115,7 @@ public static function form(Form $form): Form
                         ->afterStateUpdated(function ($state, callable $set) {
                             $kprData = gcv_kpr::where('siteplan', $state)->first();
                             $akadData = gcv_pencairan_akad::where('siteplan', $state)->first();
-                            $pajakData = gcv_validasi_pph::where('siteplan', $state)->first();
+                            // $pajakData = gcv_validasi_pph::where('siteplan', $state)->first();
                             $dajamData = gcv_pencairan_dajam::where('siteplan', $state)->first();
 
                             $maxKpr = $kprData->maksimal_kpr ?? 0;
@@ -125,18 +125,18 @@ public static function form(Form $form): Form
                             $set('nama_konsumen', $kprData->nama_konsumen ?? null);
                             $set('max_kpr', $maxKpr);
                             $set('nilai_pencairan', $nilaiPencairan);
-                            $set('dajam_pph', $pajakData->jumlah_pph ?? 0);
-                            $set('dajam_bphtb', $pajakData->jumlah_bphtb ?? 0);
-                            $set('total_dajam', max(0, $maxKpr - $nilaiPencairan));
+                            // $set('dajam_pph', $pajakData->jumlah_pph ?? 0);
+                            // $set('dajam_bphtb', $pajakData->jumlah_bphtb ?? 0);
+                            // $set('total_dajam', max(0, $maxKpr - $nilaiPencairan));
 
                             if ($dajamData) {
-                                $set('dajam_sertifikat', $dajamData->dajam_sertifikat);
-                                $set('dajam_imb', $dajamData->dajam_imb);
-                                $set('dajam_listrik', $dajamData->dajam_listrik);
-                                $set('dajam_jkk', $dajamData->dajam_jkk);
-                                $set('dajam_bestek', $dajamData->dajam_bestek);
-                                $set('jumlah_realisasi_dajam', $dajamData->jumlah_realisasi_dajam);
-                                $set('pembukuan', $dajamData->pembukuan);
+                                // $set('dajam_sertifikat', $dajamData->dajam_sertifikat);
+                                // $set('dajam_imb', $dajamData->dajam_imb);
+                                // $set('dajam_listrik', $dajamData->dajam_listrik);
+                                // $set('dajam_jkk', $dajamData->dajam_jkk);
+                                // $set('dajam_bestek', $dajamData->dajam_bestek);
+                                // $set('jumlah_realisasi_dajam', $dajamData->jumlah_realisasi_dajam);
+                                // $set('pembukuan', $dajamData->pembukuan);
                                 $set('no_debitur', $dajamData->no_debitur);
                             }
                         }),
