@@ -26,7 +26,7 @@ return new class extends Migration
             // $table->enum('status_dajam',['sudah_diajukan','belum_diajukan'])->nullable();
             $table->string('up_surat_pengajuan')->nullable();
             $table->json('up_nominatif_pengajuan')->nullable();
-            $table->json('catatan')->nullable();
+            $table->string('catatan')->nullable();
 
             $table->timestamps();
         });
