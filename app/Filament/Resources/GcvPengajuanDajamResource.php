@@ -73,17 +73,45 @@ public static function form(Form $form): Form
     return $form->schema([
         Wizard::make([
             Step::make('Data Konsumen')
+            ->columns(2)
+            ->description('Informasi data konsumen')
                 ->schema([
-                    Select::make('siteplan')
-                        ->label('Blok')
-                        ->options(fn () => gcv_kpr::pluck('siteplan', 'siteplan'))
-                        ->searchable()
-                        ->disabled(fn () => ! (function () {
-                                    /** @var \App\Models\User|null $user */
-                                    $user = Auth::user();
-                                    return $user && $user->hasRole(['admin','Legal officer']);
-                                })())
-                        ->reactive()
+                    Select::make('kavling')
+                                    ->label('Jenis Unit / Kavling')
+                                    ->options([
+                                        'standar' => 'Standar',
+                                        'khusus' => 'Khusus',
+                                        'hook' => 'Hook',
+                                        'komersil' => 'Komersil',
+                                        'tanah_lebih' => 'Tanah Lebih',
+                                        'kios' => 'Kios',
+                                    ])
+                                    ->required()
+                                    ->reactive()
+                                    ->disabled(fn () => ! (function () {
+                                                    /** @var \App\Models\User|null $user */
+                                                    $user = Auth::user();
+                                                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                                                })()),
+
+                                Select::make('siteplan')
+                                    ->label('Blok / Siteplan')
+                                    ->nullable()
+                                    ->searchable()
+                                    ->reactive()
+                                    ->options(function (callable $get) {
+                                        $selectedKavling = $get('kavling');
+                                        if (! $selectedKavling) return [];
+
+                                        return gcv_kpr::where('jenis_unit', $selectedKavling)
+                                            ->pluck('siteplan', 'siteplan')
+                                            ->toArray();
+                                    })
+                                    ->disabled(fn () => ! (function () {
+                                        /** @var \App\Models\User|null $user */
+                                        $user = Auth::user();
+                                        return $user && $user->hasRole(['admin','Legal Pajak']);
+                                    })())
                         ->afterStateUpdated(function ($state, callable $set) {
                             $kprData = gcv_kpr::where('siteplan', $state)->first();
                             $akadData = gcv_pencairan_akad::where('siteplan', $state)->first();
@@ -145,11 +173,13 @@ public static function form(Form $form): Form
                                     /** @var \App\Models\User|null $user */
                                     $user = Auth::user();
                                     return $user && $user->hasRole(['admin','Legal officer']);
-                                })())
+                                })())->columnSpanFull()
                         ->reactive(),
                 ]),
 
             Step::make('Detail Dajam')
+            ->columns(2)
+            ->description('Informasi pengajuan dajam')
                 ->schema([
                     Select::make('nama_dajam')
                         ->label('Nama Dajam')
@@ -187,9 +217,20 @@ public static function form(Form $form): Form
                                     $user = Auth::user();
                                     return $user && $user->hasRole(['admin','Legal officer']);
                                 })()),
+
+                     TextArea::make('catatan')
+                        ->label('Catatan')
+                        ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })())->columnSpanFull()
+                        ->reactive(),
                 ]),
 
             Step::make('Dokumen')
+            ->columns(2)
+            ->description('Informasi upload dokumen')
                 ->schema([
                     FileUpload::make('up_surat_pengajuan')
                         ->label('Upload Surat Pengajuan')
@@ -215,8 +256,8 @@ public static function form(Form $form): Form
                                     $user = Auth::user();
                                     return $user && $user->hasRole(['admin','Legal officer']);
                                 })()),
-                            ]),
-        ])
+                            ])
+        ])->columnSpanFull(),
     ]);
 }
 
