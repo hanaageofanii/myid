@@ -45,6 +45,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Models\gcv_datatandaterima;
+use App\Models\gcv_validasi_pph;
+use App\Models\gcv_pencairan_dajam;
 use Filament\Forms\Components\Repeater;
 use App\Filament\Resources\GcvLegalitasResource\Widgets\gcv_legalitasStats;
 use Filament\Tables\Actions\RestoreAction;
@@ -66,13 +68,158 @@ class GcvPengajuanDajamResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
         protected static ?int $navigationSort = 11;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
+public static function form(Form $form): Form
+{
+    return $form->schema([
+        Wizard::make([
+            Step::make('Data Konsumen')
+                ->schema([
+                    Select::make('siteplan')
+                        ->label('Blok')
+                        ->options(fn () => gcv_kpr::pluck('siteplan', 'siteplan'))
+                        ->searchable()
+                        ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })())
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, callable $set) {
+                            $kprData = gcv_kpr::where('siteplan', $state)->first();
+                            $akadData = gcv_pencairan_akad::where('siteplan', $state)->first();
+                            $pajakData = gcv_validasi_pph::where('siteplan', $state)->first();
+                            $dajamData = gcv_pencairan_dajam::where('siteplan', $state)->first();
 
-            ]);
-    }
+                            $maxKpr = $kprData->maksimal_kpr ?? 0;
+                            $nilaiPencairan = $akadData->nilai_pencairan ?? 0;
+
+                            $set('bank', $kprData->bank ?? null);
+                            $set('nama_konsumen', $kprData->nama_konsumen ?? null);
+                            $set('max_kpr', $maxKpr);
+                            $set('nilai_pencairan', $nilaiPencairan);
+                            $set('dajam_pph', $pajakData->jumlah_pph ?? 0);
+                            $set('dajam_bphtb', $pajakData->jumlah_bphtb ?? 0);
+                            $set('total_dajam', max(0, $maxKpr - $nilaiPencairan));
+
+                            if ($dajamData) {
+                                $set('dajam_sertifikat', $dajamData->dajam_sertifikat);
+                                $set('dajam_imb', $dajamData->dajam_imb);
+                                $set('dajam_listrik', $dajamData->dajam_listrik);
+                                $set('dajam_jkk', $dajamData->dajam_jkk);
+                                $set('dajam_bestek', $dajamData->dajam_bestek);
+                                $set('jumlah_realisasi_dajam', $dajamData->jumlah_realisasi_dajam);
+                                $set('pembukuan', $dajamData->pembukuan);
+                                $set('no_debitur', $dajamData->no_debitur);
+                            }
+                        }),
+
+                    Select::make('bank')
+                        ->label('Bank')
+                        ->options([
+                            'btn_cikarang' => 'BTN Cikarang',
+                            'btn_bekasi' => 'BTN Bekasi',
+                            'btn_karawang' => 'BTN Karawang',
+                            'bjb_syariah' => 'BJB Syariah',
+                            'bjb_jababeka' => 'BJB Jababeka',
+                            'btn_syariah' => 'BTN Syariah',
+                            'brii_bekasi' => 'BRI Bekasi',
+                        ])
+                        ->required()
+                        ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })()),
+                    TextInput::make('nama_konsumen')
+                        ->label('Nama Konsumen')
+                        ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })())
+                        ->reactive(),
+
+                    TextInput::make('no_debitur')
+                        ->label('No. Debitur')
+                        ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })())
+                        ->reactive(),
+                ]),
+
+            Step::make('Detail Dajam')
+                ->schema([
+                    Select::make('nama_dajam')
+                        ->label('Nama Dajam')
+                        ->options([
+                            'sertifikat' => 'Sertifikat',
+                            'imb' => 'IMB',
+                            'jkk' => 'JKK',
+                            'bestek' => 'Bestek',
+                            'pph' => 'PPH',
+                            'bphtb' => 'BPHTB',
+                        ])
+                        ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })()),
+                    TextInput::make('no_surat')
+                        ->label('No. Surat')
+                        ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })()),
+                    DatePicker::make('tanggal_pengajuan')
+                        ->label('Tanggal Pengajuan')
+                        ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })()),
+                    TextInput::make('nilai_pencairan')
+                        ->label('Nilai Pencairan')
+                        ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })()),
+                ]),
+
+            Step::make('Dokumen')
+                ->schema([
+                    FileUpload::make('up_surat_pengajuan')
+                        ->label('Upload Surat Pengajuan')
+                        ->disk('public')
+                        ->nullable()
+                        ->multiple()
+                        ->previewable(false)
+                        ->downloadable()
+                        ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })()),
+                    FileUpload::make('up_nominatif_pengajuan')
+                        ->label('Upload Nominatif Pengajuan')
+                        ->disk('public')
+                        ->nullable()
+                        ->multiple()
+                        ->previewable(false)
+                        ->downloadable()
+                        ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })()),
+                            ]),
+        ])
+    ]);
+}
+
 
         public static function table(Table $table): Table
     {
