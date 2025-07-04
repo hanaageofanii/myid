@@ -20,12 +20,18 @@ class gcv_datatanah extends Model
             "harga_jual",
             "sph",
             "notaris",
-            "catatan"
+            "catatan",
+            "up_sertifikat",
+            "up_nop",
+            "up_datadiri",
+            "up_sph",
+            "up_tambahan_lainnya"
         ];
 
     protected $casts = [
         "up_sertifikat" => 'array',
         "up_nop" => 'array',
+        "up_datadiri" => 'array',
         "up_sph" => 'array',
         "up_tambahan_lainnya" => 'array',
     ];
