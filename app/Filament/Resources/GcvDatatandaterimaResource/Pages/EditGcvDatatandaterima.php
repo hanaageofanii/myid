@@ -30,4 +30,3 @@ class EditGcvDatatandaterima extends EditRecord
         ->label('Simpan');
     }
 }
-

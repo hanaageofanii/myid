@@ -46,5 +46,3 @@ class CreateGcvDatatandaterima extends CreateRecord
         ->label('Simpan');
     }
 }
-
-
