@@ -17,7 +17,13 @@ class GcvDatatanahResource extends Resource
 {
     protected static ?string $model = gcv_datatanah::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $title = "Data Tanah";
+    protected static ?string $navigationGroup = "GCV";
+    protected static ?string $pluralLabel = "Data Tanah";
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+    protected static ?string $navigationLabel = 'Legal > Data Tanah';
+    protected static ?string $pluralModelLabel = 'Data Tanah';
+    protected static ?int $navigationSort = 13;
 
     public static function form(Form $form): Form
     {
