@@ -66,22 +66,544 @@ class GcvVerifikasiDajamResource extends Resource
     protected static ?string $title = "Form Verifikasi Dajam";
     protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Verifikasi Dajam";
-    protected static ?string $navigationLabel = "Verifikasi Dajam";
+    protected static ?string $navigationLabel = "Legal > Verifikasi Dajam";
     protected static ?string $pluralModelLabel = 'Daftar Verifikasi Dajam';
     protected static ?string $navigationIcon = 'heroicon-o-check-badge';
     protected static ?int $navigationSort = 12;
     public static function form(Form $form): Form
     {
-        return $form
+            return $form->schema([
+                Wizard::make([
+                    Step::make('Data Konsumen')
+                        ->description('Informasi Data Konsumen')
+                        ->columns(3)
+                        ->schema([
+                    Select::make('kavling')
+                        ->label('Kavling')
+                        ->options([
+                            'standar' => 'Standar',
+                            'khusus' => 'Khusus',
+                            'hook' => 'Hook',
+                            'komersil' => 'Komersil',
+                            'tanah_lebih' => 'Tanah Lebih',
+                            'kios' => 'Kios',
+                        ])
+                        ->required()
+                        ->reactive()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })()),
+
+                        Select::make('siteplan')
+                            ->label('Blok')
+                            ->options(function (callable $get) {
+                                $selectedKavling = $get('kavling');
+                                if (! $selectedKavling) {
+                                    return [];
+                                }
+
+                                return gcv_kpr::where('jenis_unit', $selectedKavling)
+                                    ->where('status_akad', 'akad')
+                                    ->pluck('siteplan', 'siteplan')
+                                    ->toArray();
+                            })
+                            ->searchable()
+                            ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->reactive()
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                $kprData = gcv_kpr::where('siteplan', $state)->first();
+                                $pencairanAkad = gcv_pencairan_akad::where('siteplan', $state)->first();
+                                // $dajamData = dajam::where('siteplan', $state)->first();
+                                // $pengDajam = pengajuan_dajam_pca::where('siteplan', $state)->first();
+
+                                $set('bank', $kprData?->bank);
+                                $set('nama_konsumen', $kprData?->nama_konsumen);
+                                $set('max_kpr', $kprData?->maksimal_kpr);
+                                $set('no_debitur', $pencairanAkad?->no_debitur);
+                                // $set('pembukuan', $dajamData?->pembukuan);
+                                // $set('no_debitur', $dajamData?->no_debitur);
+                                // $set('nama_dajam', $pengDajam?->nama_dajam);
+                            }),
+
+                            TextInput::make('nama_konsumen')
+                            ->label('Nama Konsumen')
+                            ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->reactive(),
+
+                            Select::make('bank')
+                            ->options([
+                                'btn_cikarang' => 'BTN Cikarang',
+                                'btn_bekasi' => 'BTN Bekasi',
+                                'btn_karawang' => 'BTN Karawang',
+                                'bjb_syariah' => 'BJB Syariah',
+                                'bjb_jababeka' => 'BJB Jababeka',
+                                'btn_syariah' => 'BTN Syariah',
+                                'brii_bekasi' => 'BRI Bekasi',
+                            ])
+                            ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                            ->required()
+                            ->label('Bank'),
+
+                        TextInput::make('no_debitur')
+                            ->label('No. Debitur')
+                            ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->reactive(),
+
+                        Forms\Components\TextInput::make('max_kpr')
+                            ->label('Maksimal KPR')
+                            ->prefix('Rp')
+                            ->nullable()
+                            ->required()
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })()),
+                        ]),
+
+Step::make('Nilai Dajam')
+            ->description('Informasi Nilai Dajam')
+            ->columns(2)
             ->schema([
-                //
-            ]);
-    }
+                TextInput::make('nilai_pencairan')
+                    ->label('Nilai Pencairan')
+                    ->prefix('Rp')
+                    ->reactive()
+                    ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })())
+                        ->afterStateUpdated(function (callable $set, $get) {
+                        $jumlahRealisasi = (int) $get('jumlah_realisasi_dajam');
+                        $pph = (int) $get('dajam_pph');
+                        $bphtb = (int) $get('dajam_bphtb');
+                        $set('pembukuan', max(0, $jumlahRealisasi - ($pph + $bphtb)));
+                    })
+                    ->afterStateHydrated(function (callable $set, $get) {
+                        $jumlahRealisasi = (int) $get('jumlah_realisasi_dajam');
+                        $pph = (int) $get('dajam_pph');
+                        $bphtb = (int) $get('dajam_bphtb');
+                        $set('pembukuan', max(0, $jumlahRealisasi - ($pph + $bphtb)));
+                    }),
+
+                TextInput::make('total_dajam')
+                    ->label('Jumlah Dajam')
+                    ->prefix('Rp')
+                    ->reactive()
+                    ->live()
+                    ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                    })()),
+
+                    TextInput::make('dajam_sertifikat')
+                        ->label('Dajam Sertifikat')
+                        ->prefix('Rp')
+                        ->live()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->reactive()
+                        ->afterStateUpdated(fn ($state, callable $set, $get) =>
+                            $set('jumlah_realisasi_dajam', max(0, (int) $get('total_dajam') - (
+                                (int) $get('dajam_sertifikat') +
+                                (int) $get('dajam_imb') +
+                                (int) $get('dajam_listrik') +
+                                (int) $get('dajam_jkk') +
+                                (int) $get('dajam_bestek')
+                            )))
+                            ),
+
+                            DatePicker::make('tgl_pencairan_dajam_sertifikat')
+                                ->label('Tanggal Pencairan Dajam Sertifikat')
+                                ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })()),
+
+                        TextInput::make('dajam_imb')
+                            ->label('Dajam IMB')
+                            ->prefix('Rp')
+                            ->live()
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })())
+                            ->reactive()
+                            ->afterStateUpdated(fn ($state, callable $set, $get) =>
+                                $set('jumlah_realisasi_dajam', max(0, (int) $get('total_dajam') - (
+                                    (int) $get('dajam_sertifikat') +
+                                    (int) $get('dajam_imb') +
+                                    (int) $get('dajam_listrik') +
+                                    (int) $get('dajam_jkk') +
+                                    (int) $get('dajam_bestek')
+                                )))
+                                ),
+
+                        DatePicker::make('tgl_pencairan_dajam_imb')
+                            ->label('Tanggal Pencairan Dajam IMB')
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })()),
+
+                        TextInput::make('dajam_listrik')
+                            ->label('Dajam Listrik')
+                            ->prefix('Rp')
+                            ->live()
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })())
+                            ->reactive()
+                            ->afterStateUpdated(fn ($state, callable $set, $get) =>
+                                $set('jumlah_realisasi_dajam', max(0, (int) $get('total_dajam') - (
+                                    (int) $get('dajam_sertifikat') +
+                                    (int) $get('dajam_imb') +
+                                    (int) $get('dajam_listrik') +
+                                    (int) $get('dajam_jkk') +
+                                    (int) $get('dajam_bestek')
+                                )))
+                                ),
+
+                            DatePicker::make('tgl_pencairan_dajam_listrik')
+                                ->label('Tanggal Pencairan Dajam Listrik')
+                                ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })()),
+
+                            TextInput::make('dajam_jkk')
+                        ->label('Dajam JKK')
+                        ->prefix('Rp')
+                        ->live()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->reactive()
+                        ->afterStateUpdated(fn ($state, callable $set, $get) =>
+                            $set('jumlah_realisasi_dajam', max(0, (int) $get('total_dajam') - (
+                                (int) $get('dajam_sertifikat') +
+                                (int) $get('dajam_imb') +
+                                (int) $get('dajam_listrik') +
+                                (int) $get('dajam_jkk') +
+                                (int) $get('dajam_bestek')
+                            )))
+                            ),
+
+                        DatePicker::make('tgl_pencairan_dajam_jkk')
+                            ->label('Tanggal Pencairan Dajam JKK')
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })()),
+
+                    TextInput::make('dajam_bestek')
+                        ->label('Dajam Bestek')
+                        ->prefix('Rp')
+                        ->live()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->reactive()
+                        ->afterStateUpdated(fn ($state, callable $set, $get) =>
+                            $set('jumlah_realisasi_dajam', max(0, (int) $get('total_dajam') - (
+                                (int) $get('dajam_sertifikat') +
+                                (int) $get('dajam_imb') +
+                                (int) $get('dajam_listrik') +
+                                (int) $get('dajam_jkk') +
+                                (int) $get('dajam_bestek')
+                            )))
+                            ),
+
+                        DatePicker::make('tgl_pencairan_dajam_bester')
+                            ->label('Tanggal Pencairan Dajam Bester')
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })()),
+
+                        TextInput::make('dajam_pph')
+                        ->label('Dajam PPH')
+                        ->prefix('Rp')
+                        ->live()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->reactive()
+                        ->afterStateUpdated(function (callable $set, $get) {
+                            $jumlahRealisasi = (int) $get('jumlah_realisasi_dajam');
+                            $dajamPph = (int) $get('dajam_pph');
+                            $dajamBphtb = (int) $get('dajam_bphtb');
+
+                            $set('pembukuan', max(0, $jumlahRealisasi - ($dajamPph + $dajamBphtb)));
+                        })
+                        ->afterStateHydrated(function (callable $set, $get) {
+                            $jumlahRealisasi = (int) $get('jumlah_realisasi_dajam');
+                            $dajamPph = (int) $get('dajam_pph');
+                            $dajamBphtb = (int) $get('dajam_bphtb');
+
+                            $set('pembukuan', max(0, $jumlahRealisasi - ($dajamPph + $dajamBphtb)));
+                        }),
+
+                    DatePicker::make('tgl_pencairan_dajam_pph')
+                        ->label('Tanggal Pencairan Dajam PPH')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })()),
+
+                     TextInput::make('dajam_bphtb')
+                        ->label('Dajam BPHTB')
+                        ->prefix('Rp')
+                        ->live()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->reactive()
+                        ->afterStateUpdated(fn ($state, callable $set, $get) =>
+                            $set('pembukuan', max(0, (int) $get('jumlah_realisasi_dajam') -
+                                (int) $get('dajam_pph') - (int) $get('dajam_bphtb')
+                            ))
+                        ),
+
+                        DatePicker::make('tgl_pencairan_dajam_bphtb')
+                            ->label('Tanggal Pencairan Dajam BPHTB')
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })()),
+                        ]),
+                        Step::make('Informasi Data Dajam')
+                            ->description('Informasi Nilai Dajam')
+                            ->columns(2)
+                            ->schema([
+
+                            TextInput::make('jumlah_realisasi_dajam')
+                            ->label('Jumlah Realisasi Dajam')
+                            ->prefix('Rp')
+                            ->reactive()
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })())
+                            // ->dehydrated()
+                            ->live()
+                            ->afterStateUpdated(function (callable $set, $get) {
+                                $jumlahRealisasi = max(0, (int) $get('total_dajam') - (
+                                    (int) $get('dajam_sertifikat') +
+                                    (int) $get('dajam_imb') +
+                                    (int) $get('dajam_listrik') +
+                                    (int) $get('dajam_jkk') +
+                                    (int) $get('dajam_bestek')
+                                ));
+                                $set('jumlah_realisasi_dajam', $jumlahRealisasi);
+
+                                $set('pembukuan', max(0, $jumlahRealisasi - (
+                                    (int) $get('dajam_pph') + (int) $get('dajam_bphtb')
+                                )));
+                            }),
+
+                            TextInput::make('sisa_dajam')
+                    ->label('Sisa Dajam')
+                    ->live()
+                    ->reactive()
+                    ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Legal officer']);
+                    })())
+                    ->prefix('Rp')
+                    ->afterStateUpdated(fn ($state, callable $set, $get) =>
+                                $set('sisa_dajam', max(0, (int) $get('total_dajam') -
+                                    (int) $get('total_pencairan_dajam')
+                                ))
+                            )
+                            ->afterStateHydrated(fn (callable $set, $get) =>
+                            $set('sisa_dajam', max(0, (int) $get('total_dajam') -
+                            (int) $get('total_pencairan_dajam')
+                                ))
+                            ),
+
+                            TextInput::make('total_pencairan_dajam')
+                                ->label('Total Pencairan Dajam')
+                                ->live()
+                                ->reactive()
+                                ->prefix('Rp')
+                                ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })())
+                                ->afterStateUpdated(fn ($state, callable $set, $get) =>
+                                    $set('sisa_dajam', max(0, (int) $get('total_dajam') - (int) $state))
+                                ),
+
+                        TextInput::make('pembukuan')
+                            ->label('Pembukuan')
+                            ->prefix('Rp')
+                            ->reactive()
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })())
+                            ->live()
+                            ->dehydrated()
+                            ->afterStateUpdated(fn ($state, callable $set, $get) =>
+                                $set('pembukuan', max(0, (int) $get('jumlah_realisasi_dajam') -
+                                    (int) $get('dajam_pph') - (int) $get('dajam_bphtb')
+                                ))
+                            )
+                            ->afterStateHydrated(fn (callable $set, $get) =>
+                                $set('pembukuan', max(0, (int) $get('jumlah_realisasi_dajam') -
+                                    (int) $get('dajam_pph') - (int) $get('dajam_bphtb')
+                                ))
+                            ),
+
+                            TextInput::make('no_surat_pengajuan')
+                                ->label('No. Surat Pengajuan')
+                                ->disabled(fn () => ! (function () {
+                                            /** @var \App\Models\User|null $user */
+                                            $user = Auth::user();
+                                            return $user && $user->hasRole(['admin','Legal officer']);
+                                        })()),
+
+                        Select::make('status_dajam')
+                            ->options([
+                                'sudah_diajukan' => 'Sudah Diajukan',
+                                'belum_diajukan' => 'Belum Diajukan'
+                            ])
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })())
+                            ->label('Status Dajam'),
+
+                            TextArea::make('catatan')
+                                ->label('Catatan')
+                                ->columnSpanFull()
+                                ->disabled(fn () => ! (function () {
+                                            /** @var \App\Models\User|null $user */
+                                            $user = Auth::user();
+                                            return $user && $user->hasRole(['admin','Legal officer']);
+                                        })()),
+                                    ]),
+
+                             Step::make('Upload Dokumen')
+                            ->description('Informasi Dokumen')
+                            ->columns(2)
+                            ->schema([
+                                Fieldset::make('Dokumen')
+                ->schema([
+                     FileUpload::make('up_spd5')
+            ->disk('public')
+            ->nullable()
+            ->multiple()
+            ->disabled(fn () => ! (function () {
+                /** @var \App\Models\User|null $user */
+                $user = Auth::user();
+                return $user && $user->hasRole(['admin','Legal officer']);
+            })())
+            ->label('Upload SPD 5')
+            ->downloadable()
+            ->previewable(false)
+            ->afterStateHydrated(function ($component, $state) {
+                $day = now()->day;
+
+                if ($day === 4 && blank($state)) {
+                    Notification::make()
+                        ->title('⚠️ Wajib Upload SPD 5')
+                        ->body('Hari ini tanggal 4. Harap upload SPD 5.')
+                        ->warning()
+                        ->persistent()
+                        ->send();
+                }
+
+                if ($day > 4 && blank($state)) {
+                    Notification::make()
+                        ->title('❗ SPD 5 Belum Di-upload')
+                        ->body('Tanggal upload SPD 5 sudah lewat. Harap segera lengkapi dokumen.')
+                        ->danger()
+                        ->persistent()
+                        ->send();
+                }
+            }),
+
+                    FileUpload::make('up_lainnya')
+                        ->disk('public')
+                        ->nullable()
+                        ->multiple()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->label('Upload Lainnya')
+                        ->downloadable()
+                        ->previewable(false),
+                    ]),
+                ])
+        ])->columnSpanFull(),
+    ]);
+}
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                TextColumn::make('kavling')
+                ->label('Kavling')
+                ->formatStateUsing(fn(string $state): string => match ($state){
+                    'standar' => 'Standar',
+                    'khusus' => 'Khusus',
+                    'hook' => 'Hook',
+                    'komersil' => 'Komersil',
+                    'tanah_lebih' => 'Tanah Lebih',
+                    'kios' => 'Kios',
+                    default => $state,
+                })->searchable(),
                 TextColumn::make('siteplan')->searchable()->label('Blok'),
                 TextColumn::make('bank')
                 ->formatStateUsing(fn (string $state): string => match ($state) {
@@ -92,7 +614,7 @@ class GcvVerifikasiDajamResource extends Resource
                         'bjb_jababeka' => 'BJB Jababeka',
                         'btn_syariah' => 'BTN Syariah',
                         'brii_bekasi' => 'BRI Bekasi',
-                default => ucfirst($state), 
+                default => ucfirst($state),
             })
                 ->sortable()
                 ->searchable()
@@ -109,43 +631,43 @@ class GcvVerifikasiDajamResource extends Resource
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('total_dajam')
                 ->searchable()
-                ->label('Jumlah Dajam')            
+                ->label('Jumlah Dajam')
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_sertifikat')
                 ->searchable()
-                ->label('Dajam Sertifikat')            
+                ->label('Dajam Sertifikat')
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_imb')
                 ->searchable()
-                ->label('Dajam IMB')            
+                ->label('Dajam IMB')
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_listrik')
                 ->searchable()
-                ->label('Dajam Listrik')            
+                ->label('Dajam Listrik')
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_jkk')
                 ->searchable()
-                ->label('Dajam JKK')            
+                ->label('Dajam JKK')
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_bestek')
                 ->searchable()
-                ->label('Dajam Bestek')            
+                ->label('Dajam Bestek')
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('jumlah_realisasi_dajam')
                 ->searchable()
-                ->label('Jumlah Realisasi Dajam')            
+                ->label('Jumlah Realisasi Dajam')
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_pph')
                 ->searchable()
-                ->label('Dajam PPH')            
+                ->label('Dajam PPH')
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('dajam_bphtb')
                 ->searchable()
-                ->label('Dajam BPHTB')            
+                ->label('Dajam BPHTB')
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('pembukuan')
                 ->searchable()
-                ->label('Pembukuan')            
+                ->label('Pembukuan')
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format((float) $state, 0, ',', '.')),
             TextColumn::make('no_surat_pengajuan')
                 ->searchable()
@@ -191,7 +713,7 @@ class GcvVerifikasiDajamResource extends Resource
                 ->formatStateUsing(fn (string $state): string => match ($state) {
                         'sudah_diajukan' => 'Sudah Diajukan',
                         'belum_diajukan' => 'Belum Diajukan',
-                default => ucfirst($state), 
+                default => ucfirst($state),
             })
                 ->sortable()
                 ->searchable()
@@ -203,19 +725,19 @@ class GcvVerifikasiDajamResource extends Resource
                     if (!$record->up_spd5) {
                         return 'Tidak Ada Dokumen';
                     }
-    
+
                     $files = is_array($record->up_spd5) ? $record->up_spd5 : json_decode($record->up_spd5, true);
-    
+
                     if (json_last_error() !== JSON_ERROR_NONE) {
                         $files = [];
                     }
-    
+
                     $output = '';
                     foreach ($files as $file) {
                         $url = Storage::url($file);
                         $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
                     }
-    
+
                     return $output ?: 'Tidak Ada Dokumen';
                 })
                 ->html()
@@ -227,19 +749,19 @@ class GcvVerifikasiDajamResource extends Resource
                     if (!$record->up_lainnya) {
                         return 'Tidak Ada Dokumen';
                     }
-    
+
                     $files = is_array($record->up_lainnya) ? $record->up_lainnya : json_decode($record->up_lainnya, true);
-    
+
                     if (json_last_error() !== JSON_ERROR_NONE) {
                         $files = [];
                     }
-    
+
                     $output = '';
                     foreach ($files as $file) {
                         $url = Storage::url($file);
                         $output .= '<a href="' . $url . '" target="_blank">Lihat</a> | <a href="' . $url . '" download>Download</a><br>';
                     }
-    
+
                     return $output ?: 'Tidak Ada Dokumen';
                 })
                 ->html()
@@ -254,9 +776,9 @@ class GcvVerifikasiDajamResource extends Resource
             ])
             ->filters([
                 TrashedFilter::make()
-                    ->label('Data yang dihapus') 
+                    ->label('Data yang dihapus')
                     ->native(false),
-            
+
                 Filter::make('bank')
                     ->label('Bank')
                     ->form([
@@ -278,7 +800,7 @@ class GcvVerifikasiDajamResource extends Resource
                             $q->where('bank', $data['bank'])
                         )
                     ),
-            
+
                 Filter::make('status_dajam')
                     ->form([
                         Select::make('status_dajam')
@@ -295,7 +817,7 @@ class GcvVerifikasiDajamResource extends Resource
                             $q->where('status_dajam', $data['status_dajam'])
                         )
                     ),
-            
+
                 Filter::make('created_from')
                     ->label('Dari Tanggal')
                     ->form([
@@ -307,7 +829,7 @@ class GcvVerifikasiDajamResource extends Resource
                             $q->whereDate('created_at', '>=', $data['created_from'])
                         )
                     ),
-            
+
                 Filter::make('created_until')
                     ->label('Sampai Tanggal')
                     ->form([
@@ -323,7 +845,7 @@ class GcvVerifikasiDajamResource extends Resource
             ->filtersFormMaxHeight('400px')
             ->filtersFormColumns(4)
             ->filtersFormWidth(MaxWidth::FourExtraLarge)
-            
+
             ->actions([
                 ActionGroup::make([
                     ViewAction::make()
@@ -336,7 +858,7 @@ class GcvVerifikasiDajamResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Verifikasi Dajam Diubah')
-                                ->body('Verifikasi Dajam telah berhasil disimpan.')),                    
+                                ->body('Verifikasi Dajam telah berhasil disimpan.')),
                         DeleteAction::make()
                         ->color('danger')
                         ->label(fn ($record) => "Hapus Blok {$record->siteplan}")
@@ -346,7 +868,7 @@ class GcvVerifikasiDajamResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Verifikasi Dajam Dihapus')
-                                ->body('Verifikasi Dajam telah berhasil dihapus.')),                         
+                                ->body('Verifikasi Dajam telah berhasil dihapus.')),
                     // RestoreAction::make()
                     //     ->label('Pulihkan')
                     //     ->successNotificationTitle('Data berhasil dipulihkan')
@@ -375,23 +897,23 @@ class GcvVerifikasiDajamResource extends Resource
                     ),
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
-            
+
                 ->groupedBulkActions([
                     BulkAction::make('delete')
                         ->label('Hapus')
-                        ->icon('heroicon-o-trash') 
+                        ->icon('heroicon-o-trash')
                         ->color('danger')
                         ->successNotification(
                             Notification::make()
                                 ->success()
                                 ->title('Verifikasi Dajamg')
-                                ->body('Verifikasi Dajam berhasil dihapus.'))                        
+                                ->body('Verifikasi Dajam berhasil dihapus.'))
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
-                
+
                     BulkAction::make('forceDelete')
                         ->label('Hapus Permanent')
-                        ->icon('heroicon-o-x-circle') 
+                        ->icon('heroicon-o-x-circle')
                         ->color('warning')
                         ->successNotification(
                             Notification::make()
@@ -400,16 +922,16 @@ class GcvVerifikasiDajamResource extends Resource
                                 ->body('Verifikasi Dajam berhasil dihapus secara permanen.'))
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
-                
+
                     BulkAction::make('export')
                         ->label('Download Data')
-                        ->icon('heroicon-o-arrow-down-tray') 
+                        ->icon('heroicon-o-arrow-down-tray')
                         ->color('info')
                         ->action(fn (Collection $records) => static::exportData($records)),
-                
+
                     RestoreBulkAction::make()
                         ->label('Kembalikan Data')
-                        ->icon('heroicon-o-arrow-path') 
+                        ->icon('heroicon-o-arrow-path')
                         ->color('success')
                         ->button()
                         ->successNotification(
@@ -423,11 +945,11 @@ class GcvVerifikasiDajamResource extends Resource
     public static function exportData(Collection $records)
     {
         $csvData = "ID, Blok, Bank, Nama Konsumen, Maksimal KPR, Nilai Pencairan, Jumlah Dajam, Dajam Sertifikat, Dajam IMB, Dajam Listrik, Dajam JKK, Dajam Bestek, Jumlah Realisasi Dajam, Dajam PPH, Dajam BPHTB, Pembukuan, No. Surat Pengajuan, Tanggal Pencairan Dajam Sertifikat, Tanggal Pencairan Dajam IMB, Tanggal Pencairan Dajam Listrik, Tanggal Pencairan Dajam JKK, Tanggal Pencairan Dajam Bestek, Tanggal Pencairan Dajam PPH, Tanggal Pencairan Dajam BPHTB, Total Pencairan Dajam, Sisa Dajam, Status Dajam\n";
-    
+
         foreach ($records as $record) {
             $csvData .= "{$record->id}, {$record->siteplan}, {$record->bank}, {$record->nama_konsumen}, {$record->max_kpr}, {$record->nilai_pencairan}, {$record->jumlah_dajam}, {$record->dajam_sertifikat}, {$record->dajam_imb}, {$record->dajam_listrik}, {$record->dajam_jkk}, {$record->dajam_bestek}, {$record->jumlah_realisasi_dajam}, {$record->dajam_pph}, {$record->dajam_bphtb}, {$record->pembukuan}, {$record->no_surat_pengajuan}, {$record->tgl_pencairan_dajam_sertifikat}, {$record->tgl_pencairan_dajam_imb}, {$record->tgl_pencairan_dajam_listrik}, {$record->tgl_pencairan_dajam_jkk}, {$record->tgl_pencairan_dajam_bester}, {$record->tgl_pencairan_dajam_pph}, {$record->tgl_pencairan_dajam_bphtb}, {$record->total_pencairan_dajam}, {$record->sisa_dajam}, {$record->status_dajam}\n";
         }
-    
+
         return response()->streamDownload(fn () => print($csvData), 'VerifikasiDajam.csv');
     }
 
@@ -438,7 +960,7 @@ class GcvVerifikasiDajamResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [

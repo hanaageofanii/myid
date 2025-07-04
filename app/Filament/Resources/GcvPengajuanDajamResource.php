@@ -63,7 +63,7 @@ class GcvPengajuanDajamResource extends Resource
     protected static ?string $title = "Form Pengajuan Dajam";
     protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Pengajuan Dajam";
-    protected static ?string $navigationLabel = "Legal - Pengajuan Dajam";
+    protected static ?string $navigationLabel = "Legal > Pengajuan Dajam";
     protected static ?string $pluralModelLabel = 'Daftar Pengajuan Dajam';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
         protected static ?int $navigationSort = 11;
