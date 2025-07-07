@@ -10,7 +10,8 @@ use Spatie\Permission\Traits\HasRoles;
 class gcv_datatanah extends Model
 {
     use HasFactory, HasRoles, SoftDeletes;
-        protected $filliable = [
+
+        protected $fillable = [
             "no_bidang",
             "nama_pemilik_asal",
             "alas_hak",
@@ -23,7 +24,7 @@ class gcv_datatanah extends Model
             "catatan",
             "up_sertifikat",
             "up_nop",
-            "up_datadiri",
+            "data_diri",
             "up_sph",
             "up_tambahan_lainnya"
         ];
@@ -31,7 +32,7 @@ class gcv_datatanah extends Model
     protected $casts = [
         "up_sertifikat" => 'array',
         "up_nop" => 'array',
-        "up_datadiri" => 'array',
+        "data_diri" => 'array',
         "up_sph" => 'array',
         "up_tambahan_lainnya" => 'array',
     ];

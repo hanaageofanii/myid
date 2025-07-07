@@ -217,7 +217,7 @@ class GcvDatatanahResource extends Resource
             ->columns([
                 TextColumn::make('no_bidang')->label('No. Bidang')->searchable(),
                 TextColumn::make('nama_pemilik_asal')->label('Nama Pemilik Asal')->searchable(),
-                TextColumn::make('alas_hak')->label('Alas Hak')->searcable(),
+                TextColumn::make('alas_hak')->label('Alas Hak')->searchable(),
                 TextColumn::make('luas_surat')->label('Luas Surat')->searchable(),
                 TextColumn::make('luas_ukur')->label('Luas Ukur')->searchable(),
 
