@@ -18,7 +18,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
-use App\Models\Rekening;
+use App\Models\gcv_rekening;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Carbon\Carbon;
@@ -137,7 +137,7 @@ class BukuRekonsilResource extends Resource
                         // Get the selected 'nama_perusahaan' value
                         $perusahaan = $get('nama_perusahaan');
 
-                        return Rekening::where('nama_perusahaan', $perusahaan)
+                        return gcv_rekening::where('nama_perusahaan', $perusahaan)
                             ->pluck('bank', 'bank')
                             ->unique()
                             ->map(function ($item) {
@@ -147,7 +147,7 @@ class BukuRekonsilResource extends Resource
                     })
                     ->reactive()
                     ->afterStateUpdated(function (callable $get, callable $set) {
-                        $data = Rekening::where('nama_perusahaan', $get('nama_perusahaan'))
+                        $data = gcv_rekening::where('nama_perusahaan', $get('nama_perusahaan'))
                             ->where('bank', $get('bank'))
                             ->first();
 
@@ -176,7 +176,7 @@ class BukuRekonsilResource extends Resource
     ->options(function (callable $get) {
         $perusahaan = $get('nama_perusahaan');
         $bank = $get('bank');
-        return Rekening::where('nama_perusahaan', $perusahaan)
+        return gcv_rekening::where('nama_perusahaan', $perusahaan)
             ->where('bank', $bank)
             ->pluck('jenis', 'jenis')
             ->unique()
@@ -187,7 +187,7 @@ class BukuRekonsilResource extends Resource
     })
     ->reactive()
     ->afterStateUpdated(function (callable $get, callable $set) {
-        $data = Rekening::where('nama_perusahaan', $get('nama_perusahaan'))
+        $data = gcv_rekening::where('nama_perusahaan', $get('nama_perusahaan'))
             ->where('bank', $get('bank'))
             ->where('jenis', $get('jenis'))
             ->first();
