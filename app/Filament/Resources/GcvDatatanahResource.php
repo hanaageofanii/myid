@@ -44,7 +44,7 @@ use App\Filament\Resources\GcvDatatanahResource\Widgets\gcv_datatanahStats;
 class GcvDatatanahResource extends Resource
 {
     protected static ?string $model = gcv_datatanah::class;
-
+    protected static string $resource = GcvDatatanahResource::class;
     protected static ?string $title = "Data Tanah";
     protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Tanah";

@@ -10,6 +10,8 @@ use Filament\Notifications\Notification;
 
 class CreateGcvRekening extends CreateRecord
 {
+
+    protected static string $resource = GcvRekeningResource::class;
     protected static ?string $title = "Buat Data Rekening";
     protected function getCreateFormAction(): Actions\Action
     {

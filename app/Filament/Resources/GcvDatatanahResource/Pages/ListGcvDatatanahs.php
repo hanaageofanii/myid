@@ -9,7 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListGcvDatatanahs extends ListRecords
 {
-    protected static string $resource = GcvDatatanahResource::class;
+protected static string $resource = GcvDatatanahResource::class;
 
     protected function getHeaderActions(): array
     {
