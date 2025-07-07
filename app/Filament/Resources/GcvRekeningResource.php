@@ -54,11 +54,13 @@ class GcvRekeningResource extends Resource
     protected static ?string $model = gcv_rekening::class;
 
     // protected static ?int $navigationSort = 2;
-    protected static ?string $navigationGroup = "Kasir";
+    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Rekening";
-    protected static ?string $navigationLabel = "Rekening";
+    protected static ?string $navigationLabel = "Kasir > Rekening";
     protected static ?string $pluralModelLabel = 'Daftar Rekening';
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
+        protected static ?int $navigationSort = 15;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -199,11 +201,12 @@ class GcvRekeningResource extends Resource
                     ])
                     ->native(false),
 
-                Filter::make('created_from')
+                 Filter::make('created_from')
                     ->label('Dari Tanggal')
                     ->form([
                         DatePicker::make('created_from')
-                            ->label('Dari'),
+                            ->label('Dari')
+                            ->displayFormat('Y-m-d'),
                     ])
                     ->query(fn ($query, $data) =>
                         $query->when($data['created_from'] ?? null, fn ($q) =>
@@ -215,16 +218,18 @@ class GcvRekeningResource extends Resource
                     ->label('Sampai Tanggal')
                     ->form([
                         DatePicker::make('created_until')
-                            ->label('Sampai'),
+                            ->label('Sampai')
+                            ->displayFormat('Y-m-d'),
                     ])
                     ->query(fn ($query, $data) =>
                         $query->when($data['created_until'] ?? null, fn ($q) =>
                             $q->whereDate('created_at', '<=', $data['created_until'])
                         )
                     ),
+
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormMaxHeight('400px')
-            ->filtersFormColumns(4)
+            ->filtersFormColumns(3)
             ->filtersFormWidth(MaxWidth::FourExtraLarge)
 
             ->actions([

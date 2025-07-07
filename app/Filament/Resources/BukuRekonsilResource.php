@@ -56,6 +56,7 @@ class BukuRekonsilResource extends Resource
     protected static ?string $navigationLabel = "Kasir > Buku Rekonsil";
     protected static ?string $pluralModelLabel = 'Daftar Buku Rekonsil';
     protected static ?string $navigationIcon = 'heroicon-o-squares-plus';
+        protected static ?int $navigationSort = 14;
     public static function form(Form $form): Form
     {
         return $form
@@ -485,7 +486,8 @@ class BukuRekonsilResource extends Resource
                     ->label('Dari Tanggal')
                     ->form([
                         DatePicker::make('created_from')
-                            ->label('Dari'),
+                            ->label('Dari')
+                            ->displayFormat('Y-m-d'),
                     ])
                     ->query(fn ($query, $data) =>
                         $query->when($data['created_from'] ?? null, fn ($q) =>
@@ -497,13 +499,15 @@ class BukuRekonsilResource extends Resource
                     ->label('Sampai Tanggal')
                     ->form([
                         DatePicker::make('created_until')
-                            ->label('Sampai'),
+                            ->label('Sampai')
+                            ->displayFormat('Y-m-d'),
                     ])
                     ->query(fn ($query, $data) =>
                         $query->when($data['created_until'] ?? null, fn ($q) =>
                             $q->whereDate('created_at', '<=', $data['created_until'])
                         )
                     ),
+
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormMaxHeight('400px')
             ->filtersFormColumns(4)

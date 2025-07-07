@@ -10,9 +10,8 @@ use Filament\Notifications\Notification;
 
 class CreateGcvDatatanah extends CreateRecord
 {
-protected static string $resource = GcvDatatanahResource::class;
-
-    protected static ?string $title = "Buat Data Tanah";
+    protected static string $resource = GcvDatatanahResource::class;
+protected static ?string $title = "Buat Data Tanah";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
