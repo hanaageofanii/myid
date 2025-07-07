@@ -48,6 +48,8 @@ use App\Filament\Resources\Exception;
 use Filament\Tables\Actions\ForceDeleteAction;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\Wizard\Step;
 
 class GcvRekeningResource extends Resource
 {
@@ -61,48 +63,48 @@ class GcvRekeningResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
         protected static ?int $navigationSort = 15;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-        ->schema([
-            Forms\Components\Select::make('nama_perusahaan')
-                ->label('Nama Perumahan')
-                ->options([
-                    'langgeng_pertiwi_development' => 'PT. Langgeng Pertiwi Development',
-                    'agung_purnama_bakti' => 'PT. Agung Purnama Bakti',
-                    'purnama_karya_bersama' => 'PT. Purnama Karya Bersama',
-                ])
-                ->label('Nama Perusahaan')
-                ->required()
-                ->disabled(fn () => ! (function () {
-                    /** @var \App\Models\User|null $user */
-                    $user = Auth::user();
-                    return $user && $user->hasRole(['admin','Kasir 1','Kasir 2']);
-                })()),
+public static function form(Form $form): Form
+{
+    return $form->schema([
+        Wizard::make([
+            Step::make('Perusahaan & Bank')->schema([
+                Select::make('nama_perusahaan')
+                    ->label('Nama Perusahaan')
+                    ->options([
+                        'langgeng_pertiwi_development' => 'PT. Langgeng Pertiwi Development',
+                        'agung_purnama_bakti' => 'PT. Agung Purnama Bakti',
+                        'purnama_karya_bersama' => 'PT. Purnama Karya Bersama',
+                    ])
+                    ->required()
+                        ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
+                    })()),   
 
-                Forms\Components\Select::make('bank')
-                ->options([
-                    'btn_karawang' => 'BTN Karawang',
-                    'btn_cikarang' => 'BTN Cikarang',
-                    'btn_bekasi' => 'BTN Bekasi',
-                    'bjb_cikarang' => 'BJB Cikarang',
-                    'bri_pekayon' => 'BRI Pekayon',
-                    'bjb_syariah' => 'BJB Syariah',
-                    'btn_cibubur' => 'BTN Cibubur',
-                    'bni_kuningan' => 'BNI Kuningan',
-                    'mandiri_cikarang' => 'Mandiri Cikarang',
+                Select::make('bank')
+                    ->label('Bank')
+                    ->options([
+                        'btn_karawang' => 'BTN Karawang',
+                        'btn_cikarang' => 'BTN Cikarang',
+                        'btn_bekasi' => 'BTN Bekasi',
+                        'bjb_cikarang' => 'BJB Cikarang',
+                        'bri_pekayon' => 'BRI Pekayon',
+                        'bjb_syariah' => 'BJB Syariah',
+                        'btn_cibubur' => 'BTN Cibubur',
+                        'bni_kuningan' => 'BNI Kuningan',
+                        'mandiri_cikarang' => 'Mandiri Cikarang',
+                    ])
+                    ->required()
+                        ->disabled(fn () => ! (function () {
+                        /** @var \App\Models\User|null $user */
+                        $user = Auth::user();
+                        return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
+                    })()),   
+            ]),
 
-
-                ])
-                ->label('Bank')
-                ->required()
-                ->disabled(fn () => ! (function () {
-                    /** @var \App\Models\User|null $user */
-                    $user = Auth::user();
-                    return $user && $user->hasRole(['admin','Kasir 1','Kasir 2']);
-                })()),
-
-                Forms\Components\Select::make('jenis')
+            Step::make('Jenis & Rekening')->schema([
+                Select::make('jenis')
                     ->label('Jenis')
                     ->options([
                         'operasional' => 'Operasional',
@@ -112,22 +114,23 @@ class GcvRekeningResource extends Resource
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Kasir 1','Kasir 2']);
-                    })()),
+                        return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
+                    })()),   
 
-                    Forms\Components\TextInput::make('rekening')
-                    ->numeric()
+                TextInput::make('rekening')
                     ->label('No. Rekening')
+                    ->numeric()
                     ->required()
-                    ->disabled(fn () => ! (function () {
+                        ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
-                        return $user && $user->hasRole(['admin','Kasir 1','Kasir 2']);
-                    })()),
-            ]);
-
-    }
-
+                        return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
+                    })()),   
+            ]),
+        ])
+        ->columnSpanFull(),
+    ]);
+}
     public static function table(Table $table): Table
     {
         return $table
