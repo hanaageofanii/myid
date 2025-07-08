@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('biaya_notaris')->nullable();
             $table->string('adm_bphtb')->nullable();
             $table->string('catatan')->nullable();
-            $table->enum('status',['sudah','belum'])->nullable();
+            $table->enum('status_bn',['sudah','belum'])->nullable();
 
             $table->json('up_dokumen')->nullable();
 
