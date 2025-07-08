@@ -47,6 +47,7 @@ use Illuminate\Validation\Rule;
 use App\Models\gcv_datatandaterima;
 use Filament\Forms\Components\Repeater;
 use App\Filament\Resources\GcvLegalitasResource\Widgets\gcv_legalitasStats;
+use App\Models\gcv_validasi_pph;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Filters\TrashedFilter;
@@ -69,7 +70,114 @@ class GcvPengajuanBnResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Wizard::make([
+                    Step::make('Data Konsumen')
+                    ->columns(2)
+                    ->description('Informasi Data Konsumen')
+                    ->schema([
+                        Select::make('kavling')
+                        ->label('Kavling')
+                        ->options([
+                            'standar' => 'Standar',
+                            'khusus' => 'Khusus',
+                            'hook' => 'Hook',
+                            'komersil' => 'Komersil',
+                            'tanah_lebih' => 'Tanah Lebih',
+                            'kios' => 'Kios',
+                        ])
+                        ->required()
+                        ->reactive()
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })()),
+
+                        Select::make('siteplan')
+                            ->label('Blok')
+                            ->options(function (callable $get) {
+                                $selectedKavling = $get('kavling');
+                                if (! $selectedKavling) {
+                                    return [];
+                                }
+
+                                return gcv_kpr::where('jenis_unit', $selectedKavling)
+                                    ->where('status_akad', 'akad')
+                                    ->pluck('siteplan', 'siteplan')
+                                    ->toArray();
+                            })
+                            ->searchable()
+                            ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })())
+                        ->reactive()
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                $kprData = gcv_kpr::where('siteplan', $state)->first();
+                                $validasipph = gcv_validasi_pph::where('siteplan', $state)->first();
+                                $set('nama_konsumen', $kprData?->nama_konsumen);
+                                $set('luas', $kprData?->luas);
+                                $set('nama_notaris', $validasipph?->nama_notaris);
+                                $set('nop', $validasipph?->nop);
+                                $set('harga_jual', $kprData?->harga);
+                            }),
+
+                        TextInput::make('nama_konsumen')
+                        ->label('Nama Konsumen')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })()),
+
+                        TextInput::make('luas')
+                        ->label('Luas')
+                        ->disabled(fn () => ! (function () {
+                            /** @var \App\Models\User|null $user */
+                            $user = Auth::user();
+                            return $user && $user->hasRole(['admin','Legal officer']);
+                        })),
+                     ]),
+                        Step::make('Informasi Harga')
+                        ->columns(2)
+                        ->description('Informasi Harga Unit KPR')
+                        ->schema([
+                            TextInput::make('harga_jual')
+                            ->label('Harga Jual')
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })),
+
+                            DatePicker::make('tanggal_lunas')
+                            ->label('Tanggal Lunas')
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })),
+
+                            TextInput::make('nop')
+                            ->label('NOP')
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            })),
+
+                            TextInput::make('nama_notaris')
+                            ->label('Nama Notaris')
+                            ->disabled(fn () => ! (function () {
+                                /** @var \App\Models\User|null $user */
+                                $user = Auth::user();
+                                return $user && $user->hasRole(['admin','Legal officer']);
+                            }))
+                        ]),
+
+                        Step::make('Informasi Lanjutan')
+                    ])->columnSpanFull(),
             ]);
     }
 
