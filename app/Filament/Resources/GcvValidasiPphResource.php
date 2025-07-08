@@ -215,6 +215,14 @@ public static function form(Form $form): Form
                         Section::make('Harga & Perhitungan Pajak')
                             ->columns(2)
                             ->schema([
+
+                                TextInput::make('nama_notaris')->label('Nama Notaris')->nullable()
+                                ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal Pajak']);
+                                })()),
+
                                 TextInput::make('harga')
                                     ->numeric()->prefix('Rp')
                                     ->nullable()
@@ -368,7 +376,7 @@ public static function form(Form $form): Form
                 ->sortable()
                 ->searchable()
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.')),
-
+            Tables\Columns\TextColumn::make('nama_notaris')->sortable()->searchable()->label('Nama Notaris'),
             Tables\Columns\TextColumn::make('npoptkp')
                 ->label('NPOPTKP')
                 ->sortable()

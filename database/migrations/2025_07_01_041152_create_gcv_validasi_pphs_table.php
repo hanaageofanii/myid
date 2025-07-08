@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('no_sertifikat')->nullable();
             $table->enum('kavling',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();
             $table->string('nama_konsumen')->nullable();
+            $table->string('nama_notaris')->nullable();
             $table->string('nik')->nullable();
             $table->string('npwp')->nullable();
             $table->string('alamat')->nullable();

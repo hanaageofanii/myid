@@ -14,7 +14,7 @@ class gcv_validasi_pph extends Model
     use HasFactory, SoftDeletes, HasRoles;
 
     protected $fillable = [
-        'id','siteplan','no_sertifikat','kavling','nama_konsumen','nik','npwp','alamat',
+        'id','siteplan','no_sertifikat','kavling','nama_konsumen','nik','npwp','alamat','nama_notaris',
         'nop','luas_tanah','harga','npoptkp','jumlah_bphtb','tarif_pph','jumlah_pph','kode_billing_pph',
         'tanggal_bayar_pph','ntpnpph','validasi_pph','tanggal_validasi','up_kode_bill','up_bukti_setor_pajak','up_suket_validasi'
     ];
