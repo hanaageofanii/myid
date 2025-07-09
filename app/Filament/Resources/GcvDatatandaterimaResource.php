@@ -40,6 +40,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Illuminate\Validation\Rule;
+use App\Models\gcv_pengajuan_bn;
 use App\Filament\Resources\GcvDatatandaterimaResource\Widgets\gcv_datatandaterimaStats;
 
 class GcvDatatandaterimaResource extends Resource
@@ -292,14 +293,13 @@ return $form->schema([
                     'akad' => 'Akad',
                     default => $state,
                 }),
-            TextColumn::make('status BN')
+            TextColumn::make('status_bn')
             ->label('Status BN')
             ->badge()
             ->searchable()
             ->formatStateUsing(fn ($state) => match ($state) {
                     'sudah' => 'Sudah Selesai',
                     'belum' => 'Belum Selesai',
-                    default => $state,
                 }),
             TextColumn::make('tanda_terima_sertifikat')->label('Tanda Terima Sertifikat')->searchable(),
             TextColumn::make('kode1')->label('1')->searchable(),

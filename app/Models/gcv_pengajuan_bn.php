@@ -12,7 +12,7 @@ class gcv_pengajuan_bn extends Model
     use HasFactory, SoftDeletes, HasRoles;
 
     protected $fillable = [
-        'kavling', 'blok', 'nama_konsumen', 'luas', 'harga_jual', 'tanggal_lunas', 'nop', 'nama_notaris', 'biaya_notaris',
+        'kavling', 'siteplan', 'nama_konsumen', 'luas', 'harga_jual', 'tanggal_lunas', 'nop', 'nama_notaris', 'biaya_notaris',
         'pph', 'ppn', 'bphtb', 'adm_bphtb', 'catatan', 'status_bn', 'up_dokumen'
     ];
 
