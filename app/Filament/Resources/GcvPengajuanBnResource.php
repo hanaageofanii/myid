@@ -360,7 +360,6 @@ class GcvPengajuanBnResource extends Resource
                 ->badge()
                 ->sortable(),
 
-
                 TextColumn::make('up_dokumen')
                     ->label('File Dokumen')
                     ->formatStateUsing(function ($record) {
@@ -432,8 +431,6 @@ class GcvPengajuanBnResource extends Resource
                             $q->where('status_bn', $data['status_bn'])
                         )
                     ),
-
-
                 Filter::make('created_from')
                     ->label('Dari Tanggal')
                     ->form([
@@ -488,10 +485,6 @@ class GcvPengajuanBnResource extends Resource
                                         ->success()
                                         ->title('Data Pengajuan BN  Dihapus')
                                         ->body('Data Pengajuan BN telah berhasil dihapus.')),
-                    // RestoreAction::make()
-                    //     ->label('Pulihkan')
-                    //     ->successNotificationTitle('Data berhasil dipulihkan')
-                    //     ->successRedirectUrl(route('filament.admin.resources.Siteplans.index')),
                     Tables\Actions\RestoreAction::make()
                     ->color('info')
                     ->label(fn ($record) => "Kembalikan {$record->siteplan}")
@@ -529,7 +522,6 @@ class GcvPengajuanBnResource extends Resource
                                 ->body('Data Pengajuan BN berhasil dihapus.'))
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
-
                     BulkAction::make('forceDelete')
                         ->label('Hapus Permanent')
                         ->icon('heroicon-o-x-circle')
