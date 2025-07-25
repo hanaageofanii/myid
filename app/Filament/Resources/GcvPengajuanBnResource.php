@@ -65,7 +65,7 @@ class GcvPengajuanBnResource extends Resource
     protected static ?string $navigationLabel = 'Legal > Pengajuan BN';
     protected static ?string $pluralModelLabel = 'Data Pengajuan BN';
     protected static ?int $navigationSort = 17;
-    protected static ?string $navigationIcon = 'heroicon-o-queue-list';
+    protected static ?string $navigationIcon = 'heroicon-o-globe-americas';
 
     public static function form(Form $form): Form
     {
