@@ -4,7 +4,7 @@ namespace App\Filament\Resources\GcvPencairanDajamResource\Pages;
 
 use App\Filament\Resources\GcvPencairanDajamResource;
 use Filament\Tables\Table;
-use Filament\Actions\Action;
+use Filament\Tables\Actions\Action;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\GcvPencairanDajamResource\Widgets\gcv_pencairan_dajamStats;

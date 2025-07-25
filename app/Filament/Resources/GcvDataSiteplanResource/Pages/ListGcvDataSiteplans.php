@@ -4,7 +4,7 @@ namespace App\Filament\Resources\GcvDataSiteplanResource\Pages;
 
 use App\Filament\Resources\GcvDataSiteplanResource;
 use Filament\Tables\Table;
-use Filament\Actions\Action;
+use Filament\Tables\Actions\Action;
 use App\Filament\Resources\GcvDataSiteplanResource\Widgets\gcvDataSiteplanStats;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;

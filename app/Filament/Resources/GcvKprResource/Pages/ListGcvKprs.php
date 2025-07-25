@@ -4,7 +4,7 @@ namespace App\Filament\Resources\GcvKprResource\Pages;
 
 use App\Filament\Resources\GcvKprResource;
 use Filament\Tables\Table;
-use Filament\Actions\Action;
+use Filament\Tables\Actions\Action;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\GcvKprResource\Widgets\gcv_kprStats;

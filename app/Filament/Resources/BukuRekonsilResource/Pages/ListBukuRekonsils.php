@@ -5,7 +5,7 @@ namespace App\Filament\Resources\BukuRekonsilResource\Pages;
 use App\Filament\Resources\BukuRekonsilResource;
 use Filament\Actions;
 use Filament\Tables\Table;
-use Filament\Actions\Action;
+use Filament\Tables\Actions\Action;
 use App\Filament\Resources\BukuRekonsilResource\Widgets\buku_rekonsilStats;
 use Filament\Resources\Pages\ListRecords;
 

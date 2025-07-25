@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\RoleResource\Pages;
 
 use App\Filament\Resources\RoleResource;
-use Filament\Actions\Action;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;

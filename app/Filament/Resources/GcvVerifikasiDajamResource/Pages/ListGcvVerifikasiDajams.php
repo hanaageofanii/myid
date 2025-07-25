@@ -5,7 +5,7 @@ namespace App\Filament\Resources\GcvVerifikasiDajamResource\Pages;
 use App\Filament\Resources\GcvVerifikasiDajamResource;
 use Filament\Actions;
 use Filament\Tables\Table;
-use Filament\Actions\Action;
+use Filament\Tables\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\GcvVerifikasiDajamResource\Widgets\GcvVerifikasiDajamStats;
 

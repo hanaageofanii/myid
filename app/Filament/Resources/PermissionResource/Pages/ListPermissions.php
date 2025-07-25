@@ -4,7 +4,7 @@ namespace App\Filament\Resources\PermissionResource\Pages;
 
 use App\Filament\Resources\PermissionResource;
 use Filament\Tables\Table;
-use Filament\Actions\Action;
+use Filament\Tables\Actions\Action;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 

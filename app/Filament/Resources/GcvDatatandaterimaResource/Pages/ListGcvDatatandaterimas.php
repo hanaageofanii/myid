@@ -4,7 +4,7 @@ namespace App\Filament\Resources\GcvDatatandaterimaResource\Pages;
 
 use App\Filament\Resources\GcvDatatandaterimaResource;
 use Filament\Tables\Table;
-use Filament\Actions\Action;
+use Filament\Tables\Actions\Action;
 use App\Filament\Resources\GcvDatatandaterimaResource\Widgets\gcv_datatandaterimaStats;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;

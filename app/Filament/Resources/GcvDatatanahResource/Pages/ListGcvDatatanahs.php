@@ -6,7 +6,7 @@ use App\Filament\Resources\GcvDatatanahResource;
 use App\Filament\Resources\GcvDatatanahResource\Widgets\gcv_datatanahStats;
 use Filament\Actions;
 use Filament\Tables\Table;
-use Filament\Actions\Action;
+use Filament\Tables\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 
 class ListGcvDatatanahs extends ListRecords
