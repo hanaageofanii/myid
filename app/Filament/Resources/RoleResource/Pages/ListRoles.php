@@ -24,4 +24,3 @@ class ListRoles extends ListRecords
         ->label('Simpan');
     }
 }
-

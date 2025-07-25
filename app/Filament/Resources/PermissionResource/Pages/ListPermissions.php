@@ -24,4 +24,3 @@ class ListPermissions extends ListRecords
         ->label('Simpan');
     }
 }
-

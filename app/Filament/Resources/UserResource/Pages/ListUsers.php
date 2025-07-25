@@ -24,5 +24,3 @@ class ListUsers extends ListRecords
         ->label('Simpan');
     }
 }
-
-

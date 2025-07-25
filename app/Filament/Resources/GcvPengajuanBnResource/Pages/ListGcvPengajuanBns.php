@@ -34,19 +34,19 @@ class ListGcvPengajuanBns extends ListRecords
         ->label('Simpan');
     }
 
-     public function getTable(): Table
-{
-    return parent::getTable()
-        ->emptyStateIcon('heroicon-o-bookmark')
-        ->emptyStateDescription('Silakan buat data pengajuan BN')
-        ->emptyStateHeading('Belum ada data pengajuan BN')
-        ->emptyStateActions([
-            Action::make('create')
-                ->label('Buat Data Pengajuan BN')
-                ->url($this->getResource()::getUrl('create'))
-                ->icon('heroicon-m-plus')
-                ->button(),
-        ]);
-}
+    public function getTable(): Table
+        {
+            return parent::getTable()
+                ->emptyStateIcon('heroicon-o-bookmark')
+                ->emptyStateDescription('Silakan buat data pengajuan BN')
+                ->emptyStateHeading('Belum ada data pengajuan BN')
+                ->emptyStateActions([
+                    Action::make('create')
+                        ->label('Buat Data Pengajuan BN')
+                        ->url($this->getResource()::getUrl('create'))
+                        ->icon('heroicon-m-plus')
+                        ->button(),
+                ]);
+        }
 
 }
