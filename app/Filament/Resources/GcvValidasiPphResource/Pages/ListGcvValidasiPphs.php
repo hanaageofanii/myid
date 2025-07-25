@@ -6,6 +6,8 @@ use App\Filament\Resources\GcvValidasiPphResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\GcvValidasiPphResource\Widgets\gcv_validasi_pphStats;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Table;
 
 
 class ListGcvValidasiPphs extends ListRecords
@@ -31,4 +33,20 @@ class ListGcvValidasiPphs extends ListRecords
         return parent::getSaveFormAction()
         ->label('Simpan');
     }
+
+        public function getTable(): Table
+        {
+            return parent::getTable()
+                ->emptyStateIcon('heroicon-o-bookmark')
+                ->emptyStateDescription('Silakan buat data PPH')
+                ->emptyStateHeading('Belum ada data PPH')
+                ->emptyStateActions([
+                    Action::make('create')
+                        ->label('Buat Data PPH')
+                        ->url($this->getResource()::getUrl('create'))
+                        ->icon('heroicon-m-plus')
+                        ->button(),
+                ]);
+        }
+
 }
