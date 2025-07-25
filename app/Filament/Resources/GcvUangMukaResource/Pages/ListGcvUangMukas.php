@@ -38,11 +38,11 @@ class ListGcvUangMukas extends ListRecords
         {
             return parent::getTable()
                 ->emptyStateIcon('heroicon-o-bookmark')
-                ->emptyStateDescription('Silakan buat data pengajuan BN')
-                ->emptyStateHeading('Belum ada data pengajuan BN')
+                ->emptyStateDescription('Silakan buat data Uang Muka')
+                ->emptyStateHeading('Belum ada data Uang Muka')
                 ->emptyStateActions([
                     Action::make('create')
-                        ->label('Buat Data Pengajuan BN')
+                        ->label('Buat Data Uang Muka')
                         ->url($this->getResource()::getUrl('create'))
                         ->icon('heroicon-m-plus')
                         ->button(),
