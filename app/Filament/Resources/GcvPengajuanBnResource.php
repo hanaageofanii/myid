@@ -70,6 +70,13 @@ class GcvPengajuanBnResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+        ->emptyStateActions([
+            Action::make('create')
+                ->label('Create post')
+                ->url(route('posts.create'))
+                ->icon('heroicon-m-plus')
+                ->button(),
+        ])
             ->schema([
                 Wizard::make([
                     Step::make('Data Konsumen')
