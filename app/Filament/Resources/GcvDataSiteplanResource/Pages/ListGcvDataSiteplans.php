@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\GcvDataSiteplanResource\Pages;
 
 use App\Filament\Resources\GcvDataSiteplanResource;
+use Filament\Tables\Table;
+use Filament\Actions\Action;
 use App\Filament\Resources\GcvDataSiteplanResource\Widgets\gcvDataSiteplanStats;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -32,4 +34,20 @@ class ListGcvDataSiteplans extends ListRecords
         return parent::getSaveFormAction()
         ->label('Simpan');
     }
+
+        public function getTable(): Table
+        {
+            return parent::getTable()
+                ->emptyStateIcon('heroicon-o-bookmark')
+                ->emptyStateDescription('Silakan buat data siteplan')
+                ->emptyStateHeading('Belum ada data siteplan')
+                ->emptyStateActions([
+                    Action::make('create')
+                        ->label('Buat Data siteplan')
+                        ->url($this->getResource()::getUrl('create'))
+                        ->icon('heroicon-m-plus')
+                        ->button(),
+                ]);
+        }
+
 }
