@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('kartu_kontrol_g_c_v_s', function (Blueprint $table) {
-            //
+            $table->softDeletes();
         });
     }
 
