@@ -80,7 +80,7 @@ class GcvVerifikasiDajamResource extends Resource
                         ->schema([
                     Select::make('kavling')
                         ->label('Kavling')
-                        ->options([
+                        ->options(options: [
                             'standar' => 'Standar',
                             'khusus' => 'Khusus',
                             'hook' => 'Hook',

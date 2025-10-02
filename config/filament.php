@@ -87,7 +87,7 @@ return [
     'livewire_loading_delay' => 'default',
 
 //   'tenant' => [
-//     'ownershipRelationship' => 'customRelationship', 
+//     'ownershipRelationship' => 'customRelationship',
 // ],
 
 ];

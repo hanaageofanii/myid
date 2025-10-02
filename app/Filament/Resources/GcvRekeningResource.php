@@ -80,7 +80,7 @@ public static function form(Form $form): Form
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()),   
+                    })()),
 
                 Select::make('bank')
                     ->label('Bank')
@@ -100,7 +100,7 @@ public static function form(Form $form): Form
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()),   
+                    })()),
             ]),
 
             Step::make('Jenis & Rekening')->schema([
@@ -115,7 +115,7 @@ public static function form(Form $form): Form
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()),   
+                    })()),
 
                 TextInput::make('rekening')
                     ->label('No. Rekening')
@@ -125,7 +125,7 @@ public static function form(Form $form): Form
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()),   
+                    })()),
             ]),
         ])
         ->columnSpanFull(),
