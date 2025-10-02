@@ -10,13 +10,13 @@ class EditGcvRekening extends EditRecord
 {
     protected static string $resource = GcvRekeningResource::class;
 
-    protected static ?string $title = "Ubah Data Rekening";
+    protected static ?string $title = "Ubah Data Master Rekening";
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Rekening')
+            ->label('Hapus Master Rekening')
             ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->rekening}")
             ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->rekening}?"),
 

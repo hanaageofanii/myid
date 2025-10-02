@@ -16,7 +16,7 @@ class ListGcvRekenings extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->label('Buat Data Rekening'),
+            ->label('Buat Data Master Rekening'),
         ];
     }
 
@@ -30,11 +30,11 @@ class ListGcvRekenings extends ListRecords
         {
             return parent::getTable()
                 ->emptyStateIcon('heroicon-o-bookmark')
-                ->emptyStateDescription('Silakan buat data Rekening')
-                ->emptyStateHeading('Belum ada data Rekening')
+                ->emptyStateDescription('Silakan buat Data Master Rekening')
+                ->emptyStateHeading('Belum ada Data Master Rekening')
                 ->emptyStateActions([
                     Action::make('create')
-                        ->label('Buat Data Rekening')
+                        ->label('Buat Data Master Rekening')
                         ->url($this->getResource()::getUrl('create'))
                         ->icon('heroicon-m-plus')
                         ->button(),

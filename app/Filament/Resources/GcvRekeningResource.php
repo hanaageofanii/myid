@@ -57,9 +57,9 @@ class GcvRekeningResource extends Resource
 
     // protected static ?int $navigationSort = 2;
     protected static ?string $navigationGroup = "GCV";
-    protected static ?string $pluralLabel = "Rekening";
-    protected static ?string $navigationLabel = "Kasir > Rekening";
-    protected static ?string $pluralModelLabel = 'Daftar Rekening';
+    protected static ?string $pluralLabel = "Master Rekening";
+    protected static ?string $navigationLabel = "Kasir > Master Rekening";
+    protected static ?string $pluralModelLabel = 'Daftar Master Rekening';
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
         protected static ?int $navigationSort = 15;
 
@@ -246,8 +246,8 @@ public static function form(Form $form): Form
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Rekening Diperbarui')
-                                ->body('Data Rekening telah berhasil disimpan.')),
+                                ->title('Data Master Rekening Diperbarui')
+                                ->body('Data Master Rekening telah berhasil disimpan.')),
                                 DeleteAction::make()
                                 ->color('danger')
                                 ->label(fn ($record) => "Hapus Blok {$record->rekening}")
@@ -256,8 +256,8 @@ public static function form(Form $form): Form
                                 ->successNotification(
                                     Notification::make()
                                         ->success()
-                                        ->title('Data Rekening Dihapus')
-                                        ->body('Data Rekening telah berhasil dihapus.')),
+                                        ->title('Data Master Rekening Dihapus')
+                                        ->body('Data Master Rekening telah berhasil dihapus.')),
                     // RestoreAction::make()
                     //     ->label('Pulihkan')
                     //     ->successNotificationTitle('Data berhasil dipulihkan')
@@ -270,8 +270,8 @@ public static function form(Form $form): Form
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data Rekening')
-                            ->body('Data Rekening berhasil dikembalikan.')
+                            ->title('Data Master Rekening')
+                            ->body('Data Master Rekening berhasil dikembalikan.')
                     ),
                     Tables\Actions\ForceDeleteAction::make()
                     ->color('primary')
@@ -281,8 +281,8 @@ public static function form(Form $form): Form
                     ->successNotification(
                         Notification::make()
                             ->success()
-                            ->title('Data Rekening')
-                            ->body('Data Rekening berhasil dihapus secara permanen.')
+                            ->title('Data Master Rekening')
+                            ->body('Data Master Rekening berhasil dihapus secara permanen.')
                     ),
                     ])->button()->label('Action'),
                 ], position: ActionsPosition::BeforeCells)
@@ -295,8 +295,8 @@ public static function form(Form $form): Form
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Rekening')
-                                ->body('Data Rekening berhasil dihapus.'))
+                                ->title('Data Master Rekening')
+                                ->body('Data Master Rekening berhasil dihapus.'))
                                 ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->delete()),
 
@@ -307,8 +307,8 @@ public static function form(Form $form): Form
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Rekening')
-                                ->body('Data Rekening berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                                ->title('Data Master Rekening')
+                                ->body('Data Master Rekening berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
 
                     BulkAction::make('export')
@@ -325,8 +325,8 @@ public static function form(Form $form): Form
                         ->successNotification(
                             Notification::make()
                                 ->success()
-                                ->title('Data Rekening')
-                                ->body('Data Rekening berhasil dikembalikan.')),
+                                ->title('Data Master Rekening')
+                                ->body('Data Master Rekening berhasil dikembalikan.')),
                 ]);
 
     }

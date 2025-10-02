@@ -12,7 +12,7 @@ class CreateGcvRekening extends CreateRecord
 {
 
     protected static string $resource = GcvRekeningResource::class;
-    protected static ?string $title = "Buat Data Rekening";
+    protected static ?string $title = "Buat Data Master Rekening";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
@@ -37,8 +37,8 @@ class CreateGcvRekening extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Data Rekening Disimpan')
-            ->body('Data Rekening telah berhasil disimpan.');
+            ->title('Data Master Rekening Disimpan')
+            ->body('Data Master Rekening telah berhasil disimpan.');
     }
 
     protected function getSaveFormAction(): Actions\Action
