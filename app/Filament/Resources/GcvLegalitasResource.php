@@ -587,6 +587,15 @@ class GcvLegalitasResource extends Resource
                         ->color('info')
                         ->action(fn (Collection $records) => static::exportData($records)),
 
+                        BulkAction::make('print')
+                        ->label('Print Data')
+                        ->icon('heroicon-o-printer')
+                        ->action(function (Collection $records) {
+                            $ids = $records->pluck('id')->toArray();
+                            session(['print_records' => $ids]);
+                            return redirect(route('datalegalitas.print'));
+                        }),
+                    
                     Tables\Actions\RestoreBulkAction::make()
                         ->label('Kembalikan Data')
                         ->icon('heroicon-o-arrow-path')
