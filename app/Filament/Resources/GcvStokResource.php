@@ -536,6 +536,17 @@ class GcvStokResource extends Resource
                     ->color('info')
                     ->action(fn (Collection $records) => static::exportData($records)),
 
+                    BulkAction::make('print')
+                    ->label('Print Data')
+                    ->icon('heroicon-o-printer')
+                    ->color('success')
+                    ->action(function (Collection $records) {
+                        // simpan data ke session agar bisa diakses di route print
+                        session(['print_records' => $records->pluck('id')->toArray()]);
+
+                        return redirect()->route('databooking.print');
+                    }),
+
                 Tables\Actions\RestoreBulkAction::make()
                     ->label('Kembalikan Data')
                     ->icon('heroicon-o-arrow-path')

@@ -50,6 +50,14 @@ Route::get('/datalegalitas/print', function () {
     return view('print.datalegalitas', compact('records'));
 })->name('datalegalitas.print');
 
+Route::get('/databooking/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\gcv_stok::whereIn('id', $ids)->get();
+
+    return view('print.databooking', compact('records'));
+})->name('databooking.print');
+
+
 
 
 
