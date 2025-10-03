@@ -38,6 +38,15 @@ Route::get('/datasiteplan/print', function () {
     return view('print.datasiteplan', compact('records'));
 })->name('datasiteplan.print');
 
+// routes/web.php
+Route::get('/datatandateerima/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\gcv_datatandaterima::whereIn('id', $ids)->get();
+
+    return view('print.datatandateerima', compact('records'));
+})->name('datatandateerima.print');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

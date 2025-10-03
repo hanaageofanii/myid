@@ -12,7 +12,7 @@
     </style>
 </head>
 <body onload="window.print()">
-    <h2>DatA Siteplan</h2>
+    <h2>Data Siteplan</h2>
     <table>
         <thead>
             <tr>
