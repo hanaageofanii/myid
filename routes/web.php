@@ -30,6 +30,14 @@ Route::get('/gcvmasterdajam/print', function () {
     return view('print.gcvmasterdajam', compact('records'));
 })->name('gcvmasterdajam.print');
 
+// routes/web.php
+Route::get('/datasiteplan/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\GcvDataSiteplan::whereIn('id', $ids)->get();
+
+    return view('print.datasiteplan', compact('records'));
+})->name('datasiteplan.print');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
