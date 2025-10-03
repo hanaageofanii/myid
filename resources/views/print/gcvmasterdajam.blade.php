@@ -8,6 +8,7 @@
         th, td { border: 1px solid #000; padding: 6px; text-align: center; }
         th { background: #f2f2f2; }
         h2 { text-align: center; margin-bottom: 10px; }
+        .printed { margin-top: 20px; font-style: italic; text-align: right; }
     </style>
 </head>
 <body onload="window.print()">
@@ -36,7 +37,7 @@
         <tbody>
             @foreach($records as $record)
             <tr>
-                <td>{{ $loop->iteration }}</td> {{-- nomor urut otomatis --}}
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $record->kavling }}</td>
                 <td>{{ $record->siteplan }}</td>
                 <td>{{ $record->nop }}</td>
@@ -56,5 +57,9 @@
             @endforeach
         </tbody>
     </table>
+
+    <div class="printed">
+        Dicetak pada: {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}
+    </div>
 </body>
 </html>
