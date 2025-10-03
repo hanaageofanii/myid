@@ -22,6 +22,15 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// routes/web.php
+Route::get('/gcvmasterdajam/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\GcvMasterDajam::whereIn('id', $ids)->get();
+
+    return view('print.gcvmasterdajam', compact('records'));
+})->name('gcvmasterdajam.print');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
