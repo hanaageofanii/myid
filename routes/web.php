@@ -127,6 +127,36 @@ Route::get('/verifikasidajam/print', function () {
     return view('print.verifikasidajam', compact('records'));
 })->name('verifikasidajam.print');
 
+Route::get('/datatanah/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\gcv_datatanah::whereIn('id', $ids)->get();
+
+    return view('print.datatanah', compact('records'));
+})->name('datatanah.print');
+
+Route::get('/bukurekonsil/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\buku_rekonsil::whereIn('id', $ids)->get();
+
+    return view('print.bukurekonsil', compact('records'));
+})->name('bukurekonsil.print');
+
+Route::get('/masterrekening/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\gcv_rekening::whereIn('id', $ids)->get();
+
+    return view('print.masterrekening', compact('records'));
+})->name('masterrekening.print');
+
+Route::get('/kartukontrol/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\kartu_kontrolGCV::whereIn('id', $ids)->get();
+
+    return view('print.kartukontrol', compact('records'));
+})->name('kartukontrol.print');
+
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

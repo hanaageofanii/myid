@@ -472,6 +472,16 @@ class GcvDatatanahResource extends Resource
                         ->color('info')
                         ->action(fn (Collection $records) => static::exportData($records)),
 
+                    BulkAction::make('print')
+                    ->label('Print Data')
+                    ->icon('heroicon-o-printer')
+                    ->color('success')
+                    ->action(function (Collection $records) {
+                        session(['print_records' => $records->pluck('id')->toArray()]);
+
+                        return redirect()->route('datatanah.print');
+                    }),
+
                     Tables\Actions\RestoreBulkAction::make()
                         ->label('Kembalikan Data')
                         ->icon('heroicon-o-arrow-path')
