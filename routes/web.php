@@ -64,6 +64,13 @@ Route::get('/datakpr/print', function () {
     return view('print.datakpr', compact('records'));
 })->name('datakpr.print');
 
+Route::get('/datapencairanakad/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\gcv_pencairan_akad::whereIn('id', $ids)->get();
+
+    return view('print.datapencairanakad', compact('records'));
+})->name('datapencairanakad.print');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
