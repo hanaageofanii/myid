@@ -70,13 +70,13 @@ class GcvPengajuanBnResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        ->emptyStateActions([
-            Action::make('create')
-                ->label('Create post')
-                ->url(route('posts.create'))
-                ->icon('heroicon-m-plus')
-                ->button(),
-        ])
+        // ->emptyStateActions([
+        //     Action::make('create')
+        //         ->label('Create post')
+        //         ->url(route('posts.create'))
+        //         ->icon('heroicon-m-plus')
+        //         ->button(),
+        // ])
             ->schema([
                 Wizard::make([
                     Step::make('Data Konsumen')
@@ -546,6 +546,16 @@ class GcvPengajuanBnResource extends Resource
                         ->icon('heroicon-o-arrow-down-tray')
                         ->color('info')
                         ->action(fn (Collection $records) => static::exportData($records)),
+
+                    BulkAction::make('print')
+                    ->label('Print Data')
+                    ->icon('heroicon-o-printer')
+                    ->color('success')
+                    ->action(function (Collection $records) {
+                        session(['print_records' => $records->pluck('id')->toArray()]);
+
+                        return redirect()->route('pengajuanbn.print');
+                    }),
 
                     Tables\Actions\RestoreBulkAction::make()
                         ->label('Kembalikan Data')

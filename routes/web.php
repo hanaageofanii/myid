@@ -92,6 +92,14 @@ Route::get('/datakaskecil/print', function () {
     return view('print.datakaskecil', compact('records'));
 })->name('datakaskecil.print');
 
+Route::get('/pengajuanbn/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\gcv_pengajuan_bn::whereIn('id', $ids)->get();
+
+    return view('print.pengajuanbn', compact('records'));
+})->name('pengajuanbn.print');
+
+
 
 
 Route::middleware('auth')->group(function () {
