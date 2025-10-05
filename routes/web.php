@@ -99,8 +99,12 @@ Route::get('/pengajuanbn/print', function () {
     return view('print.pengajuanbn', compact('records'));
 })->name('pengajuanbn.print');
 
+Route::get('/validasipph/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\gcv_validasi_pph::whereIn('id', $ids)->get();
 
-
+    return view('print.validasipph', compact('records'));
+})->name('validasipph.print');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
