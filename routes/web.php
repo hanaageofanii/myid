@@ -106,6 +106,14 @@ Route::get('/validasipph/print', function () {
     return view('print.validasipph', compact('records'));
 })->name('validasipph.print');
 
+Route::get('/faktur/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\gcv_faktur::whereIn('id', $ids)->get();
+
+    return view('print.faktur', compact('records'));
+})->name('faktur.print');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
