@@ -604,8 +604,6 @@ class GcvPencairanDajamResource extends Resource
                         return redirect()->route('datapencairandajam.print');
                     }),
 
-
-
                     RestoreBulkAction::make()
                         ->label('Kembalikan Data')
                         ->icon('heroicon-o-arrow-path')
