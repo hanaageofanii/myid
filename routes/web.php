@@ -113,6 +113,14 @@ Route::get('/faktur/print', function () {
     return view('print.faktur', compact('records'));
 })->name('faktur.print');
 
+Route::get('/pengajuandajam/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\gcv_pengajuan_dajam::whereIn('id', $ids)->get();
+
+    return view('print.pengajuandajam', compact('records'));
+})->name('pengajuandajam.print');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
