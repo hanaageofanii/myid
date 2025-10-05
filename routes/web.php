@@ -57,9 +57,12 @@ Route::get('/databooking/print', function () {
     return view('print.databooking', compact('records'));
 })->name('databooking.print');
 
+Route::get('/datakpr/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\gcv_kpr::whereIn('id', $ids)->get();
 
-
-
+    return view('print.datakpr', compact('records'));
+})->name('datakpr.print');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
