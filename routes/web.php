@@ -120,7 +120,12 @@ Route::get('/pengajuandajam/print', function () {
     return view('print.pengajuandajam', compact('records'));
 })->name('pengajuandajam.print');
 
+Route::get('/verifikasidajam/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\gcv_verifikasi_dajam::whereIn('id', $ids)->get();
 
+    return view('print.verifikasidajam', compact('records'));
+})->name('verifikasidajam.print');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

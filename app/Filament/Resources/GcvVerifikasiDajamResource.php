@@ -929,6 +929,18 @@ Step::make('Nilai Dajam')
                         ->color('info')
                         ->action(fn (Collection $records) => static::exportData($records)),
 
+                    BulkAction::make('print')
+                    ->label('Print Data')
+                    ->icon('heroicon-o-printer')
+                    ->color('success')
+                    ->action(function (Collection $records) {
+                        session(['print_records' => $records->pluck('id')->toArray()]);
+
+                        return redirect()->route('verifikasidajam.print');
+                    }),
+
+
+
                     RestoreBulkAction::make()
                         ->label('Kembalikan Data')
                         ->icon('heroicon-o-arrow-path')
