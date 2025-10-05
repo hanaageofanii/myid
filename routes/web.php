@@ -85,6 +85,14 @@ Route::get('/datauangmuka/print', function () {
     return view('print.datauangmuka', compact('records'));
 })->name('datauangmuka.print');
 
+Route::get('/datakaskecil/print', function () {
+    $ids = session('print_records', []);
+    $records = \App\Models\gcv_kaskecil::whereIn('id', $ids)->get();
+
+    return view('print.datakaskecil', compact('records'));
+})->name('datakaskecil.print');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -81,8 +81,8 @@ protected static ?string $navigationGroup = "GCV";
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
                     })()),               ]),
 
-            Step::make('Transaksi')->columns(2)->schema([                
-                
+            Step::make('Transaksi')->columns(2)->schema([
+
                 DatePicker::make('tanggal')
                     ->label('Tanggal')
                     ->required()
@@ -90,7 +90,7 @@ protected static ?string $navigationGroup = "GCV";
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()),   
+                    })()),
 
                 TextArea::make('deskripsi')
                     ->label('Deskripsi')
@@ -99,7 +99,7 @@ protected static ?string $navigationGroup = "GCV";
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()), 
+                    })()),
 
                 Select::make('tipe')
                     ->label('Tipe')
@@ -127,7 +127,7 @@ protected static ?string $navigationGroup = "GCV";
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()), 
+                    })()),
 
                 TextInput::make('jumlah_uang')
                     ->label('Jumlah Uang')
@@ -152,7 +152,7 @@ protected static ?string $navigationGroup = "GCV";
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()),   
+                    })()),
                 TextInput::make('saldo')
                     ->label('Saldo')
                     ->columnSpanFull()
@@ -169,7 +169,7 @@ protected static ?string $navigationGroup = "GCV";
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()),   
+                    })()),
 
                 Forms\Components\FileUpload::make('bukti')
                     ->label('Bukti - Bukti')
@@ -184,7 +184,7 @@ protected static ?string $navigationGroup = "GCV";
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
                     })()),               ]),
         ])
-        ->columnSpanFull() 
+        ->columnSpanFull()
     ]);
 }
 
@@ -387,6 +387,17 @@ protected static ?string $navigationGroup = "GCV";
                         ->icon('heroicon-o-arrow-down-tray')
                         ->color('info')
                         ->action(fn (Collection $records) => static::exportData($records)),
+
+                    BulkAction::make('print')
+                    ->label('Print Data')
+                    ->icon('heroicon-o-printer')
+                    ->color('success')
+                    ->action(function (Collection $records) {
+                        session(['print_records' => $records->pluck('id')->toArray()]);
+
+                        return redirect()->route('datakaskecil.print');
+                    }),
+
 
                     Tables\Actions\RestoreBulkAction::make()
                         ->label('Kembalikan Data')
