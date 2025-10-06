@@ -6,6 +6,8 @@ use App\Models\GcvDataSiteplan;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;
 
+use Filament\Facades\Filament;
+
 class GcvDataSiteplanStats extends StatsOverviewWidget
 {
     protected static ?int $sort = 1;
@@ -18,11 +20,20 @@ class GcvDataSiteplanStats extends StatsOverviewWidget
 
     protected ?string $heading = 'Dashboard Statistik GCV Data Siteplan';
 
-    protected function getStats(): array
+
+protected function getCards(): array
     {
-        $total = GcvDataSiteplan::count();
-        $terbangun = GcvDataSiteplan::where('terbangun', true)->count();
-        $belumTerbangun = GcvDataSiteplan::where('terbangun', false)->count();
+        $tenant = Filament::getTenant(); // tenant aktif (team)
+
+        $query = GcvDataSiteplan::query();
+
+        if ($tenant) {
+            $query->where('team_id', $tenant->id);
+        }
+
+        $total = (clone $query)->count();
+        $terbangun = (clone $query)->where('terbangun', true)->count();
+        $belumTerbangun = (clone $query)->where('terbangun', false)->count();
 
         $kavlingLabels = [
             'standar' => 'Standar',
@@ -33,7 +44,8 @@ class GcvDataSiteplanStats extends StatsOverviewWidget
             'kios' => 'Kios',
         ];
 
-        $counts = GcvDataSiteplan::selectRaw('kavling, COUNT(*) as total')
+        $counts = (clone $query)
+            ->selectRaw('kavling, COUNT(*) as total')
             ->groupBy('kavling')
             ->pluck('total', 'kavling')
             ->toArray();

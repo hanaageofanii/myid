@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Team;
 
 return new class extends Migration
 {
@@ -19,6 +20,7 @@ return new class extends Migration
             $table->string('type')->nullable();
             $table->boolean('terbangun')->default(false)->nullable();
             $table->string('keterangan')->nullable();
+            $table->foreignIdFor(Team::class)->index();
             $table->timestamps();
         });
     }

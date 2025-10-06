@@ -19,7 +19,7 @@ use Illuminate\Support\Collection;
  * @method bool hasRole(array|string|\Spatie\Permission\Contracts\Role|\Illuminate\Support\Collection|int $roles, string|null $guard = null)
  */
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasTenants
 {
     use HasRoles, HasApiTokens, HasFactory, Notifiable, HasRoles;
 
@@ -54,6 +54,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class);
+    }
+
     public function canAccessFilament(): bool
     {
         return $this->hasRole('admin');
@@ -78,4 +83,16 @@ class User extends Authenticatable
     // {
     //     return true;
     // }
+
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->teams->contains($tenant);
+    }
+
+    public function getTenants(Panel $panel): Collection
+    {
+        return $this->teams;
+    }
+
+
 }

@@ -13,7 +13,7 @@ class gcv_legalitas extends Model
 
     protected $fillable = [
         'id','siteplan','kavling','id_rumah','status_sertifikat','nib','imb_pbg','nop',
-        'up_sertifikat','up_img','up_pbb','sertifikat_list',"keterangan"
+        'up_sertifikat','up_img','up_pbb','sertifikat_list',"keterangan", "team_id"
     ];
 
     protected $attributes = [
@@ -31,4 +31,9 @@ class gcv_legalitas extends Model
         'nop' => 'array',
         'sertifikat_list' => 'array', //noted: ini bukan file upload
     ];
+
+    public function team()
+{
+    return $this->belongsTo(Team::class);
+}
 }

@@ -6,7 +6,7 @@ use App\Filament\Resources\GcvLegalitasResource\Pages;
 use App\Filament\Resources\GcvLegalitasResource\RelationManagers;
 use App\Models\gcv_legalitas;
 use App\Models\GcvLegalitas;
-use App\Models\gcvDataSiteplan;
+use App\Models\GcvDataSiteplan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;

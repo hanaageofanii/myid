@@ -89,5 +89,4 @@ return [
 //   'tenant' => [
 //     'ownershipRelationship' => 'customRelationship',
 // ],
-
 ];

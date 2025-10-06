@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\GcvDatatandaterimaResource\Pages;
 use App\Filament\Resources\GcvDatatandaterimaResource\RelationManagers;
 use App\Models\gcv_datatandaterima;
-use App\Models\gcvDataSiteplan;
+use App\Models\GcvDataSiteplan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;

@@ -23,7 +23,7 @@ use Filament\Forms\Components\FileUpload;
 use App\Models\gcv_uang_muka;
 use App\Models\GcvUangMuka;
 use App\Models\gcv_stok;
-use App\Models\gcvDataSiteplan;
+use App\Models\gcv_data_siteplan;
 use App\Models\gcv_legalitas;
 use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\BooleanColumn;

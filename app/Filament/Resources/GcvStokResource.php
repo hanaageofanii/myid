@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\GcvStokResource\Pages;
 use App\Filament\Resources\GcvStokResource\RelationManagers;
 use App\Models\gcv_stok;
-use App\Models\gcvDataSiteplan;
+use App\Models\GcvDataSiteplan;
 use App\Models\gcv_legalitas;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -115,13 +115,13 @@ class GcvStokResource extends Resource
             Select::make('siteplan')
                 ->label('Blok')
                 ->options(
-                    gcvDataSiteplan::where('terbangun', 1)->pluck('siteplan', 'siteplan')->toArray()
+                    GcvDataSiteplan::where('terbangun', 1)->pluck('siteplan', 'siteplan')->toArray()
                 )
                 ->searchable()
                 ->required()
                 ->reactive()
                 ->afterStateUpdated(function ($state, $set) {
-                    $audit = gcvDataSiteplan::where('siteplan', $state)->first();
+                    $audit = GcvDataSiteplan::where('siteplan', $state)->first();
                     $legalitas =gcv_legalitas::where( 'siteplan', $state)->first();
 
                     if ($audit) {

@@ -45,14 +45,19 @@ use App\Filament\Resources\GcvDataSiteplanResource\Widgets\gcvDataSiteplanStats;
 class GcvDataSiteplanResource extends Resource
 {
     protected static ?string $model = GcvDataSiteplan::class;
-
     protected static ?string $title = "Data Siteplan";
     protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Siteplan";
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
     protected static ?string $navigationLabel = 'Legal > Data Siteplan';
     protected static ?string $pluralModelLabel = 'Data Siteplan';
+
     protected static ?int $navigationSort = 1;
+
+     protected static bool $isScopedToTenant = true;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
 
     public static function form(Form $form): Form
     {
@@ -380,21 +385,22 @@ class GcvDataSiteplanResource extends Resource
         ];
     }
 
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+}
         public static function getWidgets(): array
         {
             return [
                 GcvDataSiteplanStats::class,
             ];
         }
+
+
 
 
     public static function getPages(): array

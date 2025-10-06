@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\gcvDataSiteplan;
+use App\Models\GcvDataSiteplan;
 
 class gcvDataSiteplanPolicy
 {
@@ -18,7 +18,7 @@ class gcvDataSiteplanPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, gcvDataSiteplan $gcvDataSiteplan): bool
+    public function view(User $user, GcvDataSiteplan $GcvDataSiteplan): bool
     {
         return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak']);
     }
@@ -34,7 +34,7 @@ class gcvDataSiteplanPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, gcvDataSiteplan $gcvDataSiteplan): bool
+    public function update(User $user, GcvDataSiteplan $GcvDataSiteplan): bool
     {
         return $user->hasRole(['admin','Legal officer']);
     }
@@ -42,7 +42,7 @@ class gcvDataSiteplanPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, gcvDataSiteplan $gcvDataSiteplan): bool
+    public function delete(User $user, GcvDataSiteplan $GcvDataSiteplan): bool
     {
         return $user->hasRole(['admin','Legal officer']);
     }
@@ -50,7 +50,7 @@ class gcvDataSiteplanPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, gcvDataSiteplan $gcvDataSiteplan): bool
+    public function restore(User $user, GcvDataSiteplan $GcvDataSiteplan): bool
     {
         return $user->hasRole(['admin','Legal officer']);
     }
@@ -58,7 +58,7 @@ class gcvDataSiteplanPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, gcvDataSiteplan $gcvDataSiteplan): bool
+    public function forceDelete(User $user, GcvDataSiteplan $GcvDataSiteplan): bool
     {
         return $user->hasRole(['admin','Legal officer']);
     }
