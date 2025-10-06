@@ -3,8 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RoleResource\Pages;
-use App\Filament\Resources\RoleResource\RelationManagers;
-// use App\Models\Role;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,39 +15,37 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\Permission\Models\Role;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
-use App\Models\Team;
-
 
 class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
 
-    // protected static ?string $tenantOwnershipRelationshipName = 'teams';
-
+    // 🚨 Penting: supaya resource ini tidak ikut tenant scope
+    protected static bool $isScopedToTenant = false;
 
     protected static ?string $title = "Role";
     protected static ?string $navigationGroup = "Settings";
     protected static ?string $pluralLabel = "Role";
     protected static ?string $navigationIcon = 'heroicon-o-finger-print';
     protected static ?string $navigationLabel = 'Role';
-    
     protected static ?int $navigationSort = 3;
-
     protected static ?string $pluralModelLabel = 'Role';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Card::make()->schema([
-                TextInput::make('name')
-                ->minLength(2)
-                ->maxLength(255)
-                ->unique(ignoreRecord: true)
-                ->label('Nama'),
-                Select::make('permissions')
-                ->multiple()
-                ->relationship('permissions', 'name')
-                ->preload(),
+                    TextInput::make('name')
+                        ->minLength(2)
+                        ->maxLength(255)
+                        ->unique(ignoreRecord: true)
+                        ->label('Nama'),
+
+                    Select::make('permissions')
+                        ->multiple()
+                        ->relationship('permissions', 'name')
+                        ->preload(),
                 ])->columns(2)
             ]);
     }
@@ -58,19 +54,14 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable()->label('Id')->searchable(),
-                Tables\Columns\TextColumn::make('name')->label('Nama')->searchable(),
-
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('id')->sortable()->label('Id')->searchable(),
+                TextColumn::make('name')->label('Nama')->searchable(),
+                TextColumn::make('created_at')
                     ->dateTime('d-M-Y')->sortable()
                     ->searchable()
                     ->label('Created at'),
-                    // ,
-
             ])
-            ->filters([
-                
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -84,16 +75,17 @@ class RoleResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            
-        ];
+        return [];
     }
 
-//     public function teams()
-// {
-//     return $this->belongsTo(Team::class);
-// }
-
+    public static function getEloquentQuery(): Builder
+    {
+        // 🚨 Hapus filter tenant, biarin default query bawaan
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
 
     public static function getPages(): array
     {

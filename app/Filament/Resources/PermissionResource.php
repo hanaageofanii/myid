@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PermissionResource\Pages;
-use App\Filament\Resources\PermissionResource\RelationManagers;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
@@ -14,15 +13,15 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\Permission\Models\Permission;
-use Filament\Forms\Components\Card;
-use App\Models\Team;
 
 class PermissionResource extends Resource
 {
     protected static ?string $model = Permission::class;
 
     protected static ?string $title = "Permission";
-    // protected static ?string $tenantOwnershipRelationshipName = null;
+
+    // 🚨 Jangan ikut tenant
+    protected static bool $isScopedToTenant = false;
 
     protected static ?string $navigationGroup = "Settings";
     protected static ?string $pluralLabel = "Permission";
@@ -36,32 +35,26 @@ class PermissionResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make ('name')
-                ->minLength(2)
-                ->maxLength(255)
-                ->label('Nama')
-                ->required()
-
-        ]);
+                TextInput::make('name')
+                    ->minLength(2)
+                    ->maxLength(255)
+                    ->label('Nama')
+                    ->required()
+            ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-               TextColumn::make('id')->sortable()->searchable()->label('Id'),
-               TextColumn::make('name')->label('Nama')->searchable(),
-               TextColumn::make('created_at')
+                TextColumn::make('id')->sortable()->searchable()->label('Id'),
+                TextColumn::make('name')->label('Nama')->searchable(),
+                TextColumn::make('created_at')
                     ->dateTime('d-M-Y')->sortable()
                     ->searchable()
                     ->label('Created at'),
-                    // ,
-
-
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -75,9 +68,16 @@ class PermissionResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        // 🚨 Jangan pakai tenant filter
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function getPages(): array
