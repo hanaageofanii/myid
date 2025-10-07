@@ -54,7 +54,7 @@ class GcvDatatandaterimaResource extends Resource
     protected static ?string $navigationLabel = 'Legal > Data Tanda Terima';
     protected static ?string $pluralModelLabel = 'Data Tanda Terima';
     protected static ?int $navigationSort = 2;
-    protected static bool $isScopedToTenant = true;
+    protected static bool $isScopedToTenant = false;
     protected static ?string $tenantOwnershipRelationshipName = 'team';
     protected static ?string $tenantRelationshipName = 'team';
 
