@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Team;
 
 return new class extends Migration
 {
@@ -13,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('gcv_validasi_pphs', function (Blueprint $table) {
             $table->id();
-
+            $table->foreignIdFor(Team::class)->index();
             $table->string('siteplan')->nullable();
             $table->string('no_sertifikat')->nullable();
             $table->enum('kavling',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();

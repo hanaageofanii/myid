@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Team;
 
 return new class extends Migration
 {
@@ -13,7 +14,8 @@ return new class extends Migration
     {
         Schema::create('gcv_kprs', function (Blueprint $table) {
             $table->id();
-                        $table->enum('jenis_unit',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();
+            $table->foreignIdFor(Team::class)->index();
+            $table->enum('jenis_unit',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();
             $table->string('siteplan');
             $table->enum('type',['29/60','30/60','45/104','32/52','36/60','36/72'])->nullable();
             $table->decimal('luas', 10, 2)->nullable();

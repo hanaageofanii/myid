@@ -55,6 +55,10 @@ class GcvLegalitasResource extends Resource
     protected static ?string $navigationLabel = 'Legal > Data Legalitas';
     protected static ?string $pluralModelLabel = 'Data Legalitas';
     protected static ?int $navigationSort = 3;
+    protected static bool $isScopedToTenant = false;
+    protected static ?string $tenantOwnershipRelationshipName = 'team';
+    protected static ?string $tenantRelationshipName = 'team';
+
 
 
     public static function form(Form $form): Form
@@ -595,7 +599,7 @@ class GcvLegalitasResource extends Resource
                             session(['print_records' => $ids]);
                             return redirect(route('datalegalitas.print'));
                         }),
-                    
+
                     Tables\Actions\RestoreBulkAction::make()
                         ->label('Kembalikan Data')
                         ->icon('heroicon-o-arrow-path')
@@ -630,13 +634,14 @@ class GcvLegalitasResource extends Resource
     }
 
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+}
 
         public static function getWidgets(): array
         {

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Team;
 
 return new class extends Migration
 {
@@ -13,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('gcv_rekenings', function (Blueprint $table) {
             $table->id();
-
+            $table->foreignIdFor(Team::class)->index();
             $table->enum('nama_perusahaan', ['langgeng_pertiwi_development','agung_purnama_bakti','purnama_karya_bersama'])->nullable();
             $table->enum('bank',['btn_karawang','btn_cikarang','btn_bekasi','bjb_cikarang','bri_pekayon','bjb_syariah','btn_cibubur','bni_kuningan','mandiri_cikarang'])->nullable();
             $table->enum('jenis',['operasional','escrow'])->nullable();
