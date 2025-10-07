@@ -54,6 +54,10 @@ class GcvDatatandaterimaResource extends Resource
     protected static ?string $navigationLabel = 'Legal > Data Tanda Terima';
     protected static ?string $pluralModelLabel = 'Data Tanda Terima';
     protected static ?int $navigationSort = 2;
+    protected static bool $isScopedToTenant = true;
+    protected static ?string $tenantOwnershipRelationshipName = 'team';
+    protected static ?string $tenantRelationshipName = 'team';
+
 
     public static function form(Form $form): Form
     {
@@ -653,11 +657,17 @@ return $form->schema([
 
 
     public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+}
+
+ public static function getTenantModel(): string
     {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+        return \App\Models\Team::class;
     }
 
         public static function getWidgets(): array

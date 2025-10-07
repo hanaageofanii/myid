@@ -54,10 +54,9 @@ class GcvDataSiteplanResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-     protected static bool $isScopedToTenant = true;
-      protected static ?string $tenantOwnershipRelationshipName = 'team';
-
-    protected static ?string $tenantRelationshipName = 'team';
+protected static bool $isScopedToTenant = false;
+protected static ?string $tenantRelationshipName = 'team';
+protected static ?string $tenantOwnershipRelationshipName = 'team';
 
     public static function form(Form $form): Form
     {

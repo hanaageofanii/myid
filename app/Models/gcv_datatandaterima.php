@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Team;
 
 class gcv_datatandaterima extends Model
 {
    use HasFactory, SoftDeletes, HasRoles;
 
     protected $fillable = [
+        "team_id",
         "siteplan",
         "type",
         "terbangun",
@@ -40,6 +43,7 @@ class gcv_datatandaterima extends Model
         "keterangan",
 
 
+
     ];
 
     protected $casts = [
@@ -48,4 +52,8 @@ class gcv_datatandaterima extends Model
         "up_imb_pbg" => 'array',
         "up_tambahan_lainnya" => 'array',
     ];
+public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
 }
