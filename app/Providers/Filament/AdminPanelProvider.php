@@ -40,7 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->darkMode(false)
             // ->registration()
-            ->brandName('PT. Purnama Karya Bersama')
+            ->brandName('Management Data Penjualan')
             ->colors([
                 'primary' => Color::Amber,
                 'danger' => Color::Rose,

@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Team::class)->index();
             $table->foreignIdFor(\App\Models\User::class)->index();
             $table->timestamps();
+
+             $table->unique(['team_id', 'user_id']);
         });
     }
 

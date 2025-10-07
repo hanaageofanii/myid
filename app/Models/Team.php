@@ -18,6 +18,20 @@ class Team extends Model
         'slug',
     ];
 
+    protected function handleRegistration(array $data): Team
+{
+    $team = Team::create($data);
+
+    // Attach admin yang membuat
+    $team->users()->attach(auth()->user());
+
+    // Attach semua user lain secara otomatis
+    $allUsers = \App\Models\User::where('id', '!=', auth()->id())->pluck('id');
+    $team->users()->attach($allUsers);
+
+    return $team;
+}
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
