@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Team;
 
 class gcv_faktur extends Model
 {
     use HasFactory, SoftDeletes, HasRoles;
 
     protected $fillable = [
+        "team_id",
         "siteplan",
         "kavling",
         "nama_konsumen",
@@ -35,5 +38,10 @@ class gcv_faktur extends Model
         "up_bukti_setor_ppn" => 'array',
         "up_efaktur" => 'array'
     ];
+
+     public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
 
 }

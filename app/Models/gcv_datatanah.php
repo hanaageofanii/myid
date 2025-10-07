@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Team;
 
 class gcv_datatanah extends Model
 {
@@ -13,6 +15,7 @@ class gcv_datatanah extends Model
 
         protected $fillable = [
             "no_bidang",
+            "team_id",
             "nama_pemilik_asal",
             "alas_hak",
             "luas_surat",
@@ -36,4 +39,8 @@ class gcv_datatanah extends Model
         "up_sph" => 'array',
         "up_tambahan_lainnya" => 'array',
     ];
+public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
 }

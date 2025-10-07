@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -13,6 +15,7 @@ class gcv_pengajuan_dajam extends Model
     use HasFactory, SoftDeletes, HasRoles;
 
     protected $fillable =[
+        'team_id',
     'siteplan',
     'kavling',
     'bank',
@@ -32,4 +35,9 @@ class gcv_pengajuan_dajam extends Model
         "up_surat_pengajuan" => 'array',
         "up_nominatif_pengajuan" => 'array'
     ];
+
+     public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
 }

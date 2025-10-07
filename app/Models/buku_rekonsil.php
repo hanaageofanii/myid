@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Team;
 class buku_rekonsil extends Model
 {
     use HasFactory, SoftDeletes, HasRoles;
@@ -29,6 +30,7 @@ class buku_rekonsil extends Model
         'status_disalurkan',
         'catatan',
         'bukti_bukti',
+        'team_id'
 
 
     ];
@@ -36,7 +38,8 @@ class buku_rekonsil extends Model
     protected $casts = [
         'bukti_bukti' => 'array',
     ];
-
-
-
+ public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
 }

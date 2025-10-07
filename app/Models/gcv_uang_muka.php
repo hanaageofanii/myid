@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -12,6 +14,7 @@ class gcv_uang_muka extends Model
     use HasFactory, SoftDeletes, HasRoles;
 
     protected $fillable = [
+        'team_id',
         'kavling',
         'siteplan',
         'nama_konsumen',
@@ -31,4 +34,9 @@ class gcv_uang_muka extends Model
         "up_kwitansi" => 'array',
         "up_pricelist" => 'array'
     ];
+
+     public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
 }

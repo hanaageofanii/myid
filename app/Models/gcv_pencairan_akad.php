@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -14,6 +16,7 @@ class gcv_pencairan_akad extends Model
     use HasFactory, HasRoles, SoftDeletes;
 
     protected $fillable = [
+        "team_id",
             "kavling",
             "siteplan",
             "bank",
@@ -32,4 +35,9 @@ class gcv_pencairan_akad extends Model
             "up_rekening_koran" => 'array',
             "up_spd5" => 'array'
         ];
+
+         public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
     }
