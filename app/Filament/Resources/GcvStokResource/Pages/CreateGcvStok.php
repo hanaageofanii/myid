@@ -10,7 +10,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateGcvStok extends CreateRecord
 {
     protected static string $resource = GcvStokResource::class;
-    
+
     protected static ?string $title = "Buat Data Bookingan";
     protected function getCreateFormAction(): Actions\Action
     {
@@ -45,4 +45,11 @@ class CreateGcvStok extends CreateRecord
         return parent::getSaveFormAction()
         ->label('Simpan');
     }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['team_id'] = filament()->getTenant()->id;
+        return $data;
+    }
+
 }

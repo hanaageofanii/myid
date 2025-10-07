@@ -45,4 +45,10 @@ class CreateBukuRekonsil extends CreateRecord
         return parent::getSaveFormAction()
         ->label('Simpan');
     }
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['team_id'] = filament()->getTenant()->id;
+        return $data;
+    }
+
 }

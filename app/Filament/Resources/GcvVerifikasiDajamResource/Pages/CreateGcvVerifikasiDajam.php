@@ -24,7 +24,7 @@ class CreateGcvVerifikasiDajam extends CreateRecord
         ->label('Tambah Data Lagi')
         ->color('warning');
     }
-    
+
     protected function getCancelFormAction() : Actions\Action
     {
         return parent::getCancelFormAction()
@@ -45,4 +45,11 @@ class CreateGcvVerifikasiDajam extends CreateRecord
         return parent::getSaveFormAction()
         ->label('Simpan');
     }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['team_id'] = filament()->getTenant()->id;
+        return $data;
+    }
+
 }

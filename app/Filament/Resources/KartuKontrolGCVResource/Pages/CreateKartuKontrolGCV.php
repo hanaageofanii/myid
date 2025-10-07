@@ -44,4 +44,11 @@ protected static ?string $title = "Kartu Kontrol GCV";
         return parent::getSaveFormAction()
         ->label('Simpan');
     }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['team_id'] = filament()->getTenant()->id;
+        return $data;
+    }
+
 }
