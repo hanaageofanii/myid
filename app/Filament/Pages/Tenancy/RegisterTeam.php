@@ -10,7 +10,7 @@ class RegisterTeam extends RegisterTenant
 {
     public static function canView(): bool
     {
-        return auth()->user()->id == 1;
+        return auth()->user()->id == 'admin';
     }
     public static function getLabel(): string
     {
