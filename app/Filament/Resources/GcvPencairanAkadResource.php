@@ -59,7 +59,6 @@ class GcvPencairanAkadResource extends Resource
     protected static ?string $model = gcv_pencairan_akad::class;
 
     protected static ?string $title = "Data Pencairan Akad";
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Pencairan Akad";
     protected static ?string $navigationLabel = 'Keuangan > Pencairan Akad';
     protected static ?string $pluralModelLabel = 'Data Pencairan Akad';

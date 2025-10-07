@@ -56,7 +56,6 @@ class GcvRekeningResource extends Resource
     protected static ?string $model = gcv_rekening::class;
 
     // protected static ?int $navigationSort = 2;
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Master Rekening";
     protected static ?string $navigationLabel = "Kasir > Master Rekening";
     protected static ?string $pluralModelLabel = 'Daftar Master Rekening';

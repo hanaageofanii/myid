@@ -63,7 +63,6 @@ class GcvValidasiPphResource extends Resource
     protected static ?string $model = gcv_validasi_pph::class;
 
     protected static ?string $title = "Form Validasi PPH";
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Validasi PPH";
     protected static ?string $navigationLabel = "Pajak > Validasi PPH";
     protected static ?int $navigationSort = 9;

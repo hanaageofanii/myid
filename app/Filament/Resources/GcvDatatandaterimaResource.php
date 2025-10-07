@@ -48,7 +48,6 @@ class GcvDatatandaterimaResource extends Resource
     protected static ?string $model = gcv_datatandaterima::class;
 
     protected static ?string $title = "Data Tanda Terima";
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Tanda Terima";
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
     protected static ?string $navigationLabel = 'Legal > Data Tanda Terima';

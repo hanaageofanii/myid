@@ -51,7 +51,6 @@ class GcvKprResource extends Resource
     protected static ?string $model = gcv_kpr::class;
 
     protected static ?string $title = "Data Akad KPR";
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Akad KPR";
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationLabel = 'KPR > Data Akad KPR';

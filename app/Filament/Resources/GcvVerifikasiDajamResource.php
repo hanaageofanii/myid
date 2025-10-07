@@ -64,7 +64,6 @@ class GcvVerifikasiDajamResource extends Resource
     protected static ?string $model = gcv_verifikasi_dajam::class;
 
     protected static ?string $title = "Form Verifikasi Dajam";
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Verifikasi Dajam";
     protected static ?string $navigationLabel = "Legal > Verifikasi Dajam";
     protected static ?string $pluralModelLabel = 'Daftar Verifikasi Dajam';

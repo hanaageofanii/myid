@@ -46,7 +46,6 @@ class GcvDataSiteplanResource extends Resource
 {
     protected static ?string $model = GcvDataSiteplan::class;
     protected static ?string $title = "Data Siteplan";
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Siteplan";
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
     protected static ?string $navigationLabel = 'Legal > Data Siteplan';

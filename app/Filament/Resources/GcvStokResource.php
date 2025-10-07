@@ -51,7 +51,6 @@ class GcvStokResource extends Resource
     protected static ?string $model = gcv_stok::class;
 
     protected static ?string $title = "Data Bookingan";
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Bookingan";
     protected static ?string $navigationIcon = 'heroicon-o-document-chart-bar';
     protected static ?string $navigationLabel = 'Stok > Data Booking';

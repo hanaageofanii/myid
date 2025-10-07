@@ -57,7 +57,6 @@ class GcvPencairanDajamResource extends Resource
     protected static ?string $model = gcv_pencairan_dajam::class;
 
     protected static ?string $title = "Data Pencairan Dajam";
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Pencairan Dajam";
     protected static ?string $navigationLabel = 'Keuangan > Pencairan Dajam';
     protected static ?string $pluralModelLabel = 'Data Pencairan Dajam';

@@ -60,7 +60,6 @@ class GcvMasterDajamResource extends Resource
     protected static ?string $model = GcvMasterDajam::class;
 
     protected static ?string $title = "Data Master Dajam";
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Master Dajam";
     protected static ?string $navigationIcon = 'heroicon-o-folder-open';
     protected static ?string $navigationLabel = 'Legal > Data Master Dajam';

@@ -46,7 +46,6 @@ class GcvDatatanahResource extends Resource
     protected static ?string $model = gcv_datatanah::class;
     protected static string $resource = GcvDatatanahResource::class;
     protected static ?string $title = "Data Tanah";
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Tanah";
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
     protected static ?string $navigationLabel = 'Legal > Data Tanah';

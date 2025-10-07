@@ -65,7 +65,6 @@ class KartuKontrolGCVResource extends Resource
     protected static ?string $model = Kartu_kontrolGCV::class;
 
     protected static ?string $title = "Form Kartu Kontrol";
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Kartu Kontrol";
     protected static ?string $navigationLabel = "Keuangan > Kartu Kontrol";
     protected static ?string $pluralModelLabel = 'Kartu Kontrol';

@@ -60,7 +60,6 @@ class GcvPengajuanBnResource extends Resource
     protected static ?string $model = gcv_pengajuan_bn::class;
 
     protected static ?string $title = "Data Pengajuan BN";
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Data Pengajuan BN";
     protected static ?string $navigationLabel = 'Legal > Pengajuan BN';
     protected static ?string $pluralModelLabel = 'Data Pengajuan BN';

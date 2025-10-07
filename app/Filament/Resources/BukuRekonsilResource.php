@@ -53,7 +53,6 @@ class BukuRekonsilResource extends Resource
     protected static ?string $model = buku_rekonsil::class;
 
     // protected static ?int $navigationSort = 1;
-    protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Buku Rekonsil";
     protected static ?string $navigationLabel = "Kasir > Buku Rekonsil";
     protected static ?string $pluralModelLabel = 'Daftar Buku Rekonsil';

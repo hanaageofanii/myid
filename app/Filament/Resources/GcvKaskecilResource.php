@@ -53,7 +53,6 @@ class GcvKaskecilResource extends Resource
 {
     protected static ?string $model = gcv_kaskecil::class;
 
-protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralLabel = "Kas Kecil";
     protected static ?string $navigationLabel = "Kasir > Kas Kecil";
     protected static ?string $pluralModelLabel = 'Daftar Kas Kecil';
