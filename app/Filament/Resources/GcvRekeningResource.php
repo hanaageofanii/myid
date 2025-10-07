@@ -61,6 +61,11 @@ class GcvRekeningResource extends Resource
     protected static ?string $navigationLabel = "Kasir > Master Rekening";
     protected static ?string $pluralModelLabel = 'Daftar Master Rekening';
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
+    protected static bool $isScopedToTenant = false;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
+
         protected static ?int $navigationSort = 15;
 
 public static function form(Form $form): Form
@@ -357,12 +362,14 @@ public static function form(Form $form): Form
         return response()->streamDownload(fn () => print($csvData), 'Rekening.csv');
     }
 
-    public static function getEloquentQuery(): Builder
+public static function getEloquentQuery(): Builder
 {
-    $query = parent::getEloquentQuery()
+    return parent::getEloquentQuery()
         ->withoutGlobalScopes([
             SoftDeletingScope::class,
-        ]);
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+
 
     // /** @var \App\Models\User|null $user */
     // $user = Auth::user();
@@ -378,7 +385,6 @@ public static function form(Form $form): Form
     //     }
     // }
 
-    return $query;
 }
 public static function getPages(): array
     {

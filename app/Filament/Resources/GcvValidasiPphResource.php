@@ -68,6 +68,12 @@ class GcvValidasiPphResource extends Resource
     protected static ?string $navigationLabel = "Pajak > Validasi PPH";
     protected static ?int $navigationSort = 9;
     protected static ?string $pluralModelLabel = 'Daftar Validasi PPH';
+    protected static bool $isScopedToTenant = false;
+    protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
+
+
     protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
 
 public static function form(Form $form): Form
@@ -666,13 +672,14 @@ public static function form(Form $form): Form
         ];
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+}
 
     public static function getPages(): array
     {

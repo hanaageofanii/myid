@@ -55,6 +55,10 @@ class GcvStokResource extends Resource
     protected static ?string $pluralLabel = "Data Bookingan";
     protected static ?string $navigationIcon = 'heroicon-o-document-chart-bar';
     protected static ?string $navigationLabel = 'Stok > Data Booking';
+     protected static bool $isScopedToTenant = false;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
     protected static ?string $pluralModelLabel = 'Data Bookingan';
     protected static ?int $navigationSort = 4;
     public static function form(Form $form): Form
@@ -579,36 +583,41 @@ public static function exportData(Collection $records)
 
 public static function getEloquentQuery(): Builder
 {
-$query = parent::getEloquentQuery()
-    ->withoutGlobalScopes([
-        SoftDeletingScope::class,
-    ]);
-/** @var \App\Models\User|null $user */
-$user = Auth::user();
+    $query = parent::getEloquentQuery()
+        ->withoutGlobalScopes([SoftDeletingScope::class]);
 
-if ($user) {
-    if ($user->hasRole('Marketing')) {
-        $query->where(function ($q) {
-            // HANYA yang belum booking
-            $q->where(function ($qStatus) {
-                $qStatus->whereNull('status')
-                        ->orWhere('status', '!=', 'booking');
-            })
-            // DAN kpr_status bukan akad atau batal sp3k
-            ->where(function ($qKpr) {
-                $qKpr->whereNull('kpr_status')
-                     ->orWhereNotIn('kpr_status', ['akad', 'batal',' sp3k']);
-            });
-        });
-    } elseif ($user->hasRole(['Legal officer', 'Legal Pajak'])) {
-        // Legal tetap khusus yg sudah akad
-        $query->where('kpr_status', 'akad');
+    // Filter by tenant
+    $tenant = filament()->getTenant();
+    if ($tenant) {
+        $query->where('team_id', $tenant->id);
     }
+
+    // Filter by user role
+    /** @var \App\Models\User|null $user */
+    $user = Auth::user();
+    if ($user) {
+        if ($user->hasRole('Marketing')) {
+            $query->where(function ($q) {
+                // HANYA yang belum booking
+                $q->where(function ($qStatus) {
+                        $qStatus->whereNull('status')
+                                ->orWhere('status', '!=', 'booking');
+                    })
+                  // DAN kpr_status bukan akad, batal, sp3k
+                    ->where(function ($qKpr) {
+                        $qKpr->whereNull('kpr_status')
+                            ->orWhereNotIn('kpr_status', ['akad', 'batal', 'sp3k']);
+                    });
+            });
+        } elseif ($user->hasRole(['Legal officer', 'Legal Pajak'])) {
+            // Legal tetap khusus yg sudah akad
+            $query->where('kpr_status', 'akad');
+        }
+    }
+
+    return $query;
 }
 
-
-return $query;
-}
 
 
 public static function getWidgets(): array

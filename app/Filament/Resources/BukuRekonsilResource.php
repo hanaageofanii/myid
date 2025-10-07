@@ -59,6 +59,11 @@ class BukuRekonsilResource extends Resource
     protected static ?string $pluralModelLabel = 'Daftar Buku Rekonsil';
     protected static ?string $navigationIcon = 'heroicon-o-squares-plus';
         protected static ?int $navigationSort = 14;
+    protected static bool $isScopedToTenant = false;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
+
    public static function form(Form $form): Form
 {
     return $form->schema([
@@ -81,7 +86,7 @@ class BukuRekonsilResource extends Resource
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
                     })()),
-                    
+
                     Select::make('jenis')
                         ->label('Jenis')
                         ->options(fn (callable $get) => gcv_rekening::where('nama_perusahaan', $get('nama_perusahaan'))
@@ -126,7 +131,7 @@ class BukuRekonsilResource extends Resource
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
                     })()),
-                    
+
                     TextInput::make('rekening')
                         ->label('No. Rekening')
                         ->required()
@@ -154,8 +159,8 @@ class BukuRekonsilResource extends Resource
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()),   
-                    
+                    })()),
+
                     TextInput::make('no_check')
                         ->label('No. Check')
                         ->dehydrated(true)
@@ -188,7 +193,7 @@ class BukuRekonsilResource extends Resource
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()),           
+                    })()),
                 ]),
 
             Step::make('Detail Uang & Saldo')
@@ -256,8 +261,8 @@ class BukuRekonsilResource extends Resource
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()),              
-                    
+                    })()),
+
                     TextArea::make('deskripsi')
                         ->label('Deskripsi')
                         ->required()
@@ -265,7 +270,7 @@ class BukuRekonsilResource extends Resource
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();
                         return $user && $user->hasRole(['admin','Kasir 2','Kasir 1']);
-                    })()),  
+                    })()),
                 ]),
 
             Step::make('Status & Dokumen')
@@ -612,12 +617,13 @@ class BukuRekonsilResource extends Resource
         return response()->streamDownload(fn () => print($csvData), 'BukuRekonsil.csv');
     }
 
-    public static function getEloquentQuery(): Builder
+public static function getEloquentQuery(): Builder
 {
-    $query = parent::getEloquentQuery()
+    return parent::getEloquentQuery()
         ->withoutGlobalScopes([
             SoftDeletingScope::class,
-        ]);
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
 
     // /** @var \App\Models\User|null $user */
     // $user = Auth::user();
@@ -633,7 +639,6 @@ class BukuRekonsilResource extends Resource
     //     }
     // }
 
-    return $query;
 }
 
     public static function getPages(): array

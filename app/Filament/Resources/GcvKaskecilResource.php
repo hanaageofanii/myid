@@ -59,6 +59,10 @@ protected static ?string $navigationGroup = "GCV";
     protected static ?string $pluralModelLabel = 'Daftar Kas Kecil';
     protected static ?string $navigationIcon = 'heroicon-o-plus';
     protected static ?int $navigationSort=16;
+    protected static bool $isScopedToTenant = false;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
  public static function form(Form $form): Form
 {
     return $form->schema([
@@ -429,15 +433,15 @@ protected static ?string $navigationGroup = "GCV";
         return response()->streamDownload(fn () => print($csvData), 'KasKecil.csv');
     }
 
-    public static function getEloquentQuery(): Builder
+public static function getEloquentQuery(): Builder
 {
-    $query = parent::getEloquentQuery()
+    return parent::getEloquentQuery()
         ->withoutGlobalScopes([
             SoftDeletingScope::class,
-        ]);
-
-        return $query;
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
 }
+
 public static function getPages(): array
     {
         return [

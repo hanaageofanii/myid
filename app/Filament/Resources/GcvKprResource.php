@@ -56,6 +56,12 @@ class GcvKprResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationLabel = 'KPR > Data Akad KPR';
     protected static ?string $pluralModelLabel = 'Data Akad KPR';
+     protected static bool $isScopedToTenant = false;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
+
+
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
@@ -715,23 +721,28 @@ class GcvKprResource extends Resource
     }
 
 
-    public static function getEloquentQuery(): Builder
+public static function getEloquentQuery(): Builder
 {
     $query = parent::getEloquentQuery()
         ->withoutGlobalScopes([
             SoftDeletingScope::class,
         ]);
 
+    // Filter by tenant
+    $tenant = filament()->getTenant();
+    if ($tenant) {
+        $query->where('team_id', $tenant->id);
+    }
+
+    // Filter by user role
     /** @var \App\Models\User|null $user */
     $user = Auth::user();
-
     if ($user && $user->hasRole(['Legal officer', 'Legal Pajak'])) {
         $query->where('status_akad', 'akad');
     }
 
     return $query;
 }
-
     public static function getWidgets(): array
     {
         return [

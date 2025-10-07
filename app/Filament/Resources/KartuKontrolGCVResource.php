@@ -69,6 +69,11 @@ class KartuKontrolGCVResource extends Resource
     protected static ?string $pluralLabel = "Kartu Kontrol";
     protected static ?string $navigationLabel = "Keuangan > Kartu Kontrol";
     protected static ?string $pluralModelLabel = 'Kartu Kontrol';
+    protected static bool $isScopedToTenant = false;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
+
     protected static ?string $navigationIcon = 'heroicon-o-cursor-arrow-ripple';
     protected static ?int $navigationSort = 18;
 
@@ -786,6 +791,15 @@ class KartuKontrolGCVResource extends Resource
 
         return response()->streamDownload(fn () => print($csvData), 'KartuKontrolGCV.csv');
     }
+
+    public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+}
 
 
     public static function getPages(): array

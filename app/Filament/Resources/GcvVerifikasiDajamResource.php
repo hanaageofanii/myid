@@ -69,6 +69,11 @@ class GcvVerifikasiDajamResource extends Resource
     protected static ?string $navigationLabel = "Legal > Verifikasi Dajam";
     protected static ?string $pluralModelLabel = 'Daftar Verifikasi Dajam';
     protected static ?string $navigationIcon = 'heroicon-o-check-badge';
+    protected static bool $isScopedToTenant = false;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
+
     protected static ?int $navigationSort = 12;
     public static function form(Form $form): Form
     {
@@ -965,13 +970,14 @@ Step::make('Nilai Dajam')
         return response()->streamDownload(fn () => print($csvData), 'VerifikasiDajam.csv');
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+}
 
     public static function getRelations(): array
     {

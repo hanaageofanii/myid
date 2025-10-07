@@ -65,6 +65,11 @@ class GcvPengajuanDajamResource extends Resource
     protected static ?string $pluralLabel = "Data Pengajuan Dajam";
     protected static ?string $navigationLabel = "Legal > Pengajuan Dajam";
     protected static ?string $pluralModelLabel = 'Daftar Pengajuan Dajam';
+     protected static bool $isScopedToTenant = false;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
+
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
         protected static ?int $navigationSort = 11;
 
@@ -576,13 +581,14 @@ public static function form(Form $form): Form
         return response()->streamDownload(fn () => print($csvData), 'PengajuanDajam.csv');
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+}
 
 
     public static function getRelations(): array

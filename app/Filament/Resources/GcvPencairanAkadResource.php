@@ -64,6 +64,11 @@ class GcvPencairanAkadResource extends Resource
     protected static ?string $navigationLabel = 'Keuangan > Pencairan Akad';
     protected static ?string $pluralModelLabel = 'Data Pencairan Akad';
     protected static ?int $navigationSort = 6;
+    protected static bool $isScopedToTenant = false;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
+
     protected static ?string $navigationIcon = 'heroicon-o-cloud-arrow-up';
 
     public static function form(Form $form): Form
@@ -610,13 +615,14 @@ class GcvPencairanAkadResource extends Resource
         return response()->streamDownload(fn () => print($csvData), 'PencairanAkad.csv');
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+}
 
     public static function getRelations(): array
     {

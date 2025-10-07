@@ -67,6 +67,11 @@ protected static ?string $title = "Data Uang Muka";
     protected static ?string $navigationLabel = "Keuangan > Data Uang Muka";
     protected static ?string $pluralModelLabel = 'Daftar Uang Muka';
     protected static ?string $navigationIcon = 'heroicon-o-folder-arrow-down';
+    protected static bool $isScopedToTenant = false;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
+
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -577,13 +582,14 @@ protected static ?string $title = "Data Uang Muka";
         return response()->streamDownload(fn () => print($csvData), 'UangMuka.csv');
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+}
 
     public static function getPages(): array
     {

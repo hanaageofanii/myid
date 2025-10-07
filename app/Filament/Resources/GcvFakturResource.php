@@ -70,6 +70,12 @@ class GcvFakturResource extends Resource
     protected static ?string $pluralLabel = "Data Faktur";
     protected static ?string $navigationLabel = "Pajak > Faktur";
     protected static ?string $pluralModelLabel = 'Daftar Faktur';
+
+    protected static bool $isScopedToTenant = false;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
+
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
     public static function form(Form $form): Form
@@ -644,8 +650,10 @@ public static function getEloquentQuery(): Builder
     return parent::getEloquentQuery()
         ->withoutGlobalScopes([
             SoftDeletingScope::class,
-        ]);
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
 }
+
 
     public static function getPages(): array
     {

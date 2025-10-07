@@ -65,6 +65,11 @@ class GcvPengajuanBnResource extends Resource
     protected static ?string $navigationLabel = 'Legal > Pengajuan BN';
     protected static ?string $pluralModelLabel = 'Data Pengajuan BN';
     protected static ?int $navigationSort = 17;
+     protected static bool $isScopedToTenant = false;
+      protected static ?string $tenantOwnershipRelationshipName = 'team';
+
+    protected static ?string $tenantRelationshipName = 'team';
+
     protected static ?string $navigationIcon = 'heroicon-o-globe-americas';
 
     public static function form(Form $form): Form
@@ -591,13 +596,14 @@ class GcvPengajuanBnResource extends Resource
     }
 
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ])
+        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+}
 
         public static function getWidgets(): array
         {
