@@ -6,14 +6,21 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\gcv_kaskecil;
 use Illuminate\Support\Facades\DB;
-
-
+use Filament\Facades\Filament;
 
 class gcv_kaskecilStats extends BaseWidget
 {
-     protected function getStats(): array
+    protected function getStats(): array
     {
-        $data = gcv_kaskecil::select(
+        $tenant = Filament::getTenant(); // get current tenant/team
+
+        $query = gcv_kaskecil::query();
+
+        if ($tenant) {
+            $query->where('team_id', $tenant->id);
+        }
+
+        $data = $query->select(
                 'nama_perusahaan',
                 DB::raw("SUM(CASE WHEN tipe = 'debit' THEN jumlah_uang ELSE 0 END) AS total_debit"),
                 DB::raw("SUM(CASE WHEN tipe = 'kredit' THEN jumlah_uang ELSE 0 END) AS total_kredit"),

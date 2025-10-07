@@ -6,12 +6,21 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\DB;
 use App\Models\buku_rekonsil;
+use Filament\Facades\Filament;
 
 class buku_rekonsilStats extends BaseWidget
 {
-     protected function getStats(): array
+    protected function getStats(): array
     {
-        $data = buku_rekonsil::select(
+        $tenant = Filament::getTenant();
+
+        $query = buku_rekonsil::query();
+
+        if ($tenant) {
+            $query->where('team_id', $tenant->id);
+        }
+
+        $data = $query->select(
                 'nama_perusahaan',
                 DB::raw("SUM(CASE WHEN tipe = 'debit' THEN jumlah_uang ELSE 0 END) AS total_debit"),
                 DB::raw("SUM(CASE WHEN tipe = 'kredit' THEN jumlah_uang ELSE 0 END) AS total_kredit"),

@@ -6,6 +6,7 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use App\Filament\Resources\GcvDatatanahResource;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\gcv_datatanah;
+use Filament\Facades\Filament;
 
 class gcv_datatanahStats extends BaseWidget
 {
@@ -18,8 +19,22 @@ class gcv_datatanahStats extends BaseWidget
 
     protected function getStats(): array
     {
+        $tenant = Filament::getTenant();
+
+        $query = gcv_datatanah::query();
+
+        if ($tenant) {
+            $query->where('team_id', $tenant->id);
+        }
+
+        $totalData = $query->count();
+        $totalLuasSurat = (clone $query)->sum('luas_surat');
+        $totalLuasUkur = (clone $query)->sum('luas_ukur');
+
         return [
-            Stat::make('Total Data Tanah', gcv_datatanah::count()),
+            Stat::make('Total Data Tanah', $totalData)->color('primary'),
+            Stat::make('Total Luas Surat', number_format($totalLuasSurat, 2, ',', '.'))->color('success'),
+            Stat::make('Total Luas Ukur', number_format($totalLuasUkur, 2, ',', '.'))->color('secondary'),
         ];
     }
 }
