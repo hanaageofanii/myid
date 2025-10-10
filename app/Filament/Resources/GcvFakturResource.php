@@ -653,6 +653,15 @@ public static function getEloquentQuery(): Builder
         ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
 }
 
+public static function canViewAny(): bool
+{
+    $user = auth()->user();
+        /** @var \App\Models\User|null $user */
+
+    return $user->hasRole(['admin','Legal Pajak','Direksi','Super Admin', 'Legal officer']);
+}
+
+
 
     public static function getPages(): array
     {

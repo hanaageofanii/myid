@@ -583,11 +583,31 @@ protected static ?string $title = "Data Uang Muka";
 
 public static function getEloquentQuery(): Builder
 {
-    return parent::getEloquentQuery()
-        ->withoutGlobalScopes([
-            SoftDeletingScope::class,
-        ])
-        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+    $query = parent::getEloquentQuery()
+        ->withoutGlobalScopes([SoftDeletingScope::class]);
+
+    $user = auth()->user();
+    /** @var \App\Models\User|null $user */
+
+
+    // Super Admin bisa lihat semua
+    if ($user->hasRole('Super Admin')) {
+        return $query;
+    }
+
+    // Ambil semua team user
+    $teamIds = $user->teams->pluck('id')->toArray();
+
+    // Filter stok sesuai team user
+    return $query->whereIn('team_id', $teamIds);
+}
+
+public static function canViewAny(): bool
+{
+    $user = auth()->user();
+        /** @var \App\Models\User|null $user */
+
+    return $user->hasRole(['admin','Kasir 1','Kasir 2','Super Admin']);
 }
 
     public static function getPages(): array

@@ -385,6 +385,15 @@ public static function getEloquentQuery(): Builder
     // }
 
 }
+
+public static function canViewAny(): bool
+{
+    $user = auth()->user();
+        /** @var \App\Models\User|null $user */
+
+    return $user->hasRole(['admin','Direksi','Kasir 2','Super Admin', 'Kasir 1']);
+}
+
 public static function getPages(): array
     {
         return [

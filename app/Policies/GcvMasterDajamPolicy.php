@@ -3,9 +3,9 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\gcv_pengajuan_dajam;
+use App\Models\GcvMasterDajam;
 
-class GcvPengajuanDajamPolicy
+class GcvMasterDajamPolicy
 {
     public function viewAny(User $user): bool
     {
@@ -13,11 +13,11 @@ class GcvPengajuanDajamPolicy
             || $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak']);
     }
 
-    public function view(User $user, gcv_pengajuan_dajam $gcv_pengajuan_dajam): bool
+    public function view(User $user, GcvMasterDajam $GcvMasterDajam): bool
     {
         return $user->hasRole('Super Admin')
             || ($user->hasRole(['admin','Direksi','Legal officer','Legal Pajak'])
-                && $user->teams()->where('id', $gcv_pengajuan_dajam->team_id)->exists());
+                && $user->teams()->where('id', $GcvMasterDajam->team_id)->exists());
     }
 
     public function create(User $user): bool
@@ -26,31 +26,31 @@ class GcvPengajuanDajamPolicy
             || $user->hasRole(['admin','Legal officer']);
     }
 
-    public function update(User $user, gcv_pengajuan_dajam $gcv_pengajuan_dajam): bool
+    public function update(User $user, GcvMasterDajam $GcvMasterDajam): bool
     {
         return $user->hasRole('Super Admin')
             || ($user->hasRole(['admin','Legal officer'])
-                && $user->teams()->where('id', $gcv_pengajuan_dajam->team_id)->exists());
+                && $user->teams()->where('id', $GcvMasterDajam->team_id)->exists());
     }
 
-    public function delete(User $user, gcv_pengajuan_dajam $gcv_pengajuan_dajam): bool
+    public function delete(User $user, GcvMasterDajam $GcvMasterDajam): bool
     {
         return $user->hasRole('Super Admin')
             || ($user->hasRole(['admin','Legal officer'])
-                && $user->teams()->where('id', $gcv_pengajuan_dajam->team_id)->exists());
+                && $user->teams()->where('id', $GcvMasterDajam->team_id)->exists());
     }
 
-    public function restore(User $user, gcv_pengajuan_dajam $gcv_pengajuan_dajam): bool
+    public function restore(User $user, GcvMasterDajam $GcvMasterDajam): bool
     {
         return $user->hasRole('Super Admin')
             || ($user->hasRole(['admin','Legal officer'])
-                && $user->teams()->where('id', $gcv_pengajuan_dajam->team_id)->exists());
+                && $user->teams()->where('id', $GcvMasterDajam->team_id)->exists());
     }
 
-    public function forceDelete(User $user, gcv_pengajuan_dajam $gcv_pengajuan_dajam): bool
+    public function forceDelete(User $user, GcvMasterDajam $GcvMasterDajam): bool
     {
         return $user->hasRole('Super Admin')
             || ($user->hasRole(['admin','Legal officer'])
-                && $user->teams()->where('id', $gcv_pengajuan_dajam->team_id)->exists());
+                && $user->teams()->where('id', $GcvMasterDajam->team_id)->exists());
     }
 }

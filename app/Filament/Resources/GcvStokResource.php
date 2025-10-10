@@ -617,6 +617,14 @@ public static function getEloquentQuery(): Builder
     return $query;
 }
 
+public static function canViewAny(): bool
+{
+    $user = auth()->user();
+        /** @var \App\Models\User|null $user */
+
+    return $user->hasRole(['admin','Direksi','Legal officer','Super Admin', 'Legal Pajak','KPR Stok','Marketing','KPR Officer']);
+}
+
 
 
 public static function getWidgets(): array

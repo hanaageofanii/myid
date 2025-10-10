@@ -97,7 +97,7 @@ return $form
                                                     $user = Auth::user();
                                                     return $user && $user->hasRole(['admin','Legal Pajak']);
                                                 })()),
-                                                
+
                 Select::make('siteplan')
                     ->label('Blok')
                     ->options(fn () => gcv_kpr::pluck('siteplan', 'siteplan'))
@@ -192,7 +192,7 @@ return $form
                                     /** @var \App\Models\User|null $user */
                                     $user = Auth::user();
                                     return $user && $user->hasRole(['admin','Legal officer']);
-                                })()),                
+                                })()),
                 TextInput::make('no_sspd_bphtb')
                 ->nullable()
                 ->label('No. SSPD BPHTB')
@@ -230,7 +230,7 @@ return $form
                                     /** @var \App\Models\User|null $user */
                                     $user = Auth::user();
                                     return $user && $user->hasRole(['admin','Legal officer']);
-                                })()),                
+                                })()),
                                 TextInput::make('no_ajb')
                 ->nullable()->label('No. AJB')
                 ->disabled(fn () => ! (function () {
@@ -594,7 +594,7 @@ return $form
 
                         return redirect()->route('gcvmasterdajam.print');
                     }),
-                    
+
                     Tables\Actions\RestoreBulkAction::make()
                         ->label('Kembalikan Data')
                         ->icon('heroicon-o-arrow-path')
@@ -645,6 +645,15 @@ public static function getEloquentQuery(): Builder
                 // gcvPengajuanBnStats::class,
             ];
         }
+
+        public static function canViewAny(): bool
+{
+    $user = auth()->user();
+        /** @var \App\Models\User|null $user */
+
+    return $user->hasRole(['admin','Direksi','Legal officer','Super Admin', 'Legal Pajak']);
+}
+
 
     public static function getPages(): array
     {

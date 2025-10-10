@@ -664,6 +664,15 @@ return $form->schema([
         ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
 }
 
+public static function canViewAny(): bool
+{
+    $user = auth()->user();
+        /** @var \App\Models\User|null $user */
+
+    return $user->hasRole(['admin','Legal officer','Direksi','Super Admin', 'Legal Pajak']);
+}
+
+
  public static function getTenantModel(): string
     {
         return \App\Models\Team::class;

@@ -800,6 +800,15 @@ class KartuKontrolGCVResource extends Resource
         ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
 }
 
+public static function canViewAny(): bool
+{
+    $user = auth()->user();
+        /** @var \App\Models\User|null $user */
+
+    return $user->hasRole(['admin','Kasir 1','Kasir 2','Super Admin']);
+}
+
+
 
     public static function getPages(): array
     {

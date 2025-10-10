@@ -719,6 +719,15 @@ class GcvKprResource extends Resource
         ];
     }
 
+    public static function canViewAny(): bool
+{
+    $user = auth()->user();
+        /** @var \App\Models\User|null $user */
+
+    return $user->hasRole(['admin','Direksi','KPR Officer','Super Admin', 'Legal Pajak','KPR Stok']);
+}
+
+
 
 public static function getEloquentQuery(): Builder
 {

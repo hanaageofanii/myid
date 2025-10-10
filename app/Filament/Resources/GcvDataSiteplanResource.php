@@ -385,18 +385,36 @@ class GcvDataSiteplanResource extends Resource
 
 public static function getEloquentQuery(): Builder
 {
-    return parent::getEloquentQuery()
+    $user = auth()->user();
+
+    $query = parent::getEloquentQuery()
         ->withoutGlobalScopes([
             SoftDeletingScope::class,
-        ])
-        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+        ]);
+    /** @var \App\Models\User|null $user */
+    if ($user && $user->hasAnyRole(['Super Admin', 'admin', 'Legal officer','Legal Pajak'])) {
+        return $query;
+    }
+
+    // Selain itu, filter berdasarkan tenant (team) aktif di Filament
+    return $query->where('team_id', filament()->getTenant()->id);
 }
+
         public static function getWidgets(): array
         {
             return [
                 GcvDataSiteplanStats::class,
             ];
         }
+
+public static function canViewAny(): bool
+{
+    $user = auth()->user();
+    /** @var \App\Models\User|null $user */
+
+    return $user && $user->hasAnyRole(['admin', 'Direksi', 'Legal officer', 'Super Admin']);
+}
+
 
 
 

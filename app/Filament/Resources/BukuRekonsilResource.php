@@ -640,6 +640,15 @@ public static function getEloquentQuery(): Builder
 
 }
 
+public static function canViewAny(): bool
+{
+    $user = auth()->user();
+        /** @var \App\Models\User|null $user */
+
+    return $user->hasRole(['admin','Kasir 1','Kasir 2','Super Admin', 'Direksi']);
+}
+
+
     public static function getPages(): array
     {
         return [

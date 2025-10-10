@@ -7,59 +7,76 @@ use App\Models\User;
 
 class gcv_kprPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak','KPR Stok','KPR Officer','Lapangan','Kasir 1','Kasir 2']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole([
+            'admin','Direksi','Legal officer','Legal Pajak',
+            'KPR Stok','KPR Officer','Lapangan','Kasir 1','Kasir 2'
+        ]);
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
     public function view(User $user, gcv_kpr $gcv_kpr): bool
     {
-        return $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak','KPR Stok','KPR Officer','Lapangan','Kasir 1','Kasir 2']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole([
+            'admin','Direksi','Legal officer','Legal Pajak',
+            'KPR Stok','KPR Officer','Lapangan','Kasir 1','Kasir 2'
+        ]) && $user->teams()->where('id', $gcv_kpr->team_id)->exists();
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
         return $user->hasRole(['admin','KPR Officer']);
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, gcv_kpr $gcv_kpr): bool
     {
-        return $user->hasRole(['admin','KPR Officer']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin','KPR Officer'])
+            && $user->teams()->where('id', $gcv_kpr->team_id)->exists();
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(User $user, gcv_kpr $gcv_kpr): bool
     {
-        return $user->hasRole(['admin','KPR Officer']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin','KPR Officer'])
+            && $user->teams()->where('id', $gcv_kpr->team_id)->exists();
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
     public function restore(User $user, gcv_kpr $gcv_kpr): bool
     {
-        return $user->hasRole(['admin']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin'])
+            && $user->teams()->where('id', $gcv_kpr->team_id)->exists();
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
     public function forceDelete(User $user, gcv_kpr $gcv_kpr): bool
     {
-        return $user->hasRole(['admin']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin'])
+            && $user->teams()->where('id', $gcv_kpr->team_id)->exists();
     }
 }

@@ -87,6 +87,14 @@ class RoleResource extends Resource
             ]);
     }
 
+        public static function canViewAny(): bool
+{
+    $user = auth()->user();
+        /** @var \App\Models\User|null $user */
+
+    return $user->hasRole(['admin']);
+}
+
     public static function getPages(): array
     {
         return [

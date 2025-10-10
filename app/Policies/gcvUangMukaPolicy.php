@@ -12,7 +12,11 @@ class gcvUangMukaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['admin','Direksi', 'Kasir 1','Kasir 2']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin','Direksi','Kasir 1','Kasir 2']);
     }
 
     /**
@@ -20,7 +24,12 @@ class gcvUangMukaPolicy
      */
     public function view(User $user, gcv_uang_muka $gcv_uang_muka): bool
     {
-        return $user->hasRole(['admin','Direksi', 'Kasir 1','Kasir 2']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin','Direksi','Kasir 1','Kasir 2'])
+            && $user->teams()->where('id', $gcv_uang_muka->team_id)->exists();
     }
 
     /**
@@ -28,7 +37,11 @@ class gcvUangMukaPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(['admin','Kasir 1', 'Kasir 2']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin','Kasir 1','Kasir 2']);
     }
 
     /**
@@ -36,7 +49,12 @@ class gcvUangMukaPolicy
      */
     public function update(User $user, gcv_uang_muka $gcv_uang_muka): bool
     {
-        return $user->hasRole(['admin','Kasir 1', 'Kasir 2']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin','Kasir 1','Kasir 2'])
+            && $user->teams()->where('id', $gcv_uang_muka->team_id)->exists();
     }
 
     /**
@@ -44,7 +62,12 @@ class gcvUangMukaPolicy
      */
     public function delete(User $user, gcv_uang_muka $gcv_uang_muka): bool
     {
-        return $user->hasRole(['admin','Kasir 1', 'Kasir 2']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin','Kasir 1','Kasir 2'])
+            && $user->teams()->where('id', $gcv_uang_muka->team_id)->exists();
     }
 
     /**
@@ -52,7 +75,12 @@ class gcvUangMukaPolicy
      */
     public function restore(User $user, gcv_uang_muka $gcv_uang_muka): bool
     {
-        return $user->hasRole(['admin','Kasir 1', 'Kasir 2']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin','Kasir 1','Kasir 2'])
+            && $user->teams()->where('id', $gcv_uang_muka->team_id)->exists();
     }
 
     /**
@@ -60,6 +88,11 @@ class gcvUangMukaPolicy
      */
     public function forceDelete(User $user, gcv_uang_muka $gcv_uang_muka): bool
     {
-        return $user->hasRole(['admin','Kasir 1', 'Kasir 2']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin','Kasir 1','Kasir 2'])
+            && $user->teams()->where('id', $gcv_uang_muka->team_id)->exists();
     }
 }
