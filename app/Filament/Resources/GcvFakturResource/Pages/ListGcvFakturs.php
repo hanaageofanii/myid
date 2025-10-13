@@ -12,10 +12,11 @@ class ListGcvFakturs extends ListRecords
 {
     protected static string $resource = GcvFakturResource::class;
 
-    protected function getHeaderActions(): array
+      protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Buat Data Faktur'),
         ];
     }
 
