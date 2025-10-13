@@ -21,8 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\gcv_kpr;
 use Filament\Forms\Components\FileUpload;
 use Closure;
-
-use App\Filament\Resources\GcvUangMukaResource\RelationManagers;
+use Filament\Facades\Filament;
 use App\Models\gcv_uang_muka;
 use App\Models\GcvUangMuka;
 use Illuminate\Database\Eloquent\Builder;
@@ -190,26 +189,30 @@ class KartuKontrolGCVResource extends Resource
                                                 $user = Auth::user();
                                                 return $user && $user->hasRole(['admin', 'Kasir 1', 'Kasir 2']);
                                             })()),
-                                        Select::make('siteplan')
-                                            ->label('Blok')
-                                            ->searchable()
-                                            ->required()
-                                            ->reactive()
-                                            ->options(function (callable $get) {
-                                                $selectedKavling = $get('kavling');
-                                                if (! $selectedKavling) {
-                                                    return [];
-                                                }
-                                                return gcv_kpr::where('jenis_unit', $selectedKavling)
-                                                    ->where('status_akad', 'akad')
-                                                    ->pluck('siteplan', 'siteplan')
-                                                    ->toArray();
-                                            })
-                                            ->disabled(fn () => ! (function () {
-                                                /** @var \App\Models\User|null $user */
-                                                $user = Auth::user();
-                                                return $user && $user->hasRole(['admin', 'Kasir 1', 'Kasir 2']);
-                                            })()),
+Select::make('siteplan')
+    ->label('Blok')
+    ->searchable()
+    ->required()
+    ->reactive()
+    ->options(function (callable $get) {
+        $selectedKavling = $get('kavling');
+        $tenant = Filament::getTenant(); // ambil tenant aktif
+
+        if (! $selectedKavling || ! $tenant) {
+            return [];
+        }
+
+        return gcv_kpr::where('jenis_unit', $selectedKavling)
+            ->where('status_akad', 'akad')
+            ->where('team_id', $tenant->id) // filter tenant
+            ->pluck('siteplan', 'siteplan')
+            ->toArray();
+    })
+    ->disabled(fn () => ! (function () {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin', 'Kasir 1', 'Kasir 2']);
+    })()),
                                         TextInput::make('type')
                                             ->label('Type')
                                             ->required()

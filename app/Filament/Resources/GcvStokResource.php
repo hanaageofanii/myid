@@ -6,6 +6,7 @@ use App\Filament\Resources\GcvStokResource\Pages;
 use App\Filament\Resources\GcvStokResource\RelationManagers;
 use App\Models\gcv_stok;
 use App\Models\GcvDataSiteplan;
+use Filament\Facades\Filament;
 use App\Models\gcv_legalitas;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -116,34 +117,47 @@ class GcvStokResource extends Resource
                                         return $user && $user->hasRole(['admin','KPR Officer']);
                                     })()),
 
-            Select::make('siteplan')
-                ->label('Blok')
-                ->options(
-                    GcvDataSiteplan::where('terbangun', 1)->pluck('siteplan', 'siteplan')->toArray()
-                )
-                ->searchable()
-                ->required()
-                ->reactive()
-                ->afterStateUpdated(function ($state, $set) {
-                    $audit = GcvDataSiteplan::where('siteplan', $state)->first();
-                    $legalitas =gcv_legalitas::where( 'siteplan', $state)->first();
+Select::make('siteplan')
+    ->label('Blok')
+    ->searchable()
+    ->required()
+    ->reactive()
+    ->options(function () {
+        $tenant = Filament::getTenant();
+        if (! $tenant) return [];
 
-                    if ($audit) {
-                        $set('type', $audit->type);
-                        $set('luas_tanah', $audit->luas);
-                    }
+        return GcvDataSiteplan::where('terbangun', 1)
+            ->where('team_id', $tenant->id) // filter tenant
+            ->pluck('siteplan', 'siteplan')
+            ->toArray();
+    })
+    ->afterStateUpdated(function ($state, callable $set) {
+        $tenant = Filament::getTenant();
+        if (! $state || ! $tenant) return;
 
-                    if($legalitas){
-                        $set('status_sertifikat', $legalitas->status_sertifikat);
-                    }
+        $audit = GcvDataSiteplan::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
 
+        $legalitas = gcv_legalitas::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
 
-                })
+        if ($audit) {
+            $set('type', $audit->type);
+            $set('luas_tanah', $audit->luas);
+        }
+
+        if ($legalitas) {
+            $set('status_sertifikat', $legalitas->status_sertifikat);
+        }
+    })
                 ->disabled(fn () => ! (function () {
                                         /** @var \App\Models\User|null $user */
                                         $user = Auth::user();
                                         return $user && $user->hasRole(['admin','KPR Officer']);
                                     })()),
+
 
             TextInput::make('type')
                 ->label('Type')

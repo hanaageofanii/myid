@@ -50,7 +50,7 @@ use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Actions\ForceDeleteAction;
 use Carbon\Carbon;
-
+use Filament\Facades\Filament;
 
 
 
@@ -104,37 +104,49 @@ class GcvPencairanAkadResource extends Resource
 
                         Select::make('siteplan')
     ->label('Blok')
+    ->searchable()
+    ->reactive()
     ->options(function (callable $get) {
         $selectedKavling = $get('kavling');
-        if (! $selectedKavling) {
+        $tenant = Filament::getTenant(); 
+
+        if (! $selectedKavling || ! $tenant) {
             return [];
         }
 
         return gcv_kpr::where('jenis_unit', $selectedKavling)
             ->where('status_akad', 'akad')
+            ->where('team_id', $tenant->id) 
             ->pluck('siteplan', 'siteplan')
             ->toArray();
     })
-    ->searchable()
     ->disabled(fn () => ! (function () {
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
         return $user && $user->hasRole(['admin','Kasir 1']);
     })())
-    ->reactive()
     ->afterStateUpdated(function ($state, callable $set) {
-        if ($state) {
-            $data = gcv_kpr::where('siteplan', $state)->first();
-            if ($data) {
-                $set('nama_konsumen', $data->nama_konsumen);
-                $set('bank', $data->bank);
-                $set('max_kpr', $data->maksimal_kpr);
-            }
+        $tenant = Filament::getTenant(); 
+        if (! $state || ! $tenant) {
+            return;
+        }
 
-            $bayar = gcv_stok::where('siteplan', $state)->first();
-            if ($state) {
-                $set('status_pembayaran', $bayar->status_pembayaran ?? null);
-            }
+        $data = gcv_kpr::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
+
+        if ($data) {
+            $set('nama_konsumen', $data->nama_konsumen);
+            $set('bank', $data->bank);
+            $set('max_kpr', $data->maksimal_kpr);
+        }
+
+        $bayar = gcv_stok::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
+
+        if ($bayar) {
+            $set('status_pembayaran', $bayar->status_pembayaran);
         }
     }),
 

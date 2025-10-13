@@ -7,6 +7,7 @@ use App\Filament\Resources\GcvUangMukaResource\RelationManagers;
 use App\Models\gcv_uang_muka;
 use App\Models\GcvUangMuka;
 use Filament\Forms;
+use Filament\Facades\Filament;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -98,41 +99,45 @@ protected static ?string $title = "Data Uang Muka";
                                         return $user && $user->hasRole(['admin','KPR Officer']);
                                     })()),
 
-                        Select::make('siteplan')
-                            ->label('Blok')
-                            ->searchable()
-                            ->reactive()
-                            ->options(function (callable $get) {
-                                $selectedKavling = $get('kavling');
-                                if (! $selectedKavling) return [];
+Select::make('siteplan')
+    ->label('Blok')
+    ->searchable()
+    ->reactive()
+    ->options(function (callable $get) {
+        $selectedKavling = $get('kavling');
+        $tenant = Filament::getTenant();
 
-                                return gcv_kpr::where('jenis_unit', $selectedKavling)
-                                    ->where('status_akad', 'akad')
-                                    ->pluck('siteplan', 'siteplan')
-                                    ->toArray();
-                            })
-                                ->disabled(fn () => ! (function () {
-                                        /** @var \App\Models\User|null $user */
-                                        $user = Auth::user();
-                                        return $user && $user->hasRole(['admin','KPR Officer']);
-                                    })())
-                            ->afterStateUpdated(function ($state, callable $set) {
-                                if (! $state) return;
+        if (! $selectedKavling || ! $tenant) return [];
 
-                                $kprData = gcv_kpr::where('siteplan', $state)->first();
+        return gcv_kpr::where('jenis_unit', $selectedKavling)
+            ->where('status_akad', 'akad')
+            ->where('team_id', $tenant->id) // filter tenant
+            ->pluck('siteplan', 'siteplan')
+            ->toArray();
+    })
+    ->disabled(fn () => ! (function () {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin','KPR Officer']);
+    })())
+    ->afterStateUpdated(function ($state, callable $set) {
+        $tenant = Filament::getTenant();
+        if (! $state || ! $tenant) {
+            $set('nama_konsumen', null);
+            $set('harga', null);
+            $set('max_kpr', null);
+            return;
+        }
 
-                                if ($kprData) {
-                                    $set('nama_konsumen', $kprData->nama_konsumen);
-                                    $set('harga', $kprData->harga);
-                                    $set('max_kpr', $kprData->maksimal_kpr);
-                                } else {
-                                    $set('nama_konsumen', null);
-                                    $set('harga', null);
-                                    $set('max_kpr', null);
-                                }
-                            }),
-                    ]),
+        $kprData = gcv_kpr::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
 
+        $set('nama_konsumen', $kprData?->nama_konsumen);
+        $set('harga', $kprData?->harga);
+        $set('max_kpr', $kprData?->maksimal_kpr);
+    }),
+]),
                 Step::make('Data Konsumen')
                     ->columns(3)
                     ->description('Informasi konsumen')

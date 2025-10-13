@@ -12,7 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Filament\Facades\Filament;
 use App\Models\gcv_validasi_pph;
 use App\Models\GcvValidasiPph;
 use App\Models\gcv_uang_muka;
@@ -113,40 +113,51 @@ class GcvFakturResource extends Resource
                                     ->searchable()
                                     ->reactive()
                                     ->options(function (callable $get) {
-                                        $selectedKavling = $get('kavling');
-                                        if (! $selectedKavling) return [];
+                                            $selectedKavling = $get('kavling');
+                                            if (! $selectedKavling) return [];
 
-                                        return gcv_kpr::where('jenis_unit', $selectedKavling)
-                                            ->pluck('siteplan', 'siteplan')
-                                            ->toArray();
-                                    })
-                                    ->disabled(fn () => ! (function () {
+                                            // Ambil tenant aktif
+                                            $tenant = Filament::getTenant();
+
+                                            // Jika tenant belum diset, jangan tampilkan data apa pun
+                                            if (! $tenant) return [];
+
+                                            // Ambil hanya siteplan yang sesuai tenant aktif dan kavling terpilih
+                                            return gcv_kpr::where('jenis_unit', $selectedKavling)
+                                                ->where('team_id', $tenant->id)
+                                                ->pluck('siteplan', 'siteplan')
+                                                ->toArray();
+                                        })                                    ->disabled(fn () => ! (function () {
                                         /** @var \App\Models\User|null $user */
                                         $user = Auth::user();
                                         return $user && $user->hasRole(['admin','Legal Pajak']);
                                     })())
-                                    ->afterStateUpdated(function ($state, callable $set, $get) {
-                                        if (! $state) return;
-                                        $kprData = gcv_kpr::where('siteplan', $state)->first();
+->afterStateUpdated(function ($state, callable $set, $get) {
+        if (! $state) return;
 
-                                        if ($kprData) {
-                                            $set('nama_konsumen', $kprData->nama_konsumen);
-                                            $set('nik', $kprData->nik);
-                                            $set('npwp', $kprData->npwp);
-                                            $set('alamat', $kprData->alamat);
-                                            $set('harga_jual', $kprData->harga);
-                                            $set('kavling', $kprData->jenis_unit);
+        $tenant = Filament::getTenant();
 
-                                            $harga = $kprData->harga ?? 0;
-                                            $dpp_ppn = $harga * (11 / 12);
-                                            $set('dpp_ppn', $dpp_ppn);
+        $kprData = gcv_kpr::where('siteplan', $state)
+            ->where('team_id', optional($tenant)->id)
+            ->first();
 
-                                            $tarif_ppn_raw = $get('tarif_ppn') ?? '0%';
-                                            $tarif_ppn = (float) str_replace('%', '', $tarif_ppn_raw) / 100;
-                                            $jumlah_ppn = $harga * $tarif_ppn;
-                                            $set('jumlah_ppn', $jumlah_ppn);
-                                        }
-                                    }),
+        if ($kprData) {
+            $set('nama_konsumen', $kprData->nama_konsumen);
+            $set('nik', $kprData->nik);
+            $set('npwp', $kprData->npwp);
+            $set('alamat', $kprData->alamat);
+            $set('harga_jual', $kprData->harga);
+            $set('kavling', $kprData->jenis_unit);
+
+            $harga = $kprData->harga ?? 0;
+            $dpp_ppn = $harga * (11 / 12);
+            $set('dpp_ppn', $dpp_ppn);
+
+            $tarif_ppn_raw = $get('tarif_ppn') ?? '0%';
+            $tarif_ppn = (float) str_replace('%', '', $tarif_ppn_raw) / 100;
+            $jumlah_ppn = $harga * $tarif_ppn;
+            $set('jumlah_ppn', $jumlah_ppn);
+        }                                    }),
                             ]),
                     ]),
 

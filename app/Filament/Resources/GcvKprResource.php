@@ -8,6 +8,7 @@ use Filament\Forms\Components\Wizard\Step;
 use App\Filament\Resources\GcvKprResource\RelationManagers;
 use App\Models\gcv_kpr;
 use App\Models\gcv_stok;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -73,65 +74,83 @@ class GcvKprResource extends Resource
             ->columns(2)
             ->description('Informasi dasar unit')
             ->schema([
-                Forms\Components\Select::make('jenis_unit')
-                    ->options([
-                        'standar' => 'Standar',
-                        'khusus' => 'Khusus',
-                        'hook' => 'Hook',
-                        'komersil' => 'Komersil',
-                        'tanah_lebih' => 'Tanah Lebih',
-                        'kios' => 'Kios',
-                    ])
-                    ->required()
-                    ->reactive()
-                    ->label('Jenis Unit')
-                    ->disabled(fn () => ! (function () {
-                        /** @var \App\Models\User|null $user */
-                        $user = Auth::user();
-                        return $user && $user->hasRole(['admin','KPR Officer']);
-                    })())
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        if ($state) {
-                            $bookedBlok = gcv_stok::where('kpr_status', 'akad')
-                                ->where('kavling', $state)
-                                ->pluck('siteplan')
-                                ->toArray();
-                            $formattedOptions = array_combine($bookedBlok, $bookedBlok);
-                            $set('siteplan', null);
-                            $set('available_siteplans', $formattedOptions);
-                        }
-                    }),
+Forms\Components\Select::make('jenis_unit')
+    ->options([
+        'standar' => 'Standar',
+        'khusus' => 'Khusus',
+        'hook' => 'Hook',
+        'komersil' => 'Komersil',
+        'tanah_lebih' => 'Tanah Lebih',
+        'kios' => 'Kios',
+    ])
+    ->required()
+    ->reactive()
+    ->label('Jenis Unit')
+    ->disabled(fn () => ! (function () {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin','KPR Officer']);
+    })())
+    ->afterStateUpdated(function ($state, callable $set) {
+        if (! $state) return;
 
-                Forms\Components\Select::make('siteplan')
-                    ->label('Blok')
-                    ->nullable()
-                    ->reactive()
-                    ->required()
-                    ->options(fn (callable $get) => $get('jenis_unit')
-                        ? gcv_stok::where('kpr_status', 'akad')
-                            ->where('kavling', $get('jenis_unit'))
-                            ->pluck('siteplan', 'siteplan')
-                            ->toArray()
-                        : [])
-                    ->disabled(fn () => ! (function () {
-                        /** @var \App\Models\User|null $user */
-                        $user = Auth::user();
-                        return $user && $user->hasRole(['admin','KPR Officer']);
-                    })())
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        $gcv = gcv_stok::where('siteplan', $state)->first();
-                        if ($gcv) {
-                            $set('tanggal_akad', $gcv->tanggal_akad);
-                            $set('tanggal_booking', $gcv->tanggal_booking);
-                            $set('nama_konsumen', $gcv->nama_konsumen);
-                            $set('agent', $gcv->agent);
-                            $set('luas', $gcv->luas_tanah);
-                            $set('type', $gcv->type);
-                            $set('status_akad', $gcv->kpr_status);
-                            $set('pembayaran', $gcv->status_pembayaran);
-                        }
-                    }),
-                Forms\Components\Select::make('type')
+        // Ambil tenant aktif
+        $tenant = Filament::getTenant();
+
+        // Ambil blok yang sudah akad hanya dari tenant aktif
+        $bookedBlok = gcv_stok::where('kpr_status', 'akad')
+            ->where('kavling', $state)
+            ->where('team_id', optional($tenant)->id)
+            ->pluck('siteplan')
+            ->toArray();
+
+        $formattedOptions = array_combine($bookedBlok, $bookedBlok);
+        $set('siteplan', null);
+        $set('available_siteplans', $formattedOptions);
+    }),
+
+Forms\Components\Select::make('siteplan')
+    ->label('Blok')
+    ->nullable()
+    ->reactive()
+    ->required()
+    ->options(function (callable $get) {
+        $tenant = Filament::getTenant();
+        $jenisUnit = $get('jenis_unit');
+
+        if (! $jenisUnit || ! $tenant) return [];
+
+        // Hanya ambil data sesuai tenant aktif
+        return gcv_stok::where('kpr_status', 'akad')
+            ->where('kavling', $jenisUnit)
+            ->where('team_id', $tenant->id)
+            ->pluck('siteplan', 'siteplan')
+            ->toArray();
+    })
+    ->disabled(fn () => ! (function () {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin','KPR Officer']);
+    })())
+    ->afterStateUpdated(function ($state, callable $set) {
+        $tenant = Filament::getTenant();
+
+        $gcv = gcv_stok::where('siteplan', $state)
+            ->where('team_id', optional($tenant)->id)
+            ->first();
+
+        if ($gcv) {
+            $set('tanggal_akad', $gcv->tanggal_akad);
+            $set('tanggal_booking', $gcv->tanggal_booking);
+            $set('nama_konsumen', $gcv->nama_konsumen);
+            $set('agent', $gcv->agent);
+            $set('luas', $gcv->luas_tanah);
+            $set('type', $gcv->type);
+            $set('status_akad', $gcv->kpr_status);
+            $set('pembayaran', $gcv->status_pembayaran);
+        }
+    }),                
+    Forms\Components\Select::make('type')
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
                         $user = Auth::user();

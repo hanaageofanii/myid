@@ -12,7 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Filament\Facades\Filament;
 use App\Models\gcv_pencairan_akad;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Wizard;
@@ -99,53 +99,55 @@ public static function form(Form $form): Form
                                                     return $user && $user->hasRole(['admin','Legal Pajak']);
                                                 })()),
 
-                                Select::make('siteplan')
-                                    ->label('Blok / Siteplan')
-                                    ->nullable()
-                                    ->searchable()
-                                    ->reactive()
-                                    ->options(function (callable $get) {
-                                        $selectedKavling = $get('kavling');
-                                        if (! $selectedKavling) return [];
+Select::make('siteplan')
+    ->label('Blok / Siteplan')
+    ->nullable()
+    ->searchable()
+    ->reactive()
+    ->options(function (callable $get) {
+        $selectedKavling = $get('kavling');
+        $tenant = Filament::getTenant(); // tenant aktif
 
-                                        return gcv_kpr::where('jenis_unit', $selectedKavling)
-                                            ->pluck('siteplan', 'siteplan')
-                                            ->toArray();
-                                    })
-                                    ->disabled(fn () => ! (function () {
-                                        /** @var \App\Models\User|null $user */
-                                        $user = Auth::user();
-                                        return $user && $user->hasRole(['admin','Legal Pajak']);
-                                    })())
-                        ->afterStateUpdated(function ($state, callable $set) {
-                            $kprData = gcv_kpr::where('siteplan', $state)->first();
-                            $akadData = gcv_pencairan_akad::where('siteplan', $state)->first();
-                            // $pajakData = gcv_validasi_pph::where('siteplan', $state)->first();
-                            $dajamData = gcv_pencairan_dajam::where('siteplan', $state)->first();
+        if (! $selectedKavling || ! $tenant) return [];
 
-                            $maxKpr = $kprData->maksimal_kpr ?? 0;
-                            $nilaiPencairan = $akadData->nilai_pencairan ?? 0;
+        return gcv_kpr::where('jenis_unit', $selectedKavling)
+            ->where('team_id', $tenant->id) // filter tenant
+            ->pluck('siteplan', 'siteplan')
+            ->toArray();
+    })
+                            ->disabled(fn () => ! (function () {
+                                    /** @var \App\Models\User|null $user */
+                                    $user = Auth::user();
+                                    return $user && $user->hasRole(['admin','Legal officer']);
+                                })())
+    ->afterStateUpdated(function ($state, callable $set) {
+        $tenant = Filament::getTenant();
+        if (! $state || ! $tenant) return;
 
-                            $set('bank', $kprData->bank ?? null);
-                            $set('nama_konsumen', $kprData->nama_konsumen ?? null);
-                            $set('max_kpr', $maxKpr);
-                            $set('nilai_pencairan', $nilaiPencairan);
-                            // $set('dajam_pph', $pajakData->jumlah_pph ?? 0);
-                            // $set('dajam_bphtb', $pajakData->jumlah_bphtb ?? 0);
-                            // $set('total_dajam', max(0, $maxKpr - $nilaiPencairan));
+        $kprData = gcv_kpr::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
 
-                            if ($dajamData) {
-                                // $set('dajam_sertifikat', $dajamData->dajam_sertifikat);
-                                // $set('dajam_imb', $dajamData->dajam_imb);
-                                // $set('dajam_listrik', $dajamData->dajam_listrik);
-                                // $set('dajam_jkk', $dajamData->dajam_jkk);
-                                // $set('dajam_bestek', $dajamData->dajam_bestek);
-                                // $set('jumlah_realisasi_dajam', $dajamData->jumlah_realisasi_dajam);
-                                // $set('pembukuan', $dajamData->pembukuan);
-                                $set('no_debitur', $dajamData->no_debitur);
-                            }
-                        }),
+        $akadData = gcv_pencairan_akad::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
 
+        $dajamData = gcv_pencairan_dajam::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
+
+        $maxKpr = $kprData->maksimal_kpr ?? 0;
+        $nilaiPencairan = $akadData->nilai_pencairan ?? 0;
+
+        $set('bank', $kprData->bank ?? null);
+        $set('nama_konsumen', $kprData->nama_konsumen ?? null);
+        $set('max_kpr', $maxKpr);
+        $set('nilai_pencairan', $nilaiPencairan);
+
+        if ($dajamData) {
+            $set('no_debitur', $dajamData->no_debitur);
+        }
+    }),
                     Select::make('bank')
                         ->label('Bank')
                         ->options([

@@ -13,7 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Filament\Facades\Filament;
 use App\Models\gcv_uang_muka;
 use App\Models\GcvUangMuka;
 use App\Models\gcv_stok;
@@ -105,54 +105,62 @@ public static function form(Form $form): Form
                                                     return $user && $user->hasRole(['admin','Legal Pajak']);
                                                 })()),
 
-                                Select::make('siteplan')
-                                    ->label('Blok / Siteplan')
-                                    ->nullable()
-                                    ->searchable()
-                                    ->reactive()
-                                    ->options(function (callable $get) {
-                                        $selectedKavling = $get('kavling');
-                                        if (! $selectedKavling) return [];
+Select::make('siteplan')
+    ->label('Blok / Siteplan')
+    ->nullable()
+    ->searchable()
+    ->reactive()
+    ->options(function (callable $get) {
+        $selectedKavling = $get('kavling');
+        $tenant = Filament::getTenant(); // tenant aktif
 
-                                        return gcv_kpr::where('jenis_unit', $selectedKavling)
-                                            ->pluck('siteplan', 'siteplan')
-                                            ->toArray();
-                                    })
-                                    ->disabled(fn () => ! (function () {
-                                        /** @var \App\Models\User|null $user */
-                                        $user = Auth::user();
-                                        return $user && $user->hasRole(['admin','Legal Pajak']);
-                                    })())
-                                    ->afterStateUpdated(function ($state, callable $set) {
-                                        if (! $state) return;
+        if (! $selectedKavling || ! $tenant) return [];
 
-                                        $kprData = gcv_kpr::where('siteplan', $state)->first();
-                                        $legalData = gcv_legalitas::where('siteplan', $state)->first();
+        return gcv_kpr::where('jenis_unit', $selectedKavling)
+            ->where('team_id', $tenant->id) // filter tenant
+            ->pluck('siteplan', 'siteplan')
+            ->toArray();
+    })
+    ->disabled(fn () => ! (function () {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin','Legal Pajak']);
+    })())
+    ->afterStateUpdated(function ($state, callable $set) {
+        $tenant = Filament::getTenant();
+        if (! $state || ! $tenant) return;
 
-                                        if ($kprData) {
-                                            $set('nama_konsumen', $kprData->nama_konsumen);
-                                            $set('nik', $kprData->nik);
-                                            $set('npwp', $kprData->npwp);
-                                            $set('alamat', $kprData->alamat);
-                                            $set('harga', $kprData->harga);
-                                            $set('pembayaran', $kprData->pembayaran);
-                                            $set('kavling', $kprData->jenis_unit);
+        $kprData = gcv_kpr::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
+        $legalData = gcv_legalitas::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
 
-                                            $npoptkp = (int) $kprData->harga >= 80000000 ? 80000000 : 0;
-                                            $set('npoptkp', $npoptkp);
-                                            $set('jumlah_bphtb', max(0.05 * ($kprData->harga - $npoptkp), 0));
+        if ($kprData) {
+            $set('nama_konsumen', $kprData->nama_konsumen);
+            $set('nik', $kprData->nik);
+            $set('npwp', $kprData->npwp);
+            $set('alamat', $kprData->alamat);
+            $set('harga', $kprData->harga);
+            $set('pembayaran', $kprData->pembayaran);
+            $set('kavling', $kprData->jenis_unit);
 
-                                            $tarif_pph = ($kprData->jenis_unit === 'standar' && $kprData->pembayaran === 'kpr') ? 0.01 : 0.025;
-                                            $set('tarif_pph', ($tarif_pph * 100) . '%');
-                                            $set('jumlah_pph', max(($kprData->harga * $tarif_pph), 0));
-                                        }
+            $npoptkp = (int) $kprData->harga >= 80000000 ? 80000000 : 0;
+            $set('npoptkp', $npoptkp);
+            $set('jumlah_bphtb', max(0.05 * ($kprData->harga - $npoptkp), 0));
 
-                                        // if ($legalData) {
-                                        //     $set('no_sertifikat', $legalData->no_sertifikat);
-                                        //     $set('nop', $legalData->nop);
-                                        //     $set('luas_tanah', $legalData->luas_sertifikat);
-                                        // }
-                                    }),
+            $tarif_pph = ($kprData->jenis_unit === 'standar' && $kprData->pembayaran === 'kpr') ? 0.01 : 0.025;
+            $set('tarif_pph', ($tarif_pph * 100) . '%');
+            $set('jumlah_pph', max(($kprData->harga * $tarif_pph), 0));
+        }
+
+        // if ($legalData) {
+        //     $set('no_sertifikat', $legalData->no_sertifikat);
+        //     $set('nop', $legalData->nop);
+        //     $set('luas_tanah', $legalData->luas_sertifikat);
+        // }
+    }),
                             ]),
 
                         Section::make('Data Konsumen')

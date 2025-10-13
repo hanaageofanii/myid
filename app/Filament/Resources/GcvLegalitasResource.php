@@ -43,6 +43,7 @@ use Filament\Forms\Components\Wizard\Step;
 use Illuminate\Validation\Rule;
 use App\Models\gcv_datatandaterima;
 use Filament\Forms\Components\Repeater;
+use Filament\Facades\Filament;
 use App\Filament\Resources\GcvLegalitasResource\Widgets\gcv_legalitasStats;
 class GcvLegalitasResource extends Resource
 {
@@ -86,63 +87,67 @@ class GcvLegalitasResource extends Resource
                             return $user && $user->hasRole(['admin','Legal officer']);
                         })()),
 
-                    Forms\Components\Select::make('siteplan')
-                    ->label('Blok')
-                    ->searchable()
-                    ->required()
-                    ->reactive()
-                    ->options(function (callable $get) {
-                        $selectedKavling = $get('kavling');
-                        if (! $selectedKavling) {
-                            return [];
-                        }
+Forms\Components\Select::make('siteplan')
+    ->label('Blok')
+    ->searchable()
+    ->required()
+    ->reactive()
+    ->options(function (callable $get) {
+        $selectedKavling = $get('kavling');
+        $tenant = Filament::getTenant(); // ambil tenant aktif
 
-                        return GcvDataSiteplan::where('kavling', $selectedKavling)
-                            ->pluck('siteplan', 'siteplan')
-                            ->toArray();
-                    })
-                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                    $selectedKavling = $get('kavling');
+        if (! $selectedKavling || ! $tenant) {
+            return [];
+        }
 
-                    if (!$selectedKavling) {
-                        return;
-                    }
+        return GcvDataSiteplan::where('kavling', $selectedKavling)
+            ->where('team_id', $tenant->id) // filter sesuai tenant
+            ->pluck('siteplan', 'siteplan')
+            ->toArray();
+    })
+    ->afterStateUpdated(function ($state, callable $set, callable $get) {
+        $selectedKavling = $get('kavling');
+        $tenant = Filament::getTenant(); // ambil tenant aktif
 
-                    $data = gcv_datatandaterima::where('siteplan', $state)
-                        ->where('kavling', $selectedKavling)
-                        ->first();
+        if (! $selectedKavling || ! $tenant) {
+            return;
+        }
 
-                    if ($data) {
-                        $sertifikatList = [];
+        $data = gcv_datatandaterima::where('siteplan', $state)
+            ->where('kavling', $selectedKavling)
+            ->where('team_id', $tenant->id) // filter sesuai tenant
+            ->first();
 
-                        for ($i = 1; $i <= 4; $i++) {
-                            $luas = $data->{'luas' . $i} ?? null;
-                            $kode = $data->{'kode' . $i} ?? null;
+        if ($data) {
+            $sertifikatList = [];
 
-                            if (!empty($luas) || !empty($kode)) {
-                                $sertifikatList[] = [
-                                    'luas' => $luas,
-                                    'kode' => $kode,
-                                ];
-                            }
-                        }
+            for ($i = 1; $i <= 4; $i++) {
+                $luas = $data->{'luas' . $i} ?? null;
+                $kode = $data->{'kode' . $i} ?? null;
 
-                        $set('sertifikat_list', $sertifikatList);
+                if (!empty($luas) || !empty($kode)) {
+                    $sertifikatList[] = [
+                        'luas' => $luas,
+                        'kode' => $kode,
+                    ];
+                }
+            }
 
-                        $nopList = collect(explode(',', $data->nop_pbb_pecahan))
-                            ->map(fn ($item) => ['nop' => trim($item)])
-                            ->toArray();
+            $set('sertifikat_list', $sertifikatList);
 
-                        $set('nop', $nopList);
+            $nopList = collect(explode(',', $data->nop_pbb_pecahan))
+                ->map(fn ($item) => ['nop' => trim($item)])
+                ->toArray();
 
-                        $set('imb_pbg', $data->imb_pbg ?? null);
-                    }
-                })
+            $set('nop', $nopList);
+            $set('imb_pbg', $data->imb_pbg ?? null);
+        }
+    })
     ->disabled(fn () => ! (function () {
-                                    /** @var \App\Models\User|null $user */
-                                    $user = Auth::user();
-                                    return $user && $user->hasRole(['admin','Legal officer']);
-                                })()),
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin','Legal officer']);
+    })()),
 
                 Forms\Components\TextInput::make('id_rumah')
                     ->label('No. ID Rumah')

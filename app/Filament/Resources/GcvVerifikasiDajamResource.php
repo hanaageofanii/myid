@@ -13,7 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Filament\Facades\Filament;
 use App\Models\gcv_uang_muka;
 use App\Models\GcvUangMuka;
 use App\Models\gcv_stok;
@@ -101,40 +101,45 @@ class GcvVerifikasiDajamResource extends Resource
                             return $user && $user->hasRole(['admin','Legal officer']);
                         })()),
 
-                        Select::make('siteplan')
-                            ->label('Blok')
-                            ->options(function (callable $get) {
-                                $selectedKavling = $get('kavling');
-                                if (! $selectedKavling) {
-                                    return [];
-                                }
+Select::make('siteplan')
+    ->label('Blok')
+    ->searchable()
+    ->reactive()
+    ->options(function (callable $get) {
+        $selectedKavling = $get('kavling');
+        $tenant = Filament::getTenant(); // tenant aktif
 
-                                return gcv_kpr::where('jenis_unit', $selectedKavling)
-                                    ->where('status_akad', 'akad')
-                                    ->pluck('siteplan', 'siteplan')
-                                    ->toArray();
-                            })
-                            ->searchable()
-                            ->disabled(fn () => ! (function () {
-                            /** @var \App\Models\User|null $user */
-                            $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal officer']);
-                        })())
-                        ->reactive()
-                            ->afterStateUpdated(function ($state, callable $set) {
-                                $kprData = gcv_kpr::where('siteplan', $state)->first();
-                                $pencairanAkad = gcv_pencairan_akad::where('siteplan', $state)->first();
-                                // $dajamData = dajam::where('siteplan', $state)->first();
-                                // $pengDajam = pengajuan_dajam_pca::where('siteplan', $state)->first();
+        if (! $selectedKavling || ! $tenant) {
+            return [];
+        }
 
-                                $set('bank', $kprData?->bank);
-                                $set('nama_konsumen', $kprData?->nama_konsumen);
-                                $set('max_kpr', $kprData?->maksimal_kpr);
-                                $set('no_debitur', $pencairanAkad?->no_debitur);
-                                // $set('pembukuan', $dajamData?->pembukuan);
-                                // $set('no_debitur', $dajamData?->no_debitur);
-                                // $set('nama_dajam', $pengDajam?->nama_dajam);
-                            }),
+        return gcv_kpr::where('jenis_unit', $selectedKavling)
+            ->where('status_akad', 'akad')
+            ->where('team_id', $tenant->id) // filter tenant
+            ->pluck('siteplan', 'siteplan')
+            ->toArray();
+    })
+    ->disabled(fn () => ! (function () {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin','Legal officer']);
+    })())
+    ->afterStateUpdated(function ($state, callable $set) {
+        $tenant = Filament::getTenant();
+        if (! $state || ! $tenant) return;
+
+        $kprData = gcv_kpr::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
+        $pencairanAkad = gcv_pencairan_akad::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
+
+        $set('bank', $kprData?->bank);
+        $set('nama_konsumen', $kprData?->nama_konsumen);
+        $set('max_kpr', $kprData?->maksimal_kpr);
+        $set('no_debitur', $pencairanAkad?->no_debitur);
+    }),
 
                             TextInput::make('nama_konsumen')
                             ->label('Nama Konsumen')

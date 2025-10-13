@@ -12,7 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
@@ -99,40 +99,57 @@ return $form
                                                     return $user && $user->hasRole(['admin','Legal Pajak']);
                                                 })()),
 
-                Select::make('siteplan')
-                    ->label('Blok')
-                    ->options(fn () => gcv_kpr::pluck('siteplan', 'siteplan'))
-                    ->searchable()
-                     ->options(function (callable $get) {
-                                        $selectedKavling = $get('kavling');
-                                        if (! $selectedKavling) return [];
+Select::make('siteplan')
+    ->label('Blok')
+    ->searchable()
+    ->reactive()
+    ->options(function (callable $get) {
+        $selectedKavling = $get('kavling');
+        $tenant = Filament::getTenant(); // ambil tenant aktif
 
-                                        return gcv_kpr::where('jenis_unit', $selectedKavling)
-                                            ->pluck('siteplan', 'siteplan')
-                                            ->toArray();
-                                    })
-                    ->disabled(fn () => ! (function () {
-                                    /** @var \App\Models\User|null $user */
-                                    $user = Auth::user();
-                                return $user && $user->hasRole(['admin','Legal officer']);
-                                })())
-                                ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        $kprData = gcv_kpr::where('siteplan', $state)->first();
-                        if ($kprData) {
-                            $set('kavling', $kprData->jenis_unit);
-                            $set('nama_konsumen', $kprData->nama_konsumen);
-                            $set('nik', $kprData->nik);
-                            $set('npwp', $kprData->npwp);
-                            $set('alamat', $kprData->alamat);
-                        }
+        if (! $selectedKavling || ! $tenant) {
+            return [];
+        }
 
-                        $legalData = gcv_legalitas::where('siteplan', $state)->first();
-                        if ($legalData) {
-                            // $set('nop', $legalData->nop);
-                        }
-                    }),
+        return gcv_kpr::where('jenis_unit', $selectedKavling)
+            ->where('team_id', $tenant->id) // 🔥 filter data sesuai tenant aktif
+            ->pluck('siteplan', 'siteplan')
+            ->toArray();
+    })
+    ->disabled(fn () => ! (function () {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin','Legal officer']);
+    })())
+    ->afterStateUpdated(function ($state, callable $set) {
+        $tenant = Filament::getTenant(); // ambil tenant aktif
 
+        if (! $state || ! $tenant) {
+            return;
+        }
+
+        // 🔥 ambil data KPR sesuai tenant
+        $kprData = gcv_kpr::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
+
+        if ($kprData) {
+            $set('kavling', $kprData->jenis_unit);
+            $set('nama_konsumen', $kprData->nama_konsumen);
+            $set('nik', $kprData->nik);
+            $set('npwp', $kprData->npwp);
+            $set('alamat', $kprData->alamat);
+        }
+
+        // 🔥 ambil data legalitas sesuai tenant
+        $legalData = gcv_legalitas::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
+
+        if ($legalData) {
+            // $set('nop', $legalData->nop);
+        }
+    }),
                 TextInput::make('nop')
                     ->nullable()
                     ->label('NOP')

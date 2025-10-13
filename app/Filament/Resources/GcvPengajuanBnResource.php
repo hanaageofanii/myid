@@ -18,6 +18,7 @@ use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use App\Models\gcv_stok;
 use App\Models\gcv_kpr;
+use Filament\Facades\Filament;
 use App\Models\gcvDataSiteplan;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -106,41 +107,55 @@ class GcvPengajuanBnResource extends Resource
                             return $user && $user->hasRole(['admin','Legal officer']);
                         })()),
 
-                        Select::make('siteplan')
-                            ->label('Blok')
-                            ->reactive()
-                            ->dehydrated()
-                            ->options(function (callable $get) {
-                                $selectedKavling = $get('kavling');
-                                if (! $selectedKavling) {
-                                    return [];
-                                }
+Select::make('siteplan')
+    ->label('Blok')
+    ->reactive()
+    ->dehydrated()
+    ->options(function (callable $get) {
+        $selectedKavling = $get('kavling');
+        $tenant = Filament::getTenant(); // tenant aktif
 
-                                return gcv_kpr::where('jenis_unit', $selectedKavling)
-                                    ->where('status_akad', 'akad')
-                                    ->pluck('siteplan', 'siteplan')
-                                    ->toArray();
-                            })
-                            ->searchable()
+        if (! $selectedKavling || ! $tenant) {
+            return [];
+        }
+
+        return gcv_kpr::where('jenis_unit', $selectedKavling)
+            ->where('status_akad', 'akad')
+            ->where('team_id', $tenant->id) // filter tenant
+            ->pluck('siteplan', 'siteplan')
+            ->toArray();
+    })
+    ->searchable()
                             ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
                             $user = Auth::user();
                             return $user && $user->hasRole(['admin','Legal officer']);
                         })())
-                        ->reactive()
-                            ->afterStateUpdated(function ($state, callable $set) {
-                                $kprData = gcv_kpr::where('siteplan', $state)->first();
-                                $validasipph = gcv_validasi_pph::where('siteplan', $state)->first();
-                                $datatandaterima = gcv_datatandaterima::where('siteplan', $state)->first();
-                                $set('status_bn', $datatandaterima?->status_bn);
-                                $set('nama_konsumen', $kprData?->nama_konsumen);
-                                $set('luas', $kprData?->luas);
-                                $set('nama_notaris', $validasipph?->nama_notaris);
-                                $set('nop', $validasipph?->nop);
-                                $set('harga_jual', $kprData?->harga);
-                            }),
+    ->afterStateUpdated(function ($state, callable $set) {
+        $tenant = Filament::getTenant();
+        if (! $state || ! $tenant) return;
 
-                        TextInput::make('nama_konsumen')
+        $kprData = gcv_kpr::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
+
+        $validasipph = gcv_validasi_pph::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
+
+        $datatandaterima = gcv_datatandaterima::where('siteplan', $state)
+            ->where('team_id', $tenant->id)
+            ->first();
+
+        $set('status_bn', $datatandaterima?->status_bn);
+        $set('nama_konsumen', $kprData?->nama_konsumen);
+        $set('luas', $kprData?->luas);
+        $set('nama_notaris', $validasipph?->nama_notaris);
+        $set('nop', $validasipph?->nop);
+        $set('harga_jual', $kprData?->harga);
+    }),                        
+    
+    TextInput::make('nama_konsumen')
                         ->label('Nama Konsumen')
                         ->disabled(fn () => ! (function () {
                             /** @var \App\Models\User|null $user */
