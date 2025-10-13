@@ -66,15 +66,17 @@ class KartuKontrolGCVResource extends Resource
 
     protected static ?string $title = "Form Kartu Kontrol";
     protected static ?string $pluralLabel = "Kartu Kontrol";
-    protected static ?string $navigationLabel = "Keuangan > Kartu Kontrol";
+
+    protected static ?string $navigationGroup = "Keuangan";
+    protected static ?string $navigationLabel = "Kartu Kontrol";
     protected static ?string $pluralModelLabel = 'Kartu Kontrol';
     protected static bool $isScopedToTenant = false;
-      protected static ?string $tenantOwnershipRelationshipName = 'team';
+    protected static ?string $tenantOwnershipRelationshipName = 'team';
 
     protected static ?string $tenantRelationshipName = 'team';
 
     protected static ?string $navigationIcon = 'heroicon-o-cursor-arrow-ripple';
-    protected static ?int $navigationSort = 18;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

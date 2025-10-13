@@ -61,9 +61,10 @@ class GcvPengajuanBnResource extends Resource
 
     protected static ?string $title = "Data Pengajuan BN";
     protected static ?string $pluralLabel = "Data Pengajuan BN";
-    protected static ?string $navigationLabel = 'Legal > Pengajuan BN';
+    protected static ?string $navigationGroup = 'Legal';
+    protected static ?string $navigationLabel = 'Pengajuan BN';
     protected static ?string $pluralModelLabel = 'Data Pengajuan BN';
-    protected static ?int $navigationSort = 17;
+    protected static ?int $navigationSort = 5;
      protected static bool $isScopedToTenant = false;
       protected static ?string $tenantOwnershipRelationshipName = 'team';
 

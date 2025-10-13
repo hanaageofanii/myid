@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\gcv_stok;
 use App\Models\User;
+use App\Models\gcv_stok;
 
 class gcv_stokPolicy
 {
@@ -19,7 +19,7 @@ class gcv_stokPolicy
 
         // Role tertentu bisa lihat stok yang ada di team mereka
         return $user->hasRole([
-            'admin','Marketing','Direksi','KPR Officer','Legal Pajak','KPR Stok','Legal officer'
+            'admin', 'Marketing', 'Direksi', 'KPR Officer', 'Legal Pajak', 'KPR Stok', 'Legal officer'
         ]);
     }
 
@@ -33,9 +33,8 @@ class gcv_stokPolicy
         }
 
         return $user->hasRole([
-            'admin','Marketing','Direksi','','Legal Pajak','Legal officer','KPR Officer'
-        ])
-        && $user->teams()->where('id', $gcv_stok->team_id)->exists();
+            'admin', 'Marketing', 'Direksi', 'Legal Pajak', 'Legal officer', 'KPR Officer'
+        ]) && $user->teams()->where('teams.id', $gcv_stok->team_id)->exists();
     }
 
     /**
@@ -47,7 +46,7 @@ class gcv_stokPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','Super admin','Direksi','','KPR Stok']);
+        return $user->hasRole(['admin', 'Direksi', 'KPR Stok']);
     }
 
     /**
@@ -59,8 +58,8 @@ class gcv_stokPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','Super admin','Direksi','','KPR Stok'])
-            && $user->teams()->where('id', $gcv_stok->team_id)->exists();
+        return $user->hasRole(['admin', 'Direksi', 'KPR Stok'])
+            && $user->teams()->where('teams.id', $gcv_stok->team_id)->exists();
     }
 
     /**
@@ -72,8 +71,8 @@ class gcv_stokPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','Super admin','Direksi','KPR Stok'])
-            && $user->teams()->where('id', $gcv_stok->team_id)->exists();
+        return $user->hasRole(['admin', 'Direksi', 'KPR Stok'])
+            && $user->teams()->where('teams.id', $gcv_stok->team_id)->exists();
     }
 
     /**
@@ -85,8 +84,8 @@ class gcv_stokPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','Super admin','Direksi','KPR Stok'])
-            && $user->teams()->where('id', $gcv_stok->team_id)->exists();
+        return $user->hasRole(['admin', 'Direksi', 'KPR Stok'])
+            && $user->teams()->where('teams.id', $gcv_stok->team_id)->exists();
     }
 
     /**
@@ -98,7 +97,7 @@ class gcv_stokPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','Super admin','Direksi','','KPR Stok'])
-            && $user->teams()->where('id', $gcv_stok->team_id)->exists();
+        return $user->hasRole(['admin', 'Direksi', 'KPR Stok'])
+            && $user->teams()->where('teams.id', $gcv_stok->team_id)->exists();
     }
 }

@@ -52,14 +52,15 @@ class GcvStokResource extends Resource
 
     protected static ?string $title = "Data Bookingan";
     protected static ?string $pluralLabel = "Data Bookingan";
+    protected static ?string $navigationGroup = "Stok";
     protected static ?string $navigationIcon = 'heroicon-o-document-chart-bar';
-    protected static ?string $navigationLabel = 'Stok > Data Booking';
+    protected static ?string $navigationLabel = 'Data Booking';
      protected static bool $isScopedToTenant = false;
       protected static ?string $tenantOwnershipRelationshipName = 'team';
 
     protected static ?string $tenantRelationshipName = 'team';
     protected static ?string $pluralModelLabel = 'Data Bookingan';
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 1;
     public static function form(Form $form): Form
     {
         return $form

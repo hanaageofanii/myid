@@ -19,7 +19,7 @@ class ListKartuKontrolGCVS extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->label('Buat Data Kartu Kontrol GCV'),
+            ->label('Buat Data Kartu Kontrol'),
         ];
     }
     protected function getHeaderWidgets(): array
@@ -39,11 +39,11 @@ class ListKartuKontrolGCVS extends ListRecords
         {
             return parent::getTable()
                 ->emptyStateIcon('heroicon-o-bookmark')
-                ->emptyStateDescription('Silakan buat data Kartu Kontrol GCV')
-                ->emptyStateHeading('Belum ada data Kartu Kontrol GCV')
+                ->emptyStateDescription('Silakan buat data Kartu Kontrol')
+                ->emptyStateHeading('Belum ada data Kartu Kontrol')
                 ->emptyStateActions([
                     Action::make('create')
-                        ->label('Buat Data Kartu Kontrol GCV')
+                        ->label('Buat Data Kartu Kontrol')
                         ->url($this->getResource()::getUrl('create'))
                         ->icon('heroicon-m-plus')
                         ->button(),

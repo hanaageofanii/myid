@@ -47,10 +47,11 @@ class GcvDatatanahResource extends Resource
     protected static string $resource = GcvDatatanahResource::class;
     protected static ?string $title = "Data Tanah";
     protected static ?string $pluralLabel = "Data Tanah";
+        protected static ?string $navigationGroup = "Legal";
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-    protected static ?string $navigationLabel = 'Legal > Data Tanah';
+    protected static ?string $navigationLabel = 'Data Tanah';
     protected static ?string $pluralModelLabel = 'Data Tanah';
-    protected static ?int $navigationSort = 13;
+    protected static ?int $navigationSort = 2;
      protected static bool $isScopedToTenant = false;
       protected static ?string $tenantOwnershipRelationshipName = 'team';
 

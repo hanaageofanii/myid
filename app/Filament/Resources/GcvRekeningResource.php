@@ -57,7 +57,8 @@ class GcvRekeningResource extends Resource
 
     // protected static ?int $navigationSort = 2;
     protected static ?string $pluralLabel = "Master Rekening";
-    protected static ?string $navigationLabel = "Kasir > Master Rekening";
+    protected static ?string $navigationGroup = "Kasir";
+    protected static ?string $navigationLabel = "Master Rekening";
     protected static ?string $pluralModelLabel = 'Daftar Master Rekening';
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
     protected static bool $isScopedToTenant = false;
@@ -65,7 +66,7 @@ class GcvRekeningResource extends Resource
 
     protected static ?string $tenantRelationshipName = 'team';
 
-        protected static ?int $navigationSort = 15;
+        protected static ?int $navigationSort = 1;
 
 public static function form(Form $form): Form
 {

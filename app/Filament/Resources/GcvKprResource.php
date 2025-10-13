@@ -52,8 +52,9 @@ class GcvKprResource extends Resource
 
     protected static ?string $title = "Data Akad KPR";
     protected static ?string $pluralLabel = "Data Akad KPR";
+    protected static ?string $navigationGroup = "KPR";
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
-    protected static ?string $navigationLabel = 'KPR > Data Akad KPR';
+    protected static ?string $navigationLabel = 'Data Akad KPR';
     protected static ?string $pluralModelLabel = 'Data Akad KPR';
      protected static bool $isScopedToTenant = false;
       protected static ?string $tenantOwnershipRelationshipName = 'team';
@@ -61,7 +62,7 @@ class GcvKprResource extends Resource
     protected static ?string $tenantRelationshipName = 'team';
 
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

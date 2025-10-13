@@ -61,9 +61,10 @@ class GcvUangMukaResource extends Resource
     protected static ?string $model = gcv_uang_muka::class;
 
 protected static ?string $title = "Data Uang Muka";
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 4;
     protected static ?string $pluralLabel = "Data Uang Muka";
-    protected static ?string $navigationLabel = "Keuangan > Data Uang Muka";
+    protected static ?string $navigationGroup = "Keuangan";
+    protected static ?string $navigationLabel = "Data Uang Muka";
     protected static ?string $pluralModelLabel = 'Daftar Uang Muka';
     protected static ?string $navigationIcon = 'heroicon-o-folder-arrow-down';
     protected static bool $isScopedToTenant = false;

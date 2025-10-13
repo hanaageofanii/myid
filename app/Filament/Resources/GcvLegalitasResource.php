@@ -50,8 +50,9 @@ class GcvLegalitasResource extends Resource
 
     protected static ?string $title = "Data Legalitas";
     protected static ?string $pluralLabel = "Data Legalitas";
+    protected static ?string $navigationGroup = "Legal";
     protected static ?string $navigationIcon = 'heroicon-o-folder-open';
-    protected static ?string $navigationLabel = 'Legal > Data Legalitas';
+    protected static ?string $navigationLabel = 'Data Legalitas';
     protected static ?string $pluralModelLabel = 'Data Legalitas';
     protected static ?int $navigationSort = 3;
     protected static bool $isScopedToTenant = false;

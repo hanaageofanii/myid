@@ -61,15 +61,16 @@ class GcvMasterDajamResource extends Resource
 
     protected static ?string $title = "Data Master Dajam";
     protected static ?string $pluralLabel = "Data Master Dajam";
+    protected static ?string $navigationGroup = "Legal";
     protected static ?string $navigationIcon = 'heroicon-o-folder-open';
-    protected static ?string $navigationLabel = 'Legal > Data Master Dajam';
+    protected static ?string $navigationLabel = 'Data Master Dajam (Ajb)';
     protected static ?string $pluralModelLabel = 'Data Master Dajam';
     protected static bool $isScopedToTenant = false;
       protected static ?string $tenantOwnershipRelationshipName = 'team';
 
     protected static ?string $tenantRelationshipName = 'team';
 
-    protected static ?int $navigationSort = 19;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

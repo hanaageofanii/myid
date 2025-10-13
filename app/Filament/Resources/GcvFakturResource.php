@@ -65,9 +65,10 @@ class GcvFakturResource extends Resource
     protected static ?string $model = gcv_faktur::class;
 
     protected static ?string $title = "Form Data Faktur";
-    protected static ?int $navigationSort = 10;
+    protected static ?string $navigationGroup = "Pajak";
+    protected static ?int $navigationSort = 1;
     protected static ?string $pluralLabel = "Data Faktur";
-    protected static ?string $navigationLabel = "Pajak > Faktur";
+    protected static ?string $navigationLabel = "Faktur";
     protected static ?string $pluralModelLabel = 'Daftar Faktur';
 
     protected static bool $isScopedToTenant = false;

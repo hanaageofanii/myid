@@ -58,9 +58,10 @@ class GcvPencairanDajamResource extends Resource
 
     protected static ?string $title = "Data Pencairan Dajam";
     protected static ?string $pluralLabel = "Data Pencairan Dajam";
-    protected static ?string $navigationLabel = 'Keuangan > Pencairan Dajam';
+    protected static ?string $navigationLabel = 'Pencairan Dajam';
+    protected static ?string $navigationGroup = "Keuangan";
     protected static ?string $pluralModelLabel = 'Data Pencairan Dajam';
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 3;
     protected static bool $isScopedToTenant = false;
       protected static ?string $tenantOwnershipRelationshipName = 'team';
 

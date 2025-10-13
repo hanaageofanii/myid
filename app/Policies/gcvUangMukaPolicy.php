@@ -5,10 +5,10 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\gcv_uang_muka;
 
-class gcvUangMukaPolicy
+class GcvUangMukaPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Menentukan apakah user dapat melihat daftar data (index).
      */
     public function viewAny(User $user): bool
     {
@@ -16,11 +16,12 @@ class gcvUangMukaPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','Direksi','Kasir 1','Kasir 2']);
+        // Role yang boleh melihat semua data
+        return $user->hasRole(['admin', 'Direksi', 'Kasir 1', 'Kasir 2']);
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Menentukan apakah user dapat melihat data tertentu.
      */
     public function view(User $user, gcv_uang_muka $gcv_uang_muka): bool
     {
@@ -28,12 +29,15 @@ class gcvUangMukaPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','Direksi','Kasir 1','Kasir 2'])
-            && $user->teams()->where('id', $gcv_uang_muka->team_id)->exists();
+        // Hanya boleh melihat data milik tim sendiri
+        return $user->hasRole(['admin', 'Direksi', 'Kasir 1', 'Kasir 2'])
+            && $user->teams()
+                ->where('teams.id', $gcv_uang_muka->team_id)
+                ->exists();
     }
 
     /**
-     * Determine whether the user can create models.
+     * Menentukan apakah user dapat membuat data baru.
      */
     public function create(User $user): bool
     {
@@ -41,11 +45,12 @@ class gcvUangMukaPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','Kasir 1','Kasir 2']);
+        // Hanya admin dan kasir yang bisa membuat data
+        return $user->hasRole(['admin', 'Kasir 1', 'Kasir 2']);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Menentukan apakah user dapat memperbarui data.
      */
     public function update(User $user, gcv_uang_muka $gcv_uang_muka): bool
     {
@@ -53,12 +58,15 @@ class gcvUangMukaPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','Kasir 1','Kasir 2'])
-            && $user->teams()->where('id', $gcv_uang_muka->team_id)->exists();
+        // Hanya admin dan kasir yang bisa update data milik tim sendiri
+        return $user->hasRole(['admin', 'Kasir 1', 'Kasir 2'])
+            && $user->teams()
+                ->where('teams.id', $gcv_uang_muka->team_id)
+                ->exists();
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Menentukan apakah user dapat menghapus data.
      */
     public function delete(User $user, gcv_uang_muka $gcv_uang_muka): bool
     {
@@ -66,12 +74,14 @@ class gcvUangMukaPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','Kasir 1','Kasir 2'])
-            && $user->teams()->where('id', $gcv_uang_muka->team_id)->exists();
+        return $user->hasRole(['admin', 'Kasir 1', 'Kasir 2'])
+            && $user->teams()
+                ->where('teams.id', $gcv_uang_muka->team_id)
+                ->exists();
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Menentukan apakah user dapat mengembalikan data yang dihapus.
      */
     public function restore(User $user, gcv_uang_muka $gcv_uang_muka): bool
     {
@@ -79,12 +89,14 @@ class gcvUangMukaPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','Kasir 1','Kasir 2'])
-            && $user->teams()->where('id', $gcv_uang_muka->team_id)->exists();
+        return $user->hasRole(['admin', 'Kasir 1', 'Kasir 2'])
+            && $user->teams()
+                ->where('teams.id', $gcv_uang_muka->team_id)
+                ->exists();
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Menentukan apakah user dapat menghapus permanen data.
      */
     public function forceDelete(User $user, gcv_uang_muka $gcv_uang_muka): bool
     {
@@ -92,7 +104,9 @@ class gcvUangMukaPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','Kasir 1','Kasir 2'])
-            && $user->teams()->where('id', $gcv_uang_muka->team_id)->exists();
+        return $user->hasRole(['admin', 'Kasir 1', 'Kasir 2'])
+            && $user->teams()
+                ->where('teams.id', $gcv_uang_muka->team_id)
+                ->exists();
     }
 }

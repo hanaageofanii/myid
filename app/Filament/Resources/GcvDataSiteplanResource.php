@@ -47,8 +47,10 @@ class GcvDataSiteplanResource extends Resource
     protected static ?string $model = GcvDataSiteplan::class;
     protected static ?string $title = "Data Siteplan";
     protected static ?string $pluralLabel = "Data Siteplan";
+        protected static ?string $navigationGroup = "Legal";
+
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
-    protected static ?string $navigationLabel = 'Legal > Data Siteplan';
+    protected static ?string $navigationLabel = 'Data Siteplan';
     protected static ?string $pluralModelLabel = 'Data Siteplan';
 
     protected static ?int $navigationSort = 1;
@@ -390,14 +392,23 @@ public static function getEloquentQuery(): Builder
     $query = parent::getEloquentQuery()
         ->withoutGlobalScopes([
             SoftDeletingScope::class,
-        ]);
+        ])        ->where('team_id', filament()->getTenant()->id); // filter data sesuai tenant
+;
+
+    // Super Admin, admin, dan Legal bisa lihat semua
     /** @var \App\Models\User|null $user */
-    if ($user && $user->hasAnyRole(['Super Admin', 'admin', 'Legal officer','Legal Pajak'])) {
+    if ($user && $user->hasAnyRole(['Super Admin', 'admin', 'Legal officer', 'Legal Pajak'])) {
         return $query;
     }
 
-    // Selain itu, filter berdasarkan tenant (team) aktif di Filament
-    return $query->where('team_id', filament()->getTenant()->id);
+    // Kalau bukan role di atas, filter berdasarkan tenant (team)
+    // $tenant = filament()->getTenant();
+    // if ($tenant) {
+    //     $query->where('team_id', $tenant->id);
+    // }
+
+    // Tambahkan return di akhir
+    return $query;
 }
 
         public static function getWidgets(): array

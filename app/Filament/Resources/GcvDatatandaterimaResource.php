@@ -49,8 +49,9 @@ class GcvDatatandaterimaResource extends Resource
 
     protected static ?string $title = "Data Tanda Terima";
     protected static ?string $pluralLabel = "Data Tanda Terima";
+    protected static ?string $navigationGroup = "Legal";
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
-    protected static ?string $navigationLabel = 'Legal > Data Tanda Terima';
+    protected static ?string $navigationLabel = 'Data Tanda Terima';
     protected static ?string $pluralModelLabel = 'Data Tanda Terima';
     protected static ?int $navigationSort = 2;
     protected static bool $isScopedToTenant = false;
@@ -86,34 +87,54 @@ return $form->schema([
                             return $user && $user->hasRole(['admin','Legal officer']);
                         })()),
 
-                    Forms\Components\Select::make('siteplan')
-                        ->label('Blok')
-                        ->searchable()
-                        ->required()
-                        ->reactive()
-                        ->options(function (callable $get) {
-                            $selectedKavling = $get('kavling');
-                            if (! $selectedKavling) {
-                                return [];
-                            }
-                            return GcvDataSiteplan::where('kavling', $selectedKavling)
-                                ->pluck('siteplan', 'siteplan')
-                                ->toArray();
-                        })
-                        ->afterStateUpdated(function ($state, callable $set) {
-                            $data = GcvDataSiteplan::where('siteplan', $state)->first();
+Forms\Components\Select::make('siteplan')
+    ->label('Blok')
+    ->searchable()
+    ->required()
+    ->reactive()
+    ->options(function (callable $get) {
+        $selectedKavling = $get('kavling');
+        if (! $selectedKavling) {
+            return [];
+        }
 
-                            if ($data) {
-                                $set('type', $data->type);
-                                $set('luas', $data->luas);
-                                $set('terbangun', $data->terbangun);
-                            }
-                        })
-                        ->disabled(fn () => ! (function () {
-                            /** @var \App\Models\User|null $user */
-                            $user = Auth::user();
-                            return $user && $user->hasRole(['admin','Legal officer']);
-                        })()),
+        // Ambil tenant (team) yang sedang aktif di Filament
+        $tenant = filament()->getTenant();
+
+        // Kalau tenant aktif ada
+        if ($tenant) {
+            return GcvDataSiteplan::where('kavling', $selectedKavling)
+                ->where('team_id', $tenant->id)
+                ->pluck('siteplan', 'siteplan')
+                ->toArray();
+        }
+
+        // Kalau belum ada tenant (misalnya mode global)
+        return [];
+    })
+    ->afterStateUpdated(function ($state, callable $set) {
+        $tenant = filament()->getTenant();
+
+        $dataQuery = GcvDataSiteplan::query()
+            ->where('siteplan', $state);
+
+        if ($tenant) {
+            $dataQuery->where('team_id', $tenant->id);
+        }
+
+        $data = $dataQuery->first();
+
+        if ($data) {
+            $set('type', $data->type);
+            $set('luas', $data->luas);
+            $set('terbangun', $data->terbangun);
+        }
+    })
+    ->disabled(fn () => ! (function () {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin','Legal officer']);
+    })()),
 
 
                         TextInput::make('type')

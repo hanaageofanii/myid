@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\gcv_kpr;
 use App\Models\User;
+use App\Models\gcv_kpr;
 
 class gcv_kprPolicy
 {
@@ -14,8 +14,8 @@ class gcv_kprPolicy
         }
 
         return $user->hasRole([
-            'admin','Direksi','Legal officer','Legal Pajak',
-            'KPR Stok','KPR Officer','Lapangan','Kasir 1','Kasir 2'
+            'admin', 'Direksi', 'Legal officer', 'Legal Pajak',
+            'KPR Stok', 'KPR Officer', 'Lapangan', 'Kasir 1', 'Kasir 2'
         ]);
     }
 
@@ -26,9 +26,9 @@ class gcv_kprPolicy
         }
 
         return $user->hasRole([
-            'admin','Direksi','Legal officer','Legal Pajak',
-            'KPR Stok','KPR Officer','Lapangan','Kasir 1','Kasir 2'
-        ]) && $user->teams()->where('id', $gcv_kpr->team_id)->exists();
+            'admin', 'Direksi', 'Legal officer', 'Legal Pajak',
+            'KPR Stok', 'KPR Officer', 'Lapangan', 'Kasir 1', 'Kasir 2'
+        ]) && $user->teams()->where('teams.id', $gcv_kpr->team_id)->exists();
     }
 
     public function create(User $user): bool
@@ -37,7 +37,7 @@ class gcv_kprPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','KPR Officer']);
+        return $user->hasRole(['admin', 'KPR Officer']);
     }
 
     public function update(User $user, gcv_kpr $gcv_kpr): bool
@@ -46,8 +46,8 @@ class gcv_kprPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','KPR Officer'])
-            && $user->teams()->where('id', $gcv_kpr->team_id)->exists();
+        return $user->hasRole(['admin', 'KPR Officer'])
+            && $user->teams()->where('teams.id', $gcv_kpr->team_id)->exists();
     }
 
     public function delete(User $user, gcv_kpr $gcv_kpr): bool
@@ -56,8 +56,8 @@ class gcv_kprPolicy
             return true;
         }
 
-        return $user->hasRole(['admin','KPR Officer'])
-            && $user->teams()->where('id', $gcv_kpr->team_id)->exists();
+        return $user->hasRole(['admin', 'KPR Officer'])
+            && $user->teams()->where('teams.id', $gcv_kpr->team_id)->exists();
     }
 
     public function restore(User $user, gcv_kpr $gcv_kpr): bool
@@ -67,7 +67,7 @@ class gcv_kprPolicy
         }
 
         return $user->hasRole(['admin'])
-            && $user->teams()->where('id', $gcv_kpr->team_id)->exists();
+            && $user->teams()->where('teams.id', $gcv_kpr->team_id)->exists();
     }
 
     public function forceDelete(User $user, gcv_kpr $gcv_kpr): bool
@@ -77,6 +77,6 @@ class gcv_kprPolicy
         }
 
         return $user->hasRole(['admin'])
-            && $user->teams()->where('id', $gcv_kpr->team_id)->exists();
+            && $user->teams()->where('teams.id', $gcv_kpr->team_id)->exists();
     }
 }

@@ -65,7 +65,8 @@ class GcvVerifikasiDajamResource extends Resource
 
     protected static ?string $title = "Form Verifikasi Dajam";
     protected static ?string $pluralLabel = "Data Verifikasi Dajam";
-    protected static ?string $navigationLabel = "Legal > Verifikasi Dajam";
+    protected static ?string $navigationGroup = "Legal";
+    protected static ?string $navigationLabel = "Verifikasi Dajam";
     protected static ?string $pluralModelLabel = 'Daftar Verifikasi Dajam';
     protected static ?string $navigationIcon = 'heroicon-o-check-badge';
     protected static bool $isScopedToTenant = false;
@@ -73,7 +74,7 @@ class GcvVerifikasiDajamResource extends Resource
 
     protected static ?string $tenantRelationshipName = 'team';
 
-    protected static ?int $navigationSort = 12;
+    protected static ?int $navigationSort = 7;
     public static function form(Form $form): Form
     {
             return $form->schema([

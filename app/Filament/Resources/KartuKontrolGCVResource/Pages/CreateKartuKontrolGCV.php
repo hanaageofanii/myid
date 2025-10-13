@@ -10,7 +10,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateKartuKontrolGCV extends CreateRecord
 {
     protected static string $resource = KartuKontrolGCVResource::class;
-protected static ?string $title = "Kartu Kontrol GCV";
+protected static ?string $title = "Kartu Kontrol";
     protected function getCreateFormAction(): Actions\Action
     {
         return parent::getCreateFormAction()
@@ -35,8 +35,8 @@ protected static ?string $title = "Kartu Kontrol GCV";
     {
         return Notification::make()
             ->success()
-            ->title('Kartu Kontrol GCV Disimpan')
-            ->body('Kartu Kontrol GCV telah berhasil disimpan.');
+            ->title('Kartu Kontrol Disimpan')
+            ->body('Kartu Kontrol telah berhasil disimpan.');
     }
 
     protected function getSaveFormAction(): Actions\Action

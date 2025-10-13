@@ -62,7 +62,8 @@ class GcvPengajuanDajamResource extends Resource
 
     protected static ?string $title = "Form Pengajuan Dajam";
     protected static ?string $pluralLabel = "Data Pengajuan Dajam";
-    protected static ?string $navigationLabel = "Legal > Pengajuan Dajam";
+    protected static ?string $navigationGroup = "Legal";
+    protected static ?string $navigationLabel = "Pengajuan Dajam";
     protected static ?string $pluralModelLabel = 'Daftar Pengajuan Dajam';
      protected static bool $isScopedToTenant = false;
       protected static ?string $tenantOwnershipRelationshipName = 'team';
@@ -70,7 +71,7 @@ class GcvPengajuanDajamResource extends Resource
     protected static ?string $tenantRelationshipName = 'team';
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
-        protected static ?int $navigationSort = 11;
+        protected static ?int $navigationSort = 6;
 
 public static function form(Form $form): Form
 {

@@ -54,10 +54,11 @@ class BukuRekonsilResource extends Resource
 
     // protected static ?int $navigationSort = 1;
     protected static ?string $pluralLabel = "Buku Rekonsil";
-    protected static ?string $navigationLabel = "Kasir > Buku Rekonsil";
+    protected static ?string $navigationGroup = "Kasir";
+    protected static ?string $navigationLabel = "Buku Rekonsil";
     protected static ?string $pluralModelLabel = 'Daftar Buku Rekonsil';
     protected static ?string $navigationIcon = 'heroicon-o-squares-plus';
-        protected static ?int $navigationSort = 14;
+        protected static ?int $navigationSort = 2;
     protected static bool $isScopedToTenant = false;
       protected static ?string $tenantOwnershipRelationshipName = 'team';
 

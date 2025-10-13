@@ -54,10 +54,11 @@ class GcvKaskecilResource extends Resource
     protected static ?string $model = gcv_kaskecil::class;
 
     protected static ?string $pluralLabel = "Kas Kecil";
+    protected static ?string $navigationGroup = "Kasir";
     protected static ?string $navigationLabel = "Kasir > Kas Kecil";
     protected static ?string $pluralModelLabel = 'Daftar Kas Kecil';
     protected static ?string $navigationIcon = 'heroicon-o-plus';
-    protected static ?int $navigationSort=16;
+    protected static ?int $navigationSort=3;
     protected static bool $isScopedToTenant = false;
       protected static ?string $tenantOwnershipRelationshipName = 'team';
 

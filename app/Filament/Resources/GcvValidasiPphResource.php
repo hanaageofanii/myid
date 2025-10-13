@@ -64,8 +64,9 @@ class GcvValidasiPphResource extends Resource
 
     protected static ?string $title = "Form Validasi PPH";
     protected static ?string $pluralLabel = "Data Validasi PPH";
-    protected static ?string $navigationLabel = "Pajak > Validasi PPH";
-    protected static ?int $navigationSort = 9;
+    protected static ?string $navigationGroup = "Pajak";
+    protected static ?string $navigationLabel = "Validasi PPH";
+    protected static ?int $navigationSort = 2;
     protected static ?string $pluralModelLabel = 'Daftar Validasi PPH';
     protected static bool $isScopedToTenant = false;
     protected static ?string $tenantOwnershipRelationshipName = 'team';

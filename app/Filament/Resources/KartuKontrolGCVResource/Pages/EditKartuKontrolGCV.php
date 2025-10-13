@@ -10,13 +10,13 @@ class EditKartuKontrolGCV extends EditRecord
 {
     protected static string $resource = KartuKontrolGCVResource::class;
 
-    protected static ?string $title = "Ubah Data Kartu Kontrol GCV";
+    protected static ?string $title = "Ubah Data Kartu Kontrol";
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make()
-            ->label('Hapus Data Kartu Kontrol GCV')
+            ->label('Hapus Data Kartu Kontrol')
             ->modalHeading(fn ($record) => "Konfirmasi Hapus {$record->siteplan}")
             ->modalDescription(fn ($record) => "Apakah Anda yakin ingin menghapus blok {$record->siteplan}?"),
 

@@ -5,52 +5,104 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\gcv_legalitas;
 
-class gcvLegalitasPolicy
+class GcvLegalitasPolicy
 {
+    /**
+     * Menentukan apakah user dapat melihat daftar data.
+     */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('Super Admin')
-            || $user->hasRole(['admin','Direksi','Legal officer','Legal Pajak']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin', 'Direksi', 'Legal officer', 'Legal Pajak']);
     }
 
+    /**
+     * Menentukan apakah user dapat melihat data tertentu.
+     */
     public function view(User $user, gcv_legalitas $gcv_legalitas): bool
     {
-        return $user->hasRole('Super Admin')
-            || ($user->hasRole(['admin','Direksi','Legal officer','Legal Pajak'])
-                && $user->teams()->where('id', $gcv_legalitas->team_id)->exists());
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin', 'Direksi', 'Legal officer', 'Legal Pajak'])
+            && $user->teams()
+                ->where('teams.id', $gcv_legalitas->team_id)
+                ->exists();
     }
 
+    /**
+     * Menentukan apakah user dapat membuat data baru.
+     */
     public function create(User $user): bool
     {
-        return $user->hasRole('Super Admin')
-            || $user->hasRole(['admin','Legal officer']);
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin', 'Legal officer']);
     }
 
+    /**
+     * Menentukan apakah user dapat memperbarui data.
+     */
     public function update(User $user, gcv_legalitas $gcv_legalitas): bool
     {
-        return $user->hasRole('Super Admin')
-            || ($user->hasRole(['admin','Legal officer'])
-                && $user->teams()->where('id', $gcv_legalitas->team_id)->exists());
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin', 'Legal officer'])
+            && $user->teams()
+                ->where('teams.id', $gcv_legalitas->team_id)
+                ->exists();
     }
 
+    /**
+     * Menentukan apakah user dapat menghapus data.
+     */
     public function delete(User $user, gcv_legalitas $gcv_legalitas): bool
     {
-        return $user->hasRole('Super Admin')
-            || ($user->hasRole(['admin','Legal officer'])
-                && $user->teams()->where('id', $gcv_legalitas->team_id)->exists());
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin', 'Legal officer'])
+            && $user->teams()
+                ->where('teams.id', $gcv_legalitas->team_id)
+                ->exists();
     }
 
+    /**
+     * Menentukan apakah user dapat mengembalikan data yang dihapus.
+     */
     public function restore(User $user, gcv_legalitas $gcv_legalitas): bool
     {
-        return $user->hasRole('Super Admin')
-            || ($user->hasRole(['admin','Legal officer'])
-                && $user->teams()->where('id', $gcv_legalitas->team_id)->exists());
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin', 'Legal officer'])
+            && $user->teams()
+                ->where('teams.id', $gcv_legalitas->team_id)
+                ->exists();
     }
 
+    /**
+     * Menentukan apakah user dapat menghapus permanen data.
+     */
     public function forceDelete(User $user, gcv_legalitas $gcv_legalitas): bool
     {
-        return $user->hasRole('Super Admin')
-            || ($user->hasRole(['admin','Legal officer'])
-                && $user->teams()->where('id', $gcv_legalitas->team_id)->exists());
+        if ($user->hasRole('Super Admin')) {
+            return true;
+        }
+
+        return $user->hasRole(['admin', 'Legal officer'])
+            && $user->teams()
+                ->where('teams.id', $gcv_legalitas->team_id)
+                ->exists();
     }
 }

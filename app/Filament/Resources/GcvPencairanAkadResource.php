@@ -60,9 +60,10 @@ class GcvPencairanAkadResource extends Resource
 
     protected static ?string $title = "Data Pencairan Akad";
     protected static ?string $pluralLabel = "Data Pencairan Akad";
-    protected static ?string $navigationLabel = 'Keuangan > Pencairan Akad';
+    protected static ?string $navigationGroup = "Keuangan";
+    protected static ?string $navigationLabel = 'Pencairan Akad';
     protected static ?string $pluralModelLabel = 'Data Pencairan Akad';
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 2;
     protected static bool $isScopedToTenant = false;
       protected static ?string $tenantOwnershipRelationshipName = 'team';
 
