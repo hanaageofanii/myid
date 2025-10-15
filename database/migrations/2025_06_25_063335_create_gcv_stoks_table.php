@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Team;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -15,6 +16,7 @@ return new class extends Migration
         Schema::create('gcv_stoks', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Team::class)->index();
+                        $table->foreignIdFor(User::class)->index();
             $table->enum('proyek', ['gcv_cira','gcv','tkr','tkr_cira','pca1'])->nullable();
             $table->enum('nama_perusahaan', ['grand_cikarang_village','taman_kertamukti_residence','pesona_cengkong_asri_1'])->nullable();
             $table->enum('kavling',['standar','khusus','hook','komersil','tanah_lebih','kios'])->nullable();

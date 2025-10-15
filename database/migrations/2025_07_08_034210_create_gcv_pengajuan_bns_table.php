@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Team;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->string('siteplan')->nullable();
             $table->string('nama_konsumen')->nullable();
             $table->string('luas')->nullable();
-
+            $table->foreignIdFor(User::class)->index();
             $table->string('harga_jual')->nullable();
             $table->string('tanggal_lunas')->nullable();
             $table->string('nop')->nullable();

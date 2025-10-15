@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Team;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -14,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('gcv_kaskecils', function (Blueprint $table) {
             $table->id();
+                        $table->foreignIdFor(User::class)->index();
             $table->foreignIdFor(Team::class)->index();
             $table->enum('nama_perusahaan', ['langgeng_pertiwi_development','agung_purnama_bakti','purnama_karya_bersama'])->nullable();
             $table->date('tanggal')->nullable();

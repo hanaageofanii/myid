@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Team;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -14,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('gcv_datatanahs', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(User::class)->index();
             $table->foreignIdFor(Team::class)->index();
             $table->string('no_bidang')->nullable();
             $table->string('nama_pemilik_asal')->nullable();
