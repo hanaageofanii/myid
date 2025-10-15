@@ -105,7 +105,7 @@ class KartuKontrolGCVResource extends Resource
                                     ->disabled(fn () => ! (function () {
                                         /** @var \App\Models\User|null $user */
                                         $user = Auth::user();
-                                        return $user && $user->hasRole(['admin','Legal officer']);
+                                        return $user && $user->hasRole(['admin', 'Kasir 1', 'Kasir 2']);
                                     })()),
 
                                 TextInput::make('lokasi_proyek')
@@ -113,7 +113,7 @@ class KartuKontrolGCVResource extends Resource
                                     ->disabled(fn () => ! (function () {
                                         /** @var \App\Models\User|null $user */
                                         $user = Auth::user();
-                                        return $user && $user->hasRole(['admin','Legal officer']);
+                                        return $user && $user->hasRole(['admin', 'Kasir 1', 'Kasir 2']);
                                     })()),
 
                                     ]),

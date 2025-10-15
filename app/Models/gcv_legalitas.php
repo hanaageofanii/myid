@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\User;
+
 
 class gcv_legalitas extends Model
 {
@@ -13,7 +16,8 @@ class gcv_legalitas extends Model
 
     protected $fillable = [
         'id','siteplan','kavling','id_rumah','status_sertifikat','nib','imb_pbg','nop',
-        'up_sertifikat','up_img','up_pbb','sertifikat_list',"keterangan", "team_id"
+        'up_sertifikat','up_img','up_pbb','sertifikat_list',"keterangan", "team_id",'user_id',
+
     ];
 
     protected $attributes = [
@@ -36,4 +40,10 @@ class gcv_legalitas extends Model
 {
     return $this->belongsTo(Team::class);
 }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

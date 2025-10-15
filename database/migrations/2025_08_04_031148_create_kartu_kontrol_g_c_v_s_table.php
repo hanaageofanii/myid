@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Team;
-
+use App\Models\User;
 return new class extends Migration
 {
     /**
@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('kartu_kontrol_g_c_v_s', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Team::class)->index();
+            $table->foreignIdFor(User::class)->index();
             $table->enum('proyek', ['gcv_cira','gcv','tkr','tkr_cira','pca1'])->nullable();
             $table->string('lokasi_proyek')->nullable( );
             $table->string('nama_konsumen')->nullable( );

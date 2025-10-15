@@ -25,6 +25,7 @@ class gcv_stok extends Model
         "tanggal_booking",
         "nama_konsumen",
         "agent",
+                'user_id',
         "status_sertifikat",
         "kpr_status",
         "tanggal_akad",
@@ -38,4 +39,10 @@ class gcv_stok extends Model
     {
         return $this->belongsTo(Team::class);
     }
+
+        public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

@@ -25,6 +25,8 @@ class gcv_kaskecil extends Model
         "saldo",
         "catatan",
         "bukti",
+                'user_id',
+
     ];
 
     protected $casts = [
@@ -35,4 +37,10 @@ class gcv_kaskecil extends Model
     {
         return $this->belongsTo(Team::class);
     }
+
+        public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

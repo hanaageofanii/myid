@@ -41,6 +41,8 @@ class gcv_datatandaterima extends Model
         "up_imb_pbg",
         "up_tambahan_lainnya",
         "keterangan",
+                'user_id',
+
 
 
 
@@ -56,4 +58,10 @@ public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }
+
+        public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

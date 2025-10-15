@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Team;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class kartu_kontrolGCV extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'user_id',
         'team_id',
         'proyek',
         'lokasi_proyek',
@@ -52,12 +54,22 @@ class kartu_kontrolGCV extends Model
         'status',
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            if (Auth::check()) {
+                $model->user_id = Auth::id();
+            }
+        });
+    }
+
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }
 
-
-
-
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

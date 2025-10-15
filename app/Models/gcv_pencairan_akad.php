@@ -16,6 +16,7 @@ class gcv_pencairan_akad extends Model
     use HasFactory, HasRoles, SoftDeletes;
 
     protected $fillable = [
+                'user_id',
         "team_id",
             "kavling",
             "siteplan",
@@ -40,4 +41,9 @@ class gcv_pencairan_akad extends Model
     {
         return $this->belongsTo(Team::class);
     }
+        public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     }

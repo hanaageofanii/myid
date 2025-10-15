@@ -16,6 +16,7 @@ class GcvMasterDajam extends Model
     use HasFactory, SoftDeletes, HasRoles;
 
     protected $fillable = [
+        'user_id',
         'team_id',
         'kavling',
         'siteplan',
@@ -45,5 +46,8 @@ protected $casts = [
         return $this->belongsTo(Team::class);
     }
 
-
+        public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

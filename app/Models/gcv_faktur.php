@@ -32,6 +32,8 @@ class gcv_faktur extends Model
         "ntpn_ppn",
         "up_bukti_setor_ppn",
         "up_efaktur",
+                'user_id',
+
     ];
 
     protected $casts = [
@@ -43,5 +45,11 @@ class gcv_faktur extends Model
     {
         return $this->belongsTo(Team::class);
     }
+
+        public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
 
 }

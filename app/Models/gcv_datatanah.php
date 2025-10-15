@@ -29,7 +29,9 @@ class gcv_datatanah extends Model
             "up_nop",
             "data_diri",
             "up_sph",
-            "up_tambahan_lainnya"
+            "up_tambahan_lainnya",
+                    'user_id',
+
         ];
 
     protected $casts = [
@@ -43,4 +45,10 @@ public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }
+
+        public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

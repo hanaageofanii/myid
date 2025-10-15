@@ -64,26 +64,6 @@ class User extends Authenticatable implements HasTenants
         return $this->hasRole('admin');
     }
 
-    // public function teams(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(Team::class);
-    // }
-
-    // public function getTenants(Panel $panel): Collection
-    // {
-    //     return $this->teams;
-    // }
-
-    // public function canAccessTenant(Model $tenant): bool
-    // {
-    //     return $this->teams()->whereKey($tenant)->exists();
-    // }
-
-    // public function canAccessPanel(Panel $panel): bool
-    // {
-    //     return true;
-    // }
-
     public function canAccessTenant(Model $tenant): bool
     {
         return $this->teams->contains($tenant);

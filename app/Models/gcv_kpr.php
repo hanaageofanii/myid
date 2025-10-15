@@ -19,7 +19,8 @@ class gcv_kpr extends Model
         'harga', 'maksimal_kpr', 'nama_konsumen', 'nik', 'npwp', 'alamat', 'no_hp',
         'no_email', 'pembayaran', 'bank', 'no_rekening', 'status_akad', 'data_diri',
         'ktp', 'kk', 'npwp_upload', 'buku_nikah', 'akte_cerai', 'akte_kematian',
-        'kartu_bpjs', 'drk'
+        'kartu_bpjs', 'drk',        'user_id',
+
     ];
 
 
@@ -39,4 +40,10 @@ class gcv_kpr extends Model
     {
         return $this->belongsTo(Team::class);
     }
+
+        public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

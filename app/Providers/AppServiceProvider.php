@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         );
 
         Filament::serving(function () {
-            $logo = request()->is('admin/login') 
+            $logo = request()->is('admin/login')
                 ? asset('/image/logo.png')   // Logo untuk halaman login
                 : asset('/image/logo-pkb.png'); // Logo untuk dashboard
 

@@ -20,10 +20,19 @@ class GcvDataSiteplan extends Model
         "type",
         "terbangun",
         "luas",
-        "keterangan","team_id"
+        "keterangan","team_id",'user_id'
+
     ];
 
  public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
-    }}
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+}

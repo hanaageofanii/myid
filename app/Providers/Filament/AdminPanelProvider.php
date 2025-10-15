@@ -27,6 +27,7 @@ use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 use App\Filament\Resources\GCVResource\Widgets\GCVStats;
 use App\Filament\Resources\RekonsilResource\Widgets\rekonsilStats;
 use Illuminate\Support\Facades\Auth;
+use App\Filament\Resources\KartuKontrolGCVResource\Widgets\kartu_kontrolStats;
 use App\Filament\Pages\CustomPage;
 
 
@@ -64,7 +65,7 @@ class AdminPanelProvider extends PanelProvider
             )
             ->widgets([
                 Widgets\AccountWidget::class,
-
+                // kartu_kontrolStats::class,
             ])
             ->middleware([
                 EncryptCookies::class,

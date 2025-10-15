@@ -14,6 +14,7 @@ class gcv_uang_muka extends Model
     use HasFactory, SoftDeletes, HasRoles;
 
     protected $fillable = [
+                'user_id',
         'team_id',
         'kavling',
         'siteplan',
@@ -39,4 +40,10 @@ class gcv_uang_muka extends Model
     {
         return $this->belongsTo(Team::class);
     }
+
+        public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }
