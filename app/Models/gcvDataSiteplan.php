@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\User;
 
 class GcvDataSiteplan extends Model
 {
@@ -20,7 +21,9 @@ class GcvDataSiteplan extends Model
         "type",
         "terbangun",
         "luas",
-        "keterangan","team_id",'user_id'
+        "keterangan",
+        "team_id",
+        "user_id"
 
     ];
 
@@ -34,5 +37,16 @@ class GcvDataSiteplan extends Model
         return $this->belongsTo(User::class);
     }
 
+    protected static function booted()
+{
+    static::creating(function ($model) {
+        if (! $model->user_id) {
+            $model->user_id = filament()->auth()->id();
+        }
 
+        if (! $model->team_id) {
+            $model->team_id = filament()->getTenant()?->id;
+        }
+    });
+}
 }

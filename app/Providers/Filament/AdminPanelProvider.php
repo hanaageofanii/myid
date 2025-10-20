@@ -29,6 +29,8 @@ use App\Filament\Resources\RekonsilResource\Widgets\rekonsilStats;
 use Illuminate\Support\Facades\Auth;
 use App\Filament\Resources\KartuKontrolGCVResource\Widgets\kartu_kontrolStats;
 use App\Filament\Pages\CustomPage;
+use App\Filament\Resources\AdminResource\Widgets\allStats;
+
 
 
 
@@ -65,6 +67,7 @@ class AdminPanelProvider extends PanelProvider
             )
             ->widgets([
                 Widgets\AccountWidget::class,
+                allStats::class,
                 // kartu_kontrolStats::class,
             ])
             ->middleware([

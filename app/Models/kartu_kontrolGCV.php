@@ -54,14 +54,20 @@ class kartu_kontrolGCV extends Model
         'status',
     ];
 
-    protected static function booted()
-    {
-        static::creating(function ($model) {
-            if (Auth::check()) {
-                $model->user_id = Auth::id();
-            }
-        });
-    }
+protected static function booted()
+{
+    static::creating(function ($model) {
+        $userId = filament()->auth()?->id() ?? Auth::id();
+
+        if (! $model->user_id) {
+            $model->user_id = $userId;
+        }
+
+        if (! $model->team_id) {
+            $model->team_id = filament()->getTenant()?->id;
+        }
+    });
+}
 
     public function team(): BelongsTo
     {
@@ -72,4 +78,5 @@ class kartu_kontrolGCV extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 }

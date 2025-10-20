@@ -46,4 +46,16 @@ class gcv_legalitas extends Model
         return $this->belongsTo(User::class);
     }
 
+    protected static function booted()
+{
+    static::creating(function ($model) {
+        if (! $model->user_id) {
+            $model->user_id = filament()->auth()->id();
+        }
+
+        if (! $model->team_id) {
+            $model->team_id = filament()->getTenant()?->id;
+        }
+    });
+}
 }
