@@ -108,7 +108,7 @@ class GcvPencairanAkadResource extends Resource
     ->reactive()
     ->options(function (callable $get) {
         $selectedKavling = $get('kavling');
-        $tenant = Filament::getTenant(); 
+        $tenant = Filament::getTenant();
 
         if (! $selectedKavling || ! $tenant) {
             return [];
@@ -116,7 +116,7 @@ class GcvPencairanAkadResource extends Resource
 
         return gcv_kpr::where('jenis_unit', $selectedKavling)
             ->where('status_akad', 'akad')
-            ->where('team_id', $tenant->id) 
+            ->where('team_id', $tenant->id)
             ->pluck('siteplan', 'siteplan')
             ->toArray();
     })
@@ -126,7 +126,7 @@ class GcvPencairanAkadResource extends Resource
         return $user && $user->hasRole(['admin','Kasir 1']);
     })())
     ->afterStateUpdated(function ($state, callable $set) {
-        $tenant = Filament::getTenant(); 
+        $tenant = Filament::getTenant();
         if (! $state || ! $tenant) {
             return;
         }
@@ -651,6 +651,31 @@ public static function canViewAny(): bool
             //
         ];
     }
+
+        protected static function mutateFormDataBeforeCreate(array $data): array
+{
+    $user = filament()->auth()->user();
+
+    if (! $user) {
+        throw new \Exception('User harus login untuk membuat data ini.');
+    }
+
+    $data['user_id'] = $user->id;
+    $data['team_id'] = $user->current_team_id ?? filament()->getTenant()?->id;
+
+    return $data;
+}
+
+
+protected static function mutateFormDataBeforeSave(array $data): array
+{
+    if (! isset($data['user_id'])) {
+        $data['user_id'] = filament()->auth()->id();
+    }
+
+    return $data;
+}
+
 
     public static function getPages(): array
     {

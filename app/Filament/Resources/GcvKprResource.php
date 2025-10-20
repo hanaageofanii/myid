@@ -149,7 +149,7 @@ Forms\Components\Select::make('siteplan')
             $set('status_akad', $gcv->kpr_status);
             $set('pembayaran', $gcv->status_pembayaran);
         }
-    }),                
+    }),
     Forms\Components\Select::make('type')
                     ->disabled(fn () => ! (function () {
                         /** @var \App\Models\User|null $user */
@@ -738,6 +738,31 @@ Forms\Components\Select::make('siteplan')
 
         ];
     }
+
+        protected static function mutateFormDataBeforeCreate(array $data): array
+{
+    $user = filament()->auth()->user();
+
+    if (! $user) {
+        throw new \Exception('User harus login untuk membuat data ini.');
+    }
+
+    $data['user_id'] = $user->id;
+    $data['team_id'] = $user->current_team_id ?? filament()->getTenant()?->id;
+
+    return $data;
+}
+
+
+protected static function mutateFormDataBeforeSave(array $data): array
+{
+    if (! isset($data['user_id'])) {
+        $data['user_id'] = filament()->auth()->id();
+    }
+
+    return $data;
+}
+
 
     public static function canViewAny(): bool
 {

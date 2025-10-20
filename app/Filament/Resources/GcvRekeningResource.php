@@ -351,6 +351,31 @@ public static function form(Form $form): Form
         return [];
     }
 
+        protected static function mutateFormDataBeforeCreate(array $data): array
+{
+    $user = filament()->auth()->user();
+
+    if (! $user) {
+        throw new \Exception('User harus login untuk membuat data ini.');
+    }
+
+    $data['user_id'] = $user->id;
+    $data['team_id'] = $user->current_team_id ?? filament()->getTenant()?->id;
+
+    return $data;
+}
+
+
+protected static function mutateFormDataBeforeSave(array $data): array
+{
+    if (! isset($data['user_id'])) {
+        $data['user_id'] = filament()->auth()->id();
+    }
+
+    return $data;
+}
+
+
     public static function exportData(Collection $records)
     {
         $csvData = "Id, Nama Perusahaan, Bank, Jenis, No. Rekening\n";
