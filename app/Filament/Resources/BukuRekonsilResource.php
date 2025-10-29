@@ -566,7 +566,8 @@ class BukuRekonsilResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Data Rekonsil')
-                                ->body('Data Rekonsil berhasil dihapus secara permanen.'))                        ->requiresConfirmation()
+                                ->body('Data Rekonsil berhasil dihapus secara permanen.'))
+                                ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->forceDelete()),
 
                     BulkAction::make('export')

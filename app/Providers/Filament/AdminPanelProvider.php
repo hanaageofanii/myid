@@ -98,6 +98,6 @@ class AdminPanelProvider extends PanelProvider
             ->tenantRegistration(RegisterTeam::class)
             ->tenantProfile(EditTeamProfile::class)
             ->favicon(asset('image/logo.png'));
-   }
+    }
 
 }
